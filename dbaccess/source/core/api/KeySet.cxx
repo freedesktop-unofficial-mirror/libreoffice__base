@@ -2,9 +2,9 @@
  *
  *  $RCSfile: KeySet.cxx,v $
  *
- *  $Revision: 1.41 $
+ *  $Revision: 1.42 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-19 17:51:56 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:02:07 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -175,7 +175,7 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet)
                 m_aAutoColumns.push_back(aPosIter->first);
         }
     }
-    
+
     // the first row is empty because it's now easier for us to distinguish	when we are beforefirst or first
     // without extra varaible to be set
     m_aKeyMap.insert(OKeySetMatrix::value_type(0,OKeySetValue(NULL,0)));
@@ -188,14 +188,14 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet)
 
     ::rtl::OUString aFilter;
     ::rtl::OUString sCatalog,sSchema,sTable;
-    
+
     Reference<XPropertySet> xTableProp(m_xTable,UNO_QUERY);
     xTableProp->getPropertyValue(PROPERTY_CATALOGNAME)	>>= sCatalog;
     xTableProp->getPropertyValue(PROPERTY_SCHEMANAME)	>>= sSchema;
     xTableProp->getPropertyValue(PROPERTY_NAME)			>>= sTable;
 
     m_aSelectComposedTableName = getComposedTableName(sCatalog,sSchema,sTable);
-    
+
     ::rtl::OUString sComposedName;
     sCatalog = sSchema = sTable = ::rtl::OUString();
     ::dbtools::qualifiedNameComponents(xMetaData,m_sUpdateTableName,sCatalog,sSchema,sTable,::dbtools::eInDataManipulation);
@@ -222,7 +222,7 @@ Any SAL_CALL OKeySet::getBookmark( const ORowSetRow& _rRow ) throw(SQLException,
         "getBookmark is only possible when we stand on a valid row!");
     return makeAny(m_aKeyIter->first);
 }
-    
+
 // -------------------------------------------------------------------------
 sal_Bool SAL_CALL OKeySet::moveToBookmark( const Any& bookmark ) throw(SQLException, RuntimeException)
 {
@@ -249,7 +249,7 @@ sal_Int32 SAL_CALL OKeySet::compareBookmarks( const Any& first, const Any& secon
     sal_Int32 nFirst,nSecond;
     first >>= nFirst;
     second >>= nSecond;
-    
+
     return (nFirst != nSecond) ? CompareBookmark::NOT_EQUAL : CompareBookmark::EQUAL;
 }
 // -------------------------------------------------------------------------
@@ -306,7 +306,7 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
     aSql = aSql.replaceAt(aSql.getLength()-3,3,::rtl::OUString::createFromAscii(" "));
 
     // now create end execute the prepared statement
-    
+
     Reference< XPreparedStatement > xPrep(m_xConnection->prepareStatement(aSql));
     Reference< XParameters > xParameter(xPrep,UNO_QUERY);
 
@@ -362,7 +362,7 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     // use keys and indexes for excat postioning
     // first the keys
     Reference<XNameAccess> xKeyColumns = getKeyColumns();
-    
+
     // second the indexes
     Reference<XIndexesSupplier> xIndexSup(_xTable,UNO_QUERY);
     Reference<XIndexAccess> xIndexes;
@@ -418,7 +418,7 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
                         aIndexColumnPositions.push_back(aIter->second.first);
                     }
                     sIndexCondition += aAnd;
-                    
+
                     break;
                 }
             }
@@ -429,7 +429,7 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
             sSetValues += aPara;
         }
     }
-    
+
     if(sSetValues.getLength())
     {
         sSetValues = sSetValues.replaceAt(sSetValues.getLength()-1,1,::rtl::OUString::createFromAscii(" "));
@@ -462,7 +462,7 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     else
         throw SQLException(::rtl::OUString::createFromAscii("No where condition!"),m_xConnection,::rtl::OUString::createFromAscii("HY0000"),1000,Any());
 
-    
+
     // now create end execute the prepared statement
     Reference< XPreparedStatement > xPrep(m_xConnection->prepareStatement(aSql));
     Reference< XParameters > xParameter(xPrep,UNO_QUERY);
@@ -490,7 +490,7 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     }
 
      m_bUpdated = xPrep->executeUpdate() > 0;
-    
+
 
     if(m_bUpdated)
     {
@@ -517,7 +517,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
     static ::rtl::OUString aPara = ::rtl::OUString::createFromAscii("?,");
     ::rtl::OUString aQuote = m_xConnection->getMetaData()->getIdentifierQuoteString();
     static ::rtl::OUString aComma = ::rtl::OUString::createFromAscii(",");
-    
+
     OColumnNamePos::const_iterator aIter = m_pColumnNames->begin();
     for(;aIter != m_pColumnNames->end();++aIter)
     {
@@ -561,7 +561,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
                 Reference< XResultSet > xRes = xGRes->getGeneratedValues();
                 Reference< XRow > xRow(xRes,UNO_QUERY);
                 if ( xRow.is() && xRes->next() )
-                {	
+                {
                     Reference< XResultSetMetaDataSupplier > xMdSup(xRes,UNO_QUERY);
                     Reference< XResultSetMetaData > xMd = xMdSup->getMetaData();
                     sal_Int32 nColumnCount = xMd->getColumnCount();
@@ -569,7 +569,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
                     ::std::vector< ::rtl::OUString >::iterator aAutoEnd = m_aAutoColumns.end();
                     for (sal_Int32 i = 1;aAutoIter !=  aAutoEnd && i <= nColumnCount; ++aAutoIter,++i)
                     {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
                         ::rtl::OUString sColumnName( xMd->getColumnName(i) );
 #endif
                         OColumnNamePos::iterator aFind = m_pKeyColumnNames->find(*aAutoIter);
@@ -587,7 +587,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
     }
 
     ::comphelper::disposeComponent(xPrep);
-    
+
     if ( !bAutoValuesFetched )
     {
         // first check if all key column values were set
@@ -644,7 +644,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
         OColumnNamePos::const_iterator aPosIter = (*m_pKeyColumnNames).begin();
         for(;aPosIter != (*m_pKeyColumnNames).end();++aPosIter,++aIter)
             *aIter = (*_rInsertRow)[aPosIter->second.first];
-    
+
 
         OKeySetMatrix::iterator aKeyIter = m_aKeyMap.end();
         --aKeyIter;
@@ -723,7 +723,7 @@ void SAL_CALL OKeySet::deleteRow(const ORowSetRow& _rDeleteRow,const connectivit
     }
 
     m_bDeleted = xPrep->executeUpdate() > 0;
-    
+
     if(m_bDeleted)
     {
         sal_Int32 nPos = ::comphelper::getINT32((*_rDeleteRow)[0].getAny());
@@ -935,7 +935,7 @@ void SAL_CALL OKeySet::refreshRow() throw(SQLException, RuntimeException)
 {
     if(isBeforeFirst() || isAfterLast() || !m_xStatement.is())
         return;
-    
+
     m_xSet = NULL;
     ::comphelper::disposeComponent(m_xRow);
     // we just areassign the base members
@@ -1072,7 +1072,7 @@ void SAL_CALL OKeySet::refreshRow() throw(SQLException, RuntimeException)
             break;
         }
     }
-    
+
     m_xSet = m_xStatement->executeQuery();
     OSL_ENSURE(m_xSet.is(),"No resultset form statement!");
     sal_Bool bOK = m_xSet->next();
