@@ -2,9 +2,9 @@
  *
  *  $RCSfile: unodatbr.cxx,v $
  *
- *  $Revision: 1.103 $
+ *  $Revision: 1.104 $
  *
- *  last change: $Author: oj $ $Date: 2001-08-28 13:41:20 $
+ *  last change: $Author: oj $ $Date: 2001-08-29 06:32:52 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -3624,13 +3624,16 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
     {	// no -> disable the connection-related menu entries
         aContextMenu.EnableItem(ID_TREE_CLOSE_CONN, sal_False);
         aContextMenu.EnableItem(ID_TREE_REBUILD_CONN, sal_False);
-        aContextMenu.EnableItem(ID_TREE_RELATION_DESIGN, sal_False);		
+        aContextMenu.EnableItem(ID_TREE_RELATION_DESIGN, sal_False);
     }
     else
     {
         Reference<XConnection> xCon(pDSData->xObject,UNO_QUERY);
         if(xCon.is())
+        {
             bIsConnectionWriteAble = !xCon->getMetaData()->isReadOnly();
+            aContextMenu.EnableItem(ID_TREE_RELATION_DESIGN, xCon->getMetaData()->supportsIntegrityEnhancementFacility());
+        }
     }
 
     if(pEntry)
