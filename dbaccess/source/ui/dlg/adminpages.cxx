@@ -2,9 +2,9 @@
  *
  *  $RCSfile: adminpages.cxx,v $
  *
- *  $Revision: 1.18 $
+ *  $Revision: 1.19 $
  *
- *  last change: $Author: fs $ $Date: 2000-11-30 08:32:30 $
+ *  last change: $Author: kso $ $Date: 2000-12-01 08:06:01 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -130,7 +130,7 @@
 #include <stdlib.h>
 #ifndef _UCBHELPER_CONTENT_HXX
 #include <ucbhelper/content.hxx>
-#endif	  
+#endif
 #ifndef _OSL_FILE_HXX_
 #include <osl/file.hxx>
 #endif
@@ -579,7 +579,7 @@ StringBag OGeneralPage::getInstalledAdabasDBs(const String &_rPath)
     {
         aAdabasConfigDir = ::ucb::Content(sAdabasConfigDir, Reference< ::com::sun::star::ucb::XCommandEnvironment >());
     }
-    catch(::ucb::ContentCreationException&)
+    catch(::com::sun::star::ucb::ContentCreationException&)
     {
         DBG_ERROR("OGeneralPage::OnBrowseConnections: could not create the UCB content for the adabas config directory!");
     }
@@ -611,7 +611,7 @@ StringBag OGeneralPage::getInstalledAdabasDBs(const String &_rPath)
             DBG_ERROR("OGeneralPage::OnBrowseConnections: could not enumerate the adabas config files!");
         }
     }
-    
+
 
     return aInstalledDBs;
 }
@@ -1776,42 +1776,45 @@ IMPL_LINK( OTableSubscriptionPage, OnRadioButtonClicked, Button*, pButton )
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.18  2000/11/30 08:32:30  fs
+ *	#80003# changed some sal_uInt16 to sal_Int32 (need some -1's)
+ *
  *	Revision 1.17  2000/11/29 22:29:40  fs
  *	#80003# implementation of the character set map changed
- *	
+ *
  *	Revision 1.16  2000/11/28 13:48:15  fs
  *	#80152# m_bDisplayingDeleted -> m_bDisplayingInvalid
- *	
+ *
  *	Revision 1.15  2000/11/28 11:41:42  oj
  *	#80827# check dbroot if dbconfig failed
- *	
+ *
  *	Revision 1.14  2000/11/22 15:44:05  oj
  *	#80269# remove property long names
- *	
+ *
  *	Revision 1.13  2000/11/10 17:35:29  fs
  *	no parameter in checkItems anymore - did not make sense in the context it is called / some small bug fixes
- *	
+ *
  *	Revision 1.12  2000/11/02 15:20:04  fs
  *	#79983# +isBrowseable / #79830# +checkItems
- *	
+ *
  *	Revision 1.11  2000/11/02 14:18:21  fs
  *	#79967# check the getenv return against NULL
- *	
+ *
  *	Revision 1.10  2000/10/30 15:22:25  fs
  *	no password fields anymore - don't want to have them in and _data source aministration_ dialog
- *	
+ *
  *	Revision 1.9  2000/10/30 13:48:29  fs
  *	some help ids
- *	
+ *
  *	Revision 1.8  2000/10/24 12:11:15  fs
  *	functionality added: browsing for system data sources (ODBC/Adabas/dbase/text)
- *	
+ *
  *	Revision 1.7  2000/10/20 09:53:17  fs
  *	handling for the SuppresVersionColumns property of a data source
- *	
+ *
  *	Revision 1.6  2000/10/18 08:48:16  obo
  *	Syntax error with linux compiler #65293#
- *	
+ *
  *	Revision 1.5  2000/10/13 16:04:22  fs
  *	Separator changed to string / getDetailIds
  *
