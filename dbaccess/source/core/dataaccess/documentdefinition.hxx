@@ -2,9 +2,9 @@
  *
  *  $RCSfile: documentdefinition.hxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: kz $ $Date: 2005-01-21 17:04:48 $
+ *  last change: $Author: kz $ $Date: 2005-03-18 16:33:00 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,7 +92,7 @@
 #ifndef _COM_SUN_STAR_SDBC_XCONNECTION_HPP_
 #include <com/sun/star/sdbc/XConnection.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_ 
+#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_
 #include <com/sun/star/frame/XComponentLoader.hpp>
 #endif
 #ifndef _COM_SUN_STAR_EMBED_XSTATECHANGELISTENER_HPP_
@@ -120,22 +120,24 @@ class ODocumentDefinition
         ,public ::comphelper::OPropertyArrayUsageHelper< ODocumentDefinition >
         ,public ODocumentDefinition_Base
 {
-    ::com::sun::star::uno::Reference< ::com::sun::star::embed::XEmbeddedObject>			m_xEmbeddedObject;	
+    ::com::sun::star::uno::Reference< ::com::sun::star::embed::XEmbeddedObject>			m_xEmbeddedObject;
     ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStateChangeListener >	m_xListener;
     ::com::sun::star::uno::Reference< ::com::sun::star::frame::XComponentLoader >		m_xFrameLoader;
+    ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >             m_xLastKnownConnection;
+
     OInterceptor*																		m_pInterceptor;
     sal_Bool																			m_bForm; // <TRUE/> if it is a form
     sal_Bool																			m_bOpenInDesign;
     OEmbeddedClientHelper*																m_pClientHelper;
-    
+
 private:
     // Command "insert"
     void insert( const ::rtl::OUString& _sURL, const ::com::sun::star::uno::Reference< ::com::sun::star::ucb::XCommandEnvironment >& Environment ) throw( ::com::sun::star::uno::Exception );
 
     /** fills the load arguments
     *
-    * \param _rArgs 
-    * \param _rEmbeddedObjectDescriptor 
+    * \param _rArgs
+    * \param _rEmbeddedObjectDescriptor
     */
     void fillLoadArgs(::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>& _rArgs
                     , ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>& _rEmbeddedObjectDescriptor
@@ -152,7 +154,7 @@ private:
 
     void generateNewImage(::com::sun::star::uno::Any& _rImage);
     void fillDocumentInfo(::com::sun::star::uno::Any& _rInfo);
-    /** searches for read-only flag in the args of the model and sets it to the given value, 
+    /** searches for read-only flag in the args of the model and sets it to the given value,
         if the value was not found, it will be appended.
         @param	_bReadOnly
             If <TRUE/> the document will be switched to readonly mode
@@ -178,7 +180,7 @@ public:
 
 // ::com::sun::star::uno::XInterface
     DECLARE_XINTERFACE( )
-    
+
 // ::com::sun::star::lang::XServiceInfo
     DECLARE_SERVICE_INFO_STATIC();
 
