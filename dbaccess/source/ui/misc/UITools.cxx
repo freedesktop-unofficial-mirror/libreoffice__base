@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UITools.cxx,v $
  *
- *  $Revision: 1.48 $
+ *  $Revision: 1.49 $
  *
- *  last change: $Author: hr $ $Date: 2004-08-02 16:06:20 $
+ *  last change: $Author: hr $ $Date: 2004-08-02 17:34:53 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -116,7 +116,7 @@
 #ifndef _COM_SUN_STAR_UCB_XCONTENT_HPP_
 #include <com/sun/star/ucb/XContent.hpp>
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_
 #include <com/sun/star/ui/dialogs/XExecutableDialog.hpp>
 #endif
 #ifndef _COM_SUN_STAR_BEANS_PROPERTYVALUE_HPP_
@@ -134,7 +134,7 @@
 #ifndef _TOOLKIT_AWT_VCLXWINDOW_HXX_
 #include <toolkit/awt/vclxwindow.hxx>
 #endif
-#ifndef _VCL_STDTEXT_HXX 
+#ifndef _VCL_STDTEXT_HXX
 #include <vcl/stdtext.hxx>
 #endif
 #ifndef _COM_SUN_STAR_BEANS_XPROPERTYSETINFO_HPP_
@@ -175,7 +175,7 @@
 #endif
 #ifndef DBAUI_TYPEINFO_HXX
 #include "TypeInfo.hxx"
-#endif					  
+#endif
 #ifndef DBAUI_FIELDDESCRIPTIONS_HXX
 #include "FieldDescriptions.hxx"
 #endif
@@ -189,12 +189,12 @@
 
 #define ITEMID_HORJUSTIFY		SID_ATTR_ALIGN_HOR_JUSTIFY
 #define ITEMID_VERJUSTIFY		SID_ATTR_ALIGN_VER_JUSTIFY
-#define ITEMID_ORIENTATION		SID_ATTR_ALIGN_ORIENTATION
+//#define ITEMID_ORIENTATION     SID_ATTR_ALIGN_ORIENTATION
 #define ITEMID_LINEBREAK		SID_ATTR_ALIGN_LINEBREAK
 #define ITEMID_MARGIN			SID_ATTR_ALIGN_MARGIN
 #define ITEMID_NUMBERINFO		SID_ATTR_NUMBERFORMAT_INFO
 
-#ifndef _SFXITEMPOOL_HXX 
+#ifndef _SFXITEMPOOL_HXX
 #include <svtools/itempool.hxx>
 #endif
 #ifndef _STRING_HXX
@@ -212,29 +212,29 @@
 #ifndef _SFXRNGITEM_HXX
 #include <svtools/rngitem.hxx>
 #endif
-#ifndef _SFXINTITEM_HXX 
+#ifndef _SFXINTITEM_HXX
 #include <svtools/intitem.hxx>
 #endif
-#ifndef _SVX_ALGITEM_HXX 
+#ifndef _SVX_ALGITEM_HXX
 #include <svx/algitem.hxx>
 #endif
-#ifndef _SVX_NUMINF_HXX 
+#ifndef _SVX_NUMINF_HXX
 #include <svx/numinf.hxx>
 #endif
 #define _ZFORLIST_DECLARE_TABLE
-#ifndef _SVX_NUMINF_HXX 
+#ifndef _SVX_NUMINF_HXX
 #include <svx/numinf.hxx>
 #endif
 #ifndef _EEITEMID_HXX
 #include <svx/eeitemid.hxx>
 #endif
-#ifndef _ZFORLIST_HXX 
+#ifndef _ZFORLIST_HXX
 #include <svtools/zforlist.hxx>
 #endif
 #ifndef DBAUI_SBATTRDLG_HXX
 #include "dlgattr.hxx"
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
