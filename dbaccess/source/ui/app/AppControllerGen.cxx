@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AppControllerGen.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-17 14:46:10 $
+ *  last change: $Author: obo $ $Date: 2004-11-22 15:01:17 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -77,7 +77,7 @@
 #ifndef _COM_SUN_STAR_SDBCX_XVIEWSSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XViewsSupplier.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_
 #include <com/sun/star/container/XNameAccess.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XCONTAINER_HPP_
@@ -134,7 +134,7 @@
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
 #include "dbustrings.hrc"
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
 #ifndef _DBACCESS_SLOTID_HRC_
@@ -146,7 +146,7 @@
 #ifndef _COM_SUN_STAR_CONTAINER_XHIERARCHICALNAMECONTAINER_HPP_
 #include <com/sun/star/container/XHierarchicalNameContainer.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
 #include <com/sun/star/container/XChild.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XNAMECONTAINER_HPP_
@@ -199,7 +199,7 @@ void OApplicationController::convertToView(const ::rtl::OUString& _sName)
                     String aName = String(ModuleRes(STR_TBL_TITLE));
                     aName = aName.GetToken(0,' ');
                     String aDefaultName = ::dbaui::createDefaultName(xMeta,xTables,aName);
-                    
+
                     OSaveAsDlg aDlg(getView(),CommandType::TABLE,xTables,xMeta,xConnection,aDefaultName);
                     if ( aDlg.Execute() == RET_OK )
                     {
@@ -238,7 +238,7 @@ void OApplicationController::pasteFormat(sal_uInt32 _nFormatId)
                 pasteTable(_nFormatId, rClipboard );
             else
                 paste( eType,ODataAccessObjectTransferable::extractObjectDescriptor(rClipboard) );
-                
+
         }
         catch(Exception& )
         {
@@ -377,10 +377,10 @@ void OApplicationController::previewChanged( sal_Int32 _nMode )
             const static ::rtl::OUString s_sPreview(RTL_CONSTASCII_USTRINGPARAM("Preview"));
             for (; pIter != pEnd && pIter->Name != s_sPreview; ++pIter)
                 ;
-            
+
             if ( pIter == pEnd )
             {
-                sal_Int32 nLen = aFields.getLength(); 
+                sal_Int32 nLen = aFields.getLength();
                 aFields.realloc( nLen + 1 );
                 pIter = aFields.getArray() + nLen;
                 pIter->Name = s_sPreview;
@@ -406,7 +406,7 @@ void OApplicationController::previewChanged( sal_Int32 _nMode )
 void OApplicationController::updateTitle()
 {
     ::rtl::OUString sName = getStrippedDatabaseName();
-    
+
     String sTitle = String(ModuleRes(STR_APP_TITLE));
     sName = sName + sTitle;
 #ifndef PRODUCT
@@ -535,7 +535,7 @@ sal_Bool OApplicationController::suspendDocuments(sal_Bool bSuspend)
         {
         }
         m_aDocuments.clear();
-    }	
+    }
 
     return bSubSuspended;
 }
@@ -563,7 +563,7 @@ sal_Bool OApplicationController::insertHierachyElement(ElementType _eType,const 
                            ,_eType == E_FORM
                            ,_bCollection
                            ,_xContent
-                           ,_bMove);	
+                           ,_bMove);
 }
 // -----------------------------------------------------------------------------
 sal_Bool OApplicationController::isRenameDeleteAllowed(ElementType _eType,sal_Bool _bDelete) const
@@ -572,10 +572,10 @@ sal_Bool OApplicationController::isRenameDeleteAllowed(ElementType _eType,sal_Bo
     sal_Bool bEnabled = !isDataSourceReadOnly() && eType == _eType;
     if ( bEnabled )
     {
-        
+
         if ( E_TABLE == eType )
             bEnabled = !isConnectionReadOnly() && getContainer()->isALeafSelected();
-    
+
         sal_Bool bCompareRes = sal_False;
         if ( _bDelete )
             bCompareRes = getContainer()->getSelectionCount() > 0;
@@ -607,8 +607,7 @@ sal_Bool OApplicationController::isRenameDeleteAllowed(ElementType _eType,sal_Bo
 // -----------------------------------------------------------------------------
 void OApplicationController::onLoadedMenu(const Reference< drafts::com::sun::star::frame::XLayoutManager >& _xLayoutManager)
 {
-    OGenericUnoController::loadSubToolbar(_xLayoutManager);
-        
+
     static ::rtl::OUString s_sStatusbar(RTL_CONSTASCII_USTRINGPARAM("private:resource/statusbar/statusbar"));
     _xLayoutManager->createElement( s_sStatusbar );
     _xLayoutManager->requestElement( s_sStatusbar );
@@ -625,7 +624,7 @@ void OApplicationController::doAction(sal_uInt16 _nId ,sal_Bool _bEdit)
     ::std::vector< ::rtl::OUString> aList;
     getSelectionElementNames(aList);
     ElementType eType = getContainer()->getElementType();
-    
+
     ::std::vector< ::rtl::OUString>::iterator aEnd = aList.end();
     for (::std::vector< ::rtl::OUString>::iterator aIter = aList.begin(); aIter != aEnd; ++aIter)
     {
