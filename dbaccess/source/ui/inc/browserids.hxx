@@ -2,9 +2,9 @@
  *
  *  $RCSfile: browserids.hxx,v $
  *
- *  $Revision: 1.30 $
+ *  $Revision: 1.31 $
  *
- *  last change: $Author: vg $ $Date: 2003-06-06 10:49:03 $
+ *  last change: $Author: hr $ $Date: 2004-02-03 20:42:06 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,7 +62,7 @@
 #define DBACCESS_UI_BROWSER_ID_HXX
 
 #ifndef _SBASLTID_HRC
-#include <offmgr/sbasltid.hrc>
+#include <svx/svxids.hrc>
 #endif
 #ifndef _DBACCESS_SLOTID_HRC_
 #include "dbaccess_slotid.hrc"
@@ -99,7 +99,7 @@
 #define ID_BROWSER_TABLEATTR				22	// table format attributes
 #define ID_BROWSER_ROWHEIGHT				23	// Zeilenhoehe
 #define ID_BROWSER_COLUMNINFO				24	// copies the column description to insert it into the table design
-#define ID_BROWSER_COUNTALL					SID_FM_COUNTALL // count all 
+#define ID_BROWSER_COUNTALL					SID_FM_COUNTALL // count all
 #define ID_BROWSER_ADDTABLE					SID_FM_ADDTABLE
 #define ID_BROWSER_DESIGN					SID_SBA_QRY_DESIGN
 #define ID_BROWSER_EXPLORER					SID_DSBROWSER_EXPLORER
@@ -112,34 +112,34 @@
 #define ID_TREE_REBUILD_CONN				 3
 #define ID_TREE_RELATION_DESIGN				 7
 #define ID_TABLE_DESIGN_NO_CONNECTION		 8
-#define ID_OPEN_DOCUMENT					 9	  
-#define ID_EDIT_DOCUMENT					10	  
-#define ID_NEW_LINK							11	  
-#define ID_EDIT_LINK						12	  
-#define ID_DROP_LINK						13	  
-#define ID_CREATE_NEW_DOC					14	  
+#define ID_OPEN_DOCUMENT					 9
+#define ID_EDIT_DOCUMENT					10
+#define ID_NEW_LINK							11
+#define ID_EDIT_LINK						12
+#define ID_DROP_LINK						13
+#define ID_CREATE_NEW_DOC					14
 #define ID_FORM_NEW_TEXT					15
 #define ID_FORM_NEW_CALC					16
 #define ID_FORM_NEW_IMPRESS					17
 #define ID_FORM_NEW_PILOT					18
 #define ID_FORM_NEW_TEMPLATE				19
-#define ID_NEW_QUERY_DESIGN					20	  
-#define ID_EDIT_QUERY_DESIGN				21	  
-#define ID_NEW_QUERY_SQL					22	  
-#define ID_EDIT_QUERY_SQL					23	  
-#define ID_DROP_QUERY						24	  
-#define ID_NEW_TABLE_DESIGN					25	  
-#define ID_EDIT_TABLE						26	  
-#define ID_DROP_TABLE						27	  
+#define ID_NEW_QUERY_DESIGN					20
+#define ID_EDIT_QUERY_DESIGN				21
+#define ID_NEW_QUERY_SQL					22
+#define ID_EDIT_QUERY_SQL					23
+#define ID_DROP_QUERY						24
+#define ID_NEW_TABLE_DESIGN					25
+#define ID_EDIT_TABLE						26
+#define ID_DROP_TABLE						27
 #define ID_NEW_VIEW_DESIGN					28
 #define ID_DIRECT_SQL						32
 #define ID_BROWSER_REFRESH_REBUILD			34
-#define ID_RENAME_ENTRY						35	  
-#define ID_INDEX_NEW						36	  
-#define ID_INDEX_DROP						37	  
-#define ID_INDEX_RENAME						38	  
-#define ID_INDEX_SAVE						39	  
-#define ID_INDEX_RESET						40	  
+#define ID_RENAME_ENTRY						35
+#define ID_INDEX_NEW						36
+#define ID_INDEX_DROP						37
+#define ID_INDEX_RENAME						38
+#define ID_INDEX_SAVE						39
+#define ID_INDEX_RESET						40
 #define ID_DOCUMENT_CREATE_REPWIZ			41
 #define ID_BROWSER_SQL						42
 
@@ -158,7 +158,7 @@
 #define ID_QUERY_TABLENAME					(SID_SBA_START + 42) // Tabellennamen anzeigen
 #define ID_QUERY_ALIASNAME					(SID_SBA_START + 43) // Aliasnamen anzeigen
 #define ID_QUERY_DISTINCT					(SID_SBA_START + 44) // Distinct anzeigen
-#define ID_QUERY_EDIT_JOINCONNECTION		(SID_SBA_START + 45) // show-edit Join 
+#define ID_QUERY_EDIT_JOINCONNECTION		(SID_SBA_START + 45) // show-edit Join
 #define ID_QUERY_ZOOM_IN					SID_ZOOM_IN
 #define ID_QUERY_ZOOM_OUT					SID_ZOOM_OUT
 
