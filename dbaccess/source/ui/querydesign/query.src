@@ -2,9 +2,9 @@
  *
  *  $RCSfile: query.src,v $
  *
- *  $Revision: 1.78 $
+ *  $Revision: 1.79 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-19 17:52:59 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:04:07 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -1286,7 +1286,7 @@ ToolBox RID_BRW_QUERYDESIGN_TOOLBOX
         {
             MID_DBUI_QUERY_EXECUTE
         };
-        
+
         ToolBoxItem
         {
             Type = TOOLBOXITEM_SEPARATOR ;
@@ -1520,7 +1520,7 @@ ToolBox RID_BRW_QUERYDESIGN_TOOLBOX
         {
             Type = TOOLBOXITEM_SEPARATOR ;
         };
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         ToolBoxItem
         {
             Identifier = ID_EDIT_QUERY_SQL ;
@@ -1554,7 +1554,7 @@ ToolBox RID_BRW_QUERYDESIGN_TOOLBOX
             Text = "Make disjunctive normal form" ;
             Text[ language_user1 ] = "; EM Oct 2002: Do Not Translate. This is only for the in-house developer \"Debugging\" version of SO.";
         };
-            
+
 #endif
 /*		ToolBoxItem
         {
@@ -1574,7 +1574,7 @@ ToolBox RID_BRW_QUERYDESIGN_TOOLBOX
         {
             Type = TOOLBOXITEM_SEPARATOR ;
         };
-*/		
+*/
     };
 };
 QueryBox QUERY_DESIGN_SAVEMODIFIED
@@ -1879,7 +1879,7 @@ Menu RID_QUERY_DESIGN_MAIN_MENU
 
                     Text = "Wiederherstellen" ;
                     Text [ ENGLISH ] = "Redo" ;
-                    
+
                     Text[ english_us ] = "Redo";
                     Text[ portuguese ] = "Restaurar";
                     Text[ russian ] = "Âåðíóòü";
@@ -2106,7 +2106,7 @@ Menu RID_QUERY_DESIGN_MAIN_MENU
             Text[ thai ] = "à¹€~à¸„à¸£à¸·à¹ˆà¸­à¸‡à¸¡à¸·à¸­";
         };
         GLOBLMN_WINMN
-        {		
+        {
             ITEM_WINDOW_MDIWINDOWLIST
             SubMenu = Menu { ItemList =  { }; };
         };
