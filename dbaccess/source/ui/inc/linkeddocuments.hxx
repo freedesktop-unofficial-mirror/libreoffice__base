@@ -2,9 +2,9 @@
  *
  *  $RCSfile: linkeddocuments.hxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: hr $ $Date: 2004-08-02 16:00:33 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-27 13:06:49 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,10 +62,10 @@
 #ifndef _DBAUI_LINKEDDOCUMENTS_HXX_
 #define _DBAUI_LINKEDDOCUMENTS_HXX_
 
-#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_
 #include <com/sun/star/container/XNameAccess.hpp>
 #endif
-#ifndef _COM_SUN_STAR_LANG_XMULTISERVICEFACTORY_HPP_ 
+#ifndef _COM_SUN_STAR_LANG_XMULTISERVICEFACTORY_HPP_
 #include <com/sun/star/lang/XMultiServiceFactory.hpp>
 #endif
 #ifndef _COM_SUN_STAR_LANG_XCOMPONENT_HPP_
@@ -77,7 +77,7 @@
 #ifndef _COM_SUN_STAR_SDBC_XCONNECTION_HPP_
 #include <com/sun/star/sdbc/XConnection.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_ 
+#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_
 #include <com/sun/star/frame/XComponentLoader.hpp>
 #endif
 #ifndef _COM_SUN_STAR_UCB_XCONTENT_HPP_
@@ -107,7 +107,7 @@ namespace dbaui
                     m_xORB;
         ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >
                     m_xDocumentContainer;
-        ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection> 
+        ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>
                     m_xConnection;
         String		m_sCurrentlyEditing;
 
@@ -144,7 +144,14 @@ namespace dbaui
                             const String& _rObjectName,
                             const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >& _rxConnection
                         );
-    protected:
+
+        sal_Bool		newTableWithPilot(
+                            const String& _rDataSourceName,
+                            const sal_Int32 _nCommandType,
+                            const String& _rObjectName,
+                            const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >& _rxConnection
+                        );
+
         enum RESULT
         {
             ERROR,
