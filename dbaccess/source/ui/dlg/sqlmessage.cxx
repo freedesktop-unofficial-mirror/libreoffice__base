@@ -2,9 +2,9 @@
  *
  *  $RCSfile: sqlmessage.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: fs $ $Date: 2000-10-09 12:39:29 $
+ *  last change: $Author: obo $ $Date: 2000-10-18 09:11:18 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -153,9 +153,15 @@ OExceptionChainDialog::OExceptionChainDialog(Window* pParent, const ::com::sun::
     m_aExceptionList.SetWindowBits(WB_HASLINES | WB_HASLINESATROOT | WB_HASBUTTONS | WB_HASBUTTONSATROOT | WB_HSCROLL);
 
     m_aExceptionList.SetSelectHdl(LINK(this, OExceptionChainDialog, OnExceptionSelected));
-    Image aCollapsedImage(Bitmap(ModuleRes(BMP_PLUSBUTTON)));
-    Image aExpandedImage(Bitmap(ModuleRes(BMP_MINUSBUTTON)));
-    m_aExceptionList.SetNodeBitmaps(aCollapsedImage, aExpandedImage);
+    ModuleRes aPlusButton(BMP_PLUSBUTTON);
+    ModuleRes aMinusButton(BMP_MINUSBUTTON);
+    Bitmap	aPlusButtonBitmap(aPlusButton);
+    Bitmap  aMinusButtonBitmap(aMinusButton);
+    Image aCollapsedImage(aPlusButtonBitmap);
+    Image aExpandedImage(aMinusButtonBitmap);
+//	Image aCollapsedImage(Bitmap(ModuleRes(BMP_PLUSBUTTON)));
+//	Image aExpandedImage(Bitmap(ModuleRes(BMP_MINUSBUTTON)));
+    m_aExceptionList.SetNodeBitmaps( aCollapsedImage, aExpandedImage);
 
     m_aExceptionText.SetReadOnly(sal_True);
 
@@ -255,7 +261,7 @@ IMPL_LINK(OExceptionChainDialog, OnExceptionSelected, void*, EMPTYARG)
             if (aInfo.isKindOf(SQLExceptionInfo::SQL_CONTEXT))
                 // Context-Details
                 aText = ((const SQLContext*)aInfo)->Details;
-            else 
+            else
                 // all other children get the text of the parent
                 aText = ((const ::com::sun::star::sdbc::SQLException*)aInfo)->Message;
 
@@ -547,9 +553,12 @@ IMPL_LINK( OSQLMessageBox, ButtonClickHdl, Button *, pButton )
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.2  2000/10/09 12:39:29  fs
+ *	some (a lot of) new imlpementations - still under development
+ *
  *	Revision 1.1  2000/10/05 10:06:44  fs
  *	initial checkin
- *	
+ *
  *
  *	Revision 1.0 02.10.00 12:37:20  fs
  ************************************************************************/
