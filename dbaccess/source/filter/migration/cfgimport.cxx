@@ -2,9 +2,9 @@
  *
  *  $RCSfile: cfgimport.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: vg $ $Date: 2005-03-10 16:38:30 $
+ *  last change: $Author: vg $ $Date: 2005-03-11 11:00:24 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,10 +59,10 @@
  *
  ************************************************************************/
 
-#include "cfgimport.hxx" 
+#include "cfgimport.hxx"
 
 #ifndef CFG_REGHELPER_HXX
-#include "cfg_reghelper.hxx" 
+#include "cfg_reghelper.hxx"
 #endif
 #ifndef _SV_SVAPP_HXX
 #include <vcl/svapp.hxx>
@@ -109,7 +109,7 @@
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
 #include <svtools/pathoptions.hxx>
 #endif
-#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_ 
+#ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_
 #include <com/sun/star/frame/XComponentLoader.hpp>
 #endif
 #ifndef DBACCESS_SHARED_CFGSTRINGS_HRC
@@ -180,7 +180,7 @@
 #endif
 
 
-extern "C" void SAL_CALL createRegistryInfo_OCfgImport( ) 
+extern "C" void SAL_CALL createRegistryInfo_OCfgImport( )
 {
     static ::dbacfg::OMultiInstanceAutoRegistration< ::dbacfg::OCfgImport > aAutoRegistration;
 }
@@ -228,8 +228,8 @@ using namespace dbacfg;
 // - OCfgImport -
 // -------------
 
-OCfgImport::OCfgImport( const Reference< XMultiServiceFactory >& _rxMSF ) 
-    :m_xORB( _rxMSF ) 
+OCfgImport::OCfgImport( const Reference< XMultiServiceFactory >& _rxMSF )
+    :m_xORB( _rxMSF )
     ,m_bPropertyMayBeVoid(sal_True)
 {
 }
@@ -285,19 +285,19 @@ void LoadTableWindows(const Reference< XObjectInputStream>& _rxIn,Sequence<Prope
             const static ::rtl::OUString s_sTables(RTL_CONSTASCII_USTRINGPARAM("Tables"));
             for (; pViewIter != pEnd && pViewIter->Name != s_sTables; ++pViewIter)
                 ;
-            
+
             if ( pViewIter == pEnd )
             {
-                sal_Int32 nLen = _rViewProps.getLength(); 
+                sal_Int32 nLen = _rViewProps.getLength();
                 _rViewProps.realloc( nLen + 1 );
                 pViewIter = _rViewProps.getArray() + nLen;
                 pViewIter->Name = s_sTables;
             }
-            
+
             Sequence<PropertyValue> aTables(nCount);
             PropertyValue *pIter = aTables.getArray();
 
-            
+
             for(sal_Int32 i=0;i<nCount;++i,++pIter)
             {
                 pIter->Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Table")) + ::rtl::OUString::valueOf(i+1);
@@ -366,7 +366,7 @@ void LoadTableFields(const Reference< XObjectInputStream>& _rxIn,Sequence<Proper
         sal_Int32 nLen = _rViewProps.getLength();
         _rViewProps.realloc( nLen + 2 + (nCount != 0 ? 1 : 0) );
         pIter = _rViewProps.getArray() + nLen;
-        
+
         if ( nCount != 0 )
         {
             pIter->Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Fields"));
@@ -405,7 +405,7 @@ void LoadTableFieldDesc(const Reference< XObjectInputStream>& _rxIn,PropertyValu
     ::rtl::OUString		aFieldAlias;	// column alias
     ::rtl::OUString		aDatabaseName;	// qualifier or catalog
     ::rtl::OUString		aFunctionName;	// enth"alt den Funktionsnamen, nur wenn eFunctionType != FKT_NONE gesetzt
-    
+
     sal_Int32			eDataType;
     sal_Int32			eFunctionType;
     sal_Int32			eFieldType;
@@ -498,10 +498,10 @@ sal_Bool isDocumentReport(const Reference< XMultiServiceFactory >& _xORB,const :
                 aMedDescr[nPos].Name = ::rtl::OUString::createFromAscii( "ReadOnly" );
                 aMedDescr[nPos++].Value <<= sal_True;
                 Reference< XTypeDetection > xTypeDetection(_xORB->createInstance( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.document.TypeDetection")) ),UNO_QUERY );
-    
+
                 if ( !xTypeDetection.is() )
                     throw RuntimeException(); // TODO
-            
+
                 // get TypeName
                 ::rtl::OUString aTypeName = xTypeDetection->queryTypeByDescriptor( aMedDescr, sal_True );
                 const PropertyValue* pIter = aMedDescr.getConstArray();
@@ -531,7 +531,7 @@ sal_Bool isDocumentReport(const Reference< XMultiServiceFactory >& _xORB,const :
                 try
                 {
                     xLoadable->load(aMedDescr);
-                
+
                     Reference< XEventsSupplier> xEventsSup(xDocument,UNO_QUERY);
                     Reference< XNameReplace> xEvents = xEventsSup.is() ? xEventsSup->getEvents() : Reference< XNameReplace>();
                     static const ::rtl::OUString s_sOnNew = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("OnNew"));
@@ -569,9 +569,9 @@ sal_Bool isDocumentReport(const Reference< XMultiServiceFactory >& _xORB,const :
                                 Reference<XPropertySet> xProp(xControls->getByName(*pControlIter),UNO_QUERY);
                                 sal_Int16 nClassId = 0;
                                 const static ::rtl::OUString s_sClassId = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ClassId"));
-                                if ( xProp.is() 
-                                    && xProp->getPropertySetInfo().is() 
-                                    && xProp->getPropertySetInfo()->hasPropertyByName(s_sClassId) 
+                                if ( xProp.is()
+                                    && xProp->getPropertySetInfo().is()
+                                    && xProp->getPropertySetInfo()->hasPropertyByName(s_sClassId)
                                     && (xProp->getPropertyValue(s_sClassId) >>= nClassId) )
                                 {
                                     bForm = nClassId != FormComponentType::HIDDENCONTROL;
@@ -604,10 +604,10 @@ void OCfgImport::createDataSource(const ::rtl::OUString& _sName)
     ::rtl::OUString sExtension;
     static const String s_sDatabaseType = String::CreateFromAscii("StarOffice XML (Base)");
     const SfxFilter* pFilter = SfxFilter::GetFilterByName( s_sDatabaseType);
-    OSL_ENSURE(pFilter,"Filter: StarOffice XML (Base) could not be found!"); 
+    OSL_ENSURE(pFilter,"Filter: StarOffice XML (Base) could not be found!");
     if ( pFilter )
     {
-        String aRet = pFilter->GetDefaultExtension(); 
+        String aRet = pFilter->GetDefaultExtension();
         while( aRet.SearchAndReplaceAscii( "*.", String() ) != STRING_NOTFOUND );
         sExtension = aRet;
     }
@@ -630,7 +630,7 @@ void OCfgImport::createDataSource(const ::rtl::OUString& _sName)
         aURL.setExtension(sExtension);
 
         sFileName = aURL.GetMainURL(INetURLObject::NO_DECODE);
-        
+
         sal_Int32 i = 0;
         // create unique name
         while ( UCBContentHelper::IsDocument(sFileName) )
@@ -640,7 +640,6 @@ void OCfgImport::createDataSource(const ::rtl::OUString& _sName)
             aURL.setExtension(sExtension);
             sFileName = aURL.GetMainURL(INetURLObject::NO_DECODE);
         }
-        
         m_xModel->attachResource(sFileName,Sequence<PropertyValue>());
     }
     catch(Exception&)
@@ -680,7 +679,7 @@ void OCfgImport::setProperties()
                 xFormMultiSet.set(m_xCurrentDS,UNO_QUERY);
 
             if ( xFormMultiSet.is() )
-                xFormMultiSet->setPropertyValues(m_aProperties, m_aValues);			
+                xFormMultiSet->setPropertyValues(m_aProperties, m_aValues);
         }
         catch(const Exception& e)
         {
@@ -698,23 +697,23 @@ Any SAL_CALL OCfgImport::execute( const Sequence< NamedValue >& Arguments ) thro
 }
 // -----------------------------------------------------------------------------
 // XLayerHandler
-void SAL_CALL OCfgImport::startLayer() 	 
+void SAL_CALL OCfgImport::startLayer()
     throw(WrappedTargetException)
 {
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL OCfgImport::endLayer() 	 
-    throw(	 
+void SAL_CALL OCfgImport::endLayer()
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL OCfgImport::overrideNode( 
-        const ::rtl::OUString& aName, 
-        sal_Int16 aAttributes, 
+void SAL_CALL OCfgImport::overrideNode(
+        const ::rtl::OUString& aName,
+        sal_Int16 aAttributes,
         sal_Bool bClear)
     throw(
         MalformedDataException,
@@ -725,9 +724,9 @@ void SAL_CALL OCfgImport::overrideNode(
 // -----------------------------------------------------------------------------
 
 void SAL_CALL OCfgImport::addOrReplaceNode(
-        const ::rtl::OUString& aName, 
-        sal_Int16 aAttributes) 
-    throw(	
+        const ::rtl::OUString& aName,
+        sal_Int16 aAttributes)
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
@@ -776,7 +775,7 @@ void SAL_CALL OCfgImport::addOrReplaceNode(
                     if ( xSupplier.is() )
                     {
                         Reference<XDataDescriptorFactory> xFact(xSupplier->getColumns(),UNO_QUERY);
-                        
+
                         m_xCurrentColumn = ( xFact.is() ? xFact->createDataDescriptor() : Reference<XPropertySet>());
                         if ( m_xCurrentColumn.is() )
                             m_xCurrentColumn->setPropertyValue(PROPERTY_NAME,makeAny(aName));
@@ -791,7 +790,7 @@ void SAL_CALL OCfgImport::addOrReplaceNode(
     }
     /*if ( aName.equalsAscii("org.openoffice.Office.DataAccess") )
         m_aStack.push(TElementStack::value_type(aName,0));
-    else*/ 
+    else*/
     if ( aName.equalsAscii("DataSources") )
         m_aStack.push(TElementStack::value_type(aName,DATASOURCES));
     else if ( aName.equalsAscii("DataSourceSettings") )
@@ -813,10 +812,10 @@ void SAL_CALL OCfgImport::addOrReplaceNode(
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::addOrReplaceNodeFromTemplate( 	 
+void SAL_CALL  OCfgImport::addOrReplaceNodeFromTemplate(
         const ::rtl::OUString& aName,
         const TemplateIdentifier& aTemplate,
-        sal_Int16 aAttributes ) 
+        sal_Int16 aAttributes )
     throw(
         MalformedDataException,
         WrappedTargetException )
@@ -824,8 +823,8 @@ void SAL_CALL  OCfgImport::addOrReplaceNodeFromTemplate(
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::endNode() 	 
-    throw(	 
+void SAL_CALL  OCfgImport::endNode()
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
@@ -843,7 +842,7 @@ void SAL_CALL  OCfgImport::endNode()
                         xStr = NULL;
                     }
                     // register the new datbase document
-                    
+
                     if ( !m_sCurrentDataSourceName.equalsAscii("Bibliography") )
                     {
                         // create unique name
@@ -878,7 +877,8 @@ void SAL_CALL  OCfgImport::endNode()
                     Reference<XNameContainer> xTables(xSupplier->getTables(),UNO_QUERY);
                     ::rtl::OUString sName;
                     m_xCurrentObject->getPropertyValue(PROPERTY_NAME) >>= sName;
-                    xTables->insertByName(sName,makeAny(m_xCurrentObject));
+                    if ( !xTables->hasByName(sName) )
+                        xTables->insertByName(sName,makeAny(m_xCurrentObject));
                     m_xCurrentObject = NULL;
                 }
                 break;
@@ -961,26 +961,26 @@ void SAL_CALL  OCfgImport::endNode()
                 break;
         }
 
-        m_aStack.pop();	
+        m_aStack.pop();
     }
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::dropNode( 	 
-        const ::rtl::OUString& aName ) 
-    throw( 
+void SAL_CALL  OCfgImport::dropNode(
+        const ::rtl::OUString& aName )
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::overrideProperty( 	 
+void SAL_CALL  OCfgImport::overrideProperty(
         const ::rtl::OUString& aName,
         sal_Int16 aAttributes,
         const Type& aType,
-        sal_Bool bClear ) 
-    throw(	 
+        sal_Bool bClear )
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
@@ -1007,7 +1007,7 @@ void SAL_CALL  OCfgImport::overrideProperty(
                         sProp = PROPERTY_SUPPRESSVERSIONCL;
                     else if ( aName == CONFIGKEY_LAYOUTINFORMATION )
                         sProp = PROPERTY_LAYOUTINFORMATION;
-                    
+
                     if ( sProp.getLength() )
                     {
                         sal_Int32 nPos = m_aProperties.getLength();
@@ -1098,7 +1098,7 @@ void SAL_CALL  OCfgImport::overrideProperty(
                     else if ( m_bPropertyMayBeVoid = (aName == CONFIGKEY_COLUMN_HELPTEXT) ) sProp = PROPERTY_HELPTEXT;
                     else if ( m_bPropertyMayBeVoid = (aName == CONFIGKEY_COLUMN_CONTROLDEFAULT) ) sProp = PROPERTY_CONTROLDEFAULT;
                     else if ( m_bPropertyMayBeVoid = (aName == CONFIGKEY_COLUMN_NUMBERFORMAT) ) sProp = PROPERTY_NUMBERFORMAT;
-                    
+
 
                     if ( sProp.getLength() )
                     {
@@ -1117,9 +1117,9 @@ void SAL_CALL  OCfgImport::overrideProperty(
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::setPropertyValue( 	 
-        const Any& aValue ) 
-    throw( 
+void SAL_CALL  OCfgImport::setPropertyValue(
+        const Any& aValue )
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
@@ -1205,18 +1205,18 @@ void SAL_CALL  OCfgImport::setPropertyValue(
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL OCfgImport::setPropertyValueForLocale( 	 
+void SAL_CALL OCfgImport::setPropertyValueForLocale(
         const Any& aValue,
-        const ::rtl::OUString& aLocale ) 
-    throw(	 
+        const ::rtl::OUString& aLocale )
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::endProperty() 	 
-    throw(	 
+void SAL_CALL  OCfgImport::endProperty()
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
