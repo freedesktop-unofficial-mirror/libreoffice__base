@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RelationDlg.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: oj $ $Date: 2001-05-04 11:19:38 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:07:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -101,7 +101,7 @@
 #endif
 #ifndef DBAUI_JOINTABLEVIEW_HXX
 #include "JoinTableView.hxx"
-#endif						   
+#endif
 #ifndef DBAUI_TABLEWINDOW_HXX
 #include "TableWindow.hxx"
 #endif
@@ -316,7 +316,7 @@ void ORelationControl::InitController( DbCellControllerRef& rController, long nR
             if( m_xSourceDef.is() )
             {
                 Reference<XColumnsSupplier> xSup(m_xSourceDef,UNO_QUERY);
-                Reference<XNameAccess> xColumns = xSup->getColumns(); 
+                Reference<XNameAccess> xColumns = xSup->getColumns();
                 Sequence< ::rtl::OUString> aNames = xColumns->getElementNames();
                 const ::rtl::OUString* pBegin = aNames.getConstArray();
                 const ::rtl::OUString* pEnd = pBegin + aNames.getLength();
@@ -341,7 +341,7 @@ void ORelationControl::InitController( DbCellControllerRef& rController, long nR
             if( m_xDestDef.is() )
             {
                 Reference<XColumnsSupplier> xSup(m_xDestDef,UNO_QUERY);
-                Reference<XNameAccess> xColumns = xSup->getColumns(); 
+                Reference<XNameAccess> xColumns = xSup->getColumns();
                 Sequence< ::rtl::OUString> aNames = xColumns->getElementNames();
                 const ::rtl::OUString* pBegin = aNames.getConstArray();
                 const ::rtl::OUString* pEnd = pBegin + aNames.getLength();
@@ -418,13 +418,13 @@ void ORelationControl::SetDef(const Reference< XPropertySet>& xDest,sal_Int32 _n
     ::rtl::OUString sComposedName;
     if(xDest.is())
         ::dbaui::composeTableName(static_cast<ORelationDialog*>(GetParent())->getConnection()->getMetaData(),xDest,sComposedName,sal_False);
-    
+
     SetColumnTitle((USHORT)_nPos, sComposedName);
 
     // beide (!) Spalten loeschen
     ::std::vector<OConnectionLineData*>* pLines = m_pConnData->GetConnLineDataList();
     ::std::vector<OConnectionLineData*>::iterator aIter = pLines->begin();
-    
+
     for(;aIter != pLines->end();++aIter)
     {
         if(_nPos == 1)
@@ -463,20 +463,20 @@ void ORelationControl::CellModified()
 //========================================================================
 
 //------------------------------------------------------------------------
-ORelationDialog::ORelationDialog( OJoinTableView* pParent, 
-                                 ORelationTableConnectionData* pConnectionData, 
+ORelationDialog::ORelationDialog( OJoinTableView* pParent,
+                                 ORelationTableConnectionData* pConnectionData,
                                  BOOL bAllowTableSelect )
     : ModalDialog( pParent, ModuleRes(DLG_REL_PROPERTIES) )
-    ,aGB_InvolvedTables(	this, ModuleRes(GB_INVOLVED_TABLES))
+    ,aFL_InvolvedTables(    this, ModuleRes(FL_INVOLVED_TABLES))
     ,m_lmbLeftTable(		this, ModuleRes(LB_LEFT_TABLE))
     ,m_lmbRightTable(		this, ModuleRes(LB_RIGHT_TABLE))
-    ,aGB_InvolvedFields(	this, ModuleRes(GB_INVOLVED_FIELDS))
-    ,aGB_CascUpd(			this, ModuleRes(GB_CASC_UPD) )
+    ,aFL_InvolvedFields(    this, ModuleRes(FL_INVOLVED_FIELDS))
+    ,aFL_CascUpd(           this, ModuleRes(FL_CASC_UPD) )
     ,aRB_NoCascUpd(			this, ModuleRes(RB_NO_CASC_UPD) )
     ,aRB_CascUpd(			this, ModuleRes(RB_CASC_UPD) )
     ,aRB_CascUpdNull(		this, ModuleRes(RB_CASC_UPD_NULL) )
     ,aRB_CascUpdDefault(	this, ModuleRes(RB_CASC_UPD_DEFAULT) )
-    ,aGB_CascDel(			this, ModuleRes(GB_CASC_DEL) )
+    ,aFL_CascDel(           this, ModuleRes(FL_CASC_DEL) )
     ,aRB_NoCascDel(			this, ModuleRes(RB_NO_CASC_DEL) )
     ,aRB_CascDel(			this, ModuleRes(RB_CASC_DEL) )
     ,aRB_CascDelNull(		this, ModuleRes(RB_CASC_DEL_NULL) )
@@ -500,7 +500,7 @@ ORelationDialog::ORelationDialog( OJoinTableView* pParent,
 
     //////////////////////////////////////////////////////////////////////
     // BrowseBox positionieren
-    Point aDlgPoint = LogicToPixel( Point(12,55), MAP_APPFONT );
+    Point aDlgPoint = LogicToPixel( Point(12,43), MAP_APPFONT );
     Size aDlgSize = LogicToPixel( Size(162,68), MAP_APPFONT );
     m_pRC_Tables->SetPosSizePixel( aDlgPoint, aDlgSize );
     m_pRC_Tables->Show();

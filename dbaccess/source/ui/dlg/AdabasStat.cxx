@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AdabasStat.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: oj $ $Date: 2001-05-28 06:50:20 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:07:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -113,27 +113,27 @@ namespace dbaui
 OAdabasStatistics::OAdabasStatistics( Window* pParent,
                                      const ::rtl::OUString& _rUser,
                                      const Reference< ::com::sun::star::sdbc::XConnection >& _xCurrentConnection,
-                                     const Reference< XMultiServiceFactory >& _xFactory) 
+                                     const Reference< XMultiServiceFactory >& _xFactory)
     : ModalDialog( pParent, ModuleRes(DLG_ADABASSTAT) )
-    ,m_GB_FILES(			this , ResId(GB_FILES))          
-    ,m_FT_SYSDEVSPACE(		this , ResId(FT_SYSDEVSPACE))   
-    ,m_ET_SYSDEVSPACE(		this , STR_ADABAS_HELP_SYSDEVSPACE,ResId(ET_SYSDEVSPACE))   
+    ,m_FL_FILES(            this , ResId(FL_FILES))
+    ,m_FT_SYSDEVSPACE(		this , ResId(FT_SYSDEVSPACE))
+    ,m_ET_SYSDEVSPACE(		this , STR_ADABAS_HELP_SYSDEVSPACE,ResId(ET_SYSDEVSPACE))
     ,m_FT_TRANSACTIONLOG(	this , ResId(FT_TRANSACTIONLOG))
     ,m_ET_TRANSACTIONLOG(	this , STR_ADABAS_HELP_TRANSACT,ResId(ET_TRANSACTIONLOG))
-    ,m_FT_DATADEVSPACE(		this , ResId(FT_DATADEVSPACE))  
-    ,m_LB_DATADEVS(			this , STR_ADABAS_HELP_DATADEVSPACES,ResId(LB_DATADEVS))      
-    ,m_GB_SIZES(			this , ResId(GB_SIZES))          
-    ,m_FT_SIZE(				this , ResId(FT_SIZE))          
-    ,m_ET_SIZE(				this , STR_ADABAS_HELP_SIZE,ResId(ET_SIZE))          
-    ,m_FT_FREESIZE(			this , ResId(FT_FREESIZE))      
-    ,m_ET_FREESIZE(			this , STR_ADABAS_HELP_FREESIZE,ResId(ET_FREESIZE))      
-    ,m_FT_MEMORYUSING(		this , ResId(FT_MEMORYUSING))   
-    ,m_ET_MEMORYUSING(		this , STR_ADABAS_HELP_MEMORYUSING,ResId(ET_MEMORYUSING))  
+    ,m_FT_DATADEVSPACE(		this , ResId(FT_DATADEVSPACE))
+    ,m_LB_DATADEVS(			this , STR_ADABAS_HELP_DATADEVSPACES,ResId(LB_DATADEVS))
+    ,m_FL_SIZES(            this , ResId(FL_SIZES))
+    ,m_FT_SIZE(				this , ResId(FT_SIZE))
+    ,m_ET_SIZE(				this , STR_ADABAS_HELP_SIZE,ResId(ET_SIZE))
+    ,m_FT_FREESIZE(			this , ResId(FT_FREESIZE))
+    ,m_ET_FREESIZE(			this , STR_ADABAS_HELP_FREESIZE,ResId(ET_FREESIZE))
+    ,m_FT_MEMORYUSING(		this , ResId(FT_MEMORYUSING))
+    ,m_ET_MEMORYUSING(		this , STR_ADABAS_HELP_MEMORYUSING,ResId(ET_MEMORYUSING))
     ,m_PB_OK(				this , ResId(PB_OK))
     ,m_xConnection(_xCurrentConnection)
 {
     DBG_CTOR(OAdabasStatistics,NULL);
-    
+
     FreeResource();
 
     DBG_ASSERT(m_xConnection.is(),"No connection");
@@ -152,7 +152,7 @@ OAdabasStatistics::OAdabasStatistics( Window* pParent,
 
         xStmt = m_xConnection->createStatement();
         xRes = xStmt->executeQuery(aStmt);
-        
+
 
         Reference<XRow> xRow(xRes,UNO_QUERY);
         // first the db sizes
@@ -194,7 +194,7 @@ OAdabasStatistics::OAdabasStatistics( Window* pParent,
         }
         xRow = NULL;
         ::comphelper::disposeComponent(xRes);
-        
+
 
         aStmt = ::rtl::OUString::createFromAscii("SELECT * FROM ");
         aStmt += ::dbtools::quoteTableName(m_xConnection->getMetaData(),sTable);

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: sqlmessage.src,v $
  *
- *  $Revision: 1.15 $
+ *  $Revision: 1.16 $
  *
- *  last change: $Author: kz $ $Date: 2001-06-13 22:44:21 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:07:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,89 +86,6 @@ Image BMP_EXCEPTION_INFO
 {
     ImageBitmap = Bitmap { File = "exinfo.bmp"; };
     MaskColor = Color { Red = 0xff00 ; Green = 0x0000 ; Blue = 0xff00 ; };
-};
-
-ModalDialog DLG_SQLMESSAGE
-{
-    Moveable = TRUE ;
-    Closeable = TRUE ;
-    OutputSize = TRUE ;
-    SVLook = TRUE ;
-    Size = MAP_APPFONT ( 238 , 101 ) ;
-    HelpId = HID_GENERIC_SQL_ERROR;
-    Text = "Text" ;
-    Text [ ENGLISH ] = "Text" ;
-    Text [ norwegian ] = "Text" ;
-    Text [ italian ] = "Testo" ;
-    Text [ portuguese_brazilian ] = "Texto" ;
-    Text [ portuguese ] = "Texto" ;
-    Text [ finnish ] = "Teksti" ;
-    Text [ danish ] = "Tekst" ;
-    Text [ french ] = "Texte" ;
-    Text [ swedish ] = "Text" ;
-    Text [ dutch ] = "Tekst" ;
-    Text [ spanish ] = "Texto" ;
-    Text [ english_us ] = "Text" ;
-    MultiLineEdit ED_TEXT
-    {
-        Border = TRUE ;
-        Pos = MAP_APPFONT ( 12 , 14 ) ;
-        Size = MAP_APPFONT ( 153 , 76 ) ;
-        TabStop = TRUE ;
-    };
-    GroupBox GB_DATA
-    {
-        Pos = MAP_APPFONT ( 6 , 3 ) ;
-        Size = MAP_APPFONT ( 165 , 92 ) ;
-        Text = "Text" ;
-        Text [ ENGLISH ] = "Text" ;
-        Text [ norwegian ] = "Text" ;
-        Text [ italian ] = "Testo" ;
-        Text [ portuguese_brazilian ] = "Texto" ;
-        Text [ portuguese ] = "Texto" ;
-        Text [ finnish ] = "Teksti" ;
-        Text [ danish ] = "Tekst" ;
-        Text [ french ] = "Texte" ;
-        Text [ swedish ] = "Text" ;
-        Text [ dutch ] = "Tekst" ;
-        Text [ spanish ] = "Texto" ;
-        Text [ english_us ] = "Text" ;
-        Text[ chinese_simplified ] = "ÎÄ×Ö";
-        Text[ russian ] = "Òåêñò";
-        Text[ polish ] = "Tekst";
-        Text[ japanese ] = "Ã·½Ä";
-        Text[ chinese_traditional ] = "¤å¦r";
-        Text[ arabic ] = "ÇáäÕ";
-        Text[ greek ] = "Êåßìåíï";
-        Text[ korean ] = "ÅØ½ºÆ®";
-        Text[ turkish ] = "Metin";
-        Text[ language_user1 ] = " ";
-        Text[ catalan ] = "Texto";
-    };
-    OKButton PB_OK
-    {
-        Pos = MAP_APPFONT ( 181 , 6 ) ;
-        Size = MAP_APPFONT ( 50 , 14 ) ;
-        TabStop = TRUE ;
-        DefButton = TRUE ;
-    };
-    CancelButton PB_CANCEL
-    {
-        Pos = MAP_APPFONT ( 181 , 23 ) ;
-        Size = MAP_APPFONT ( 50 , 14 ) ;
-        TabStop = TRUE ;
-    };
-    Text[ chinese_simplified ] = "ÎÄ×Ö";
-    Text[ russian ] = "Òåêñò";
-    Text[ polish ] = "Tekst";
-    Text[ japanese ] = "Ã·½Ä";
-    Text[ chinese_traditional ] = "¤å¦r";
-    Text[ arabic ] = "ÇáäÕ";
-    Text[ greek ] = "Êåßìåíï";
-    Text[ korean ] = "ÅØ½ºÆ®";
-    Text[ turkish ] = "Metin";
-    Text[ language_user1 ] = " ";
-    Text[ catalan ] = "Texto";
 };
 
 ModalDialog DLG_SQLEXCEPTIONCHAIN
@@ -444,48 +361,51 @@ ModalDialog DLG_SQLEXCEPTIONCHAIN
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.15  2001/06/13 22:44:21  kz
+ *	Merge SRC633: 14.06.01 - 00:44:36
+ *
  *	Revision 1.14  2001/06/08 22:18:54  rt
  *	Merge SRC633: 09.06.01 - 00:19:13
- *	
+ *
  *	Revision 1.13  2001/05/30 20:03:15  kz
  *	Merge SRC633: 30.05.01 - 22:02:21
- *	
+ *
  *	Revision 1.12  2001/05/17 13:28:15  sj
  *	#86988# dialog redesign
- *	
+ *
  *	Revision 1.11  2001/05/10 06:10:03  kz
  *	Merge SRC631: 10.05.01 - 08:10:28 (NoBranch)
- *	
+ *
  *	Revision 1.10  2001/05/04 20:16:28  rt
  *	Merge SRC630: 04.05.01 - 22:16:34 (NoBranch)
- *	
+ *
  *	Revision 1.9  2001/03/31 06:08:21  kz
  *	Merge SRC627: 31.03.01 - 08:07:51 (NoBranch)
- *	
+ *
  *	Revision 1.8  2001/03/09 20:49:03  avy
  *	Merge SRC624: 03/09/01 - 21:48:43 (NoBranch)
- *	
+ *
  *	Revision 1.7  2001/02/05 09:56:55  fs
  *	#83327# help ids
- *	
+ *
  *	Revision 1.6  2000/12/05 12:49:42  fs
  *	#80539# forgot to include the helpid declarations
- *	
+ *
  *	Revision 1.5  2000/12/05 11:37:45  fs
  *	#80539# help id
- *	
+ *
  *	Revision 1.4  2000/11/29 10:00:39  kz
  *	Merge SRC614: 29.11.00 - 10:59:47 (NoBranch)
- *	
+ *
  *	Revision 1.3  2000/10/27 15:18:12  kz
  *	Merge SRC610: 27.10.00 - 17:17:50 (NoBranch)
- *	
+ *
  *	Revision 1.2  2000/10/09 12:39:52  fs
  *	some (a lot of) new imlpementations - still under development
- *	
+ *
  *	Revision 1.1  2000/10/05 10:07:13  fs
  *	initial checkin
- *	
+ *
  *
  *	Revision 1.0 02.10.00 12:43:18  fs
  ************************************************************************/

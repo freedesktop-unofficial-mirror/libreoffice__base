@@ -2,9 +2,9 @@
  *
  *  $RCSfile: dbfindex.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: fs $ $Date: 2001-06-12 15:42:44 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:07:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -85,13 +85,13 @@
 #ifndef _UNOTOOLS_LOCALFILEHELPER_HXX
 #include <unotools/localfilehelper.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
-#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX 
+#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
 #include <svtools/pathoptions.hxx>
 #endif
-#ifndef _UCBHELPER_CONTENT_HXX 
+#ifndef _UCBHELPER_CONTENT_HXX
 #include <ucbhelper/content.hxx>
 #endif
 #ifndef _DBAUI_FILENOTATION_HXX_
@@ -119,23 +119,23 @@ ODbaseIndexDialog::ODbaseIndexDialog( Window * pParent, String aDataSrcName )
     aPB_HELP(			this, ResId( PB_HELP ) ),
     m_FT_Tables(		this, ResId( FT_TABLES ) ),
     aCB_Tables(			this, ResId( CB_TABLES ) ),
-    m_GB_Indexes(		this, ResId( GB_INDEXES ) ),
+    m_FL_Indexes(       this, ResId( FL_INDEXES ) ),
     m_FT_TableIndexes(	this, ResId( FT_TABLEINDEXES ) ),
     aLB_TableIndexes(	this, ResId( LB_TABLEINDEXES ) ),
     m_FT_AllIndexes(	this, ResId( FT_ALLINDEXES ) ),
     aLB_FreeIndexes(	this, ResId( LB_FREEINDEXES ) ),
-    aPB_Add(			this, ResId( PB_ADD ) ),
-    aPB_Remove(			this, ResId( PB_REMOVE ) ),
-    aPB_AddAll(			this, ResId( PB_ADDALL ) ),
-    aPB_RemoveAll(		this, ResId( PB_REMOVEALL ) ),
+    aIB_Add(            this, ResId( IB_ADD ) ),
+    aIB_Remove(         this, ResId( IB_REMOVE ) ),
+    aIB_AddAll(         this, ResId( IB_ADDALL ) ),
+    aIB_RemoveAll(      this, ResId( IB_REMOVEALL ) ),
     m_aDSN(aDataSrcName),
     m_bCaseSensitiv(sal_True)
 {
     aCB_Tables.SetSelectHdl( LINK(this, ODbaseIndexDialog, TableSelectHdl) );
-    aPB_Add.SetClickHdl( LINK(this, ODbaseIndexDialog, AddClickHdl) );
-    aPB_Remove.SetClickHdl( LINK(this, ODbaseIndexDialog, RemoveClickHdl) );
-    aPB_AddAll.SetClickHdl( LINK(this, ODbaseIndexDialog, AddAllClickHdl) );
-    aPB_RemoveAll.SetClickHdl( LINK(this, ODbaseIndexDialog, RemoveAllClickHdl) );
+    aIB_Add.SetClickHdl( LINK(this, ODbaseIndexDialog, AddClickHdl) );
+    aIB_Remove.SetClickHdl( LINK(this, ODbaseIndexDialog, RemoveClickHdl) );
+    aIB_AddAll.SetClickHdl( LINK(this, ODbaseIndexDialog, AddAllClickHdl) );
+    aIB_RemoveAll.SetClickHdl( LINK(this, ODbaseIndexDialog, RemoveAllClickHdl) );
     aPB_OK.SetClickHdl( LINK(this, ODbaseIndexDialog, OKClickHdl) );
 
     aLB_FreeIndexes.SetSelectHdl( LINK(this, ODbaseIndexDialog, OnListEntrySelected) );
@@ -177,11 +177,11 @@ sal_Bool ODbaseIndexDialog::GetTable(const String& _rName, TableInfoListIterator
 //-------------------------------------------------------------------------
 void ODbaseIndexDialog::checkButtons()
 {
-    aPB_Add.Enable(0 != aLB_FreeIndexes.GetSelectEntryCount());
-    aPB_AddAll.Enable(0 != aLB_FreeIndexes.GetEntryCount());
+    aIB_Add.Enable(0 != aLB_FreeIndexes.GetSelectEntryCount());
+    aIB_AddAll.Enable(0 != aLB_FreeIndexes.GetEntryCount());
 
-    aPB_Remove.Enable(0 != aLB_TableIndexes.GetSelectEntryCount());
-    aPB_RemoveAll.Enable(0 != aLB_TableIndexes.GetEntryCount());
+    aIB_Remove.Enable(0 != aLB_TableIndexes.GetSelectEntryCount());
+    aIB_RemoveAll.Enable(0 != aLB_TableIndexes.GetEntryCount());
 }
 
 //-------------------------------------------------------------------------
@@ -348,15 +348,15 @@ IMPL_LINK( ODbaseIndexDialog, TableSelectHdl, ComboBox*, pComboBox )
 void ODbaseIndexDialog::Init()
 {
     aPB_OK.Disable();
-    m_GB_Indexes.Disable();
+    m_FL_Indexes.Disable();
     m_FT_TableIndexes.Disable();
     aLB_TableIndexes.Disable();
     m_FT_AllIndexes.Disable();
     aLB_FreeIndexes.Disable();
-    aPB_Add.Disable();
-    aPB_Remove.Disable();
-    aPB_AddAll.Disable();
-    aPB_RemoveAll.Disable();
+    aIB_Add.Disable();
+    aIB_Remove.Disable();
+    aIB_AddAll.Disable();
+    aIB_RemoveAll.Disable();
 
     ///////////////////////////////////////////////////////////////////////////
     // Alle Indizes werden erst einmal zur Liste der freien Indizes hinzugefuegt.
@@ -463,7 +463,7 @@ void ODbaseIndexDialog::Init()
     if (m_aTableInfoList.size())
     {
         aPB_OK.Enable();
-        m_GB_Indexes.Enable();
+        m_FL_Indexes.Enable();
         m_FT_TableIndexes.Enable();
         aLB_TableIndexes.Enable();
         m_FT_AllIndexes.Enable();
@@ -524,7 +524,7 @@ void OTableInfo::WriteInfFile( const String& rDSN ) const
     // INF-Datei oeffnen
     INetURLObject aURL;
     aURL.SetSmartProtocol(INET_PROT_FILE);
-    String aDsn = rDSN; 
+    String aDsn = rDSN;
     {
         SvtPathOptions aPathOptions;
         aDsn = aPathOptions.SubstituteVariable(aDsn);
@@ -599,30 +599,33 @@ void OTableInfo::WriteInfFile( const String& rDSN ) const
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.9  2001/06/12 15:42:44  fs
+ *	#88079# catch the property exceptions
+ *
  *	Revision 1.8  2001/05/29 06:44:52  fs
  *	#87037# Init: don't cut the extension from the index URLs
- *	
+ *
  *	Revision 1.7  2001/05/16 10:02:38  fs
  *	#87037# Config requires system notation / correct loop ranges / Init: RemoveFreeIndex after doing the complete loop
- *	
+ *
  *	Revision 1.6  2001/05/14 13:25:31  fs
  *	#86942# +checkButtons / OnListEntrySelected
- *	
+ *
  *	Revision 1.5  2001/04/04 10:38:43  oj
  *	reading uninitialized memory
- *	
+ *
  *	Revision 1.4  2001/03/07 16:44:40  fs
  *	added a parameter to implRemoveIndex controlling the assertion / correct collecting the indexes in Init
- *	
+ *
  *	Revision 1.3  2000/12/14 15:43:32  oj
  *	use ucb instead of DirEntry
- *	
+ *
  *	Revision 1.2  2000/11/09 12:55:31  fs
  *	no usage of the SfxIniManager anymore - MUST change
- *	
+ *
  *	Revision 1.1  2000/10/05 10:05:22  fs
  *	initial checkin
- *	
+ *
  *
  *	Revision 1.0 26.09.00 15:54:26  fs
  ************************************************************************/
