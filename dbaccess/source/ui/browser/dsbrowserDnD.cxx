@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: dsbrowserDnD.cxx,v $
+ *	$RCSfile: dsbrowserDnD.cxx,v $
  *
- *  $Revision: 1.34 $
+ *	$Revision: 1.35 $
  *
- *  last change: $Author: oj $ $Date: 2001-12-07 13:13:04 $
+ *	last change: $Author: fs $ $Date: 2002-01-24 17:40:32 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the "License"); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the "License"); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an "AS IS" basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an "AS IS" basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc..
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc..
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -221,16 +221,16 @@ namespace dbaui
                 _rPasteData.GetAny(aFlavor) >>= aDescriptor;
                 DBG_ASSERT(bCorrectFormat, "SbaTableQueryBrowser::implPasteQuery: invalid DnD or clipboard format!");
 
-                ::rtl::OUString	sDataSourceName;
+                ::rtl::OUString sDataSourceName;
                 sal_Int32		nCommandType = CommandType::QUERY;
-                ::rtl::OUString	sCommand;
+                ::rtl::OUString sCommand;
                 sal_Bool		bEscapeProcessing = sal_True;
                 {
                     ODataAccessDescriptor aDescriptor(aDescriptor);
                     aDescriptor[daDataSource]		>>= sDataSourceName;
                     aDescriptor[daCommandType]		>>= nCommandType;
                     aDescriptor[daCommand]			>>= sCommand;
-                    aDescriptor[daEscapeProcessing]	>>= bEscapeProcessing;
+                    aDescriptor[daEscapeProcessing] >>= bEscapeProcessing;
                 }
 
                 // plausibility check
@@ -287,7 +287,7 @@ namespace dbaui
                             bSuccess = sal_True;
                         }
                     }
-                    catch(SQLException&) { throw; }	// caught and handled by the outer catch
+                    catch(SQLException&) { throw; } // caught and handled by the outer catch
                     catch(Exception&) { }
 
                     if (!bSuccess)
@@ -376,11 +376,11 @@ namespace dbaui
                 {
                     ::rtl::OUString aDSName = GetEntryText( m_pTreeView->getListBox()->GetRootLevelParent( _pApplyTo ) );
 
-                    const PropertyValue* pBegin	= aSeq.getConstArray();
+                    const PropertyValue* pBegin = aSeq.getConstArray();
                     const PropertyValue* pEnd	= pBegin + aSeq.getLength();
 
                     // first get the dest connection
-                    Reference<XConnection> xDestConnection;	 // supports the service sdb::connection
+                    Reference<XConnection> xDestConnection;  // supports the service sdb::connection
                     if(!ensureConnection(_pApplyTo, xDestConnection))
                         return;
 
@@ -441,7 +441,7 @@ namespace dbaui
                                                  xDestConnection,
                                                  getNumberFormatter(),
                                                  getORB());
-                        OCopyTable*			pPage1 = new OCopyTable(&aWizard,COPY, sal_False,OCopyTableWizard::WIZARD_DEF_DATA);
+                        OCopyTable* 		pPage1 = new OCopyTable(&aWizard,COPY, sal_False,OCopyTableWizard::WIZARD_DEF_DATA);
                         OWizNameMatching*	pPage2 = new OWizNameMatching(&aWizard);
                         OWizColumnSelect*	pPage3 = new OWizColumnSelect(&aWizard);
                         OWizNormalExtend*	pPage4 = new OWizNormalExtend(&aWizard);
@@ -492,7 +492,7 @@ namespace dbaui
                                             Reference<XNameAccess> xNameAccess = xSrcColsSup->getColumns();
                                             Sequence< ::rtl::OUString> aSeq = xNameAccess->getElementNames();
                                             const ::rtl::OUString* pBegin = aSeq.getConstArray();
-                                            const ::rtl::OUString* pEnd	  = pBegin + aSeq.getLength();
+                                            const ::rtl::OUString* pEnd   = pBegin + aSeq.getLength();
                                             for(;pBegin != pEnd;++pBegin)
                                             {
                                                 sSql += ::dbtools::quoteName( sQuote,*pBegin);
@@ -584,7 +584,7 @@ namespace dbaui
             else if(_rPasteData.HasFormat(SOT_FORMATSTR_ID_HTML) || _rPasteData.HasFormat(SOT_FORMATSTR_ID_HTML_SIMPLE) || _rPasteData.HasFormat(SOT_FORMAT_RTF))
             {
                 // first get the dest connection
-                Reference<XConnection> xDestConnection;	 // supports the service sdb::connection
+                Reference<XConnection> xDestConnection;  // supports the service sdb::connection
                 if(!ensureConnection(_pApplyTo, xDestConnection))
                     return;
 
@@ -628,7 +628,7 @@ namespace dbaui
         try
         {
             ::osl::MutexGuard aGuard(m_aEntryMutex);
-            Reference<XConnection> xConnection;	 // supports the service sdb::connection
+            Reference<XConnection> xConnection;  // supports the service sdb::connection
             if (_bAllowConnection && !ensureConnection(_pApplyTo, xConnection))
                 return NULL;
 
@@ -652,7 +652,7 @@ namespace dbaui
     /// unary_function Functor object for class ZZ returntype is void
     struct DataFlavorExVectorSlotPrec : ::std::unary_function<DataFlavorExVector::value_type,bool> 
     {
-        SbaTableQueryBrowser::EntryType	eEntryType;
+        SbaTableQueryBrowser::EntryType eEntryType;
         sal_Bool	bQueryDrop;
         DataFlavorExVectorSlotPrec(const SbaTableQueryBrowser::EntryType &_eEntryType,sal_Bool _bQueryDrop) 
             : eEntryType(_eEntryType)
@@ -665,13 +665,13 @@ namespace dbaui
             switch (_aType.mnSotId)
             {
                 case SOT_FORMAT_RTF:					// RTF data descriptions
-                case SOT_FORMATSTR_ID_HTML:				// HTML data descriptions
+                case SOT_FORMATSTR_ID_HTML: 			// HTML data descriptions
                 case SOT_FORMATSTR_ID_HTML_SIMPLE:		// HTML data descriptions
                 case SOT_FORMATSTR_ID_DBACCESS_TABLE:	// table descriptor
                     return (SbaTableQueryBrowser::etTableContainer == eEntryType);
                     break;
                 case SOT_FORMATSTR_ID_DBACCESS_QUERY:	// query descriptor
-                case SOT_FORMATSTR_ID_DBACCESS_COMMAND:	// SQL command
+                case SOT_FORMATSTR_ID_DBACCESS_COMMAND: // SQL command
                     return ((SbaTableQueryBrowser::etQueryContainer == eEntryType) || ( !bQueryDrop && SbaTableQueryBrowser::etTableContainer == eEntryType));
                     break;
             }	
@@ -714,7 +714,7 @@ namespace dbaui
             implPasteQuery(m_aAsyncDrop.pDroppedAt, m_aAsyncDrop.aDroppedData);
 
         m_aAsyncDrop.aDroppedData	= TransferableDataHelper();
-        m_aAsyncDrop.pDroppedAt		= NULL;
+        m_aAsyncDrop.pDroppedAt 	= NULL;
 
         return 0L;
     }
@@ -740,15 +740,15 @@ namespace dbaui
             Application::RemoveUserEvent(m_nAsyncDrop);
         m_nAsyncDrop = 0;
         m_aAsyncDrop.aDroppedData	= TransferableDataHelper();
-        m_aAsyncDrop.pDroppedAt		= NULL;
-        m_aAsyncDrop.bTable			= sal_False;
+        m_aAsyncDrop.pDroppedAt 	= NULL;
+        m_aAsyncDrop.bTable 		= sal_False;
 
         // loop through the available formats and see what we can do ...
         if(::std::find_if(aDroppedData.GetDataFlavorExVector().begin(),aDroppedData.GetDataFlavorExVector().end(),DataFlavorExVectorSlotPrec(eEntryType,sal_False)) != aDroppedData.GetDataFlavorExVector().end())
         {
             m_aAsyncDrop.aDroppedData	= aDroppedData;
-            m_aAsyncDrop.pDroppedAt		= pHitEntry;
-            m_aAsyncDrop.bTable			= (etTableContainer == eEntryType);
+            m_aAsyncDrop.pDroppedAt 	= pHitEntry;
+            m_aAsyncDrop.bTable 		= (etTableContainer == eEntryType);
 
             m_nAsyncDrop = Application::PostUserEvent(LINK(this, SbaTableQueryBrowser, OnAsyncDrop));
             return DND_ACTION_COPY;
@@ -784,7 +784,7 @@ namespace dbaui
         return NULL != pTransfer;
     }
     // -----------------------------------------------------------------------------
-    sal_Bool SbaTableQueryBrowser::isTableFormat()  const
+    sal_Bool SbaTableQueryBrowser::isTableFormat()	const
     {
         sal_Bool bTableFormat = sal_False;
 #if SUPD < 631
@@ -835,7 +835,7 @@ namespace dbaui
         Reference<XNameAccess> xNameAccess = xColsSup->getColumns();
         Sequence< ::rtl::OUString> aSeq = xNameAccess->getElementNames();
         const ::rtl::OUString* pBegin = aSeq.getConstArray();
-        const ::rtl::OUString* pEnd	  = pBegin + aSeq.getLength();
+        const ::rtl::OUString* pEnd   = pBegin + aSeq.getLength();
         for(;pBegin != pEnd;++pBegin)
         {
             aSql += ::dbtools::quoteName( aQuote,*pBegin);
@@ -978,7 +978,7 @@ namespace dbaui
                                 Reference<XPropertySet> xProp(pData->xObject,UNO_QUERY);
                                 xProp->getPropertyValue(PROPERTY_NAME) >>= sName;
                                 m_pTreeView->getListBox()->SetEntryText(_pEntry,sName);
-                                nRet =  1;
+                                nRet =	1;
                             }
                         }
                     }
@@ -1028,10 +1028,10 @@ namespace dbaui
                                 if(xRename.is())
                                 {							  
                                     xRename->rename(sNewName);
-                                     nRet = 1;
+                                    nRet = 1;
                                     if(etQuery != eType)
                                     {// special handling for tables and views
-                                         xProp->getPropertyValue(PROPERTY_SCHEMANAME)  >>= sSchema;
+                                        xProp->getPropertyValue(PROPERTY_SCHEMANAME)  >>= sSchema;
                                         xProp->getPropertyValue(PROPERTY_CATALOGNAME) >>= sCatalog;
                                         ::dbtools::composeTableName(xMeta,sCatalog,sSchema,sNewName,sName,sal_False);
                                         sOldName = sName;
@@ -1105,19 +1105,19 @@ namespace dbaui
         return 0;
     }
     // -----------------------------------------------------------------------------
-    sal_Bool SbaTableQueryBrowser::isEntryCutAllowed(SvLBoxEntry* _pEntry)
+    sal_Bool SbaTableQueryBrowser::isEntryCutAllowed(SvLBoxEntry* _pEntry) const
     {
         // at the momoent this isn't allowed
         return sal_False;
     }
     // -----------------------------------------------------------------------------
-    sal_Bool SbaTableQueryBrowser::isEntryCopyAllowed(SvLBoxEntry* _pEntry)
+    sal_Bool SbaTableQueryBrowser::isEntryCopyAllowed(SvLBoxEntry* _pEntry) const
     {
         EntryType eType = getEntryType(_pEntry);
-        return  (eType == etTable || eType == etQuery || eType == etView);
+        return	(eType == etTable || eType == etQuery || eType == etView);
     }
     // -----------------------------------------------------------------------------
-    sal_Bool SbaTableQueryBrowser::isEntryPasteAllowed(SvLBoxEntry* _pEntry)
+    sal_Bool SbaTableQueryBrowser::isEntryPasteAllowed(SvLBoxEntry* _pEntry) const
     {
         sal_Bool bAllowed = sal_False;
         EntryType eType = getEntryType(_pEntry);
@@ -1218,76 +1218,79 @@ namespace dbaui
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
- *	Revision 1.33  2001/11/23 14:51:40  oj
+ *	Revision 1.34  2001/12/07 13:13:04	oj
+ *	#95728# insert try catch
+ *	
+ *	Revision 1.33  2001/11/23 14:51:40	oj
  *	#95142# check eState of parser
  *	
- *	Revision 1.32  2001/11/15 15:15:05  oj
+ *	Revision 1.32  2001/11/15 15:15:05	oj
  *	#94820# check type of dest database and adjust if possible
  *	
- *	Revision 1.31  2001/11/12 10:34:55  oj
+ *	Revision 1.31  2001/11/12 10:34:55	oj
  *	#94391# exclude tablefilter and enable schema name again
  *	
- *	Revision 1.30  2001/10/08 07:26:29  oj
+ *	Revision 1.30  2001/10/08 07:26:29	oj
  *	#92786# refcount implemented for connectiondata and sqlexception catched
  *	
- *	Revision 1.29  2001/09/25 13:24:38  oj
+ *	Revision 1.29  2001/09/25 13:24:38	oj
  *	#91719# implementing the XRename handling
  *	
- *	Revision 1.28  2001/09/20 12:56:17  oj
+ *	Revision 1.28  2001/09/20 12:56:17	oj
  *	#92232# fixes for BIGINT type and new property HELPTEXT
  *	
- *	Revision 1.27  2001/08/27 06:57:24  oj
+ *	Revision 1.27  2001/08/27 06:57:24	oj
  *	#90015# some speedup's
  *	
- *	Revision 1.26  2001/08/24 06:31:34  oj
+ *	Revision 1.26  2001/08/24 06:31:34	oj
  *	#90015# code corrcetions for some speedup's
  *	
- *	Revision 1.25  2001/07/30 06:20:24  oj
+ *	Revision 1.25  2001/07/30 06:20:24	oj
  *	#90291# check if table should be appended
  *	
- *	Revision 1.24  2001/07/26 14:12:01  oj
+ *	Revision 1.24  2001/07/26 14:12:01	oj
  *	#90291# check if table should be appended
  *	
- *	Revision 1.23  2001/07/19 09:27:12  oj
+ *	Revision 1.23  2001/07/19 09:27:12	oj
  *	#86186# check parsetree for joins
  *	
- *	Revision 1.22  2001/07/18 11:33:57  oj
+ *	Revision 1.22  2001/07/18 11:33:57	oj
  *	#85664# enable copy/cut/paste/delete keys
  *	
- *	Revision 1.21  2001/07/17 10:31:48  oj
+ *	Revision 1.21  2001/07/17 10:31:48	oj
  *	#89128# look if connection is readonly
  *	
- *	Revision 1.20  2001/07/16 13:40:03  oj
+ *	Revision 1.20  2001/07/16 13:40:03	oj
  *	#89650# check if table was created for html/rtf format
  *	
- *	Revision 1.19  2001/07/05 12:46:52  oj
+ *	Revision 1.19  2001/07/05 12:46:52	oj
  *	#87744# use HTML_SIMPLE
  *	
- *	Revision 1.18  2001/07/05 12:19:25  oj
+ *	Revision 1.18  2001/07/05 12:19:25	oj
  *	#87744# check for right HTML_TYPE
  *	
- *	Revision 1.17  2001/07/02 13:22:11  oj
+ *	Revision 1.17  2001/07/02 13:22:11	oj
  *	#88476# save name of object before recursive call
  *	
- *	Revision 1.16  2001/06/22 10:53:59  oj
+ *	Revision 1.16  2001/06/22 10:53:59	oj
  *	#88455# serveral fixes for parameters
  *	
- *	Revision 1.15  2001/06/12 13:19:24  fs
+ *	Revision 1.15  2001/06/12 13:19:24	fs
  *	#65293# linux ambiguity
  *	
- *	Revision 1.14  2001/06/07 12:53:46  fs
+ *	Revision 1.14  2001/06/07 12:53:46	fs
  *	#87905# don't DnD bookmarks
  *	
- *	Revision 1.13  2001/06/01 11:23:45  oj
+ *	Revision 1.13  2001/06/01 11:23:45	oj
  *	#86520# insert of tabledata corrected
  *	
- *	Revision 1.12  2001/05/14 11:58:35  oj
+ *	Revision 1.12  2001/05/14 11:58:35	oj
  *	#86744# some changes for entries and views
  *	
- *	Revision 1.11  2001/05/10 12:24:47  fs
+ *	Revision 1.11  2001/05/10 12:24:47	fs
  *	the clipboard changes are SUPD-dependent
  *	
- *	Revision 1.10  2001/05/07 14:09:00  fs
+ *	Revision 1.10  2001/05/07 14:09:00	fs
  *	MUST changes regarding the system clipboard access
  *	
  *	Revision 1.9  2001/04/26 11:36:16  fs
@@ -1318,5 +1321,5 @@ namespace dbaui
  *	initial checkin - DnD related implementations for the data source browser controller
  *	
  *
- *	Revision 1.0 23.03.01 09:03:17  fs
+ *	Revision 1.0 23.03.01 09:03:17	fs
  ************************************************************************/

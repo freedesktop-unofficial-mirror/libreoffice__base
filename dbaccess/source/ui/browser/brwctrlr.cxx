@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: brwctrlr.cxx,v $
+ *	$RCSfile: brwctrlr.cxx,v $
  *
- *  $Revision: 1.56 $
+ *  $Revision: 1.57 $
  *
- *  last change: $Author: fs $ $Date: 2001-10-29 15:14:28 $
+ *	last change: $Author: fs $ $Date: 2002-01-24 17:41:53 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the "License"); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the "License"); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an "AS IS" basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an "AS IS" basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -249,11 +249,11 @@ using namespace ::comphelper;
 using namespace ::svt;
 
 #define HANDLE_SQL_ERRORS( action, successflag, context, message )			\
-    try																		\
+    try 																	\
     {																		\
         successflag = sal_False;												\
-        action;																\
-        successflag = sal_True;													\
+        action; 															\
+        successflag = sal_True; 												\
     }																		\
     catch(SQLException& e)							\
     {																		\
@@ -265,7 +265,7 @@ using namespace ::svt;
     }																		\
     catch(Exception&)																\
     {																		\
-        DBG_ERROR(message);													\
+        DBG_ERROR(message); 												\
     }																		\
 
 #define DO_SAFE( action, message ) try { action; } catch(Exception&) { DBG_ERROR(message); } ;
@@ -321,7 +321,7 @@ public:
 
     // ::com::sun::star::awt::XTabController
     virtual void SAL_CALL setModel(const ::com::sun::star::uno::Reference< ::com::sun::star::awt::XTabControllerModel > & Model) throw( ::com::sun::star::uno::RuntimeException );
-    virtual ::com::sun::star::uno::Reference< ::com::sun::star::awt::XTabControllerModel >  SAL_CALL getModel(void) throw( ::com::sun::star::uno::RuntimeException );
+    virtual ::com::sun::star::uno::Reference< ::com::sun::star::awt::XTabControllerModel >	SAL_CALL getModel(void) throw( ::com::sun::star::uno::RuntimeException );
     virtual void SAL_CALL setContainer(const ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlContainer > & _Container) throw( ::com::sun::star::uno::RuntimeException );
     virtual ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlContainer >  SAL_CALL getContainer(void) throw( ::com::sun::star::uno::RuntimeException );
     virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControl >  > SAL_CALL getControls(void) throw( ::com::sun::star::uno::RuntimeException );
@@ -476,7 +476,7 @@ void SAL_CALL SbaXDataBrowserController::FormControllerImpl::disposing(const ::c
 //= SbaXDataBrowserController
 //==================================================================
 //------------------------------------------------------------------
-Sequence< Type > SAL_CALL SbaXDataBrowserController::getTypes(  ) throw (RuntimeException)
+Sequence< Type > SAL_CALL SbaXDataBrowserController::getTypes(	) throw (RuntimeException)
 {
     Sequence< Type > aTypes1 = ::comphelper::concatSequences(
         OGenericUnoController::getTypes(),
@@ -506,7 +506,7 @@ Sequence< sal_Int8 > SAL_CALL SbaXDataBrowserController::getImplementationId(  )
 }
 
 //------------------------------------------------------------------
-Any	SAL_CALL SbaXDataBrowserController::queryInterface(const Type& _rType) throw (RuntimeException)
+Any SAL_CALL SbaXDataBrowserController::queryInterface(const Type& _rType) throw (RuntimeException)
 {
     // check for our additional interfaces
     Any aRet = OGenericUnoController::queryInterface(_rType);
@@ -561,7 +561,7 @@ SbaXDataBrowserController::SbaXDataBrowserController(const Reference< ::com::sun
     DBG_ASSERT(m_xUrlTransformer.is(), "SbaXDataBrowserController::SbaXDataBrowserController: no URLTransformer!");
     static ::rtl::OUString s_sHelpFileName(::rtl::OUString::createFromAscii("database.hlp"));
     sal_Int32 nAttrib = PropertyAttribute::READONLY | PropertyAttribute::TRANSIENT;
-    registerProperty(PROPERTY_HELPFILENAME,	PROPERTY_ID_HELPFILENAME,nAttrib,&s_sHelpFileName,	::getCppuType(reinterpret_cast< ::rtl::OUString*>(NULL)));
+    registerProperty(PROPERTY_HELPFILENAME, PROPERTY_ID_HELPFILENAME,nAttrib,&s_sHelpFileName,	::getCppuType(reinterpret_cast< ::rtl::OUString*>(NULL)));
     DBG_ASSERT(m_xUrlTransformer.is(), "SbaXDataBrowserController::SbaXDataBrowserController : could not create the url transformer !");
 
     // create the form controller aggregate
@@ -591,7 +591,7 @@ SbaXDataBrowserController::~SbaXDataBrowserController()
 // -----------------------------------------------------------------------
 void SAL_CALL SbaXDataBrowserController::attachFrame(const Reference< ::com::sun::star::frame::XFrame > & xFrame) throw( RuntimeException )
 {
-    Reference< ::com::sun::star::frame::XFrameActionListener >  xAggListener;
+    Reference< ::com::sun::star::frame::XFrameActionListener >	xAggListener;
     if (m_xFormControllerImpl.is())
         m_xFormControllerImpl->queryAggregation(::getCppuType((const Reference< ::com::sun::star::frame::XFrameActionListener>*)0)) >>= xAggListener;
 
@@ -657,7 +657,7 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
         return sal_False;
 
     m_xColumnsSupplier	= Reference< XColumnsSupplier >(m_xRowSet, UNO_QUERY);
-    m_xLoadable			= Reference< XLoadable >(m_xRowSet, UNO_QUERY);
+    m_xLoadable 		= Reference< XLoadable >(m_xRowSet, UNO_QUERY);
 
     if (!InitializeForm(m_xRowSet))
         return sal_False;
@@ -720,7 +720,7 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
     getBrowserView()->Show();
 
     // set the callbacks for the grid control
-    SbaGridControl*	pVclGrid = getBrowserView()->getVclControl();
+    SbaGridControl* pVclGrid = getBrowserView()->getVclControl();
     DBG_ASSERT(pVclGrid, "SbaXDataBrowserController::Construct : have no VCL control !");
     pVclGrid->SetMasterListener(this);
 
@@ -746,7 +746,7 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
     if (m_xLoadable.is())
         m_xLoadable->addLoadListener(this);
 
-    Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >  xFormParameter(getRowSet(), UNO_QUERY);
+    Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >	xFormParameter(getRowSet(), UNO_QUERY);
     if (xFormParameter.is())
         xFormParameter->addParameterListener((::com::sun::star::form::XDatabaseParameterListener*)this);
 
@@ -844,7 +844,7 @@ void SbaXDataBrowserController::addControlListeners(const Reference< ::com::sun:
         xBroadcaster->addModifyListener(static_cast<XModifyListener*>(this));
 
     // introduce ourself as dispatch provider for the grid
-    Reference< XDispatchProviderInterception >  xInterception(getBrowserView()->getGridControl(), UNO_QUERY);
+    Reference< XDispatchProviderInterception >	xInterception(getBrowserView()->getGridControl(), UNO_QUERY);
     if (xInterception.is())
         xInterception->registerDispatchProviderInterceptor(static_cast<XDispatchProviderInterceptor*>(this));
 
@@ -861,7 +861,7 @@ void SbaXDataBrowserController::removeControlListeners(const Reference< ::com::s
     if (xBroadcaster.is())
         xBroadcaster->removeModifyListener(static_cast<XModifyListener*>(this));
 
-    Reference< XDispatchProviderInterception >  xInterception(_xGridControl, UNO_QUERY);
+    Reference< XDispatchProviderInterception >	xInterception(_xGridControl, UNO_QUERY);
     if (xInterception.is())
         xInterception->releaseDispatchProviderInterceptor(static_cast<XDispatchProviderInterceptor*>(this));
 
@@ -948,7 +948,7 @@ void SbaXDataBrowserController::disposingFormModel(const ::com::sun::star::lang:
     if (m_xLoadable.is())
         m_xLoadable->removeLoadListener(this);
 
-    Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >  xFormParameter(Source.Source, UNO_QUERY);
+    Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >	xFormParameter(Source.Source, UNO_QUERY);
     if (xFormParameter.is())
         xFormParameter->removeParameterListener((::com::sun::star::form::XDatabaseParameterListener*)this);
 }
@@ -1117,8 +1117,8 @@ void SbaXDataBrowserController::elementReplaced(const ::com::sun::star::containe
 // -----------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::suspend(sal_Bool bSuspend) throw( RuntimeException )
 {
-    m_bSuspending = sal_True;
-
+//	m_bSuspending = sal_True;
+//
     // have a pending open operation ?
     if (PendingLoad())
     {
@@ -1163,10 +1163,9 @@ sal_Bool SbaXDataBrowserController::suspend(sal_Bool bSuspend) throw( RuntimeExc
     m_aAsyncGetCellFocus.CancelCall();
     m_aAsyncInvalidateAll.CancelCall();
 
-    sal_uInt16 nReturn = SaveData(sal_True, sal_False);
-
-    m_bSuspending = sal_False;
-    return nReturn != 0;
+    sal_Bool bSuccess = SaveModified();
+//	m_bSuspending = sal_False;
+    return bSuccess;
 }
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::disposing()
@@ -1223,7 +1222,7 @@ void SbaXDataBrowserController::disposing()
         if (m_xLoadable.is())
             m_xLoadable->removeLoadListener(this);
 
-        Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >  xFormParameter(getRowSet(), UNO_QUERY);
+        Reference< ::com::sun::star::form::XDatabaseParameterBroadcaster >	xFormParameter(getRowSet(), UNO_QUERY);
         if (xFormParameter.is())
             xFormParameter->removeParameterListener((::com::sun::star::form::XDatabaseParameterListener*)this);
     }
@@ -1251,7 +1250,7 @@ void SbaXDataBrowserController::disposing()
 
             m_xRowSet			= NULL;
             m_xColumnsSupplier	= NULL;
-            m_xLoadable			= NULL;
+            m_xLoadable 		= NULL;
         }
         catch(Exception&)
         {
@@ -1314,7 +1313,7 @@ sal_Bool SbaXDataBrowserController::approveParameter(const ::com::sun::star::for
         return sal_True;
     }
 
-    Reference< ::com::sun::star::container::XIndexAccess >  xParameters = aEvent.Parameters;
+    Reference< ::com::sun::star::container::XIndexAccess >	xParameters = aEvent.Parameters;
     ::vos::OClearableGuard aGuard(Application::GetSolarMutex());
         // this may be executed in a non-main thread and we want to use vcl ...
     Window* pParent = Application::GetDefDialogParent();
@@ -1414,7 +1413,7 @@ sal_Bool SbaXDataBrowserController::confirmDelete(const ::com::sun::star::sdb::R
     return sal_True;
 }
 //------------------------------------------------------------------------------
-FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId)
+FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
 {
     FeatureState aReturn;
         // (disabled automatically)
@@ -1760,10 +1759,10 @@ void SbaXDataBrowserController::ExecuteFilterSortCrit(sal_Bool bFilter)
 void SbaXDataBrowserController::ExecuteSearch()
 {
     // calculate the control source of the active field
-    Reference< ::com::sun::star::form::XGrid >  xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
+    Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
     DBG_ASSERT(xGrid.is(), "SbaXDataBrowserController::ExecuteSearch : the control should have an ::com::sun::star::form::XGrid interface !");
 
-    Reference< ::com::sun::star::form::XGridPeer >  xGridPeer(getBrowserView()->getGridControl()->getPeer(), UNO_QUERY);
+    Reference< ::com::sun::star::form::XGridPeer >	xGridPeer(getBrowserView()->getGridControl()->getPeer(), UNO_QUERY);
     Reference< ::com::sun::star::container::XIndexContainer >  xColumns = xGridPeer->getColumns();
     DBG_ASSERT(xGridPeer.is() && xColumns.is(), "SbaXDataBrowserController::ExecuteSearch : invalid peer !");
 
@@ -1776,7 +1775,7 @@ void SbaXDataBrowserController::ExecuteSearch()
 
     // the text within the current cell
     String sInitialText;
-    Reference< ::com::sun::star::container::XIndexAccess >  xColControls(xGridPeer, UNO_QUERY);
+    Reference< ::com::sun::star::container::XIndexAccess >	xColControls(xGridPeer, UNO_QUERY);
     Reference< XInterface >  xCurControl;
     xColControls->getByIndex(nViewCol) >>= xCurControl;
     ::rtl::OUString aInitialText;
@@ -1831,7 +1830,7 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId)
                     // the options not supported by the data source will be removed automatically
             else
             {
-                if (!SaveData(sal_True, sal_False))
+                if ( !SaveModified( ) )
                     // give the user a chance to save the current record (if neccessary)
                     break;
 
@@ -1846,7 +1845,7 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId)
         break;
 
         case ID_BROWSER_SEARCH:
-            if (SaveData(sal_True, sal_False))
+            if ( SaveModified( ) )
                 ExecuteSearch();
             break;
 
@@ -1865,7 +1864,7 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId)
             Edit& rEdit = (Edit&)xCurrentController->GetWindow();
             switch (nId)
             {
-                case ID_BROWSER_CUT	: rEdit.Cut(); break;
+                case ID_BROWSER_CUT : rEdit.Cut(); break;
                 case SID_COPY	: rEdit.Copy(); break;
                 case ID_BROWSER_PASTE	: rEdit.Paste(); break;
             }
@@ -1981,7 +1980,7 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId)
         break;
 
         case ID_BROWSER_REFRESH:
-            if (SaveData(sal_True, sal_False))
+            if ( SaveModified( ) )
             {
                 if (!reloadForm(Reference< XLoadable >(getRowSet(), UNO_QUERY)))
                     criticalFail();
@@ -2057,7 +2056,8 @@ sal_Bool SbaXDataBrowserController::SaveModified(sal_Bool bCommit)
         bResult = sal_False;
     }
     
-    OGenericUnoController::SaveModified();
+    InvalidateFeature(ID_BROWSER_SAVEDOC);
+    InvalidateFeature(ID_BROWSER_UNDO);
     return bResult;
 }
 
@@ -2068,7 +2068,7 @@ sal_Bool SbaXDataBrowserController::CommitCurrent()
         return sal_True;
 
     Reference< ::com::sun::star::awt::XControl >  xActiveControl(getBrowserView()->getGridControl());
-    Reference< ::com::sun::star::form::XBoundControl >  xLockingTest(xActiveControl, UNO_QUERY);
+    Reference< ::com::sun::star::form::XBoundControl >	xLockingTest(xActiveControl, UNO_QUERY);
     sal_Bool bControlIsLocked = xLockingTest.is() && xLockingTest->getLock();
     sal_Bool bResult = sal_True;
     if (xActiveControl.is() && !bControlIsLocked)
@@ -2141,40 +2141,40 @@ IMPL_LINK(SbaXDataBrowserController, OnInvalidateClipboard, void*, EMPTYARG)
     return 0L;
 }
 
-//------------------------------------------------------------------
-sal_uInt16 SbaXDataBrowserController::SaveData(sal_Bool bUI, sal_Bool bForBrowsing)
-{
-    if (!getBrowserView())
-        return sal_True;
-
-    if (!isValidCursor())
-        return sal_True;
-
-    if (bUI && GetState(ID_BROWSER_SAVEDOC).bEnabled)
-    {
-        getBrowserView()->getVclControl()->GrabFocus();
-
-        QueryBox aQry(getBrowserView()->getVclControl(), ModuleRes(QUERY_BRW_SAVEMODIFIED));
-        if (bForBrowsing)
-            aQry.AddButton(ResId(RID_STR_NEW_TASK), RET_NEWTASK,
-                BUTTONDIALOG_DEFBUTTON | BUTTONDIALOG_FOCUSBUTTON);
-
-        switch (aQry.Execute())
-        {
-            case RET_NO:
-                Execute(ID_BROWSER_UNDO);
-                return sal_True;
-            case RET_CANCEL:
-                return sal_False;
-            case RET_NEWTASK:
-                return RET_NEWTASK;
-        }
-    }
-
-
-    return OGenericUnoController::SaveData(bUI,bForBrowsing);
-}
-
+// ------------------------------------------------------------------------------
+//sal_uInt16 SbaXDataBrowserController::SaveData(sal_Bool bUI, sal_Bool bForBrowsing)
+//{
+//	if (!getBrowserView())
+//		return sal_True;
+//
+//	if (!isValidCursor())
+//		return sal_True;
+//
+//	if (bUI && GetState(ID_BROWSER_SAVEDOC).bEnabled)
+//	{
+//		getBrowserView()->getVclControl()->GrabFocus();
+//
+//		QueryBox aQry(getBrowserView()->getVclControl(), ModuleRes(QUERY_BRW_SAVEMODIFIED));
+//		if (bForBrowsing)
+//			aQry.AddButton(ResId(RID_STR_NEW_TASK), RET_NEWTASK,
+//				BUTTONDIALOG_DEFBUTTON | BUTTONDIALOG_FOCUSBUTTON);
+//
+//		switch (aQry.Execute())
+//		{
+//			case RET_NO:
+//				Execute(ID_BROWSER_UNDO);
+//				return sal_True;
+//			case RET_CANCEL:
+//				return sal_False;
+//			case RET_NEWTASK:
+//				return RET_NEWTASK;
+//		}
+//	}
+//
+//
+//	return OGenericUnoController::SaveData(bUI,bForBrowsing);
+//}
+//
 // -------------------------------------------------------------------------
 Reference< XPropertySet >  SbaXDataBrowserController::getBoundField(sal_uInt16 nViewPos) const
 {
@@ -2183,7 +2183,7 @@ Reference< XPropertySet >  SbaXDataBrowserController::getBoundField(sal_uInt16 n
     // get the current column from the grid
     if (nViewPos == (sal_uInt16)-1)
     {
-        Reference< ::com::sun::star::form::XGrid >  xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
+        Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
         if (!xGrid.is())
             return xEmptyReturn;
         nViewPos = xGrid->getCurrentColumnPosition();
@@ -2206,10 +2206,10 @@ Reference< XPropertySet >  SbaXDataBrowserController::getBoundField(sal_uInt16 n
 //------------------------------------------------------------------------------
 IMPL_LINK(SbaXDataBrowserController, OnSearchContextRequest, FmSearchContext*, pContext)
 {
-    Reference< ::com::sun::star::container::XIndexAccess >  xPeerContainer(getBrowserView()->getGridControl(), UNO_QUERY);
+    Reference< ::com::sun::star::container::XIndexAccess >	xPeerContainer(getBrowserView()->getGridControl(), UNO_QUERY);
 
     // check all grid columns for their control source
-    Reference< ::com::sun::star::container::XIndexAccess >  xModelColumns(getFormComponent(), UNO_QUERY);
+    Reference< ::com::sun::star::container::XIndexAccess >	xModelColumns(getFormComponent(), UNO_QUERY);
     DBG_ASSERT(xModelColumns.is(), "SbaXDataBrowserController::OnSearchContextRequest : there is a grid control without columns !");
         // the case 'no columns' should be indicated with an empty container, I think ...
     DBG_ASSERT(xModelColumns->getCount() >= xPeerContainer->getCount(), "SbaXDataBrowserController::OnSearchContextRequest : impossible : have more view than model columns !");
@@ -2270,7 +2270,7 @@ IMPL_LINK(SbaXDataBrowserController, OnFoundData, FmFoundRecordInformation*, pIn
     xModelSet->setPropertyValue(::rtl::OUString::createFromAscii("DisplayIsSynchron"), aOld);
 
     // and move to the field
-    Reference< ::com::sun::star::container::XIndexAccess >  aColumnControls(getBrowserView()->getGridControl()->getPeer(), UNO_QUERY);
+    Reference< ::com::sun::star::container::XIndexAccess >	aColumnControls(getBrowserView()->getGridControl()->getPeer(), UNO_QUERY);
     for (sal_uInt16 nViewPos=0; nViewPos<aColumnControls->getCount(); ++nViewPos)
     {
         Reference< XInterface >  xCurrent;
@@ -2282,7 +2282,7 @@ IMPL_LINK(SbaXDataBrowserController, OnFoundData, FmFoundRecordInformation*, pIn
                 break;
     }
 
-    Reference< ::com::sun::star::form::XGrid >  xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
+    Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
     xGrid->setCurrentColumnPosition(nViewPos);
 
     return 0;
@@ -2353,7 +2353,7 @@ IMPL_LINK(SbaXDataBrowserController, OnAsyncClose, void*, EMPTYARG)
 //------------------------------------------------------------------------------
 IMPL_LINK(SbaXDataBrowserController, OnAsyncGetCellFocus, void*, EMPTYARG)
 {
-    SbaGridControl*	pVclGrid = getBrowserView() ? getBrowserView()->getVclControl() : NULL;
+    SbaGridControl* pVclGrid = getBrowserView() ? getBrowserView()->getVclControl() : NULL;
     // if we have a controller, but the window for the controller doesn't have the focus, we correct this
     if(pVclGrid)
     {
@@ -2424,7 +2424,7 @@ void SbaXDataBrowserController::LoadFinished(sal_Bool /*bWasSynch*/)
 void SbaXDataBrowserController::loaded(const EventObject& aEvent) throw( RuntimeException )
 {
     // not interested in
-    // we're loading within an separate thread and have a handling  for it's "finished event"
+    // we're loading within an separate thread and have a handling	for it's "finished event"
 }
 
 //------------------------------------------------------------------------------
@@ -2528,7 +2528,7 @@ class LoadFormHelper :public ::cppu::WeakImplHelper2< ::com::sun::star::form::XL
     enum STATE { STARTED, LOADED, POSITIONED, DISPOSED };
     STATE	m_eState;
 
-    Reference< XRowSet > 				m_xForm;
+    Reference< XRowSet >				m_xForm;
 
     ::osl::Mutex	m_aAccessSafety;
 
@@ -2770,7 +2770,7 @@ void LoadFormThread::onTerminated()
             OSL_ENSURE(0,"Exception thrown by dispose");
         }
         // ... and delete the latter
-        aGuard.clear();		// like above - releasing the mutex is a member access ...
+        aGuard.clear(); 	// like above - releasing the mutex is a member access ...
         delete this;
     }
 }

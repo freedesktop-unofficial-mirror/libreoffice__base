@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: exsrcbrw.cxx,v $
+ *	$RCSfile: exsrcbrw.cxx,v $
  *
- *  $Revision: 1.19 $
+ *	$Revision: 1.20 $
  *
- *  last change: $Author: fs $ $Date: 2001-10-16 14:43:19 $
+ *	last change: $Author: fs $ $Date: 2002-01-24 17:40:32 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the "License"); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the "License"); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an "AS IS" basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an "AS IS" basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -112,9 +112,9 @@ extern "C" void SAL_CALL createRegistryInfo_OFormGridView()
     static OMultiInstanceAutoRegistration< SbaExternalSourceBrowser > aAutoRegistration;
 }
 //------------------------------------------------------------------------------
-Any	SAL_CALL SbaExternalSourceBrowser::queryInterface(const Type& _rType) throw (RuntimeException)
+Any SAL_CALL SbaExternalSourceBrowser::queryInterface(const Type& _rType) throw (RuntimeException)
 {
-    Any	aRet = SbaXDataBrowserController::queryInterface(_rType);
+    Any aRet = SbaXDataBrowserController::queryInterface(_rType);
     if(!aRet.hasValue())
         aRet = ::cppu::queryInterface(_rType,
                                 (::com::sun::star::util::XModifyBroadcaster*)this,
@@ -248,7 +248,7 @@ void SAL_CALL SbaExternalSourceBrowser::dispatch(const ::com::sun::star::util::U
 
         // create the col
         Reference< ::com::sun::star::form::XGridColumnFactory >  xColFactory(getControlModel(), UNO_QUERY);
-        Reference< ::com::sun::star::beans::XPropertySet >  xNewCol = xColFactory->createColumn(sControlType);
+        Reference< ::com::sun::star::beans::XPropertySet >	xNewCol = xColFactory->createColumn(sControlType);
         Reference< XPropertySetInfo > xNewColProperties;
         if (xNewCol.is())
             xNewColProperties = xNewCol->getPropertySetInfo();
@@ -347,18 +347,17 @@ Reference< ::com::sun::star::frame::XDispatch >  SAL_CALL SbaExternalSourceBrows
         ::com::sun::star::util::URL aNewUrl = aURL;
 
         // split the ::com::sun::star::util::URL
-        Reference< ::com::sun::star::util::XURLTransformer >  xTransformer(::comphelper::getProcessServiceFactory()->createInstance(::rtl::OUString::createFromAscii("com.sun.star.util.URLTransformer")), UNO_QUERY);
-        OSL_ENSURE(xTransformer.is(), "SbaExternalSourceBrowser::queryDispatch : could not create an URLTransformer !");
-        if (xTransformer.is())
-            xTransformer->parseStrict(aNewUrl);
+        OSL_ENSURE( m_xUrlTransformer.is(), "SbaExternalSourceBrowser::queryDispatch : could not create an URLTransformer !" );
+        if ( m_xUrlTransformer.is() )
+            m_xUrlTransformer->parseStrict( aNewUrl );
 
         // set a new mark
         aNewUrl.Mark = ::rtl::OUString::createFromAscii("DB/FormGridView");
             // this controller is instantiated when somebody dispatches the ".component:DB/FormGridView" in any
             // frame, so we use "FormGridView" as mark that a dispatch request came from this view
 
-        if (xTransformer.is())
-            xTransformer->assemble(aNewUrl);
+        if (m_xUrlTransformer.is())
+            m_xUrlTransformer->assemble(aNewUrl);
 
         Reference< ::com::sun::star::frame::XDispatchProvider >  xFrameDispatcher(m_xCurrentFrame, UNO_QUERY);
         if (xFrameDispatcher.is())
@@ -419,7 +418,7 @@ void SbaExternalSourceBrowser::Attach(const Reference< XRowSet > & xMaster)
     Any aOldPos;
     sal_Bool bWasInsertRow = sal_False;
     sal_Bool bBeforeFirst	= sal_True;
-    sal_Bool bAfterLast		= sal_True;
+    sal_Bool bAfterLast 	= sal_True;
     Reference< XResultSet > xResultSet(xMaster, UNO_QUERY);
     Reference< XRowLocate > xCursor(xMaster, UNO_QUERY);
     Reference< XPropertySet > xMasterProps(xMaster, UNO_QUERY);
@@ -514,7 +513,7 @@ void SbaExternalSourceBrowser::startListening()
 {
     if (m_pDataSourceImpl && m_pDataSourceImpl->getAttachedForm().is())
     {
-        Reference< ::com::sun::star::form::XLoadable >  xLoadable(m_pDataSourceImpl->getAttachedForm(), UNO_QUERY);
+        Reference< ::com::sun::star::form::XLoadable >	xLoadable(m_pDataSourceImpl->getAttachedForm(), UNO_QUERY);
         xLoadable->addLoadListener((::com::sun::star::form::XLoadListener*)this);
     }
 }
@@ -524,22 +523,22 @@ void SbaExternalSourceBrowser::stopListening()
 {
     if (m_pDataSourceImpl && m_pDataSourceImpl->getAttachedForm().is())
     {
-        Reference< ::com::sun::star::form::XLoadable >  xLoadable(m_pDataSourceImpl->getAttachedForm(), UNO_QUERY);
+        Reference< ::com::sun::star::form::XLoadable >	xLoadable(m_pDataSourceImpl->getAttachedForm(), UNO_QUERY);
         xLoadable->removeLoadListener((::com::sun::star::form::XLoadListener*)this);
     }
 }
 
 //------------------------------------------------------------------
-sal_uInt16 SbaExternalSourceBrowser::SaveData(sal_Bool bUI, sal_Bool bForBrowsing)
-{
-    if (m_bSuspending)
-        // don't ask the user if we're beeing suspended currently
-        // this is the responsibility of our owner, as we are only an external view to an existing form
-        // 73384 - 22.02.00 - FS
-        return (sal_uInt16)sal_True;
-
-    return SbaXDataBrowserController::SaveData(bUI, bForBrowsing);
-}
+//sal_uInt16 SbaExternalSourceBrowser::SaveData(sal_Bool bUI, sal_Bool bForBrowsing)
+//{
+//	if (m_bSuspending)
+//		// don't ask the user if we're beeing suspended currently
+//		// this is the responsibility of our owner, as we are only an external view to an existing form
+//		// 73384 - 22.02.00 - FS
+//		return (sal_uInt16)sal_True;
+//
+//	return SbaXDataBrowserController::SaveData(bUI, bForBrowsing);
+//}
 
 //==================================================================
 //==================================================================

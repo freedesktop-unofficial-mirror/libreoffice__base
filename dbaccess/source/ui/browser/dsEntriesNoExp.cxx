@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: dsEntriesNoExp.cxx,v $
+ *	$RCSfile: dsEntriesNoExp.cxx,v $
  *
- *  $Revision: 1.1 $
+ *	$Revision: 1.2 $
  *
- *  last change: $Author: oj $ $Date: 2001-09-20 12:57:49 $
+ *	last change: $Author: fs $ $Date: 2002-01-24 17:40:32 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the License); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the License); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an AS IS basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an AS IS basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -114,16 +114,16 @@ String SbaTableQueryBrowser::GetEntryText( SvLBoxEntry* _pEntry )
 }
 
 // -----------------------------------------------------------------------------
-SbaTableQueryBrowser::EntryType SbaTableQueryBrowser::getEntryType( SvLBoxEntry* _pEntry )
+SbaTableQueryBrowser::EntryType SbaTableQueryBrowser::getEntryType( SvLBoxEntry* _pEntry ) const
 {
     if (!_pEntry)
         return etUnknown;
 
-    SvLBoxEntry* pRootEntry		= m_pTreeView->getListBox()->GetRootLevelParent(_pEntry);
+    SvLBoxEntry* pRootEntry 	= m_pTreeView->getListBox()->GetRootLevelParent(_pEntry);
     SvLBoxEntry* pEntryParent	= m_pTreeView->getListBox()->GetParent(_pEntry);
     SvLBoxEntry* pTables		= m_pTreeView->getListBox()->GetEntry(pRootEntry, CONTAINER_TABLES);
     SvLBoxEntry* pQueries		= m_pTreeView->getListBox()->GetEntry(pRootEntry, CONTAINER_QUERIES);
-    SvLBoxEntry* pBookmarks		= m_pTreeView->getListBox()->GetEntry(pRootEntry, CONTAINER_BOOKMARKS);
+    SvLBoxEntry* pBookmarks 	= m_pTreeView->getListBox()->GetEntry(pRootEntry, CONTAINER_BOOKMARKS);
 
 #ifdef DBG_UTIL
     String sTest;
@@ -200,11 +200,11 @@ void SbaTableQueryBrowser::AddSupportedFeatures()
     m_aSupportedFeatures[ ::rtl::OUString::createFromAscii(".uno:DataSourceBrowser/DocumentDataSource")] = ID_BROWSER_DOCUMENT_DATASOURCE;
 
             // TODO reenable our own code if we really have a handling for the formslots
-//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToFirst"),		SID_FM_RECORD_FIRST		),
-//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToLast"),		SID_FM_RECORD_LAST		),
+//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToFirst"),		SID_FM_RECORD_FIRST 	),
+//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToLast"), 	SID_FM_RECORD_LAST		),
 //	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToNew"),		SID_FM_RECORD_NEW		),
-//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToNext"),		SID_FM_RECORD_NEXT		),
-//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToPrev"),		SID_FM_RECORD_PREV		)
+//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToNext"), 	SID_FM_RECORD_NEXT		),
+//	ControllerFeature( ::rtl::OUString::createFromAscii("private:FormSlot/moveToPrev"), 	SID_FM_RECORD_PREV		)
 
 }
 // -------------------------------------------------------------------------
