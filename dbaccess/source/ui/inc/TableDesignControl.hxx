@@ -1,10 +1,10 @@
 /*************************************************************************
  *
- *  $RCSfile: dlgsave.hrc,v $
+ *  $RCSfile: TableDesignControl.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.1 $
  *
- *  last change: $Author: oj $ $Date: 2001-02-14 14:34:01 $
+ *  last change: $Author: oj $ $Date: 2001-02-14 14:37:00 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,29 +58,77 @@
  *
  *
  ************************************************************************/
+#ifndef DBAUI_TABLEDESIGNCONTROL_HXX
+#define DBAUI_TABLEDESIGNCONTROL_HXX
 
-#ifndef DBAUI_DLGSAVE_HRC
-#define DBAUI_DLGSAVE_HRC
+#ifndef _TABBAR_HXX //autogen
+#include <svtools/tabbar.hxx>
+#endif
+#ifndef _SVX_DBBROWSE_HXX
+#include <svx/dbbrowse.hxx>
+#endif // _SVX_DBBROWSE_HXX
 
-// defines ------------------------------------------------------------------
+#ifndef _DBAUI_MODULE_DBU_HXX_
+#include "moduledbu.hxx"
+#endif
 
-#define PB_OK						1
-#define PB_CANCEL 					1
-#define PB_HELP						1
+#define TABPAGESIZE 70
+namespace dbaui
+{
+    class OTableDesignView;
+    class OTypeInfo;
+    //==================================================================
+    class OTableRowView : public DbBrowseBox
+    {
+        friend class OTableDesignUndoAct;
 
-#define ET_CATALOG					1
-#define ET_SCHEMA					2
-#define ET_TITLE					3
-#define FT_CATALOG					1
-#define FT_SCHEMA					2
-#define FT_TITLE					3
+    protected:
+        long	m_nDataPos;				// derzeit benoetigte Zeile
+        long	m_nCurrentPos;			// Aktuelle Position der ausgewaehlten Column
+        ULONG	m_nClipboardFormat;
+    private:
+        USHORT	m_nCurUndoActId;
+    protected:
+        BOOL	m_bCurrentModified;
+        BOOL	m_bUpdatable;
+        BOOL	m_bClipboardFilled;
 
-#define STR_TBL_LABEL				1
-#define STR_VW_LABEL				2
-#define STR_QRY_LABEL				3
-#define STR_FRM_LABEL				4
-#define STR_RPT_LABEL				5
-#define STR_OBJECT_EXISTS_ALREADY	6
+    public:
+        OTableRowView(Window* pParent);
+        virtual ~OTableRowView();
 
-#endif // DBAUI_DLGSAVE_HRC
+        virtual void				SetData( long nRow, USHORT nColId, const OTypeInfo* _pTypeInfo ) = 0;
+        virtual void				SetData( long nRow, USHORT nColId, const String& _rNewData ) = 0;
+        virtual String				GetData( long nRow, USHORT nColId ) = 0;
+        virtual void				SetControlText( long nRow, USHORT nColId, const String& rText ) = 0;
+        virtual String				GetControlText( long nRow, USHORT nColId ) = 0;
+
+        virtual OTableDesignView* GetView() const = 0;
+
+        USHORT	GetCurUndoActId(){ return m_nCurUndoActId; }
+
+        virtual void Cut();
+        virtual void Copy();
+        virtual void Paste();
+
+    protected:
+        void Paste( long nRow );
+
+        virtual void CopyRows() = 0;
+        virtual void DeleteRows() = 0;
+        virtual void InsertRows( long nRow ) = 0;
+        virtual void InsertNewRows( long nRow ) = 0;
+
+        virtual BOOL IsUpdatable() const {return m_bUpdatable;}
+        virtual void SetUpdatable( BOOL bUpdate=TRUE );
+
+        virtual RowStatus GetRowStatus(long nRow) const;
+        virtual void KeyInput(const KeyEvent& rEvt);
+        virtual void Command( const CommandEvent& rEvt );
+
+        virtual void Init();
+    };
+}
+#endif // DBAUI_TABLEDESIGNCONTROL_HXX
+
 
