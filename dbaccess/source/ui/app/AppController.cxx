@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AppController.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-17 15:25:08 $
+ *  last change: $Author: obo $ $Date: 2004-11-22 14:59:53 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -706,7 +706,7 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
             case SID_DB_APP_REPORT_RENAME:
                 aReturn.bEnabled = isRenameDeleteAllowed(E_REPORT, _nId == SID_DB_APP_REPORT_DELETE);
                 break;
-            
+
             case SID_SELECTALL:
                 aReturn.bEnabled = getContainer()->getElementCount() > 0 && getContainer()->getSelectionCount() != getContainer()->getElementCount();
                 break;
@@ -818,24 +818,24 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
                     String sDatabaseName;
                     if ( eType != DST_EMBEDDED )
                     {
-                        String sUser,sHostName;
+                        String sUser,sHostName,ssTemp;
+                        ssTemp = sTemp;
                         sal_Int32 nPortNumber = -1;
-                        
-                        m_aTypeCollection.extractHostNamePort(sTemp
-                                                            ,getORB()
+
+                        m_aTypeCollection.extractHostNamePort(ssTemp
                                                             ,sDatabaseName
                                                             ,sHostName
                                                             ,nPortNumber);
                         if ( !sDatabaseName.Len() )
                             sDatabaseName = m_aTypeCollection.cutPrefix(sTemp);
-                        
+
                         if ( m_aTypeCollection.isFileSystemBased(eType) )
                         {
                             sDatabaseName = SvtPathOptions().SubstituteVariable( sDatabaseName );
                             if ( sDatabaseName.Len() )
                             {
                                 ::svt::OFileNotation aFileNotation(sDatabaseName);
-                                // set this decoded URL as text					
+                                // set this decoded URL as text
                                 sDatabaseName = aFileNotation.get(::svt::OFileNotation::N_SYSTEM);
                             }
                         }
@@ -857,10 +857,10 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
                     DATASOURCE_TYPE eType = m_aTypeCollection.getType(sTemp);
                     if ( eType != DST_EMBEDDED )
                     {
-                        String sUser,sHostName,sDatabaseName;
+                        String sUser,sHostName,sDatabaseName,ssTemp;
+                        ssTemp = sTemp;
                         sal_Int32 nPortNumber = -1;
-                        m_aTypeCollection.extractHostNamePort(sTemp
-                                                            ,getORB()
+                        m_aTypeCollection.extractHostNamePort(ssTemp
                                                             ,sDatabaseName
                                                             ,sHostName
                                                             ,nPortNumber);
@@ -890,7 +890,7 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
 void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyValue >& aArgs)
 {
     ::vos::OGuard aSolarGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
     if ( !getContainer() )
         return; // return without execution
 
@@ -930,9 +930,9 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                                 if ( !aList.empty() )
                                 {
                                     Reference< XHierarchicalNameAccess > xContainer(getElements(eType),UNO_QUERY);
-                                    if ( xContainer.is() 
-                                        && xContainer->hasByHierarchicalName(*aList.begin()) 
-                                        && (xContainer->getByHierarchicalName(*aList.begin()) >>= xContainer) 
+                                    if ( xContainer.is()
+                                        && xContainer->hasByHierarchicalName(*aList.begin())
+                                        && (xContainer->getByHierarchicalName(*aList.begin()) >>= xContainer)
                                         && xContainer.is()
                                         )
                                         sFolderNameToInsertInto = *aList.begin();
@@ -992,7 +992,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                                 aURL.Complete = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(".uno:Open"));
                                 break;
                         }
-                        
+
                         if ( m_xUrlTransformer.is() )
                             m_xUrlTransformer->parseStrict( aURL );
                         Reference < XDispatch > xDisp = xProv->queryDispatch( aURL, String(), 0 );
@@ -1014,7 +1014,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
             case ID_BROWSER_SAVEASDOC:
                 {
                     WinBits nBits(WB_STDMODAL|WB_SAVEAS);
-                    
+
                     ::sfx2::FileDialogHelper aFileDlg( ::sfx2::FILESAVE_AUTOEXTENSION,static_cast<sal_uInt32>(nBits) ,getView());
                     aFileDlg.SetDisplayDirectory( SvtPathOptions().GetWorkPath() );
 
@@ -1051,7 +1051,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                 getContainer()->sortDown();
                 InvalidateFeature(ID_BROWSER_SORTUP);
                 break;
-            
+
             case ID_NEW_TABLE_DESIGN_AUTO_PILOT:
             case ID_NEW_VIEW_DESIGN_AUTO_PILOT:
             case ID_APP_NEW_QUERY_AUTO_PILOT:
@@ -1067,7 +1067,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                     ElementType eType = E_TABLE;
                     sal_Bool bAutoPilot = sal_False;
                     sal_Bool bSQLView = sal_False;
-        
+
                     switch( _nId )
                     {
                         case SID_DB_FORM_NEW_PILOT:
@@ -1094,9 +1094,9 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                             break;
                          case ID_NEW_TABLE_DESIGN_AUTO_PILOT:
                              bAutoPilot = sal_True;
-                             // run through				
+                             // run through
                         case ID_NEW_TABLE_DESIGN:
-                            break;						
+                            break;
                         default:
                             OSL_ENSURE(0,"illegal switch call!");
                     }
@@ -1250,7 +1250,7 @@ void OApplicationController::describeSupportedFeatures()
     implDescribeSupportedFeature( ".uno:DBNewFormAutoPilot", SID_DB_FORM_NEW_PILOT,     CommandGroup::INSERT );
     implDescribeSupportedFeature( ".uno:DBNewFormAutoPilotWithPreSelection",
                                                              SID_FORM_CREATE_REPWIZ_PRE_SEL,
-                                                                                        CommandGroup::APPLICATION );	
+                                                                                        CommandGroup::APPLICATION );
 
     implDescribeSupportedFeature( ".uno:DBNewReportAutoPilot",
                                                              ID_DOCUMENT_CREATE_REPWIZ, CommandGroup::INSERT );
@@ -1296,7 +1296,7 @@ void OApplicationController::describeSupportedFeatures()
 
     implDescribeSupportedFeature( ".uno:SelectAll",          SID_SELECTALL,             CommandGroup::EDIT );
     implDescribeSupportedFeature( ".uno:Undo",               ID_BROWSER_UNDO,           CommandGroup::EDIT );
-    
+
     implDescribeSupportedFeature( ".uno:Sortup",             ID_BROWSER_SORTUP,         CommandGroup::VIEW );
     implDescribeSupportedFeature( ".uno:SortDown",           ID_BROWSER_SORTDOWN,       CommandGroup::VIEW );
     implDescribeSupportedFeature( ".uno:DBRelationDesign",   SID_DB_APP_DSRELDESIGN,    CommandGroup::APPLICATION );
@@ -1324,7 +1324,7 @@ void OApplicationController::describeSupportedFeatures()
                                                                                         CommandGroup::VIEW );
 
     implDescribeSupportedFeature( ".uno:DBDSImport",		SID_DB_APP_DSIMPORT);
-    implDescribeSupportedFeature( ".uno:DBDSExport",		SID_DB_APP_DSEXPORT)
+    implDescribeSupportedFeature( ".uno:DBDSExport",		SID_DB_APP_DSEXPORT);
 
     implDescribeSupportedFeature( ".uno:DBDBAdmin",			SID_DB_APP_DBADMIN);
 
@@ -1335,9 +1335,9 @@ void OApplicationController::describeSupportedFeatures()
     implDescribeSupportedFeature( ".uno:DBStatusHostName",	SID_DB_APP_STATUS_HOSTNAME);
 }
 // -----------------------------------------------------------------------------
-OApplicationView*	OApplicationController::getContainer() const 
-{ 
-    return static_cast< OApplicationView* >( getView() ); 
+OApplicationView*	OApplicationController::getContainer() const
+{
+    return static_cast< OApplicationView* >( getView() );
 }
 // -----------------------------------------------------------------------------
 void OApplicationController::onCreationClick(const ::rtl::OUString& _sCommand)
@@ -1363,7 +1363,7 @@ void SAL_CALL OApplicationController::elementInserted( const ContainerEvent& _rE
             _rEvent.Accessor >>= sName;
             Reference<XConnection> xConnection;
             ElementType eType = getContainer()->getElementType();
-                
+
             switch( eType )
             {
                 case E_TABLE:
@@ -1387,7 +1387,7 @@ void SAL_CALL OApplicationController::elementRemoved( const ContainerEvent& _rEv
 {
     ::vos::OGuard aSolarGuard(Application::GetSolarMutex());
     ::osl::MutexGuard aGuard(m_aMutex);
-    
+
     Reference< XNameAccess > xNames(_rEvent.Source, UNO_QUERY);
     if ( xNames == m_xCurrentContainer || ::std::find(m_aCurrentSubContainers.begin(),m_aCurrentSubContainers.end(),Reference< XContainer >(xNames,UNO_QUERY)) != m_aCurrentSubContainers.end() )
     {
@@ -1495,7 +1495,7 @@ sal_Bool OApplicationController::onContainerSelect(ElementType _eType)
 {
     OSL_ENSURE(getContainer(),"View is NULL! -> GPF");
     Reference< drafts::com::sun::star::frame::XLayoutManager > xLayoutManager = getLayoutManager(getFrame());
-        
+
     if ( xLayoutManager.is() )
     {
         sal_Bool bAdd = _eType != E_TABLE;
@@ -1525,21 +1525,21 @@ sal_Bool OApplicationController::onContainerSelect(ElementType _eType)
         }
         ::rtl::OUString sToolbar = lcl_getToolBarResource(_eType);
         ::rtl::OUString sDestroyToolbar = lcl_getToolBarResource(m_eOldType);
-        
+
         xLayoutManager->lock();
         xLayoutManager->destroyElement( sDestroyToolbar );
         if ( sToolbar.getLength() )
-        {						
+        {
             xLayoutManager->createElement( sToolbar );
             xLayoutManager->requestElement( sToolbar );
-        }	
+        }
         xLayoutManager->unlock();
         xLayoutManager->doLayout();
         if ( bAdd )
         {
             Reference< XNameAccess > xContainer = getElements(_eType);
             addContainerListener(xContainer);
-            getContainer()->getDetailView()->createPage(_eType,xContainer);				
+            getContainer()->getDetailView()->createPage(_eType,xContainer);
         }
 
         InvalidateAll();
@@ -1628,20 +1628,20 @@ void OApplicationController::openElement(const ::rtl::OUString& _sName,ElementTy
                     else
                     {
                         pDispatcher.reset(new OTableAccess(getORB(),_eType == E_TABLE));
-                        
+
                         aArgs.realloc(1);
                         aArgs[0].Name = PROPERTY_SHOWMENU;
                         aArgs[0].Value <<= sal_True;
 
                         aDataSource <<= getDatabaseName();
                     }
-                    
+
                     Reference< XComponent > xComponent(pDispatcher->edit(aDataSource, _sName,xConnection,aArgs),UNO_QUERY);
                     addDocumentListener(xComponent,NULL);
                 }
             }
             break;
-    }	
+    }
 }
 // -----------------------------------------------------------------------------
 void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,sal_Bool _bSQLView)
@@ -1657,10 +1657,10 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
                 Reference< XComponent > xComponent,xDefinition;
                 if ( _bAutoPilot )
                 {
-                    sal_Int32 nCommandType = ( (getContainer()->getElementType() == E_QUERY) 
+                    sal_Int32 nCommandType = ( (getContainer()->getElementType() == E_QUERY)
                                                 ? CommandType::QUERY : ( (getContainer()->getElementType() == E_TABLE) ? CommandType::TABLE : -1 ));
                     Reference<XConnection> xConnection;
-                    
+
                     ::rtl::OUString sName;
                     if ( nCommandType != -1 )
                     {
@@ -1670,7 +1670,7 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
                             if ( CommandType::TABLE == nCommandType )
                             {
                                 ensureConnection(xConnection,sal_False);
-                                
+
                                 if ( xConnection.is() )
                                     xMetaData = xConnection->getMetaData();
                             }
@@ -1683,7 +1683,7 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
                             OSL_ENSURE(0,"Exception catched!");
                         }
                     }
-                    
+
                     try
                     {
                         ensureConnection(xConnection,sal_True);
@@ -1739,7 +1739,7 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
                              aHelper->newQueryWithPilot(getDatabaseName(),-1,::rtl::OUString(),xConnection);
                          else
                              aHelper->newTableWithPilot(getDatabaseName(),-1,::rtl::OUString(),xConnection);
- 
+
                          addDocumentListener(xComponent,xDefinition);
                      }
                      catch(SQLContext& e) { showError(SQLExceptionInfo(e)); }
@@ -1765,7 +1765,7 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
                 }
             }
             break;
-    }	
+    }
 }
 // -----------------------------------------------------------------------------
 Reference< XNumberFormatter > OApplicationController::getNumberFormatter(const Reference< XConnection >& _rxConnection ) const
@@ -1786,7 +1786,7 @@ Reference< XNumberFormatter > OApplicationController::getNumberFormatter(const R
             if ( xFormatter.is() )
                 xFormatter->attachNumberFormatsSupplier(xSupplier);
         }
-    } 
+    }
     catch(Exception&)
     {
         OSL_ENSURE(0,"Exception catched!");
@@ -1820,7 +1820,7 @@ void OApplicationController::renameEntry()
 {
     ::vos::OGuard aSolarGuard(Application::GetSolarMutex());
     ::osl::MutexGuard aGuard(m_aMutex);
-    
+
     OSL_ENSURE(getContainer(),"View is NULL! -> GPF");
     ::std::vector< ::rtl::OUString> aList;
     getSelectionElementNames(aList);
@@ -1869,7 +1869,7 @@ void OApplicationController::renameEntry()
                                     }
                                 }
                                 aDlg.reset( new OSaveAsDlg(getView(),xHNames.get(),sName,sLabel,String(),SAD_TITLE_RENAME) );
-                            }												
+                            }
                         }
                     }
                     break;
@@ -1888,13 +1888,13 @@ void OApplicationController::renameEntry()
                     }
                     break;
             }
-            
+
             if ( xRename.is() && aDlg.get() )
             {
-        
+
                 sal_Bool bTryAgain = sal_True;
                 while( bTryAgain )
-                {					
+                {
                     if ( aDlg->Execute() == RET_OK )
                     {
                         try
@@ -1905,12 +1905,12 @@ void OApplicationController::renameEntry()
                                 ::rtl::OUString sName = aDlg->getName();
                                 ::rtl::OUString sCatalog = aDlg->getCatalog();
                                 ::rtl::OUString sSchema	 = aDlg->getSchema();
-                                
+
                                 ::dbtools::composeTableName(xConnection->getMetaData(),sCatalog,sSchema,sName,sNewName,sal_False,::dbtools::eInTableDefinitions);
                             }
                             else
                                 sNewName = aDlg->getName();
-                        
+
                             ::rtl::OUString sOldName = *aList.begin();
                             if ( eType == E_FORM || eType == E_REPORT )
                             {
@@ -1924,13 +1924,13 @@ void OApplicationController::renameEntry()
                             xRename->rename(sNewName);
 
                             if ( ! Reference< XNameAccess >(xRename,UNO_QUERY).is() )
-                                getContainer()->elementReplaced(getContainer()->getElementType(),sOldName,sNewName,xConnection);							
+                                getContainer()->elementReplaced(getContainer()->getElementType(),sOldName,sNewName,xConnection);
 
                             bTryAgain = sal_False;
                         }
                         catch(const SQLException& e)
                         {
-                            showError(SQLExceptionInfo(e));							
+                            showError(SQLExceptionInfo(e));
 
                         }
                         catch(const ElementExistException& e)
@@ -1981,7 +1981,7 @@ void OApplicationController::onEntrySelect(SvLBoxEntry* _pEntry)
                     case E_FORM:
                     case E_REPORT:
                         {
-                            ::rtl::OUString sName = pView->getQualifiedName( _pEntry,NULL);	
+                            ::rtl::OUString sName = pView->getQualifiedName( _pEntry,NULL);
                             if ( sName.getLength() )
                             {
                                 Reference< XHierarchicalNameAccess > xContainer(getElements(eType),UNO_QUERY);
@@ -1997,7 +1997,7 @@ void OApplicationController::onEntrySelect(SvLBoxEntry* _pEntry)
                             ensureConnection(xConnection);
                             if ( xConnection.is() )
                             {
-                                ::rtl::OUString sName = pView->getQualifiedName( _pEntry,xConnection->getMetaData());	
+                                ::rtl::OUString sName = pView->getQualifiedName( _pEntry,xConnection->getMetaData());
                                 pView->showPreview(getDatabaseName(),xConnection,sName,eType == E_TABLE);
                                 return;
                             }
@@ -2125,11 +2125,11 @@ sal_Bool OApplicationController::requestDrag( sal_Int8 _nAction, const Point& _r
     return NULL != pTransfer;
 }
 /// unary_function Functor object for class DataFlavorExVector::value_type returntype is bool
-struct TAppSupportedSotFunctor : ::std::unary_function<DataFlavorExVector::value_type,bool> 
+struct TAppSupportedSotFunctor : ::std::unary_function<DataFlavorExVector::value_type,bool>
 {
     ElementType	eEntryType;
     sal_Bool	bQueryDrop;
-    TAppSupportedSotFunctor(const ElementType& _eEntryType,sal_Bool _bQueryDrop) 
+    TAppSupportedSotFunctor(const ElementType& _eEntryType,sal_Bool _bQueryDrop)
         : eEntryType(_eEntryType)
         , bQueryDrop(_bQueryDrop)
     {
@@ -2149,7 +2149,7 @@ struct TAppSupportedSotFunctor : ::std::unary_function<DataFlavorExVector::value
             case SOT_FORMATSTR_ID_DBACCESS_COMMAND:	// SQL command
                 return ((E_QUERY == eEntryType) || ( !bQueryDrop && E_TABLE == eEntryType));
                 break;
-        }	
+        }
         return false;
     }
 };
@@ -2219,7 +2219,7 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
     if ( m_nAsyncDrop )
         Application::RemoveUserEvent(m_nAsyncDrop);
 
-    
+
     m_nAsyncDrop = 0;
     m_aAsyncDrop.aDroppedData.clear();
     m_aAsyncDrop.nType			= pView->getElementType();
@@ -2227,7 +2227,7 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
     m_aAsyncDrop.bError			= sal_False;
     m_aAsyncDrop.bHtml			= sal_False;
     m_aAsyncDrop.aUrl			= ::rtl::OUString();
-    
+
 
     // loop through the available formats and see what we can do ...
     // first we have to check if it is our own format, if not we have to copy the stream :-(
@@ -2279,7 +2279,7 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
                 else
                     nAction &= ~DND_ACTION_MOVE;
             }
-        }		
+        }
         if ( nAction != DND_ACTION_NONE )
         {
             m_aAsyncDrop.nAction = nAction;
@@ -2290,7 +2290,7 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
             m_aAsyncDrop.aDroppedData.clear();
         return nAction;
     }
-    else 
+    else
     {
         sal_Bool bHtml = aDroppedData.HasFormat(SOT_FORMATSTR_ID_HTML) || aDroppedData.HasFormat(SOT_FORMATSTR_ID_HTML_SIMPLE);
         if ( bHtml || aDroppedData.HasFormat(SOT_FORMAT_RTF))
@@ -2317,7 +2317,7 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
             }
             else
                 m_aAsyncDrop.aHtmlRtfStorage = NULL;
-            
+
             // asyncron because we some dialogs and we aren't allowed to show them while in D&D
             m_nAsyncDrop = Application::PostUserEvent(LINK(this, OApplicationController, OnAsyncDrop));
             return DND_ACTION_COPY;
@@ -2329,13 +2329,13 @@ sal_Int8 OApplicationController::executeDrop( const ExecuteDropEvent& _rEvt )
 // -----------------------------------------------------------------------------
 Reference< XModel >  SAL_CALL OApplicationController::getModel(void) throw( RuntimeException )
 {
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
     return Reference< XModel >(m_xDataSource,UNO_QUERY);
 }
 // -----------------------------------------------------------------------------
 sal_Bool SAL_CALL OApplicationController::attachModel(const Reference< XModel > & xModel) throw( RuntimeException )
 {
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
     m_xDataSource.set(xModel,UNO_QUERY);
     if ( m_xDataSource.is() )
     {
@@ -2362,7 +2362,7 @@ sal_Bool SAL_CALL OApplicationController::attachModel(const Reference< XModel > 
             PropertyValue *pEnd = pIter + aFields.getLength();
             for (; pIter != pEnd && pIter->Name != INFO_PREVIEW; ++pIter)
                 ;
-            
+
             if ( pIter != pEnd )
             {
                 sal_Int32 nValue = 0;
