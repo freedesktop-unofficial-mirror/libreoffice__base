@@ -2,9 +2,9 @@
  *
  *  $RCSfile: querydlg.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: fme $ $Date: 2001-06-21 15:32:06 $
+ *  last change: $Author: oj $ $Date: 2001-10-05 12:31:27 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -113,14 +113,25 @@ DlgQryJoin::DlgQryJoin( Window * pParent,OQueryTableConnectionData* pData,
     aRB_Left.Disable();
     aRB_Right.Disable();
     aRB_Full.Disable();
+    
+    sal_Bool bFull = sal_False;
+    sal_Bool bOuter = sal_False;
+    try
+    {
+        bFull = _rxMetaData->supportsFullOuterJoins();
+        bOuter= _rxMetaData->supportsOuterJoins();
+    }
+    catch(SQLException&)
+    {
+    }
 
-    if(_rxMetaData->supportsFullOuterJoins())
+    if(bFull)
     {
         aRB_Left.Enable();
         aRB_Right.Enable();
         aRB_Full.Enable();
     }
-    else if(_rxMetaData->supportsOuterJoins())
+    else if(bOuter)
     {
         aRB_Left.Enable();
         aRB_Right.Enable();
