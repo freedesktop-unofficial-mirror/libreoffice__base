@@ -2,9 +2,9 @@
  *
  *  $RCSfile: unodatbr.hxx,v $
  *
- *  $Revision: 1.51 $
+ *  $Revision: 1.52 $
  *
- *  last change: $Author: hr $ $Date: 2003-04-28 15:48:53 $
+ *  last change: $Author: vg $ $Date: 2003-10-07 12:08:45 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -81,7 +81,7 @@
 #ifndef _COM_SUN_STAR_I18N_XCOLLATOR_HPP_
 #include <com/sun/star/i18n/XCollator.hpp>
 #endif
-#ifndef _COM_SUN_STAR_VIEW_XSELECTIONSUPPLIER_HPP_ 
+#ifndef _COM_SUN_STAR_VIEW_XSELECTIONSUPPLIER_HPP_
 #include <com/sun/star/view/XSelectionSupplier.hpp>
 #endif
 #ifndef _CPPUHELPER_IMPLBASE2_HXX_
@@ -90,10 +90,10 @@
 #ifndef _DBACCESS_UI_CALLBACKS_HXX_
 #include "callbacks.hxx"
 #endif
-#ifndef _SV_TIMER_HXX 
+#ifndef _SV_TIMER_HXX
 #include <vcl/timer.hxx>
 #endif
-#ifndef _TRANSFER_HXX 
+#ifndef _TRANSFER_HXX
 #include <svtools/transfer.hxx>
 #endif
 #ifndef _SVX_DATACCESSDESCRIPTOR_HXX_
@@ -181,7 +181,7 @@ namespace dbaui
     public:
         SbaTableQueryBrowser(const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rM);
         ~SbaTableQueryBrowser();
-        
+
         enum EntryType
         {
             etDatasource,
@@ -255,8 +255,13 @@ namespace dbaui
         virtual sal_Bool InitializeGridModel(const ::com::sun::star::uno::Reference< ::com::sun::star::form::XFormComponent > & xGrid);
 
         virtual ToolBox* CreateToolBox(Window* pParent);
-
+#if defined(_MSC_VER) && (_MSC_VER >= 1310 )
+        typedef ::com::sun::star::frame::XStatusListener xstlist_type;
+        typedef ::com::sun::star::uno::Reference< xstlist_type > xlister_type;
+        virtual void InvalidateFeature(sal_uInt16 nId, const ::com::sun::star::uno::Reference< ::com::sun::star::frame::XStatusListener > & xListener = xlistener_type() );
+#else
         virtual void InvalidateFeature(sal_uInt16 nId, const ::com::sun::star::uno::Reference< ::com::sun::star::frame::XStatusListener > & xListener = ::com::sun::star::uno::Reference< ::com::sun::star::frame::XStatusListener > ());
+#endif //_MSC_VER >= 1310
 
         virtual void addModelListeners(const ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel);
         virtual void removeModelListeners(const ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel);
@@ -344,7 +349,7 @@ namespace dbaui
 
         /** search in the tree for query- or tablecontainer equal to this interface and return
             this container entry
-        */ 
+        */
         SvLBoxEntry* getEntryFromContainer(const ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess>& _rxNameAccess);
         // return true when there is connection available
         sal_Bool ensureConnection(SvLBoxEntry* _pDSEntry,void * pDSData,::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>& _xConnection);
@@ -392,7 +397,7 @@ namespace dbaui
         DECL_LINK( OnEntryDoubleClicked, SvLBoxEntry* );
         DECL_LINK( OnSelectEntry, SvLBoxEntry* );
         DECL_LINK( OnExpandEntry, SvLBoxEntry* );
-        
+
         DECL_LINK( OnCutEntry, SvLBoxEntry* );
         DECL_LINK( OnCopyEntry, SvLBoxEntry* );
         DECL_LINK( OnPasteEntry, SvLBoxEntry* );
