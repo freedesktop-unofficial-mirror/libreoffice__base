@@ -2,9 +2,9 @@
  *
  *  $RCSfile: dbadmin.src,v $
  *
- *  $Revision: 1.143 $
+ *  $Revision: 1.144 $
  *
- *  last change: $Author: vg $ $Date: 2005-02-21 12:42:56 $
+ *  last change: $Author: vg $ $Date: 2005-02-21 14:14:27 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -102,7 +102,7 @@
         Text[ en-US ] = "Append the table alias name on SELECT statements";	\
     };
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_IGNOREINDEXAPPENDIX(AUTO_Y)											\
     CheckBox CB_IGNOREINDEXAPPENDIX													\
@@ -116,7 +116,7 @@
     };
 
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_SUPPRESVERSIONCOLUMN(AUTO_Y)											\
     CheckBox CB_SUPPRESVERSIONCL													\
@@ -131,7 +131,7 @@
     };
 
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_ENABLEOUTERJOIN(AUTO_Y)											\
     CheckBox CB_ENABLEOUTERJOIN														\
@@ -146,7 +146,7 @@
     };
 
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_DOSLINEENDS(AUTO_Y)											\
     CheckBox CB_DOSLINEENDS															\
@@ -161,7 +161,7 @@
     };
 
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_SCHEMA(AUTO_Y)											\
     CheckBox CB_SCHEMA														\
@@ -176,7 +176,7 @@
     };
 
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_CATALOG(AUTO_Y)											\
     CheckBox CB_CATALOG														\
@@ -188,10 +188,10 @@
         HelpId = HID_DSADMIN_CATALOG;												\
         Text [ de ] = "Den Katalognamen im SELECT Ausdruck verwenden.";					\
         Text [ en-US ] = "Use catalog name in SELECT statements";				\
-    }; 
+    };
 
 
-//-------------------------------------------------------------------------		
+//-------------------------------------------------------------------------
 
 
 
@@ -241,7 +241,7 @@
     };																				\
 
 
-//-------------------------------------------------------------------------			
+//-------------------------------------------------------------------------
 
 #define AUTO_IGNOREDRIVER_PRIV(AUTO_Y)												\
     CheckBox CB_IGNOREDRIVER_PRIV													\
@@ -267,7 +267,7 @@
         Text[ en-US ] = "Use SQL92 naming constraints";						\
     };
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_USECATALOG(AUTO_Y)														\
     CheckBox CB_USECATALOG																																	\
@@ -375,7 +375,7 @@
         CurPos = 0 ;														\
     };
 
-//-------------------------------------------------------------------------	
+//-------------------------------------------------------------------------
 
 #define AUTO_DATAHANDLING(AUTO_Y)											\
     FixedLine FL_DATAHANDLING												\
@@ -386,7 +386,7 @@
         Text [ en-US ] = "Options";								\
     };
 
-//-------------------------------------------------------------------------		
+//-------------------------------------------------------------------------
 
 #define AUTO_SPECIAL_JDBC(AUTO_Y)																		\
     FixedLine FL_SEPARATOR1																				\
@@ -428,10 +428,10 @@
         Pos = MAP_APPFONT ( EDIT_X , AUTO_Y +UNRELATED_CONTROLS + RELATED_CONTROLS + 2*FIXEDTEXT_HEIGHT -1 ) ; \
         Size = MAP_APPFONT ( 97 , EDIT_HEIGHT ) ;														\
     };
-//-------------------------------------------------------------------------								
+//-------------------------------------------------------------------------
 
-TabDialog DLG_DATABASE_ADMINISTRATION																	
-{																										
+TabDialog DLG_DATABASE_ADMINISTRATION
+{
     OutputSize = TRUE ;
     SVLook = TRUE ;
     Moveable = TRUE ;
@@ -470,7 +470,7 @@ TabDialog DLG_DATABASE_ADMINISTRATION
 // -----------------------------------------------------------------------------
 
 ModalDialog DLG_DATABASE_TYPE_CHANGE
-{																										
+{
     OutputSize = TRUE ;
     Moveable = TRUE;
     Closeable = TRUE ;
@@ -514,7 +514,7 @@ TabPage PAGE_GENERAL
     {
         Pos = MAP_APPFONT ( START_X , 8 ) ;
         Size = MAP_APPFONT ( (WIZARD_PAGE_X - START_X) - 12 , 2 * FIXEDTEXT_HEIGHT ) ;
-        Text [ de ] = "Willkommen zum %PRODUCTNAME Datenbank-Assistent." ;
+        Text [ de ] = "Willkommen zum %PRODUCTNAME Datenbank-Assistent" ;
         Text [ en-US ] = "Welcome to the %PRODUCTNAME Database Wizard";
         WordBreak = TRUE;
     };
@@ -556,7 +556,7 @@ TabPage PAGE_GENERAL
         Text [ en-US ]  = "Connect to an e~xisting database" ;
     };
 
-    
+
 
     FixedText FT_DATASOURCETYPE_PRE
     {
@@ -574,7 +574,7 @@ TabPage PAGE_GENERAL
         Text [ en-US ] = "Database ~type ";
         Text [ x-comment ] = " ";
     };
-    
+
     ListBox LB_DATATYPE
     {
         HelpId = HID_DSADMIN_DSTYPE;
@@ -585,8 +585,8 @@ TabPage PAGE_GENERAL
         DropDown = TRUE ;
         Sort = TRUE;
     };
-    
-    
+
+
     FixedText FT_DATATYPEAPPENDIX
     {
         Pos = MAP_APPFONT ( 90, 2*UNRELATED_CONTROLS + 3*FIXEDTEXT_HEIGHT + RELATED_CONTROLS -2  + 72) ;
@@ -594,7 +594,7 @@ TabPage PAGE_GENERAL
         Text [ de ] = "Datenbank";
         Text [ en-US ] = "Database";
     };
-    
+
     FixedText FT_DATASOURCETYPE_POST
     {
         Pos = MAP_APPFONT ( 6 , 4*UNRELATED_CONTROLS + 4*FIXEDTEXT_HEIGHT + RELATED_CONTROLS ) ;
@@ -602,7 +602,7 @@ TabPage PAGE_GENERAL
         Text [ de ]= "Auf den nächsten Seiten können Sie dann detaillierte Verbindungs-Einstellungen vornehmen.\n\nBitte beachten Sie dabei,dass diese neuen Einstellungen Ihre existierenden überschreiben.";
         Text [ en-US ] = "On the following pages, you can make detailed settings for the connection.\n\nThe new settings you make will overwrite your existing settings.";
     };
-    
+
     FixedText FT_SPECIAL_MESSAGE
     {
         Pos = MAP_APPFONT ( 6, 4*UNRELATED_CONTROLS + 8*FIXEDTEXT_HEIGHT + RELATED_CONTROLS  );
@@ -616,7 +616,7 @@ TabPage PAGE_GENERAL
         Text [ de ]= "MySQL" ;
         Text [ en-US ] = "MySQL" ;
     };
-    
+
     String STR_PARENTTITLE
     {
         Text [ de ]= "Datenquellen Eigenschaften: #" ;
@@ -645,9 +645,9 @@ TabPage PAGE_DBASE
     Pos = MAP_APPFONT ( 0 , 0 ) ;
     Size = MAP_APPFONT ( PAGE_X , PAGE_Y ) ;
     HelpId = HID_DSADMIN_PAGE_DBASE;
-    
-    AUTO_CHARSET(		  UNRELATED_CONTROLS) 
-    
+
+    AUTO_CHARSET(		  UNRELATED_CONTROLS)
+
     FixedLine FL_SEPARATOR1
     {
         Pos = MAP_APPFONT ( 4 , 2*UNRELATED_CONTROLS + RELATED_CONTROLS + 2*FIXEDTEXT_HEIGHT) ;
@@ -655,7 +655,7 @@ TabPage PAGE_DBASE
         Text [ de ]= "Optionale Einstellungen" ;
         Text[ en-US ] = "Optional settings";
     };
-    
+
     CheckBox CB_SHOWDELETEDROWS
     {
         Pos = MAP_APPFONT ( 6 , 2*UNRELATED_CONTROLS + 2*RELATED_CONTROLS + 3*FIXEDTEXT_HEIGHT) ;
@@ -665,7 +665,7 @@ TabPage PAGE_DBASE
         Text [ de ]= "Auch gelöschte Datensätze anzeigen" ;
         Text [ en-US ] = "Display deleted records as well" ;
     };
-    
+
     FixedText FT_SPECIAL_MESSAGE
     {
         Hide = TRUE;
@@ -675,7 +675,7 @@ TabPage PAGE_DBASE
         Text [ de ]= "Achtung: Wenn gelöschte und daher inaktive Datensätze angezeigt werden, können Sie keine Datensätze aus der Datenquelle löschen." ;
         Text [ en-US ] = "Note: When deleted, and thus inactive, records are  displayed, you will not be able to delete records from the data source." ;
     };
-    
+
     PushButton PB_INDICIES
     {
         Pos = MAP_APPFONT ( PAGE_X  - BUTTON_WIDTH - UNRELATED_CONTROLS, PAGE_Y - BUTTON_HEIGHT - UNRELATED_CONTROLS) ;
