@@ -2,9 +2,9 @@
  *
  *  $RCSfile: adminpages.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: fs $ $Date: 2000-10-13 16:04:22 $
+ *  last change: $Author: obo $ $Date: 2000-10-18 08:48:16 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -673,7 +673,7 @@ sal_Int32* ODbaseDetailsPage::getDetailIds()
     static sal_Int32* pRelevantIds = NULL;
     if (!pRelevantIds)
     {
-        static sal_Int32 nRelevantIds[] = 
+        static sal_Int32 nRelevantIds[] =
         {
             DSID_SHOWDELETEDROWS,
             DSID_ALLOWLONGTABLENAMES,
@@ -802,7 +802,7 @@ sal_Int32* OJdbcDetailsPage::getDetailIds()
     static sal_Int32* pRelevantIds = NULL;
     if (!pRelevantIds)
     {
-        static sal_Int32 nRelevantIds[] = 
+        static sal_Int32 nRelevantIds[] =
         {
             DSID_JDBCDRIVERCLASS,
             DSID_CHARSET,
@@ -848,7 +848,7 @@ void OJdbcDetailsPage::implInitControls(const SfxItemSet& _rSet, sal_Bool _bSave
         m_aDriver.SaveValue();
         m_aJdbcUrl.SaveValue();
     }
-    
+
     if (bReadonly)
     {
         m_aDriverLabel.Disable();
@@ -892,7 +892,7 @@ sal_Int32* OOdbcDetailsPage::getDetailIds()
     static sal_Int32* pRelevantIds = NULL;
     if (!pRelevantIds)
     {
-        static sal_Int32 nRelevantIds[] = 
+        static sal_Int32 nRelevantIds[] =
         {
             DSID_ADDITIONALOPTIONS,
             DSID_CHARSET,
@@ -936,7 +936,7 @@ sal_Int32* OAdabasDetailsPage::getDetailIds()
     static sal_Int32* pRelevantIds = NULL;
     if (!pRelevantIds)
     {
-        static sal_Int32 nRelevantIds[] = 
+        static sal_Int32 nRelevantIds[] =
         {
             DSID_CHARSET,
             0
@@ -1008,7 +1008,7 @@ sal_Int32* OTextDetailsPage::getDetailIds()
     static sal_Int32* pRelevantIds = NULL;
     if (!pRelevantIds)
     {
-        static sal_Int32 nRelevantIds[] = 
+        static sal_Int32 nRelevantIds[] =
         {
             DSID_FIELDDELIMITER,
             DSID_TEXTDELIMITER,
@@ -1463,7 +1463,9 @@ void OTableSubscriptionPage::ActivatePage(const SfxItemSet& _rSet)
         if (aErrorInfo.isValid())
         {
             // establishing the connection failed. Show an error window and exit.
-            OSQLMessageBox(GetParent(), aErrorInfo, WB_OK | WB_DEF_OK, OSQLMessageBox::Error).Execute();
+            OSQLMessageBox aMessageBox(GetParent(), aErrorInfo, WB_OK | WB_DEF_OK, OSQLMessageBox::Error);
+            aMessageBox.Execute();
+//			OSQLMessageBox(GetParent(), aErrorInfo, WB_OK | WB_DEF_OK, OSQLMessageBox::Error).Execute();
             m_aTablesList.Enable(sal_False);
             m_aTablesListLabel.Enable(sal_False);
             m_aTablesList.Clear();
@@ -1605,18 +1607,21 @@ IMPL_LINK( OTableSubscriptionPage, OnRadioButtonClicked, Button*, pButton )
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.5  2000/10/13 16:04:22  fs
+ *	Separator changed to string / getDetailIds
+ *
  *	Revision 1.4  2000/10/12 16:20:42  fs
  *	new implementations ... still under construction
- *	
+ *
  *	Revision 1.3  2000/10/11 11:31:02  fs
  *	new implementations - still under construction
- *	
+ *
  *	Revision 1.2  2000/10/09 12:39:28  fs
  *	some (a lot of) new imlpementations - still under development
- *	
+ *
  *	Revision 1.1  2000/10/05 10:04:12  fs
  *	initial checkin
- *	
+ *
  *
  *	Revision 1.0 26.09.00 11:47:18  fs
  ************************************************************************/
