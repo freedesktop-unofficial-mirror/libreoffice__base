@@ -2,9 +2,9 @@
  *
  *  $RCSfile: WCPage.hxx,v $
  *
- *  $Revision: 1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: oj $ $Date: 2001-02-23 14:58:43 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:21:14 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -70,19 +70,19 @@
 #ifndef DBAUI_ENUMTYPES_HXX
 #include "QEnumTypes.hxx"
 #endif
-#ifndef _SV_FIXED_HXX 
+#ifndef _SV_FIXED_HXX
 #include <vcl/fixed.hxx>
 #endif
-#ifndef _SV_GROUP_HXX 
+#ifndef _SV_GROUP_HXX
 #include <vcl/group.hxx>
 #endif
-#ifndef _SV_FIXED_HXX 
+#ifndef _SV_FIXED_HXX
 #include <vcl/fixed.hxx>
 #endif
-#ifndef _SV_EDIT_HXX 
+#ifndef _SV_EDIT_HXX
 #include <vcl/edit.hxx>
 #endif
-#ifndef _SV_BUTTON_HXX 
+#ifndef _SV_BUTTON_HXX
 #include <vcl/button.hxx>
 #endif
 
@@ -94,11 +94,9 @@ namespace dbaui
     class OCopyTable : public OWizardPage
     {
     protected:
-        FixedBitmap								m_aFBmpCopyTable;
-        GroupBox								m_aGB_Temp;
         FixedText								m_ftTableName;
         Edit									m_edTableName;
-        GroupBox								m_aGB_Options;
+        FixedLine                               m_aFL_Options;
         RadioButton								m_aRB_DefData;
         RadioButton								m_aRB_Def;
         RadioButton								m_aRB_View;
@@ -110,7 +108,7 @@ namespace dbaui
 
         OWizColumnSelect*						m_pPage2;
         OWizNormalExtend*						m_pPage3;
-                                                
+
         BOOL									m_bIsViewAllowed;
         BOOL									m_bPKeyAllowed;
 

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: WNameMatch.hxx,v $
  *
- *  $Revision: 1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: oj $ $Date: 2001-02-23 14:59:32 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:21:14 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -70,10 +70,10 @@
 #ifndef DBAUI_DATABASEEXPORT_HXX
 #include "DExport.hxx"
 #endif
-#ifndef _SV_FIXED_HXX 
+#ifndef _SV_FIXED_HXX
 #include <vcl/fixed.hxx>
 #endif
-#ifndef _SV_BUTTON_HXX 
+#ifndef _SV_BUTTON_HXX
 #include <vcl/button.hxx>
 #endif
 #ifndef DBAUI_WIZ_COPYTABLEDIALOG_HXX
@@ -90,11 +90,11 @@ namespace dbaui
         sal_Bool m_bReadOnly;
     protected:
         virtual void InitEntry(SvLBoxEntry* pEntry, const String& rStr, const Image& rImg1, const Image& rImg2);
-        
+
     public:
         OColumnTreeBox( Window* pParent, WinBits nWinStyle=0 );
         OColumnTreeBox( Window* pParent, const ResId& rResId );
-        
+
         void FillListBox( const ODatabaseExport::TColumnVector& _rList);
         void SetReadOnly(sal_Bool _bRo=sal_True) { m_bReadOnly = _bRo; }
         virtual sal_Bool Select( SvLBoxEntry* pEntry, sal_Bool bSelect=sal_True );
@@ -110,10 +110,10 @@ namespace dbaui
         FixedText			m_FT_TABLE_RIGHT;
         OColumnTreeBox		m_CTRL_LEFT;	// left side
         OColumnTreeBox		m_CTRL_RIGHT;	// right side
-        PushButton			m_pbColumn_up;
-        PushButton			m_pbColumn_down;
-        PushButton			m_pbColumn_up_right;
-        PushButton			m_pbColumn_down_right;
+        ImageButton          m_ibColumn_up;
+        ImageButton          m_ibColumn_down;
+        ImageButton          m_ibColumn_up_right;
+        ImageButton          m_ibColumn_down_right;
         PushButton			m_pbAll;
         PushButton			m_pbNone;
 

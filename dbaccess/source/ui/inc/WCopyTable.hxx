@@ -2,9 +2,9 @@
  *
  *  $RCSfile: WCopyTable.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: oj $ $Date: 2001-03-30 08:44:07 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:21:14 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,10 +86,10 @@
 #ifndef DBAUI_TYPEINFO_HXX
 #include "TypeInfo.hxx"
 #endif
-#ifndef _SV_BUTTON_HXX 
+#ifndef _SV_BUTTON_HXX
 #include <vcl/button.hxx>
 #endif
-#ifndef _SVT_WIZDLG_HXX 
+#ifndef _SVT_WIZDLG_HXX
 #include <svtools/wizdlg.hxx>
 #endif
 #ifndef DBAUI_DATABASEEXPORT_HXX
@@ -111,7 +111,7 @@
 
 namespace dbaui
 {
-    
+
     // ========================================================
     // Wizard Dialog
     // ========================================================
@@ -130,10 +130,11 @@ namespace dbaui
         ODatabaseExport::TColumns		m_vSourceColumns;
         ODatabaseExport::TColumnVector	m_vSourceVec;
 
-        OKButton				m_pbFinish;
+        HelpButton              m_pbHelp;
         CancelButton			m_pbCancel;
-        PushButton				m_pbNext;
         PushButton				m_pbPrev;
+        PushButton				m_pbNext;
+        OKButton				m_pbFinish;
         String					m_sTypeNames;		// these type names are the ones out of the resource file
         sal_uInt32				m_nPageCount;
 
@@ -155,7 +156,7 @@ namespace dbaui
         OTypeInfoMap				m_aTypeInfo;
         ::std::vector<OTypeInfoMap::iterator> m_aTypeInfoIndex;
         TNameMapping				m_mNameMapping;
-        
+
         ::std::vector<sal_Int32>	m_vColumnPos;
         ::std::vector<sal_Int32>	m_vColumnTypes;
 
@@ -163,7 +164,7 @@ namespace dbaui
         ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >			m_xConnection;	// dest conn
 
         ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >		m_xSourceObject;
-        
+
         ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess>		m_xSourceColumns;		// container
         ::com::sun::star::uno::Reference< ::com::sun::star::util::XNumberFormatter >	m_xFormatter;
         ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory> m_xFactory;
