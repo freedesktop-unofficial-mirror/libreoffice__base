@@ -2,9 +2,9 @@
  *
  *	$RCSfile: exsrcbrw.cxx,v $
  *
- *	$Revision: 1.21 $
+ *	$Revision: 1.22 $
  *
- *	last change: $Author: fs $ $Date: 2002-01-29 12:24:44 $
+ *	last change: $Author: vg $ $Date: 2003-04-15 16:03:08 $
  *
  *	The Contents of this file are made available subject to the terms of
  *	either of the following licenses
@@ -74,7 +74,7 @@
 #ifndef _COM_SUN_STAR_FORM_XFORMCONTROLLER_HPP_
 #include <com/sun/star/form/XFormController.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_ 
+#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_
 #include <com/sun/star/form/XLoadable.hpp>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_FRAMESEARCHFLAG_HPP_
@@ -440,7 +440,7 @@ void SbaExternalSourceBrowser::Attach(const Reference< XRowSet > & xMaster)
             if(!bBeforeFirst && !bAfterLast)
                 aOldPos = xCursor->getBookmark();
         }
-        
+
         if (xMasterProps.is())
             xMasterProps->getPropertyValue(PROPERTY_ISNEW) >>= bWasInsertRow;
     }
@@ -458,7 +458,7 @@ void SbaExternalSourceBrowser::Attach(const Reference< XRowSet > & xMaster)
         // at this point we have to reset the formatter for the new form
         initFormatter();
         // assume that the master form is already loaded
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         {
             Reference< XLoadable > xLoadable( xMaster, UNO_QUERY );
             OSL_ENSURE( xLoadable.is() && xLoadable->isLoaded(), "SbaExternalSourceBrowser::Attach: master is not loaded!" );
@@ -483,7 +483,7 @@ void SbaExternalSourceBrowser::Attach(const Reference< XRowSet > & xMaster)
         {
             OSL_ENSURE(sal_False, "SbaExternalSourceBrowser::Attach : couldn't restore the cursor position !");
         }
-        
+
     }
 }
 
