@@ -2,9 +2,9 @@
  *
  *  $RCSfile: CRowSetDataColumn.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
+ *  last change: $Author: oj $ $Date: 2000-10-17 10:18:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,9 +92,11 @@ ORowSetDataColumn::ORowSetDataColumn(	const Reference < XResultSetMetaData >& _x
                                       const Reference < XRow >& _xRow,
                                       const Reference < XRowUpdate >& _xRowUpdate,
                                       sal_Int32 _nPos,
+                                      const ::rtl::OUString& _rDescription,
                                       ORowSetMatrix::iterator& _rColumnValue,
                                       ORowSetMatrix::iterator& _rEnd)
     : ODataColumn(_xMetaData,_xRow,_xRowUpdate,_nPos)
+    ,m_aDescription(_rDescription)
     ,m_rColumnValue(_rColumnValue)
     ,m_rEnd(_rEnd)
 {
@@ -109,12 +111,13 @@ ORowSetDataColumn::~ORowSetDataColumn()
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* ORowSetDataColumn::createArrayHelper( ) const
 {
-    BEGIN_PROPERTY_HELPER(27)
+    BEGIN_PROPERTY_HELPER(28)
         DECL_PROP1(ALIGN,					sal_Int32,			MAYBEVOID);
         DECL_PROP1(CATALOGNAME,				::rtl::OUString,	READONLY);
         DECL_PROP0_IFACE(CONTROLMODEL,		XPropertySet 				);
-        DECL_PROP1(DISPLAYSIZE,				sal_Int32,			READONLY);
-        DECL_PROP1(NUMBERFORMAT,			sal_Int32,			MAYBEVOID);
+        DECL_PROP1(DESCRIPTION,				::rtl::OUString,	READONLY);
+        DECL_PROP1(DISPLAYSIZE,				sal_Int32,			READONLY);		
+        DECL_PROP1(NUMBERFORMAT,			sal_Int32,			MAYBEVOID);	
         DECL_PROP1_BOOL(ISAUTOINCREMENT,						READONLY);
         DECL_PROP1_BOOL(ISCASESENSITIVE,						READONLY);
         DECL_PROP1_BOOL(ISCURRENCY,								READONLY);
@@ -151,9 +154,12 @@ void SAL_CALL ORowSetDataColumn::getFastPropertyValue( Any& rValue, sal_Int32 nH
 {
     switch(nHandle)
     {
-        case PROPERTY_ID_ALIGN:
-        case PROPERTY_ID_NUMBERFORMAT:
-        case PROPERTY_ID_RELATIVEPOSITION:
+        case PROPERTY_ID_DESCRIPTION:
+            rValue <<= m_aDescription;
+            break;
+        case PROPERTY_ID_ALIGN:			
+        case PROPERTY_ID_NUMBERFORMAT:			
+        case PROPERTY_ID_RELATIVEPOSITION:		
         case PROPERTY_ID_WIDTH:
         case PROPERTY_ID_HIDDEN:
         case PROPERTY_ID_CONTROLMODEL:
