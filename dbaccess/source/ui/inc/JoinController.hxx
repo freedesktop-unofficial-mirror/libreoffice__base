@@ -2,9 +2,9 @@
  *
  *  $RCSfile: JoinController.hxx,v $
  *
- *  $Revision: 1.18 $
+ *  $Revision: 1.19 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-16 14:31:13 $
+ *  last change: $Author: vg $ $Date: 2005-03-23 09:49:09 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -106,7 +106,7 @@ namespace dbaui
         OAddTableDlg*	m_pAddTabDlg;		// is set by the first call of execute, the owner is the design view
 
         sal_Bool        m_bViewsAllowed;    // true when the Add Table dialog should also show views
-    
+
         // state of a feature. 'feature' may be the handle of a ::com::sun::star::util::URL somebody requested a dispatch interface for OR a toolbar slot.
         virtual FeatureState	GetState(sal_uInt16 nId) const;
         // execute a feature
@@ -146,12 +146,12 @@ namespace dbaui
         ::std::vector< OTableConnectionData*>*	getTableConnectionData()	{ return &m_vTableConnectionData;}
 
         void SaveTabWinsPosSize( OJoinTableView::OTableWindowMap* pTabWinList, long nOffsetX, long nOffsetY );
-        
+
         // should the statement be parsed by our own sql parser
         inline sal_Bool		isViewAllowed()			const { return m_bViewsAllowed; }
-        
+
         void			SaveTabWinPosSize(OTableWindow* pTabWin, long nOffsetX, long nOffsetY);
-        
+
         // XEventListener
         virtual void SAL_CALL disposing( const ::com::sun::star::lang::EventObject& Source ) throw(::com::sun::star::uno::RuntimeException);
 
@@ -178,13 +178,16 @@ namespace dbaui
             m_aExceptionInfo = ::dbtools::SQLExceptionInfo();
             return aInfo;
         }
+
+        void clearAddTableDialog() { m_pAddTabDlg = NULL; }
+
     protected:
         virtual OTableWindowData* createTableWindowData() = 0;
         // ask the user if the design should be saved when it is modified
         virtual short saveModified() = 0;
         // called when the orignal state should be reseted (first time load)
         virtual void reset()		 = 0;
-        virtual void describeSupportedFeatures();		
+        virtual void describeSupportedFeatures();
 
         virtual OJoinDesignView*	getJoinView();
     };
