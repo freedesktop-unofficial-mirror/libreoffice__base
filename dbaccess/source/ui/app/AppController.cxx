@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AppController.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: pjunck $ $Date: 2004-10-22 11:59:12 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-27 12:55:51 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,7 +62,7 @@
 #ifndef DBAUI_APPCONTROLLER_HXX
 #include "AppController.hxx"
 #endif
-#ifndef _COMPHELPER_SEQUENCE_HXX_ 
+#ifndef _COMPHELPER_SEQUENCE_HXX_
 #include <comphelper/sequence.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
@@ -77,10 +77,10 @@
 #ifndef _COM_SUN_STAR_UNO_XNAMINGSERVICE_HPP_
 #include <com/sun/star/uno/XNamingService.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XDATASOURCE_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XDATASOURCE_HPP_
 #include <com/sun/star/sdbc/XDataSource.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
 #include <com/sun/star/container/XChild.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XCONTAINER_HPP_
@@ -129,22 +129,22 @@
 #ifndef _COM_SUN_STAR_FRAME_XSTORABLE_HPP_
 #include <com/sun/star/frame/XStorable.hpp>
 #endif
-#ifndef _TOOLS_DEBUG_HXX 
+#ifndef _TOOLS_DEBUG_HXX
 #include <tools/debug.hxx>
 #endif
 #ifndef SVTOOLS_URIHELPER_HXX
 #include <svtools/urihelper.hxx>
 #endif
-#ifndef _COMPHELPER_TYPES_HXX_ 
+#ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef _FILEDLGHELPER_HXX
 #include <sfx2/filedlghelper.hxx>
 #endif
-#ifndef _CPPUHELPER_TYPEPROVIDER_HXX_ 
+#ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
 #ifndef _CONNECTIVITY_DBTOOLS_HXX_
@@ -231,7 +231,7 @@
 #ifndef _PASTEDLG_HXX
 #include <so3/pastedlg.hxx>
 #endif
-#ifndef _UNOTOOLS_TEMPFILE_HXX 
+#ifndef _UNOTOOLS_TEMPFILE_HXX
 #include <unotools/tempfile.hxx>
 #endif
 #ifndef _DBA_DBACCESS_HELPID_HRC_
@@ -248,6 +248,9 @@
 #endif
 #ifndef _COM_SUN_STAR_FRAME_FRAMESEARCHFLAG_HPP_
 #include <com/sun/star/frame/FrameSearchFlag.hpp>
+#endif
+#ifndef _DBACCESS_SLOTID_HRC_
+#include "dbaccess_slotid.hrc"
 #endif
 
 #include <algorithm>
@@ -279,14 +282,6 @@ using namespace ::com::sun::star::sdbc;
 using namespace ::com::sun::star::sdbcx;
 using namespace ::com::sun::star::datatransfer;
 
-//------------------------------------------------------------------------------
-const SfxFilter* OApplicationController::getStandardFilter()
-{
-    static const String s_sDatabaseType = String::CreateFromAscii("StarOffice XML (Base)");
-    const SfxFilter* pFilter = SfxFilter::GetFilterByName( s_sDatabaseType);
-    OSL_ENSURE(pFilter,"Filter: StarOffice XML (Base) could not be found!"); 
-    return pFilter;
-}
 //------------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OApplicationController::getImplementationName() throw( RuntimeException )
 {
@@ -320,10 +315,10 @@ Reference< XInterface > SAL_CALL OApplicationController::Create(const Reference<
 struct XContainerFunctor : public ::std::unary_function< OApplicationController::TContainerVector::value_type , bool>
 {
     Reference<XContainerListener> m_xContainerListener;
-    XContainerFunctor( const Reference<XContainerListener>& _xContainerListener) 
+    XContainerFunctor( const Reference<XContainerListener>& _xContainerListener)
         : m_xContainerListener(_xContainerListener){}
 
-    bool operator() (const OApplicationController::TContainerVector::value_type& lhs) const 
+    bool operator() (const OApplicationController::TContainerVector::value_type& lhs) const
     {
         if ( lhs.is() )
             lhs->removeContainerListener(m_xContainerListener);
@@ -396,7 +391,7 @@ void SAL_CALL OApplicationController::disposing()
     m_aCurrentSubContainers.clear();
 
     m_aDocuments.clear();
-    
+
     if ( getView() )
     {
         getContainer()->showPreview(NULL);
@@ -405,10 +400,10 @@ void SAL_CALL OApplicationController::disposing()
         m_pClipbordNotifier->release();
         m_pClipbordNotifier = NULL;
     }
-    
+
     clearConnections();
     try
-    {	
+    {
         m_xCurrentContainer = NULL;
         if ( m_xDataSource.is() )
         {
@@ -419,8 +414,8 @@ void SAL_CALL OApplicationController::disposing()
                 if ( sUrl.getLength() )
                 {
                     ::rtl::OUString		aFilter;
-                    INetURLObject		aURL( sUrl );
-                    const SfxFilter* pFilter = getStandardFilter();
+                    INetURLObject		aURL( xModel->getURL() );
+                    const SfxFilter* pFilter = getStandardDatabaseFilter();
                     if ( pFilter )
                         aFilter = pFilter->GetFilterName();
 
@@ -431,7 +426,6 @@ void SAL_CALL OApplicationController::disposing()
                             getStrippedDatabaseName(),
                             ::rtl::OUString() );
                 }
-                
                 xModel->disconnectController( this );
             }
             Reference < XFrame > xFrame;
@@ -448,7 +442,7 @@ void SAL_CALL OApplicationController::disposing()
     catch(Exception)
     {
     }
-    
+
     m_pView	= NULL;
     OApplicationController_CBASE::disposing();
 }
@@ -516,7 +510,7 @@ void SAL_CALL OApplicationController::disposing(const EventObject& _rSource) thr
         {
             TDataSourceConnections::iterator aIter = m_aDataSourceConnections.begin();
             TDataSourceConnections::iterator aEnd = m_aDataSourceConnections.end();
-            for (;aIter != aEnd ; ++aIter) 
+            for (;aIter != aEnd ; ++aIter)
             {
                 if ( aIter->second.is() && aIter->second == xCon )
                 {
@@ -545,7 +539,7 @@ sal_Bool SAL_CALL OApplicationController::suspend(sal_Bool bSuspend) throw( Runt
     ::vos::OGuard aSolarGuard( Application::GetSolarMutex() );
     ::osl::MutexGuard aGuard(m_aMutex);
     m_bSuspended = bSuspend;
-    if ( bSuspend && !suspendDocuments( bSuspend )) 
+    if ( bSuspend && !suspendDocuments( bSuspend ))
         return sal_False;
 
     sal_Bool bCheck = sal_True;
@@ -565,7 +559,7 @@ sal_Bool SAL_CALL OApplicationController::suspend(sal_Bool bSuspend) throw( Runt
                 break;
         }
     }
-        
+
     return bCheck;
 }
 // -----------------------------------------------------------------------------
@@ -619,7 +613,7 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
             case ID_BROWSER_SAVEASDOC:
                 aReturn.bEnabled = sal_True;
                 break;
-            case ID_BROWSER_SORTUP: 
+            case ID_BROWSER_SORTUP:
                 aReturn.bEnabled = getContainer()->isFilled() && getContainer()->getElementCount();
                 aReturn.aState <<= (aReturn.bEnabled && getContainer()->isSortUp());
                 break;
@@ -627,7 +621,7 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
                 aReturn.bEnabled = getContainer()->isFilled() && getContainer()->getElementCount();
                 aReturn.aState <<= (aReturn.bEnabled && !getContainer()->isSortUp());
                 break;
-            
+
             case SID_NEWDOC:
             case SID_APP_NEW_FORM:
             case ID_DOCUMENT_CREATE_REPWIZ:
@@ -673,10 +667,10 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
                     aReturn.bEnabled = eType == E_REPORT || eType == E_FORM;
                 }
                 break;
+            case SID_FORM_NEW_PILOT_PRE_SEL:
             case SID_REPORT_CREATE_REPWIZ_PRE_SEL:
-            case SID_FORM_CREATE_REPWIZ_PRE_SEL:
-                aReturn.bEnabled = !isDataSourceReadOnly() 
-                                    && SvtModuleOptions().IsModuleInstalled(SvtModuleOptions::E_SWRITER) 
+                aReturn.bEnabled = !isDataSourceReadOnly()
+                                    && SvtModuleOptions().IsModuleInstalled(SvtModuleOptions::E_SWRITER)
                                     && getContainer()->isALeafSelected();
                 if ( aReturn.bEnabled )
                 {
@@ -935,7 +929,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                     ::sfx2::FileDialogHelper aFileDlg( ::sfx2::FILESAVE_AUTOEXTENSION,static_cast<sal_uInt32>(nBits) ,getView());
                     aFileDlg.SetDisplayDirectory( SvtPathOptions().GetWorkPath() );
 
-                    const SfxFilter* pFilter = getStandardFilter();
+                    const SfxFilter* pFilter = getStandardDatabaseFilter();
                     if ( pFilter )
                     {
                         aFileDlg.AddFilter(pFilter->GetUIName(),pFilter->GetDefaultExtension());
@@ -970,11 +964,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                 break;
             
             case ID_NEW_TABLE_DESIGN_AUTO_PILOT:
-                OSL_ENSURE(0,"NYI");
-                break;
             case ID_NEW_VIEW_DESIGN_AUTO_PILOT:
-                OSL_ENSURE(0,"NYI");
-                break;
             case ID_APP_NEW_QUERY_AUTO_PILOT:
             case ID_FORM_NEW_PILOT:
             case SID_REPORT_CREATE_REPWIZ_PRE_SEL:
@@ -1013,6 +1003,9 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                         case ID_NEW_QUERY_DESIGN:
                             eType = E_QUERY;
                             break;
+                         case ID_NEW_TABLE_DESIGN_AUTO_PILOT:
+                             bAutoPilot = sal_True;
+                             // run through				
                         case ID_NEW_TABLE_DESIGN:
                             break;						
                         default:
@@ -1626,6 +1619,26 @@ void OApplicationController::newElement(ElementType _eType,sal_Bool _bAutoPilot,
             } // run through
         case E_TABLE:
             {
+                 if ( _bAutoPilot )
+                 {
+                     ::std::auto_ptr<OLinkedDocumentsAccess> aHelper = getDocumentsAccess(_eType);
+                     Reference< XComponent > xComponent,xDefinition;
+                     Reference<XConnection> xConnection;
+                     try
+                     {
+                         ensureConnection(xConnection,sal_True);
+                         if ( E_QUERY == _eType )
+                             aHelper->newQueryWithPilot(getDatabaseName(),-1,::rtl::OUString(),xConnection);
+                         else
+                             aHelper->newTableWithPilot(getDatabaseName(),-1,::rtl::OUString(),xConnection);
+ 
+                         addDocumentListener(xComponent,xDefinition);
+                     }
+                     catch(SQLContext& e) { showError(SQLExceptionInfo(e)); }
+                     catch(SQLWarning& e) { showError(SQLExceptionInfo(e)); }
+                     catch(SQLException& e) { showError(SQLExceptionInfo(e)); }
+                     break;
+                 }
                 ::std::auto_ptr< ODesignAccess> pDispatcher;
                 Reference<XConnection> xConnection;
                 ensureConnection(xConnection);
