@@ -2,9 +2,9 @@
  *
  *  $RCSfile: JoinTableView.cxx,v $
  *
- *  $Revision: 1.43 $
+ *  $Revision: 1.44 $
  *
- *  last change: $Author: oj $ $Date: 2002-11-26 07:46:12 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:03:42 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -183,9 +183,9 @@ OScrollWindowHelper::~OScrollWindowHelper()
 }
 
 // -----------------------------------------------------------------------------
-void OScrollWindowHelper::setTableView(OJoinTableView* _pTableView) 
-{ 
-    m_pTableView = _pTableView; 
+void OScrollWindowHelper::setTableView(OJoinTableView* _pTableView)
+{
+    m_pTableView = _pTableView;
     //////////////////////////////////////////////////////////////////////
     // ScrollBars
     GetHScrollBar()->SetScrollHdl( LINK(m_pTableView, OJoinTableView, ScrollHdl) );
@@ -260,7 +260,7 @@ OJoinTableView::OJoinTableView( Window* pParent, OJoinDesignView* pView ) :
     SetSizePixel( Size(1000, 1000) );
 
     InitColors();
-    
+
     m_aDragScrollTimer.SetTimeoutHdl(LINK(this, OJoinTableView, OnDragScrollTimer));
 }
 
@@ -339,10 +339,10 @@ void OJoinTableView::AddConnection(const OJoinExchangeData& jxdSource, const OJo
 
     // to force a redraw
     _pConn->Invalidate();
-        
+
     m_pView->getController()->removeConnectionData( _pConn->GetData() );
 
-    ::std::vector<OTableConnection*>::const_iterator aNextPos = m_vTableConnection.erase( 
+    ::std::vector<OTableConnection*>::const_iterator aNextPos = m_vTableConnection.erase(
                         ::std::find(m_vTableConnection.begin(),m_vTableConnection.end(),_pConn) );
 
     modified();
@@ -382,7 +382,7 @@ void OJoinTableView::AddTabWin(const ::rtl::OUString& _rComposedName, const ::rt
     //////////////////////////////////////////////////////////////////
     // Neue Datenstruktur in DocShell eintragen
     OTableWindowData* pNewTabWinData = CreateImpl( _rComposedName, rWinName );
-    
+
 
     //////////////////////////////////////////////////////////////////
     // Neues Fenster in Fensterliste eintragen
@@ -430,9 +430,9 @@ void OJoinTableView::RemoveTabWin( OTableWindow* pTabWin )
         OTableConnection* pTabConn = (*aIter);
         if(
             ( aWinName == pTabConn->GetData()->GetSourceWinName())		||
-            ( aWinName == pTabConn->GetData()->GetDestWinName())		||	
+            ( aWinName == pTabConn->GetData()->GetDestWinName())		||
             ( sComposedName == pTabConn->GetData()->GetSourceWinName())	||
-            ( sComposedName == pTabConn->GetData()->GetDestWinName())	
+            ( sComposedName == pTabConn->GetData()->GetDestWinName())
           )
           bRemove = RemoveConnection( pTabConn ,sal_True) != m_vTableConnection.end();
     }
@@ -459,7 +459,7 @@ void OJoinTableView::RemoveTabWin( OTableWindow* pTabWin )
             m_aTableMap.erase( aWinName );
         else
             m_aTableMap.erase( sComposedName );
-        
+
         if (pTabWin == m_pLastFocusTabWin)
             m_pLastFocusTabWin = NULL;
 
@@ -583,10 +583,10 @@ void OJoinTableView::EnsureVisible(const OTableWindow* _pWin)
 void OJoinTableView::EnsureVisible(const Point& _rPoint,const Size& _rSize)
 {
     long nScrollX,nScrollY;
-    
+
     if ( getMovementImpl(this,_rPoint,_rSize,nScrollX,nScrollY) )
     {
-        BOOL bVisbile = TRUE; 
+        BOOL bVisbile = TRUE;
         if (nScrollX)
             bVisbile = Scroll(nScrollX, TRUE, TRUE);
 
@@ -858,7 +858,7 @@ void OJoinTableView::Tracking( const TrackingEvent& rTEvt )
                 aDragWinPos.Y() = 0;
             // TODO : nicht das Fenster neu positionieren, wenn es uebersteht, sondern einfach meinen Bereich erweitern
 
-            
+
             //////////////////////////////////////////////////////////////////////
             // Fenster positionieren
             EndTracking();
@@ -878,7 +878,7 @@ void OJoinTableView::Tracking( const TrackingEvent& rTEvt )
             }
             m_pDragWin = NULL;
             SetPointer(Pointer(POINTER_ARROW));
-        } 
+        }
         // else we handle the resizing
         else if( m_pSizingWin )
         {
@@ -985,7 +985,7 @@ void OJoinTableView::KeyInput( const KeyEvent& rEvt )
 void OJoinTableView::DeselectConn(OTableConnection* pConn)
 {
     DBG_CHKTHIS(OJoinTableView,NULL);
-    if (!pConn || !pConn->IsSelected()) 
+    if (!pConn || !pConn->IsSelected())
         return;
 
     // die zugehoerigen Eitnraege in der ListBox des Tabellenfenster deselektieren
@@ -1047,7 +1047,7 @@ void OJoinTableView::SelectConn(OTableConnection* pConn)
                         pDestBox->Select(pDestEntry, TRUE);
                         pDestBox->MakeVisible(pDestEntry);
                     }
-                    
+
                 }
             }
 
@@ -1461,7 +1461,7 @@ long OJoinTableView::PreNotify(NotifyEvent& rNEvt)
                                         pNextWin = aIter->second;
                                     }
                                 }
-                                else 
+                                else
                                 {
                                     if (aIter == m_aTableMap.begin())
                                         pNextWin = m_aTableMap.rbegin()->second;
@@ -1637,7 +1637,7 @@ void OJoinTableView::HideTabWins()
     m_pView->getController()->setModified(sal_True);
 
     SetUpdateMode(sal_True);
-    
+
 }
 // -----------------------------------------------------------------------------
 sal_Int8 OJoinTableView::AcceptDrop( const AcceptDropEvent& _rEvt )
@@ -1672,7 +1672,7 @@ void OJoinTableView::clearLayoutInformation()
         ::std::auto_ptr<Window> aTemp(aIter->second);
         aIter->second = NULL;
     }
-    
+
     m_aTableMap.clear();
 
     ::std::vector<OTableConnection*>::const_iterator aIter2 = m_vTableConnection.begin();
@@ -1709,7 +1709,7 @@ Reference< XAccessible > OJoinTableView::CreateAccessible()
         if(pParent)
             xParent = pParent->GetAccessible();
         // create our VIEWPORT
-        
+
         OJoinDesignViewAccess* pAccessible = new OJoinDesignViewAccess(this,xParent);
         m_pAccessible = pAccessible;
         aRet = pAccessible;
@@ -1731,7 +1731,7 @@ void OJoinTableView::addConnection(OTableConnection* _pConnection,sal_Bool _bAdd
 {
     if ( _bAddData )
     {
-#if _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         ::std::vector< OTableConnectionData*>* pTabConnDataList = m_pView->getController()->getTableConnectionData();
         OSL_ENSURE( ::std::find(pTabConnDataList->begin(),pTabConnDataList->end(),_pConnection->GetData()) == pTabConnDataList->end(),"Data already in vector!");
 #endif
