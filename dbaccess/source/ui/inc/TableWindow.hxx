@@ -2,9 +2,9 @@
  *
  *  $RCSfile: TableWindow.hxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: oj $ $Date: 2002-11-08 09:27:39 $
+ *  last change: $Author: oj $ $Date: 2002-11-26 12:47:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -132,7 +132,7 @@ namespace dbaui
         virtual void	Paint( const Rectangle& rRect );
         virtual void	MouseMove( const MouseEvent& rEvt );
         virtual void	MouseButtonDown( const MouseEvent& rEvt );
-        virtual void	DataChanged( const DataChangedEvent& rDCEvt );
+        virtual void	DataChanged( const DataChangedEvent& rDCEvt ); 
 
         virtual OTableWindowListBox*	CreateListBox();
             // wird im ERSTEN Init aufgerufen
@@ -198,6 +198,7 @@ namespace dbaui
         ::rtl::OUString				GetComposedName() const { return m_pData->GetComposedName(); }
         OTableWindowListBox*		GetListBox() const { return m_pListBox; }
         OTableWindowData*			GetData() const { return m_pData; }
+        OTableWindowTitle*			GetTitleCtrl() { return &m_aTitle; }
 
         /** returns the name which should be used when displaying join or relations
             @return
