@@ -2,9 +2,9 @@
  *
  *  $RCSfile: browserids.hxx,v $
  *
- *  $Revision: 1.23 $
+ *  $Revision: 1.24 $
  *
- *  last change: $Author: oj $ $Date: 2002-04-29 08:05:25 $
+ *  last change: $Author: oj $ $Date: 2002-05-02 07:32:28 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -114,25 +114,25 @@
 #define ID_TREE_TABLE_PASTE					 6
 #define ID_TREE_RELATION_DESIGN				 7
 #define ID_TABLE_DESIGN_NO_CONNECTION		 8
-#define ID_OPEN_DOCUMENT					 9
-#define ID_EDIT_DOCUMENT					10
-#define ID_NEW_LINK							11
-#define ID_EDIT_LINK						12
-#define ID_DROP_LINK						13
-#define ID_CREATE_NEW_DOC					14
+#define ID_OPEN_DOCUMENT					 9	  
+#define ID_EDIT_DOCUMENT					10	  
+#define ID_NEW_LINK							11	  
+#define ID_EDIT_LINK						12	  
+#define ID_DROP_LINK						13	  
+#define ID_CREATE_NEW_DOC					14	  
 #define ID_FORM_NEW_TEXT					15
 #define ID_FORM_NEW_CALC					16
 #define ID_FORM_NEW_IMPRESS					17
 #define ID_FORM_NEW_PILOT					18
 #define ID_FORM_NEW_TEMPLATE				19
-#define ID_NEW_QUERY_DESIGN					20
-#define ID_EDIT_QUERY_DESIGN				21
-#define ID_NEW_QUERY_SQL					22
-#define ID_EDIT_QUERY_SQL					23
-#define ID_DROP_QUERY						24
-#define ID_NEW_TABLE_DESIGN					25
-#define ID_EDIT_TABLE						26
-#define ID_DROP_TABLE						27
+#define ID_NEW_QUERY_DESIGN					20	  
+#define ID_EDIT_QUERY_DESIGN				21	  
+#define ID_NEW_QUERY_SQL					22	  
+#define ID_EDIT_QUERY_SQL					23	  
+#define ID_DROP_QUERY						24	  
+#define ID_NEW_TABLE_DESIGN					25	  
+#define ID_EDIT_TABLE						26	  
+#define ID_DROP_TABLE						27	  
 #define ID_NEW_VIEW_DESIGN					28
 #define ID_DROP_VIEW						29
 #define ID_TREE_VIEW_COPY					30
@@ -140,12 +140,12 @@
 #define ID_DIRECT_SQL						32
 #define ID_TREE_QUERY_PASTE					33
 #define ID_BROWSER_REFRESH_REBUILD			34
-#define ID_RENAME_ENTRY						35
-#define ID_INDEX_NEW						36
-#define ID_INDEX_DROP						37
-#define ID_INDEX_RENAME						38
-#define ID_INDEX_SAVE						39
-#define ID_INDEX_RESET						40
+#define ID_RENAME_ENTRY						35	  
+#define ID_INDEX_NEW						36	  
+#define ID_INDEX_DROP						37	  
+#define ID_INDEX_RENAME						38	  
+#define ID_INDEX_SAVE						39	  
+#define ID_INDEX_RESET						40	  
 
 
 
