@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: unodatbr.cxx,v $
+ *	$RCSfile: unodatbr.cxx,v $
  *
- *  $Revision: 1.122 $
+ *  $Revision: 1.123 $
  *
- *  last change: $Author: fs $ $Date: 2002-01-23 07:35:12 $
+ *  last change: $Author: fs $ $Date: 2002-01-28 10:36:26 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the "License"); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the "License"); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an "AS IS" basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an "AS IS" basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -419,7 +419,7 @@ SbaTableQueryBrowser::~SbaTableQueryBrowser()
 }
 
 //------------------------------------------------------------------------------
-Any	SAL_CALL SbaTableQueryBrowser::queryInterface(const Type& _rType) throw (RuntimeException)
+Any SAL_CALL SbaTableQueryBrowser::queryInterface(const Type& _rType) throw (RuntimeException)
 {
     Any aReturn = SbaXDataBrowserController::queryInterface(_rType);
     if (!aReturn.hasValue())
@@ -622,7 +622,7 @@ sal_Bool SbaTableQueryBrowser::InitializeForm(const Reference< ::com::sun::star:
         aProperties.getArray()[2]	= PROPERTY_ORDER;
         aValues.getArray()[2]		= xTableProp->getPropertyValue(PROPERTY_ORDER);
 
-        Reference< XMultiPropertySet >  xFormMultiSet(_rxForm, UNO_QUERY);
+        Reference< XMultiPropertySet >	xFormMultiSet(_rxForm, UNO_QUERY);
         xFormMultiSet->setPropertyValues(aProperties, aValues);
     }
     catch(Exception&)
@@ -643,6 +643,7 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
 
         Reference< ::com::sun::star::form::XGridColumnFactory >  xColFactory(xGrid, UNO_QUERY);
         Reference< XNameContainer >  xColContainer(xGrid, UNO_QUERY);
+        clearGridColumns( xColContainer );
 
         Reference< XChild > xGridAsChild(xGrid, UNO_QUERY);
         Reference< XLoadable > xFormAsLoadable;
@@ -673,7 +674,7 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
                 aProperties.getArray()[5]	= PROPERTY_TEXTLINECOLOR;
                 aValues.getArray()[5]		= xTableProp->getPropertyValue(PROPERTY_TEXTLINECOLOR);
 
-                Reference< XMultiPropertySet >  xFormMultiSet(xGrid, UNO_QUERY);
+                Reference< XMultiPropertySet >	xFormMultiSet(xGrid, UNO_QUERY);
                 xFormMultiSet->setPropertyValues(aProperties, aValues);
             }
 
@@ -693,10 +694,10 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
             // insert the column into the gridcontrol so that we see something :-)
             ::rtl::OUString aCurrentModelType;
             Reference<XColumnsSupplier> xSupCols(getRowSet(),UNO_QUERY);
-            Reference<XNameAccess> xColumns		= xSupCols->getColumns();
+            Reference<XNameAccess> xColumns 	= xSupCols->getColumns();
             Sequence< ::rtl::OUString> aNames	= xColumns->getElementNames();
             const ::rtl::OUString* pBegin		= aNames.getConstArray();
-            const ::rtl::OUString* pEnd			= pBegin + aNames.getLength();
+            const ::rtl::OUString* pEnd 		= pBegin + aNames.getLength();
 
             ::rtl::OUString sPropertyName;
             Reference<XPropertySet> xColumn;
@@ -892,7 +893,7 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
         }
 
         // a column's format ?
-        else if	(	(evt.PropertyName.equals(PROPERTY_FORMATKEY))
+        else if (	(evt.PropertyName.equals(PROPERTY_FORMATKEY))
             &&	(TypeClass_LONG == evt.NewValue.getValueTypeClass())
             )
         {
@@ -920,12 +921,12 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
             }
         }
 
-        else if	(	evt.PropertyName.equals(PROPERTY_FONT)			// the font ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTCOLOR)		// the text color ?
+        else if (	evt.PropertyName.equals(PROPERTY_FONT)			// the font ?
+                ||	evt.PropertyName.equals(PROPERTY_TEXTCOLOR) 	// the text color ?
                 ||	evt.PropertyName.equals(PROPERTY_FILTER)		// the filter ?
-                ||	evt.PropertyName.equals(PROPERTY_ORDER)			// the sort ?
+                ||	evt.PropertyName.equals(PROPERTY_ORDER) 		// the sort ?
                 ||	evt.PropertyName.equals(PROPERTY_APPLYFILTER)	// the appliance of the filter ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTLINECOLOR)	// the text line color ?
+                ||	evt.PropertyName.equals(PROPERTY_TEXTLINECOLOR) // the text line color ?
                 ||	evt.PropertyName.equals(PROPERTY_TEXTEMPHASIS)	// the text emphasis ?
                 ||	evt.PropertyName.equals(PROPERTY_TEXTRELIEF)	// the text relief ?
                 )
@@ -974,7 +975,7 @@ void SAL_CALL SbaTableQueryBrowser::statusChanged( const FeatureStateEvent& _rEv
 {
     // search the external dispatcher causing this call
     Reference< XDispatch > xSource(_rEvent.Source, UNO_QUERY);
-    for	(	SpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
+    for (	SpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
             aLoop != m_aDispatchers.end();
             ++aLoop
         )
@@ -1030,7 +1031,7 @@ void SbaTableQueryBrowser::checkDocumentDataSource()
         if (NULL != pDataSourceEntry)
         {	// at least the data source is know
             if (NULL != pContainerEntry)
-                bKnownDocDataSource = sal_True;	// assume we know it.
+                bKnownDocDataSource = sal_True; // assume we know it.
                 // TODO: should we expand the object container? This may be too expensive just for checking ....
             else
             {
@@ -1140,7 +1141,7 @@ SvLBoxEntry* SbaTableQueryBrowser::getObjectEntry(const ::svx::ODataAccessDescri
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::connectExternalDispatches()
 {
-    Reference< XDispatchProvider >  xProvider(m_xCurrentFrame, UNO_QUERY);
+    Reference< XDispatchProvider >	xProvider(m_xCurrentFrame, UNO_QUERY);
     DBG_ASSERT(xProvider.is(), "SbaTableQueryBrowser::connectExternalDispatches: no DispatchPprovider !");
     if (xProvider.is())
     {
@@ -1208,7 +1209,7 @@ void SAL_CALL SbaTableQueryBrowser::disposing( const EventObject& _rSource ) thr
         Reference< XDispatch > xSource(_rSource.Source, UNO_QUERY);
         if(xSource.is())
         {
-            for	(	SpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
+            for (	SpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
                     aLoop != m_aDispatchers.end();
                     ++aLoop
                 )
@@ -1262,7 +1263,7 @@ void SAL_CALL SbaTableQueryBrowser::disposing( const EventObject& _rSource ) thr
 void SbaTableQueryBrowser::implRemoveStatusListeners()
 {
     // clear all old dispatches
-    for	(	ConstSpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
+    for (	ConstSpecialSlotDispatchersIterator aLoop = m_aDispatchers.begin();
             aLoop != m_aDispatchers.end();
             ++aLoop
         )
@@ -1480,8 +1481,25 @@ void SbaTableQueryBrowser::LoadFinished(sal_Bool _bWasSynch)
     while (aIter.hasMoreElements())
         static_cast< XSelectionChangeListener* >(aIter.next())->selectionChanged(aEvt);
 }
+
 //------------------------------------------------------------------------------
-FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId)
+sal_Bool SbaTableQueryBrowser::getExternalSlotState( sal_Int32 _nId ) const
+{
+    sal_Bool bEnabled = sal_False;
+    SpecialSlotDispatchers::const_iterator aPos = m_aDispatchers.find( _nId );
+    if ( ( m_aDispatchers.end() != aPos ) && aPos->second.is() )
+    {
+        SpecialSlotStates::const_iterator aStatePos = m_aDispatchStates.find( _nId );
+        DBG_ASSERT( m_aDispatchStates.end() != aStatePos,
+            "SbaTableQueryBrowser::getExternalSlotState: inconsistence between dispatcher and states!" );
+        if ( m_aDispatchStates.end() != aStatePos )
+            bEnabled = aStatePos->second;
+    }
+    return bEnabled;
+}
+
+//------------------------------------------------------------------------------
+FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
 {
     FeatureState aReturn;
         // (disabled automatically)
@@ -1492,7 +1510,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId)
 
     // "toggle explorer" is always enabled (if we have a explorer)
     if (ID_BROWSER_EXPLORER == nId)
-    {       // this slot is available even if no form is loaded
+    {		// this slot is available even if no form is loaded
         aReturn.bEnabled = sal_True;
         aReturn.aState = ::cppu::bool2any(haveExplorer());
         return aReturn;
@@ -1515,10 +1533,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId)
             case ID_BROWSER_DOCUMENT_DATASOURCE:
                 // the slot is enabled if we have an external dispatcher able to handle it,
                 // and the dispatcher must have enabled the slot in general
-                if (m_aDispatchers[nId].is())
-                    aReturn.bEnabled = m_aDispatchStates[nId];
-                else
-                    aReturn.bEnabled = sal_False;
+                aReturn.bEnabled = getExternalSlotState( ID_BROWSER_DOCUMENT_DATASOURCE );
                 bHandled = sal_True;
                 break;
         }
@@ -1542,10 +1557,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId)
             {
                 // the slot is enabled if we have an external dispatcher able to handle it,
                 // and the dispatcher must have enabled the slot in general
-                if (m_aDispatchers[nId].is())
-                    aReturn.bEnabled = m_aDispatchStates[nId];
-                else
-                    aReturn.bEnabled = sal_False;
+                aReturn.bEnabled = getExternalSlotState( nId );
 
                 // for the Insert* slots, we need at least one selected row
                 if (ID_BROWSER_FORMLETTER != nId)
@@ -1673,7 +1685,7 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId)
     {
         case ID_BROWSER_REFRESH:
         {
-            if (!SaveData(sal_True, sal_False))
+            if ( !SaveModified( ) )
                 // nothing to do
                 break;
 
@@ -1785,8 +1797,8 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId)
                         aDescriptor[daCommand]		=	xProp->getPropertyValue(PROPERTY_COMMAND);
                         aDescriptor[daCommandType]	=	xProp->getPropertyValue(PROPERTY_COMMANDTYPE);
                         aDescriptor[daConnection]	=	xProp->getPropertyValue(PROPERTY_ACTIVECONNECTION);
-                        aDescriptor[daCursor]		<<=	xCursorClone;
-                        aDescriptor[daSelection]	<<=	aSelection;
+                        aDescriptor[daCursor]		<<= xCursorClone;
+                        aDescriptor[daSelection]	<<= aSelection;
 
                         xDispatch->dispatch(aParentUrl, aDescriptor.createPropertyValueSequence());
                     }
@@ -1894,7 +1906,7 @@ void SbaTableQueryBrowser::initializeTreeModel()
         // fill the model with the names of the registered datasources
         Sequence< ::rtl::OUString > aDatasources = m_xDatabaseContext->getElementNames();
         const ::rtl::OUString* pBegin	= aDatasources.getConstArray();
-        const ::rtl::OUString* pEnd		= pBegin + aDatasources.getLength();
+        const ::rtl::OUString* pEnd 	= pBegin + aDatasources.getLength();
         for (; pBegin != pEnd; ++pBegin)
             implAddDatasource(*pBegin, aDBImage, sQueriesName, aQueriesImage, sTablesName, aTablesImage, aBookmarksName, aBookmarksImage);
     }
@@ -1915,7 +1927,7 @@ sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xName
     {
         Sequence< ::rtl::OUString > aNames = _xNameAccess->getElementNames();
         const ::rtl::OUString* pBegin	= aNames.getConstArray();
-        const ::rtl::OUString* pEnd		= pBegin + aNames.getLength();
+        const ::rtl::OUString* pEnd 	= pBegin + aNames.getLength();
         for (; pBegin != pEnd; ++pBegin)
         {
             if(!m_pTreeView->getListBox()->GetEntryPosByName(*pBegin,_pParent))
@@ -1952,21 +1964,13 @@ IMPL_LINK(SbaTableQueryBrowser, OnExpandEntry, SvLBoxEntry*, _pParent)
 
     if (etTableContainer == pData->eType)
     {
-        // it could be that we already have a connection
-        DBTreeListModel::DBTreeListUserData* pFirstData = static_cast<DBTreeListModel::DBTreeListUserData*>(pFirstParent->GetUserData());
-        Reference<XConnection> xConnection(pFirstData->xObject,UNO_QUERY);
         WaitObject aWaitCursor(getBrowserView());
-        if(!pFirstData->xObject.is())
-        {
-            // show the "connecting to ..." status
-            String sConnecting(ModuleRes(STR_CONNECTING_DATASOURCE));
-            sConnecting.SearchAndReplaceAscii("$name$", pString->GetText());
-            BrowserViewStatusDisplay aShowStatus(static_cast<UnoDataBrowserView*>(getView()), sConnecting);
 
-            // connect
-            xConnection = connectWithStatus( pString->GetText(), pFirstData );
-        }
-        if(xConnection.is())
+        // it could be that we already have a connection
+        Reference<XConnection> xConnection;
+        ensureConnection( pFirstParent, xConnection );
+
+        if ( xConnection.is() )
         {
             SQLExceptionInfo aInfo;
             try
@@ -2170,7 +2174,7 @@ sal_Bool SbaTableQueryBrowser::implLoadAnything(const ::rtl::OUString& _rDataSou
     Reference<XPropertySet> xProp(getRowSet(),UNO_QUERY);
     if(xProp.is())
     {
-        Reference< ::com::sun::star::form::XLoadable >  xLoadable(xProp,UNO_QUERY);
+        Reference< ::com::sun::star::form::XLoadable >	xLoadable(xProp,UNO_QUERY);
         try
         {
             // the values allowing the RowSet to re-execute
@@ -2293,27 +2297,6 @@ void SbaTableQueryBrowser::openHelpAgent(sal_Int32 _nHelpId)
 }
 
 //------------------------------------------------------------------------------
-Reference< XConnection > SbaTableQueryBrowser::connectWithStatus( const ::rtl::OUString& _rDataSourceName, void* _pTreeListUserData )
-{
-    // show the "connecting to ..." status
-    String sConnecting(ModuleRes(STR_CONNECTING_DATASOURCE));
-    sConnecting.SearchAndReplaceAscii("$name$", _rDataSourceName);
-    BrowserViewStatusDisplay aShowStatus(static_cast<UnoDataBrowserView*>(getView()), sConnecting);
-
-    // build a string showing context information in case of error
-    String sConnectingContext( ModuleRes( STR_COULDNOTCONNECT_DATASOURCE ) );
-    sConnectingContext.SearchAndReplaceAscii("$name$", _rDataSourceName);
-
-    // connect
-    Reference< XConnection > xConnection = connect(_rDataSourceName, sConnectingContext, rtl::OUString(), sal_True);
-
-    // remember the connection
-    static_cast< DBTreeListModel::DBTreeListUserData* >( _pTreeListUserData )->xObject = xConnection;
-
-    return xConnection;
-}
-
-//------------------------------------------------------------------------------
 IMPL_LINK(SbaTableQueryBrowser, OnSelectEntry, SvLBoxEntry*, _pEntry)
 {
     ::osl::MutexGuard aGuard(m_aEntryMutex);
@@ -2367,7 +2350,7 @@ IMPL_LINK(SbaTableQueryBrowser, OnSelectEntry, SvLBoxEntry*, _pEntry)
     // check if need to rebuild the rowset
     sal_Bool bRebuild = xOldConnection != xConnection || nOldType != nCommandType || aName != aOldName;
 
-    Reference< ::com::sun::star::form::XLoadable >  xLoadable = getLoadable();
+    Reference< ::com::sun::star::form::XLoadable >	xLoadable = getLoadable();
     bRebuild |= !xLoadable->isLoaded();
     if(bRebuild)
     {
@@ -2403,17 +2386,7 @@ IMPL_LINK(SbaTableQueryBrowser, OnSelectEntry, SvLBoxEntry*, _pEntry)
             selectPath(m_pCurrentlyDisplayed, sal_True);
 
             // get the name of the data source currently selected
-            ::rtl::OUString sDataSourceName;
-            SvLBoxEntry* pEntry = m_pTreeView->getListBox()->GetRootLevelParent(m_pCurrentlyDisplayed);
-
-            if (pEntry)
-            {
-                SvLBoxItem* pTextItem = pEntry->GetFirstItem(SV_ITEM_ID_BOLDLBSTRING);
-                if (pTextItem)
-                    sDataSourceName = static_cast<SvLBoxString*>(pTextItem)->GetText();
-            }
-            if (!xConnection.is())
-                xConnection = connectWithStatus( sDataSourceName, pConData );
+            ensureConnection( m_pCurrentlyDisplayed, xConnection );
 
             if(!xConnection.is())
             {
@@ -2462,9 +2435,10 @@ IMPL_LINK(SbaTableQueryBrowser, OnSelectEntry, SvLBoxEntry*, _pEntry)
             sStatus.SearchAndReplaceAscii("$name$", aName);
             BrowserViewStatusDisplay aShowStatus(static_cast<UnoDataBrowserView*>(getView()), sStatus);
 
-            if (implLoadAnything(sDataSourceName, aName, nCommandType, sal_True, xConnection))
+            String sDataSourceName( GetEntryText( pConnection ) );
+            if ( implLoadAnything( sDataSourceName, aName, nCommandType, sal_True, xConnection ) )
                 // set the title of the beamer
-                setTitle(sDataSourceName,aName);
+                setTitle( sDataSourceName, aName );
             else
             {	// clean up
                 criticalFail();
@@ -2521,7 +2495,7 @@ SvLBoxEntry* SbaTableQueryBrowser::getEntryFromContainer(const Reference<XNameAc
         if(pBookmarksData && pBookmarksData->xObject.get() == _rxNameAccess.get())
             break;
 
-        pDSLoop		= pListBox->NextSibling(pDSLoop);
+        pDSLoop 	= pListBox->NextSibling(pDSLoop);
         pContainer	= NULL;
     }
     return pContainer;
@@ -2799,6 +2773,34 @@ void SAL_CALL SbaTableQueryBrowser::elementReplaced( const ContainerEvent& _rEve
 }
 
 // -------------------------------------------------------------------------
+void SbaTableQueryBrowser::disposeConnection( SvLBoxEntry* _pDSEntry )
+{
+    DBG_ASSERT( _pDSEntry, "SbaTableQueryBrowser::disposeConnection: invalid entry (NULL)!" );
+    OSL_ENSURE( m_pTreeView->getListBox()->GetRootLevelParent( _pDSEntry ) == _pDSEntry, "SbaTableQueryBrowser::disposeConnection: invalid entry (not top-level)!" );
+
+    if ( _pDSEntry )
+    {
+        DBTreeListModel::DBTreeListUserData* pData = static_cast< DBTreeListModel::DBTreeListUserData* >( _pDSEntry->GetUserData() );
+        if ( pData )
+        {
+            // remove as event listener
+            Reference< XComponent > xComponent( pData->xObject, UNO_QUERY );
+            if ( xComponent.is() )
+            {
+                Reference< XEventListener > xListener( static_cast< ::cppu::OWeakObject* >( this ), UNO_QUERY );
+                xComponent->removeEventListener( xListener );
+            }
+
+            // dispose
+            ::comphelper::disposeComponent( pData->xObject );
+
+            // clear
+            pData->xObject.clear();
+        }
+    }
+}
+
+// -------------------------------------------------------------------------
 void SbaTableQueryBrowser::closeConnection(SvLBoxEntry* _pDSEntry,sal_Bool _bDisposeConnection)
 {
     DBG_ASSERT(_pDSEntry, "SbaTableQueryBrowser::closeConnection: invalid entry (NULL)!");
@@ -2814,7 +2816,7 @@ void SbaTableQueryBrowser::closeConnection(SvLBoxEntry* _pDSEntry,sal_Bool _bDis
         m_pTreeView->getListBox()->Collapse(pContainers);
         m_pTreeView->getListBox()->EnableExpandHandler(pContainers);
         // and delete their children (they are connection-relative)
-        for	(SvLBoxEntry* pElements = m_pTreeModel->FirstChild(pContainers); pElements; )
+        for (SvLBoxEntry* pElements = m_pTreeModel->FirstChild(pContainers); pElements; )
         {
             SvLBoxEntry* pRemove = pElements;
             pElements= m_pTreeModel->NextSibling(pElements);
@@ -2826,19 +2828,9 @@ void SbaTableQueryBrowser::closeConnection(SvLBoxEntry* _pDSEntry,sal_Bool _bDis
     // collapse the entry itself
     m_pTreeView->getListBox()->Collapse(_pDSEntry);
 
-    // get the connection
-    DBTreeListModel::DBTreeListUserData* pData = static_cast<DBTreeListModel::DBTreeListUserData*>(_pDSEntry->GetUserData());
-    if(_bDisposeConnection) // and dispose/reset it
-    {
-        Reference< XComponent >  xComponent(pData->xObject, UNO_QUERY);
-        if (xComponent.is())
-        {
-            Reference< ::com::sun::star::lang::XEventListener> xEvtL((::cppu::OWeakObject*)this,UNO_QUERY);
-            xComponent->removeEventListener(xEvtL);
-        }
-        ::comphelper::disposeComponent(pData->xObject);
-    }
-    pData->xObject.clear();
+    // dispose/reset the connection
+    if ( _bDisposeConnection )
+        disposeConnection( _pDSEntry );
 }
 
 // -------------------------------------------------------------------------
@@ -2898,20 +2890,7 @@ void SbaTableQueryBrowser::unloadAndCleanup(sal_Bool _bDisposeConnection, sal_Bo
 
         // dispose the connection
         if(_bDisposeConnection)
-        {
-            DBTreeListModel::DBTreeListUserData* pData = static_cast<DBTreeListModel::DBTreeListUserData*>(pDSEntry->GetUserData());
-            if(pData)
-            {
-                Reference< XComponent >  xComponent(pData->xObject, UNO_QUERY);
-                if (xComponent.is())
-                {
-                    Reference< ::com::sun::star::lang::XEventListener> xEvtL((::cppu::OWeakObject*)this,UNO_QUERY);
-                    xComponent->removeEventListener(xEvtL);
-                }
-                pData->xObject = NULL;
-            }
-            ::comphelper::disposeComponent(xConn);
-        }
+            disposeConnection( pDSEntry );
     }
     catch(SQLException& e)
     {
@@ -2946,7 +2925,7 @@ void SAL_CALL SbaTableQueryBrowser::initialize( const Sequence< Any >& aArgument
     Reference<XConnection> xConnection;
     PropertyValue aValue;
     const Any* pBegin	= aArguments.getConstArray();
-    const Any* pEnd		= pBegin + aArguments.getLength();
+    const Any* pEnd 	= pBegin + aArguments.getLength();
 
     ::rtl::OUString aTableName,aCatalogName,aSchemaName;
 
@@ -3091,7 +3070,22 @@ sal_Bool SbaTableQueryBrowser::ensureConnection(SvLBoxEntry* _pDSEntry, void* pD
             _xConnection = Reference<XConnection>(pData->xObject,UNO_QUERY);
 
         if (!_xConnection.is() && pData)
-            _xConnection = connectWithStatus( aDSName, pData );
+        {
+            // show the "connecting to ..." status
+            String sConnecting(ModuleRes(STR_CONNECTING_DATASOURCE));
+            sConnecting.SearchAndReplaceAscii("$name$", aDSName);
+            BrowserViewStatusDisplay aShowStatus(static_cast<UnoDataBrowserView*>(getView()), sConnecting);
+
+            // build a string showing context information in case of error
+            String sConnectingContext( ModuleRes( STR_COULDNOTCONNECT_DATASOURCE ) );
+            sConnectingContext.SearchAndReplaceAscii("$name$", aDSName);
+
+            // connect
+            _xConnection = connect(aDSName, sConnectingContext, rtl::OUString(), sal_True);
+
+            // remember the connection
+            static_cast< DBTreeListModel::DBTreeListUserData* >( pData )->xObject = _xConnection;
+        }
     }
 
     return _xConnection.is();
@@ -3291,7 +3285,7 @@ void SbaTableQueryBrowser::implCreateObject( SvLBoxEntry* _pApplyTo, sal_uInt16 
         ::osl::MutexGuard aGuard(m_aEntryMutex);
 
         // get all needed properties for design
-        Reference<XConnection> xConnection;	 // supports the service sdb::connection
+        Reference<XConnection> xConnection;  // supports the service sdb::connection
         if(!ensureConnection(_pApplyTo, xConnection))
             return;
 
@@ -3417,7 +3411,7 @@ void SbaTableQueryBrowser::implRenameEntry( SvLBoxEntry* _pApplyTo )
 void SbaTableQueryBrowser::implDropTable( SvLBoxEntry* _pApplyTo )
 {
     ::osl::MutexGuard aGuard(m_aEntryMutex);
-    Reference<XConnection> xConnection;	 // supports the service sdb::connection
+    Reference<XConnection> xConnection;  // supports the service sdb::connection
     if(!ensureConnection(_pApplyTo, xConnection))
         return;
 
@@ -3671,7 +3665,7 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
                 // 3.2 actions on existing queries
                 aContextMenu.EnableItem(ID_EDIT_QUERY_DESIGN,	etQuery == eType);
                 aContextMenu.EnableItem(ID_DROP_QUERY,			etQuery == eType);
-                aContextMenu.EnableItem(ID_TREE_QUERY_COPY,		etQuery == eType);
+                aContextMenu.EnableItem(ID_TREE_QUERY_COPY, 	etQuery == eType);
                 aContextMenu.EnableItem(ID_RENAME_ENTRY,		etQuery == eType);
             }
             break;
@@ -3852,19 +3846,19 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
                     // the type of the object to initially select
                     sal_Int32 nObjectType = -1;
                     if (etTable == eType)
-                         nObjectType = CommandType::TABLE;
+                        nObjectType = CommandType::TABLE;
                     else if (etQuery == eType)
-                         nObjectType = CommandType::QUERY;
+                        nObjectType = CommandType::QUERY;
 
                     // the object name
                     String sObjectName;
                     if (-1 != nObjectType)
-                         sObjectName = GetEntryText(pEntry);
+                        sObjectName = GetEntryText(pEntry);
 
                     // the connection
                     Reference< XConnection > xConn;
                     if (ensureConnection(pEntry, xConn))
-                         aHelper.newFormWithPilot(GetEntryText(pDSEntry), nObjectType, sObjectName, xConn);
+                        aHelper.newFormWithPilot(GetEntryText(pDSEntry), nObjectType, sObjectName, xConn);
                 }
                 break;
 
@@ -3964,21 +3958,19 @@ void SbaTableQueryBrowser::ensureObjectExists(SvLBoxEntry* _pApplyTo)
             Reference<XNameAccess> xNameAccess;
             if(pParentData->eType == etQueryContainer)
             {// special handling for queries because otherwise we got commanddefinition instead of query object
-                ::rtl::OUString sDataSourceName;
-                SvLBoxEntry* pRootEntry = m_pTreeView->getListBox()->GetRootLevelParent(_pApplyTo);
-                DBTreeListModel::DBTreeListUserData* pConData = NULL;
-                if (pRootEntry)
-                {
-                    pConData = static_cast<DBTreeListModel::DBTreeListUserData*>(pRootEntry->GetUserData());
 
-                    SvLBoxItem* pTextItem = pRootEntry->GetFirstItem(SV_ITEM_ID_BOLDLBSTRING);
-                    if (pTextItem)
-                        sDataSourceName = static_cast<SvLBoxString*>(pTextItem)->GetText();
-                }
-                Reference<XConnection> xConnection = connectWithStatus( sDataSourceName, pConData );
-                Reference<XQueriesSupplier> xSup(xConnection,UNO_QUERY);
-                if(xSup.is())
+                // connect to the data source
+                SvLBoxEntry* pRootEntry = m_pTreeView->getListBox()->GetRootLevelParent( _pApplyTo );
+                Reference< XConnection > xConnection;
+                ensureConnection( pRootEntry, xConnection );
+
+                // get the queries
+                Reference< XQueriesSupplier > xSup( xConnection, UNO_QUERY );
+                if ( xSup.is() )
                     xNameAccess = xSup->getQueries();
+                    // TODO: this seems to be a hack ... this relies on the fact that the query is create when we call
+                    // getQueries ....
+                    // fs@openoffice.org - 24.01.2002
             }
             else
                 xNameAccess = Reference<XNameAccess>(pParentData->xObject,UNO_QUERY);
@@ -3989,7 +3981,7 @@ void SbaTableQueryBrowser::ensureObjectExists(SvLBoxEntry* _pApplyTo)
                 sCurrentObject = static_cast<SvLBoxString*>(pTextItem)->GetText();
             try
             {
-                if(xNameAccess.is() && xNameAccess->hasByName(sCurrentObject))  // remember the table or query object
+                if(xNameAccess.is() && xNameAccess->hasByName(sCurrentObject))	// remember the table or query object
                     xNameAccess->getByName(sCurrentObject) >>= pData->xObject;
             }
             catch(Exception&)
@@ -4013,7 +4005,6 @@ void SbaTableQueryBrowser::frameAction(const ::com::sun::star::frame::FrameActio
 
 }
 // -----------------------------------------------------------------------------
-<<<<<<< unodatbr.cxx
 void SbaTableQueryBrowser::clearGridColumns(const Reference< XNameContainer >& _xColContainer)
 {
     // first we have to clear the grid
@@ -4028,7 +4019,7 @@ void SbaTableQueryBrowser::clearGridColumns(const Reference< XNameContainer >& _
         ::comphelper::disposeComponent(xColumn);
     }
 }
-=======
+// -----------------------------------------------------------------------------
 IMPL_LINK( SbaTableQueryBrowser, OnAsyncClose, void*, NOTINTERESTEDIN )
 {
     {
@@ -4041,7 +4032,6 @@ IMPL_LINK( SbaTableQueryBrowser, OnAsyncClose, void*, NOTINTERESTEDIN )
     return 0L;
 }
 
->>>>>>> 1.119.2.1
 // .........................................................................
 }	// namespace dbaui
 // .........................................................................
