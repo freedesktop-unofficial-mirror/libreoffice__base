@@ -2,9 +2,9 @@
  *
  *  $RCSfile: sbagrid.hxx,v $
  *
- *  $Revision: 1.19 $
+ *  $Revision: 1.20 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-19 17:52:42 $
+ *  last change: $Author: vg $ $Date: 2003-10-07 12:08:30 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -90,7 +90,7 @@
 #ifndef _SBA_MULTIPLEX_HXX
 #include "sbamultiplex.hxx"
 #endif
-#ifndef _SVX_DATACCESSDESCRIPTOR_HXX_ 
+#ifndef _SVX_DATACCESSDESCRIPTOR_HXX_
 #include <svx/dataaccessdescriptor.hxx>
 #endif
 #include <queue>
@@ -105,7 +105,7 @@ namespace dbaui
         bool operator() (const ::com::sun::star::util::URL& x, const ::com::sun::star::util::URL& y) const {return x.Complete == y.Complete ? true : false;}
     };
 
-    struct SbaURLHash 
+    struct SbaURLHash
     {
         sal_Int32 operator() (const ::com::sun::star::util::URL& x) const {return x.Complete.hashCode();}
     };
@@ -198,8 +198,13 @@ namespace dbaui
 
     protected:
         virtual FmGridControl*	imp_CreateControl(Window* pParent, WinBits nStyle);
-
+#if defined(_MSC_VER) && (_MSC_VER >= 1310 )
+        typedef ::com::sun::star::frame::XStatusListener xstlist_type;
+        typedef ::com::sun::star::uno::Reference< xstlist_type > xlistener_type;
+        void NotifyStatusChanged(const ::com::sun::star::util::URL& aUrl, const xlistener_type & xControl = xlistener_type() );
+#else
         void NotifyStatusChanged(const ::com::sun::star::util::URL& aUrl, const ::com::sun::star::uno::Reference< ::com::sun::star::frame::XStatusListener > & xControl = ::com::sun::star::uno::Reference< ::com::sun::star::frame::XStatusListener > ());
+#endif # _MSC_VER>=1310
 
     private:
         // for asny execution of XDispatch::dispatch
@@ -279,7 +284,7 @@ namespace dbaui
 
     // Attributes
     protected:
-        ::svx::ODataAccessDescriptor													m_aDataDescriptor;	
+        ::svx::ODataAccessDescriptor													m_aDataDescriptor;
         ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSQLQueryComposer >	m_xComposer;	// for DnD we need a composed query ...
         SbaGridListener*	m_pMasterListener;
         sal_Int32			m_nAsyncDropEvent;
@@ -316,13 +321,13 @@ namespace dbaui
 
         HeaderBar* GetHeaderBar() const { return FmGridControl::GetHeaderBar(); }
 
-        /** return the description of the specified object. 
+        /** return the description of the specified object.
             @param	eObjType
                 The type to ask for
             @param	_nPosition
                 The position of a tablecell (index position), header bar  colum/row cell
-            @return  
-                The description of the specified object. 
+            @return
+                The description of the specified object.
         */
         virtual ::rtl::OUString GetAccessibleDescription( ::svt::AccessibleBrowseBoxObjType eObjType,sal_Int32 _nPosition = -1) const;
 
