@@ -2,9 +2,9 @@
  *
  *  $RCSfile: KeySet.cxx,v $
  *
- *  $Revision: 1.53 $
+ *  $Revision: 1.54 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-17 14:41:21 $
+ *  last change: $Author: obo $ $Date: 2005-01-05 12:26:22 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -129,6 +129,9 @@
 #endif
 #ifndef DBACCESS_CORE_API_QUERYCOMPOSER_HXX
 #include "querycomposer.hxx"
+#endif
+#ifndef DBACCESS_SOURCE_CORE_INC_COMPOSERTOOLS_HXX
+#include "composertools.hxx"
 #endif
 
 using namespace dbaccess;
@@ -261,7 +264,7 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet)
         if(aIter != (*m_pKeyColumnNames).end())
             aFilter += aAnd;
     }
-    
+
     ::rtl::OUString sOldFilter = m_xComposer->getFilter();
     Reference<XSingleSelectQueryComposer> xQu(m_xComposer,UNO_QUERY);
     xQu->setFilter(aFilter);
@@ -422,9 +425,9 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     if ( xIndexSup.is() )
         xIndexes.set(xIndexSup->getIndexes(),UNO_QUERY);
 
-    
+
     ::std::vector< Reference<XNameAccess> > aAllIndexColumns;
-    lcl_fillIndexColumns(xIndexes,aAllIndexColumns);	
+    lcl_fillIndexColumns(xIndexes,aAllIndexColumns);
 
     ::rtl::OUString aColumnName;
     ::rtl::OUString aCondition,sKeyCondition,sIndexCondition,sSetValues;
