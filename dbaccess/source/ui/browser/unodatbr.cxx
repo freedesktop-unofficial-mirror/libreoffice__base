@@ -2,9 +2,9 @@
  *
  *	$RCSfile: unodatbr.cxx,v $
  *
- *  $Revision: 1.150 $
+ *  $Revision: 1.151 $
  *
- *  last change: $Author: vg $ $Date: 2003-04-11 14:37:54 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:03:31 $
  *
  *	The Contents of this file are made available subject to the terms of
  *	either of the following licenses
@@ -171,7 +171,7 @@
 #ifndef _COM_SUN_STAR_SDB_XQUERYDEFINITIONSSUPPLIER_HPP_
 #include <com/sun/star/sdb/XQueryDefinitionsSupplier.hpp>
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_
 #include <com/sun/star/ui/dialogs/XExecutableDialog.hpp>
 #endif
 #ifndef _COM_SUN_STAR_BEANS_PROPERTYVALUE_HPP_
@@ -196,7 +196,7 @@
 #ifndef _COM_SUN_STAR_SDB_SQLCONTEXT_HPP_
 #include <com/sun/star/sdb/SQLContext.hpp>
 #endif
-#ifndef _COMPHELPER_SEQUENCE_HXX_ 
+#ifndef _COMPHELPER_SEQUENCE_HXX_
 #include <comphelper/sequence.hxx>
 #endif
 #ifndef _COMPHELPER_TYPES_HXX_
@@ -767,7 +767,7 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
                         aDefault <<= (comphelper::getString(aDefault).toInt32() == 0) ? (sal_Int16)STATE_NOCHECK : (sal_Int16)STATE_CHECK;
                     else
                         aDefault <<= ((sal_Int16)STATE_DONTKNOW);
-                    
+
                 }
 
                 if(aDefault.hasValue())
@@ -997,7 +997,7 @@ void SAL_CALL SbaTableQueryBrowser::statusChanged( const FeatureStateEvent& _rEv
                 {
                     // if it's the slot for the document data source, remember the state
                     Sequence< PropertyValue > aDescriptor;
-    #ifdef _DEBUG
+    #if OSL_DEBUG_LEVEL > 0
                     sal_Bool bProperFormat =
     #endif
                     _rEvent.State >>= aDescriptor;
@@ -1555,7 +1555,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
             return aReturn;
 
         // no chance without valid models
-        if (isValid() && !isValidCursor() && nId != ID_BROWSER_CLOSE) 
+        if (isValid() && !isValidCursor() && nId != ID_BROWSER_CLOSE)
             return aReturn;
 
         // no chance while loading the form
@@ -1709,7 +1709,7 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId)
                 ::rtl::OUString sNewQueryCommand;
                 sal_Bool bNewQueryEP;
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
                 sal_Bool bIsQuery =
 #endif
                 implGetQuerySignature( sNewQueryCommand, bNewQueryEP );
@@ -1843,7 +1843,7 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId)
             closeTask();
             // if it's not 0, such a async close is already pending
             break;
-        
+
         case ID_BROWSER_PASTE:
             if(m_pTreeView->HasChildPathFocus())
             {
@@ -1941,8 +1941,8 @@ void SbaTableQueryBrowser::initializeTreeModel()
     }
 }
 // -------------------------------------------------------------------------
-sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xNameAccess, 
-                                            SvLBoxEntry* _pParent, 
+sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xNameAccess,
+                                            SvLBoxEntry* _pParent,
                                             const EntryType& _rEntryType)
 {
     DBTreeListModel::DBTreeListUserData* pData = static_cast<DBTreeListModel::DBTreeListUserData*>(_pParent->GetUserData());
@@ -1951,7 +1951,7 @@ sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xName
 
     ModuleRes aResId(DBTreeListModel::getImageResId(_rEntryType,isHiContrast()));
     Image aImage(aResId);
-    
+
     try
     {
         Sequence< ::rtl::OUString > aNames = _xNameAccess->getElementNames();
@@ -2320,7 +2320,7 @@ IMPL_LINK(SbaTableQueryBrowser, OnSelectEntry, SvLBoxEntry*, _pEntry)
 
     OSL_ENSURE(m_pTreeModel->HasParent(_pEntry), "SbaTableQueryBrowser::OnSelectEntry: invalid entry (1)!");
     OSL_ENSURE(m_pTreeModel->HasParent(m_pTreeModel->GetParent(_pEntry)), "SbaTableQueryBrowser::OnSelectEntry: invalid entry (2)!");
-    
+
     // get the entry for the tables or queries
     SvLBoxEntry* pContainer = m_pTreeModel->GetParent(_pEntry);
     DBTreeListModel::DBTreeListUserData* pContainerData = static_cast<DBTreeListModel::DBTreeListUserData*>(pContainer->GetUserData());
@@ -2523,7 +2523,7 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
         {
             // only insert userdata when we have a table because the query is only a commanddefinition object and not a query
             DBTreeListModel::DBTreeListUserData* pNewData = new DBTreeListModel::DBTreeListUserData;
-            
+
             _rEvent.Element >>= pNewData->xObject;// remember the new element
             // now we have to check which type we have here
             Reference<XPropertySet> xProp(pNewData->xObject,UNO_QUERY);
@@ -2539,9 +2539,9 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
             vos::OGuard aGuard( Application::GetSolarMutex() );
             Image aImage = Image(ModuleRes(nImageResId));
             m_pTreeView->getListBox()->InsertEntry(::comphelper::getString(_rEvent.Accessor),
-                                                                            aImage, 
-                                                                            aImage, 
-                                                                            pEntry, 
+                                                                            aImage,
+                                                                            aImage,
+                                                                            pEntry,
                                                                             sal_False,
                                                                             LIST_APPEND,
                                                                             pNewData);
@@ -2564,9 +2564,9 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
                 vos::OGuard aGuard( Application::GetSolarMutex() );
                 Image aImage = Image(ModuleRes(nImageResId));
                 m_pTreeView->getListBox()->InsertEntry(::comphelper::getString(_rEvent.Accessor),
-                                                                                aImage, 
-                                                                                aImage, 
-                                                                                pEntry, 
+                                                                                aImage,
+                                                                                aImage,
+                                                                                pEntry,
                                                                                 sal_False,
                                                                                 LIST_APPEND,
                                                                                 pNewData);
@@ -2877,7 +2877,7 @@ void SbaTableQueryBrowser::unloadAndCleanup(sal_Bool _bDisposeConnection, sal_Bo
         Reference< XPropertySet > xProp(getRowSet(),UNO_QUERY);
         Reference< XConnection > xConn;
         ::cppu::extractInterface(xConn, xProp->getPropertyValue(PROPERTY_ACTIVECONNECTION));
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         {
             Reference< XComponent > xComp;
             ::cppu::extractInterface(xComp, xProp->getPropertyValue(PROPERTY_ACTIVECONNECTION));
@@ -2999,7 +2999,7 @@ void SAL_CALL SbaTableQueryBrowser::initialize( const Sequence< Any >& aArgument
             xProp->setPropertyValue(PROPERTY_UPDATE_CATALOGNAME,makeAny(aCatalogName));
             xProp->setPropertyValue(PROPERTY_UPDATE_SCHEMANAME,makeAny(aSchemaName));
             xProp->setPropertyValue(PROPERTY_UPDATE_TABLENAME,makeAny(aTableName));
-            
+
         }
         catch(const Exception&)
         {
@@ -3256,9 +3256,9 @@ void SbaTableQueryBrowser::implAdministrate( SvLBoxEntry* _pApplyTo )
         if ( !xWindow.is() )
             xWindow = VCLUnoHelper::GetInterface(m_pTreeView->getListBox()->Window::GetParent());
         // the parent window
-        aArgs[0] <<= PropertyValue( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ParentWindow")), 
+        aArgs[0] <<= PropertyValue( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ParentWindow")),
                                     0,
-                                    makeAny(xWindow), 
+                                    makeAny(xWindow),
                                     PropertyState_DIRECT_VALUE);
 
         // the initial selection
@@ -3457,7 +3457,7 @@ void SbaTableQueryBrowser::implDropTable( SvLBoxEntry* _pApplyTo )
                 else
                 {// could be a view
                     Reference<XViewsSupplier> xViewsSup(xConnection,UNO_QUERY);
-                    
+
                     Reference<XNameAccess> xViews;
                     if(xViewsSup.is())
                         xViews = xViewsSup->getViews();
@@ -3541,7 +3541,7 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
         pEntryData = static_cast<DBTreeListModel::DBTreeListUserData*>(pEntry->GetUserData());
     }
 
-    
+
     EntryType eType = pEntryData ? pEntryData->eType : etUnknown;
 
     // get the popup menu to use
@@ -3739,7 +3739,7 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
         m_pTreeView->getListBox()->Select(pOldSelection);
         m_pTreeView->getListBox()->unlockAutoSelect();
     }
-    
+
     switch (nPos)
     {
         case ID_TREE_ADMINISTRATE:
@@ -3805,7 +3805,7 @@ sal_Bool SbaTableQueryBrowser::requestContextMenu( const CommandEvent& _rEvent )
             if ( etQuery == eType || etQueryContainer == eType)
                 implPasteQuery( pEntry, ODataAccessObjectTransferable::extractObjectDescriptor(aTransferData) );
             else
-                implPasteTable( pEntry, aTransferData ); 
+                implPasteTable( pEntry, aTransferData );
         }
         break;
 
@@ -3898,7 +3898,7 @@ void SbaTableQueryBrowser::handleLinkContextMenu(USHORT _nPos,SvLBoxEntry* pEntr
             }
         }
             break;
-        
+
         default:
             DBG_ERROR("SbaTableQueryBrowser::requestContextMenu: invalid menu id!");
             break;
