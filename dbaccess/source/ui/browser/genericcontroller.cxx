@@ -2,9 +2,9 @@
  *
  *	$RCSfile: genericcontroller.cxx,v $
  *
- *	$Revision: 1.46 $
+ *	$Revision: 1.47 $
  *
- *	last change: $Author: oj $ $Date: 2002-10-11 08:53:05 $
+ *	last change: $Author: as $ $Date: 2002-10-30 14:00:16 $
  *
  *	The Contents of this file are made available subject to the terms of
  *	either of the following licenses
@@ -130,7 +130,7 @@
 #ifndef _DBAUI_DATASOURCECONNECTOR_HXX_
 #include "datasourceconnector.hxx"
 #endif
-#ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX 
+#ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
 #include <svtools/moduleoptions.hxx>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_FRAMESEARCHFLAG_HPP_
@@ -785,7 +785,7 @@ void OGenericUnoController::AddSupportedFeatures()
     m_aSupportedFeatures[ ::rtl::OUString::createFromAscii(".uno:Cut")] = ID_BROWSER_CUT;
     m_aSupportedFeatures[ ::rtl::OUString::createFromAscii(".uno:Paste")] = ID_BROWSER_PASTE;
     m_aSupportedFeatures[ ::rtl::OUString::createFromAscii(".uno:ClipboardFormatItems")] = ID_BROWSER_CLIPBOARD_FORMAT_ITEMS;
-        // since 
+        // since
     m_aSupportedFeatures[ ::rtl::OUString::createFromAscii(".uno:DBSlots/EditDoc")] = ID_BROWSER_EDITDOC;
 }
 
@@ -973,7 +973,7 @@ IMPL_LINK(OGenericUnoController, OnAsyncCloseTask, void*, EMPTYARG)
     {
         try
         {
-            // #104032# OJ
+/*AS           // #104032# OJ
             URL aURL;
             aURL.Complete = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(".uno:CloseDoc"));
             if (m_xUrlTransformer.is())
@@ -987,13 +987,13 @@ IMPL_LINK(OGenericUnoController, OnAsyncCloseTask, void*, EMPTYARG)
             {
                 xCloseDispatch->dispatch(aURL, Sequence< PropertyValue >());
             }
-            else
+            else*/
             {
                 Reference< ::com::sun::star::util::XCloseable > xCloseable(m_xCurrentFrame,UNO_QUERY);
                 if(xCloseable.is())
                     xCloseable->close(sal_False); // false - holds the owner ship for this frame inside this object!
             }
-        } 
+        }
         catch(const Exception&) {}
     }
     return 0L;
