@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RowSet.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: oj $ $Date: 2000-09-29 15:20:51 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -129,10 +129,10 @@ namespace dbaccess
 
     class ORowSet :	public ORowSet_BASE1
                     , public ORowSetBase
-                    , public ::utl::OPropertyArrayUsageHelper<ORowSet>
+                    , public ::comphelper::OPropertyArrayUsageHelper<ORowSet>
     {
         friend class ORowSetClone;
-        
+
         ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory > 	m_xServiceManager;
         ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >			m_xActiveConnection;
         ::com::sun::star::uno::Any														m_aActiveConnection;
@@ -146,9 +146,9 @@ namespace dbaccess
         connectivity::OWeakRefArray					m_aClones;
         connectivity::OSQLParser					m_aParser;
         connectivity::OSQLParseNode*				m_pParseTree;
-        
+
         connectivity::ORowVector< ORowSetValue >	m_aParameterRow; // hold all parameters
-                                                    
+
         rtl::OUString								m_aCommand;
         rtl::OUString								m_aDataSourceName;
         rtl::OUString								m_aURL;
@@ -251,9 +251,9 @@ namespace dbaccess
     // ::com::sun::star::sdbc::XCloseable
         virtual void SAL_CALL close(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
 
-    // utl::OPropertyArrayUsageHelper
+    // comphelper::OPropertyArrayUsageHelper
         virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-        
+
     // cppu::OPropertySetHelper
         virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
 
@@ -313,7 +313,7 @@ namespace dbaccess
         virtual void SAL_CALL execute(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL addRowSetListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XRowSetListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL removeRowSetListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XRowSetListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
-    
+
     // ::com::sun::star::sdb::XRowSetApproveBroadcaster
         virtual void SAL_CALL addRowSetApproveListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XRowSetApproveListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL removeRowSetApproveListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XRowSetApproveListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
@@ -360,40 +360,40 @@ namespace dbaccess
     //************************************************************
     class ORowSetClone : public ORowSetBase
                          ,public OSubComponent
-                         ,public ::utl::OPropertyArrayUsageHelper < ORowSetClone >
+                         ,public ::comphelper::OPropertyArrayUsageHelper < ORowSetClone >
     {
     protected:
         sal_Int32					m_nFetchDirection;
         sal_Int32					m_nFetchSize;
         sal_Int32					m_nResultSetConcurrency;
-        sal_Int32					m_nResultSetType;	
+        sal_Int32					m_nResultSetType;
         sal_Int32					m_nPosition;
         sal_Bool					m_bIsBookmarable;
         sal_Bool					m_bFirst : 1;
         sal_Bool					m_bLast : 1;
-        sal_Bool					m_bRowObsolete : 1;	
-        sal_Bool					m_bDeleted : 1;	
+        sal_Bool					m_bRowObsolete : 1;
+        sal_Bool					m_bDeleted : 1;
 
     protected:
         // the clone can not insert anything
-        virtual void checkInsert() {} 
+        virtual void checkInsert() {}
     public:
         ORowSetClone(ORowSet& rParent);
         virtual ~ORowSetClone();
 
     // com::sun::star::lang::XTypeProvider
-        virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+        virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
         virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
     // com::sun::star::uno::XInterface
-        virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+        virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 
     // ::com::sun::star::lang::XServiceInfo
         virtual ::rtl::OUString SAL_CALL getImplementationName(  ) throw(::com::sun::star::uno::RuntimeException);
         virtual sal_Bool SAL_CALL supportsService( const ::rtl::OUString& ServiceName ) throw(::com::sun::star::uno::RuntimeException);
-        virtual ::com::sun::star::uno::Sequence< ::rtl::OUString > SAL_CALL getSupportedServiceNames(  ) throw(::com::sun::star::uno::RuntimeException);		
+        virtual ::com::sun::star::uno::Sequence< ::rtl::OUString > SAL_CALL getSupportedServiceNames(  ) throw(::com::sun::star::uno::RuntimeException);
 
     // com::sun::star::lang::XUnoTunnel
         virtual sal_Int64 SAL_CALL getSomething( const ::com::sun::star::uno::Sequence< sal_Int8 >& aIdentifier ) throw(::com::sun::star::uno::RuntimeException);
@@ -409,10 +409,10 @@ namespace dbaccess
         {
             return ::cppu::OPropertySetHelper::createPropertySetInfo(getInfoHelper());
         }
-        
-    // utl::OPropertyArrayUsageHelper
+
+    // comphelper::OPropertyArrayUsageHelper
         virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-        
+
     // cppu::OPropertySetHelper
         virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
     };
@@ -422,15 +422,18 @@ namespace dbaccess
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.2  2000/09/29 15:20:51  oj
+    rowset impl
+
     Revision 1.1.1.1  2000/09/19 00:15:38  hr
     initial import
-    
+
     Revision 1.2  2000/09/18 14:52:46  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:19:29  oj
     rowset addons
-    
+
     Revision 1.0 25.07.2000 13:24:59  oj
 ------------------------------------------------------------------------*/
 

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: query.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,11 +73,11 @@
 #ifndef _TOOLS_DEBUG_HXX
 #include <tools/debug.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_AGGREGATION_HXX_
-#include <unotools/propagg.hxx>
+#ifndef _COMPHELPER_PROPERTY_AGGREGATION_HXX_
+#include <comphelper/propagg.hxx>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
 
 #ifndef _COM_SUN_STAR_SDBC_XCONNECTION_HPP_
@@ -96,12 +96,12 @@ using namespace ::com::sun::star::util;
 using namespace ::com::sun::star::beans;
 using namespace ::com::sun::star::container;
 using namespace ::com::sun::star::registry;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::osl;
 using namespace ::cppu;
 
 #define AGG_PROPERTY(handle, propname_out)	\
-    static_cast< ::utl::OPropertyArrayAggregationHelper* >(const_cast< OQuery_LINUX* >(this)->getArrayHelper())->fillAggregatePropertyInfoByHandle(&propname_out, NULL, handle)
+    static_cast< ::comphelper::OPropertyArrayAggregationHelper* >(const_cast< OQuery_LINUX* >(this)->getArrayHelper())->fillAggregatePropertyInfoByHandle(&propname_out, NULL, handle)
 
 //==========================================================================
 //= OQuery_LINUX
@@ -139,7 +139,7 @@ OQuery_LINUX::~OQuery_LINUX()
 //--------------------------------------------------------------------------
 Sequence< Type > SAL_CALL OQuery_LINUX::getTypes() throw (RuntimeException)
 {
-    return ::utl::concatSequences(OQueryDescriptor::getTypes(), OQuery_Base::getTypes(), OConfigurationFlushable::getTypes());
+    return ::comphelper::concatSequences(OQueryDescriptor::getTypes(), OQuery_Base::getTypes(), OConfigurationFlushable::getTypes());
 }
 
 // XInterface
@@ -185,7 +185,7 @@ void SAL_CALL OQuery_LINUX::propertyChange( const PropertyChangeEvent& _rSource 
         DBG_ASSERT(_rSource.Source.get() == Reference< XInterface >(m_xCommandDefinition, UNO_QUERY).get(),
             "OQuery_LINUX::propertyChange : where did this call come from ?");
 
-        if (m_eDoingCurrently == SETTING_PROPERTIES)	
+        if (m_eDoingCurrently == SETTING_PROPERTIES)
             // we're setting the property ourself, so we will do the neccessary notifications later
             return;
 

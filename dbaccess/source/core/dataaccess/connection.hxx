@@ -2,9 +2,9 @@
  *
  *  $RCSfile: connection.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:40 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:19:39 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -106,7 +106,7 @@
 
 typedef ::cppu::ImplHelper3< ::com::sun::star::lang::XServiceInfo
                             ,::com::sun::star::sdbc::XConnection
-                            ,::com::sun::star::sdbc::XWarningsSupplier							
+                            ,::com::sun::star::sdbc::XWarningsSupplier
                             >	OConnectionRerouter_Base;
 //==========================================================================
 //= ODataLinkConnection - the base for sdb connections rerouting a part of
@@ -115,7 +115,7 @@ typedef ::cppu::ImplHelper3< ::com::sun::star::lang::XServiceInfo
 class OConnectionRerouter : public OConnectionRerouter_Base
 {
 protected:
-        ::osl::Mutex		m_aMutex;		
+        ::osl::Mutex		m_aMutex;
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >
                             m_xMasterConnection;
     OWeakRefArray			m_aStatements;
@@ -186,7 +186,7 @@ class ODatabaseSource;
 //==========================================================================
 class OConnection			:public OSubComponent
                             ,public OConnectionRerouter
-                            ,public OConnection_Base							
+                            ,public OConnection_Base
 {
 protected:
     OQueryContainer			m_aQueries;
@@ -207,7 +207,7 @@ public:
                                 const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rxORB);
 
 // com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // com::sun::star::uno::XInterface

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: datacolumn.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,20 +86,20 @@
 //************************************************************
 class ODataColumn : public OResultColumn,
                     public ::com::sun::star::sdb::XColumn,
-                    public ::com::sun::star::sdb::XColumnUpdate					
-{	
-protected:	
-    ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRow >	m_xRow;	
-    ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRowUpdate >	m_xRowUpdate;	
+                    public ::com::sun::star::sdb::XColumnUpdate
+{
+protected:
+    ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRow >	m_xRow;
+    ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRowUpdate >	m_xRowUpdate;
 
 public:
     ODataColumn	 (const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XResultSetMetaData >& _xMetaData,
                   const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRow >& _xRow,
                   const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XRowUpdate >& _xRowUpdate,
-                  sal_Int32 _nPos);	
+                  sal_Int32 _nPos);
 
 // com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // com::sun::star::uno::XInterface

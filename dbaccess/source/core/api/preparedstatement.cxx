@@ -2,9 +2,9 @@
  *
  *  $RCSfile: preparedstatement.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -79,14 +79,14 @@
 #ifndef _COM_SUN_STAR_SDBC_XDATABASEMETADATA_HPP_
 #include <com/sun/star/sdbc/XDatabaseMetaData.hpp>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_HXX_
-#include <unotools/property.hxx>
+#ifndef _COMPHELPER_PROPERTY_HXX_
+#include <comphelper/property.hxx>
 #endif
 #ifndef _TOOLS_DEBUG_HXX //autogen
 #include <tools/debug.hxx>
@@ -107,9 +107,9 @@ DBG_NAME(OPreparedStatement);
 OPreparedStatement::OPreparedStatement(const Reference< XConnection > & _xConn,
                                       const Reference< XInterface > & _xStatement)
                    :OStatementBase(_xConn, _xStatement)
-                   ,m_aColumns(*this, m_aMutex, _xConn->getMetaData()->supportsMixedCaseQuotedIdentifiers(),::std::vector< ::rtl::OUString>())				   
+                   ,m_aColumns(*this, m_aMutex, _xConn->getMetaData()->supportsMixedCaseQuotedIdentifiers(),::std::vector< ::rtl::OUString>())
 {
-    DBG_CTOR(OPreparedStatement, NULL);	
+    DBG_CTOR(OPreparedStatement, NULL);
     m_xAggregateAsParameters = Reference< XParameters > (m_xAggregateAsSet, UNO_QUERY);
 }
 
@@ -127,7 +127,7 @@ Sequence< Type > OPreparedStatement::getTypes() throw (RuntimeException)
                            ::getCppuType( (const Reference< XPreparedStatement > *)0 ),
                            ::getCppuType( (const Reference< XParameters > *)0 ),
                            ::getCppuType( (const Reference< XResultSetMetaDataSupplier > *)0 ),
-                           ::getCppuType( (const Reference< XColumnsSupplier > *)0 ),						   
+                           ::getCppuType( (const Reference< XColumnsSupplier > *)0 ),
                             OStatementBase::getTypes() );
 
     return aTypes.getTypes();
@@ -189,7 +189,7 @@ rtl::OUString OPreparedStatement::getImplementationName(  ) throw(RuntimeExcepti
 //------------------------------------------------------------------------------
 sal_Bool OPreparedStatement::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
@@ -209,8 +209,8 @@ void OPreparedStatement::disposing()
         MutexGuard aGuard(m_aMutex);
         m_aColumns.disposing();
         m_xAggregateAsParameters = NULL;
-    }	
-    OStatementBase::disposing();	
+    }
+    OStatementBase::disposing();
 }
 
 // ::com::sun::star::sdbcx::XColumnsSupplier
@@ -221,11 +221,11 @@ Reference< ::com::sun::star::container::XNameAccess > OPreparedStatement::getCol
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
 
-    // do we have to populate the columns	
+    // do we have to populate the columns
     if (!m_aColumns.isInitialized())
     {
         // get the metadata
-        Reference< XResultSetMetaData > xMetaData = Reference< XResultSetMetaDataSupplier >(m_xAggregateAsSet, UNO_QUERY)->getMetaData();	
+        Reference< XResultSetMetaData > xMetaData = Reference< XResultSetMetaDataSupplier >(m_xAggregateAsSet, UNO_QUERY)->getMetaData();
         // do we have columns
         try
         {
@@ -252,8 +252,8 @@ Reference< XResultSetMetaData > OPreparedStatement::getMetaData(void) throw( SQL
     MutexGuard aGuard(m_aMutex);
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
-    
-    return Reference< XResultSetMetaDataSupplier >(m_xAggregateAsSet, UNO_QUERY)->getMetaData();	
+
+    return Reference< XResultSetMetaDataSupplier >(m_xAggregateAsSet, UNO_QUERY)->getMetaData();
 }
 
 // XPreparedStatement
@@ -269,12 +269,12 @@ Reference< XResultSet >  OPreparedStatement::executeQuery() throw( SQLException,
     Reference< XResultSet > xResultSet;
     Reference< XResultSet > xDrvResultSet = Reference< XPreparedStatement >(m_xAggregateAsSet, UNO_QUERY)->executeQuery();
     if (xDrvResultSet.is())
-    {		
+    {
         xResultSet = new OResultSet(xDrvResultSet, *this, m_aColumns.isCaseSensitive());
-        
+
         // keep the resultset weak
         m_aResultSet = xResultSet;
-    }	
+    }
     return xResultSet;
 }
 
@@ -286,7 +286,7 @@ sal_Int32 OPreparedStatement::executeUpdate() throw( SQLException, RuntimeExcept
         throw DisposedException();
 
     disposeResultSet();
-    
+
     return Reference< XPreparedStatement >(m_xAggregateAsSet, UNO_QUERY)->executeUpdate();
 }
 
@@ -297,7 +297,7 @@ sal_Bool OPreparedStatement::execute() throw( SQLException, RuntimeException )
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
 
-    disposeResultSet();	
+    disposeResultSet();
     return Reference< XPreparedStatement >(m_xAggregateAsSet, UNO_QUERY)->execute();
 }
 

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: table.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -79,14 +79,14 @@
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _UNOTOOLS_ENUMHELPER_HXX_
-#include <unotools/enumhelper.hxx>
+#ifndef _COMPHELPER_ENUMHELPER_HXX_
+#include <comphelper/enumhelper.hxx>
 #endif
-#ifndef _UTL_CONTAINER_HXX_
-#include <unotools/container.hxx>
+#ifndef _COMPHELPER_CONTAINER_HXX_
+#include <comphelper/container.hxx>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
 
 #ifndef _COM_SUN_STAR_UTIL_XREFRESHLISTENER_HPP_
@@ -117,7 +117,7 @@ using namespace ::com::sun::star::sdbc;
 using namespace ::com::sun::star::sdbcx;
 using namespace ::com::sun::star::container;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 
 typedef ::std::map <sal_Int32, OTableColumn*, std::less <sal_Int32> > OColMap;
@@ -128,10 +128,10 @@ typedef ::std::map <sal_Int32, OTableColumn*, std::less <sal_Int32> > OColMap;
 DBG_NAME(ODBTable)
 //--------------------------------------------------------------------------
 ODBTable::ODBTable(const Reference< XConnection >& _rxConn,
-               const ::rtl::OUString& _rCatalog, 
-               const ::rtl::OUString& _rSchema, 
+               const ::rtl::OUString& _rCatalog,
+               const ::rtl::OUString& _rSchema,
                const ::rtl::OUString& _rName,
-               const ::rtl::OUString& _rType, 
+               const ::rtl::OUString& _rType,
                const ::rtl::OUString& _rDesc,
                sal_Bool _bCaseSensitive) throw(::com::sun::star::sdbc::SQLException)
                : connectivity::sdbcx::OTable(_bCaseSensitive,_rName,_rType,_rDesc,_rSchema,_rCatalog)
@@ -191,7 +191,7 @@ void ODBTable::disposing()
 {
     OTable_Base::disposing();
     MutexGuard aGuard(m_aMutex);
-    //	m_aColumns.disposing();	
+    //	m_aColumns.disposing();
     m_aConnection = Reference< XConnection > ();
 }
 
@@ -372,7 +372,7 @@ void ODBTable::refreshColumns()
                             getConnection()->getMetaData()->supportsAlterTableWithAddColumn(),
                             getConnection()->getMetaData()->supportsAlterTableWithDropColumn());
     pCol->setParent(this);
-    m_pColumns	= pCol;	
+    m_pColumns	= pCol;
 }
 // -------------------------------------------------------------------------
 void ODBTable::refreshPrimaryKeys(std::vector< ::rtl::OUString>& _rKeys)

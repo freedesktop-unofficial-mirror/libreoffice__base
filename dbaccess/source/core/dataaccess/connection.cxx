@@ -2,9 +2,9 @@
  *
  *  $RCSfile: connection.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:40 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:19:39 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -91,11 +91,11 @@
 #ifndef _COM_SUN_STAR_SDBCX_XDATADEFINITIONSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XDataDefinitionSupplier.hpp>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
-#ifndef _UTL_UNO3_DB_TOOLS_HXX_
-#include <unotools/dbtools.hxx>
+#ifndef _CONNECTIVITY_DBTOOLS_HXX_
+#include <connectivity/dbtools.hxx>
 #endif
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
@@ -115,7 +115,7 @@ using namespace ::com::sun::star::beans;
 using namespace ::com::sun::star::container;
 using namespace ::com::sun::star::registry;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 using namespace dbaccess;
 
@@ -125,7 +125,7 @@ using namespace dbaccess;
 DBG_NAME(OConnectionRerouter)
 //--------------------------------------------------------------------------
 OConnectionRerouter::OConnectionRerouter(const Reference< XConnection >& _rxMaster)
-                    :m_xMasterConnection(_rxMaster)					
+                    :m_xMasterConnection(_rxMaster)
 {
     DBG_CTOR(OConnectionRerouter, NULL);
     DBG_ASSERT(m_xMasterConnection.is(), "OConnectionRerouter::OConnectionRerouter : invalid master connection !");
@@ -220,20 +220,20 @@ Reference< XStatement >  OConnectionRerouter::createStatement(void) throw( SQLEx
     Reference< XStatement > xMasterStatement = m_xMasterConnection->createStatement();
     Reference< XStatement > xStatement = new OStatement(this, xMasterStatement);
     m_aStatements.push_back(WeakReferenceHelper(xStatement));
-    return xStatement;	
+    return xStatement;
 }
 
 //------------------------------------------------------------------------------
 Reference< XPreparedStatement >  OConnectionRerouter::prepareStatement(const rtl::OUString& sql) throw( SQLException, RuntimeException )
 {
     MutexGuard aGuard(m_aMutex);
-    checkDisposed();	
+    checkDisposed();
 
     // TODO convert the SQL to SQL the driver understands
     Reference< XPreparedStatement > xMasterStatement = m_xMasterConnection->prepareStatement(sql);
     Reference< XPreparedStatement > xStatement = new OPreparedStatement(this, xMasterStatement);
     m_aStatements.push_back(WeakReferenceHelper(xStatement));
-    return xStatement;	
+    return xStatement;
 }
 
 //------------------------------------------------------------------------------
@@ -241,11 +241,11 @@ Reference< XPreparedStatement >  OConnectionRerouter::prepareCall(const rtl::OUS
 {
     MutexGuard aGuard(m_aMutex);
     checkDisposed();
-    
+
     Reference< XPreparedStatement > xMasterStatement = prepareCall(sql);
     Reference< XPreparedStatement > xStatement = new OCallableStatement(this, xMasterStatement);
     m_aStatements.push_back(WeakReferenceHelper(xStatement));
-    return xStatement;	
+    return xStatement;
 }
 
 //------------------------------------------------------------------------------
@@ -383,7 +383,7 @@ DBG_NAME(OConnection)
 //--------------------------------------------------------------------------
 OConnection::OConnection(ODatabaseSource& _rDB, const Reference< XConnection >& _rxMaster, const Reference< XMultiServiceFactory >& _rxORB)
             :OConnectionRerouter(_rxMaster)
-            ,OSubComponent(m_aMutex, static_cast< OWeakObject* >(&_rDB))			
+            ,OSubComponent(m_aMutex, static_cast< OWeakObject* >(&_rDB))
             ,m_aQueries(*this, m_aMutex, static_cast< XNameContainer* >(&_rDB.m_aCommandDefinitions), _rDB.m_aCommandDefinitions.getConfigLocation(), _rxORB)
                 // as the queries reroute their refcounting to us, this m_aMutex is okey. If the queries
                 // container would do it's own refcounting, it would have to aquire m_pMutex
@@ -559,12 +559,12 @@ Reference< XPreparedStatement >  SAL_CALL OConnection::prepareCommand( const ::r
     MutexGuard aGuard(m_aMutex);
     checkDisposed();
 
-    rtl::OUString aStatement;	
+    rtl::OUString aStatement;
     switch (commandType)
     {
         case CommandType::TABLE:
             aStatement = rtl::OUString::createFromAscii("SELECT * FROM ");
-            aStatement += ::utl::quoteTableName(getMetaData(), command);
+            aStatement += ::dbtools::quoteTableName(getMetaData(), command);
             break;
         case CommandType::QUERY:
             if (m_aQueries.hasByName(command))

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RowSetCache.hxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: fs $ $Date: 2000-10-05 09:33:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -130,8 +130,8 @@
 #ifndef _CPPUHELPER_IMPLBASE5_HXX_
 #include <cppuhelper/implbase5.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef DBACCESS_CORE_API_ROWSETROW_HXX
 #include "RowSetRow.hxx"
@@ -146,7 +146,7 @@ namespace dbaccess
     class ORowSetDataColumns;
     class ORowSetCacheClone;
 
-    class ORowSetCache 
+    class ORowSetCache
     {
         friend class ORowSetBase;
         friend class ORowSet;
@@ -161,12 +161,12 @@ namespace dbaccess
         //the set can be static, bookmarkable or keyset
         ::com::sun::star::uno::WeakReference< ::com::sun::star::sdbc::XResultSet>		m_xSet;
         ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSetMetaData >	m_xMetaData; // must be before m_aInsertRow
-        
+
         OCacheSet*						m_pCacheSet;			// is a bookmarkable, keyset or static resultset
         ORowSetMatrix*					m_pMatrix;				// represent the table struct
         ORowSetMatrix::iterator			m_aMatrixIter;			// represent a row of the table
         ORowSetMatrix::iterator			m_aMatrixEnd;			// present the row behind the last row of the table
-        
+
         ORowSetMatrix*					m_pInsertMatrix;		// represent the rows which should be inserted normally this is only one
         ORowSetMatrix::iterator			m_aInsertRow;			// represent a insert row
 
@@ -335,7 +335,7 @@ namespace dbaccess
 
     // ::com::sun::star::sdbc::XRowSet
         virtual void SAL_CALL execute(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
-        
+
     // ::com::sun::star::sdb::XRowSetApproveBroadcaster
 //		virtual void SAL_CALL addRowSetApproveListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XRowSetApproveListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
 //		virtual void SAL_CALL removeRowSetApproveListener( const ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XRowSetApproveListener >& listener ) throw(::com::sun::star::uno::RuntimeException);
@@ -355,18 +355,21 @@ namespace dbaccess
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.3  2000/10/05 09:33:39  fs
+    using comphelper::OPropertyContainer instead of connectivity::OSimplePropertyContainer
+
     Revision 1.2  2000/09/29 15:20:51  oj
     rowset impl
-    
+
     Revision 1.1.1.1  2000/09/19 00:15:38  hr
     initial import
-    
+
     Revision 1.2  2000/09/18 14:52:47  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:20:59  oj
     rowset addons
-    
+
     Revision 1.0 25.07.2000 16:37:44  oj
 ------------------------------------------------------------------------*/
 

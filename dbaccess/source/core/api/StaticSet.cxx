@@ -2,9 +2,9 @@
  *
  *  $RCSfile: StaticSet.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -142,7 +142,7 @@ sal_Bool OStaticSet::fetchRow()
 {
     sal_Bool bRet;
     if(bRet = m_xDriverSet->next())
-    {				
+    {
         m_aSet.push_back(new connectivity::ORowVector< ORowSetValue >(m_xSetMetaData->getColumnCount()));
         m_aSetIter = m_aSet.end() - 1;
         (*(*m_aSetIter))[0] = (sal_Int32)(m_aSet.size() -1);
@@ -239,7 +239,7 @@ sal_Bool SAL_CALL OStaticSet::first(  ) throw(SQLException, RuntimeException)
     m_bBeforeFirst = sal_False;
     m_aSetIter = m_aSet.begin();
     if(m_aSetIter == m_aSet.end())
-        fetchRow();		
+        fetchRow();
     return m_aSetIter != m_aSet.end();
 }
 // -------------------------------------------------------------------------
@@ -274,7 +274,7 @@ sal_Bool SAL_CALL OStaticSet::absolute( sal_Int32 row ) throw(SQLException, Runt
         }
         else
         {
-            m_aSetIter = m_aSet.end() + row; 
+            m_aSetIter = m_aSet.end() + row;
             if(m_aSetIter == m_aSet.begin()-1)
                 m_bBeforeFirst = sal_True;
         }
@@ -283,7 +283,7 @@ sal_Bool SAL_CALL OStaticSet::absolute( sal_Int32 row ) throw(SQLException, Runt
     else if(row > 0)
     {
         m_bBeforeFirst = sal_False;
-        if(row > m_aSet.size()) 
+        if(row > m_aSet.size())
         {
             if(!m_bEnd)
             {
@@ -298,7 +298,7 @@ sal_Bool SAL_CALL OStaticSet::absolute( sal_Int32 row ) throw(SQLException, Runt
         else
             m_aSetIter = m_aSet.begin() + row -1;
     }
-    else 
+    else
         throw SQLException();
 
     return m_aSetIter != m_aSet.end();
@@ -321,7 +321,7 @@ sal_Bool SAL_CALL OStaticSet::previous(  ) throw(SQLException, RuntimeException)
     }
     else
         --m_aSetIter;
-    
+
     return sal_True;
 }
 // -------------------------------------------------------------------------
@@ -392,12 +392,15 @@ void SAL_CALL OStaticSet::moveToCurrentRow(  ) throw(SQLException, RuntimeExcept
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.1.1.1  2000/09/19 00:15:38  hr
+    initial import
+
     Revision 1.2  2000/09/18 14:52:47  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:24:08  oj
     rowset addon
-    
+
     Revision 1.0 01.08.2000 09:05:11  oj
 ------------------------------------------------------------------------*/
 

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: CRowSetColumn.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -65,8 +65,8 @@
 #ifndef _DBASHARED_APITOOLS_HXX_
 #include "apitools.hxx"
 #endif
-#ifndef _UTL_TYPES_HXX_
-#include <unotools/types.hxx>
+#ifndef _COMPHELPER_TYPES_HXX_
+#include <comphelper/types.hxx>
 #endif
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
@@ -88,7 +88,7 @@ using namespace ::com::sun::star::sdb;
 using namespace ::com::sun::star::container;
 using namespace ::com::sun::star::lang;
 //	using namespace ::com::sun::star::util;
-using namespace cppu;								   
+using namespace cppu;
 using namespace osl;
 
 
@@ -111,7 +111,7 @@ Any SAL_CALL ORowSetColumn::queryInterface( const Type & _rType ) throw (Runtime
     return aReturn;
 }
 // -------------------------------------------------------------------------
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* ORowSetColumn::createArrayHelper( ) const
 {
@@ -120,19 +120,19 @@ Any SAL_CALL ORowSetColumn::queryInterface( const Type & _rType ) throw (Runtime
         DECL_PROP1(CATALOGNAME,				::rtl::OUString,	READONLY);
         DECL_PROP0_IFACE(CONTROLMODEL,		XPropertySet 				);
         DECL_PROP1(DISPLAYSIZE,				sal_Int32,			READONLY);
-        DECL_PROP1(NUMBERFORMAT,			sal_Int32,			MAYBEVOID);	
+        DECL_PROP1(NUMBERFORMAT,			sal_Int32,			MAYBEVOID);
         DECL_PROP1_BOOL(ISAUTOINCREMENT,						READONLY);
         DECL_PROP1_BOOL(ISCASESENSITIVE,						READONLY);
         DECL_PROP1_BOOL(ISCURRENCY,								READONLY);
         DECL_PROP1_BOOL(ISDEFINITELYWRITABLE,					READONLY);
         DECL_PROP0_BOOL(HIDDEN	 										);
         DECL_PROP1(ISNULLABLE,				sal_Int32,			READONLY);
-        DECL_PROP1_BOOL(ISREADONLY,								READONLY);		
+        DECL_PROP1_BOOL(ISREADONLY,								READONLY);
         DECL_PROP1_BOOL(ISSEARCHABLE,							READONLY);
         DECL_PROP1_BOOL(ISSIGNED,								READONLY);
         DECL_PROP1_BOOL(ISWRITABLE,								READONLY);
         DECL_PROP1(LABEL,					::rtl::OUString,	READONLY);
-        DECL_PROP1(NAME,					::rtl::OUString,	READONLY);		
+        DECL_PROP1(NAME,					::rtl::OUString,	READONLY);
         DECL_PROP1(PRECISION,				sal_Int32,			READONLY);
         DECL_PROP1(RELATIVEPOSITION,		sal_Int32,			MAYBEVOID);
         DECL_PROP1(SCALE,					sal_Int32,			READONLY);
@@ -145,26 +145,26 @@ Any SAL_CALL ORowSetColumn::queryInterface( const Type & _rType ) throw (Runtime
         DECL_PROP1(WIDTH,					sal_Int32,			MAYBEVOID);
     END_PROPERTY_HELPER();
 }
-    
+
 // cppu::OPropertySetHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper& ORowSetColumn::getInfoHelper()
 {
-    return *static_cast< ::utl::OPropertyArrayUsageHelper< ORowSetColumn >* >(this)->getArrayHelper();
+    return *static_cast< ::comphelper::OPropertyArrayUsageHelper< ORowSetColumn >* >(this)->getArrayHelper();
 }
 // -------------------------------------------------------------------------
 void SAL_CALL ORowSetColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
 {
     switch(nHandle)
     {
-        case PROPERTY_ID_ALIGN:			
-        case PROPERTY_ID_NUMBERFORMAT:			
-        case PROPERTY_ID_RELATIVEPOSITION:		
+        case PROPERTY_ID_ALIGN:
+        case PROPERTY_ID_NUMBERFORMAT:
+        case PROPERTY_ID_RELATIVEPOSITION:
         case PROPERTY_ID_WIDTH:
         case PROPERTY_ID_HIDDEN:
-        case PROPERTY_ID_CONTROLMODEL:	
+        case PROPERTY_ID_CONTROLMODEL:
             OColumnSettings::getFastPropertyValue( rValue, nHandle );
-            break;		
+            break;
         case PROPERTY_ID_VALUE:
             if(m_rColumnValue != m_rEnd && (*m_rColumnValue).isValid())
                 rValue = (*(*m_rColumnValue))[m_nPos].makeAny();
@@ -178,14 +178,14 @@ void SAL_CALL ORowSetColumn::setFastPropertyValue_NoBroadcast(sal_Int32 nHandle,
 {
     switch(nHandle)
     {
-        case PROPERTY_ID_ALIGN:			
-        case PROPERTY_ID_NUMBERFORMAT:			
-        case PROPERTY_ID_RELATIVEPOSITION:		
+        case PROPERTY_ID_ALIGN:
+        case PROPERTY_ID_NUMBERFORMAT:
+        case PROPERTY_ID_RELATIVEPOSITION:
         case PROPERTY_ID_WIDTH:
         case PROPERTY_ID_HIDDEN:
-        case PROPERTY_ID_CONTROLMODEL:	
+        case PROPERTY_ID_CONTROLMODEL:
             OColumnSettings::setFastPropertyValue_NoBroadcast( nHandle, rValue );
-            break;		
+            break;
         case PROPERTY_ID_VALUE:
             break;
         default:
@@ -201,17 +201,17 @@ sal_Bool SAL_CALL ORowSetColumn::convertFastPropertyValue( Any & rConvertedValue
     sal_Bool bModified = sal_False;
     switch(nHandle)
     {
-        case PROPERTY_ID_ALIGN:			
-        case PROPERTY_ID_NUMBERFORMAT:			
-        case PROPERTY_ID_RELATIVEPOSITION:		
+        case PROPERTY_ID_ALIGN:
+        case PROPERTY_ID_NUMBERFORMAT:
+        case PROPERTY_ID_RELATIVEPOSITION:
         case PROPERTY_ID_WIDTH:
         case PROPERTY_ID_HIDDEN:
-        case PROPERTY_ID_CONTROLMODEL:	
+        case PROPERTY_ID_CONTROLMODEL:
             bModified = OColumnSettings::convertFastPropertyValue( rConvertedValue, rOldValue, nHandle, rValue );
-            break;		
+            break;
         case PROPERTY_ID_VALUE:
             rConvertedValue = rValue;
-            bModified = !::utl::compare(rConvertedValue, rOldValue);
+            bModified = !::comphelper::compare(rConvertedValue, rOldValue);
             break;
         default:
             bModified = ORowSetDataColumn::convertFastPropertyValue(rConvertedValue, rOldValue, nHandle, rValue);
@@ -249,7 +249,7 @@ void ORowSetColumn::fireValueChange(const ::com::sun::star::uno::Any& _rOldValue
     Any aVal;
 
     getFastPropertyValue(aVal,PROPERTY_ID_VALUE);
-    if(!::utl::compare(aVal,_rOldValue))
+    if(!::comphelper::compare(aVal,_rOldValue))
     {
         m_aOldValue = _rOldValue;
 

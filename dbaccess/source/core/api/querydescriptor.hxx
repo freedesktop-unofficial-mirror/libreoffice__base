@@ -2,9 +2,9 @@
  *
  *  $RCSfile: querydescriptor.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -65,8 +65,8 @@
 #ifndef _CPPUHELPER_IMPLBASE3_HXX_
 #include <cppuhelper/implbase3.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _OSL_MUTEX_HXX_
 #include <osl/mutex.hxx>
@@ -100,7 +100,7 @@
 //==========================================================================
 class ODescriptorColumn :public OColumn
                         ,public OColumnSettings
-                        ,public ::utl::OPropertyArrayUsageHelper< ODescriptorColumn >
+                        ,public ::comphelper::OPropertyArrayUsageHelper< ODescriptorColumn >
 {
 public:
     ODescriptorColumn(const ::rtl::OUString& _rName);
@@ -109,18 +109,18 @@ public:
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // OPropertySetHelper
-    sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
-    void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;	
+    void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
+    void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;
 
     virtual OColumnSettings*	getSettings() { return static_cast<OColumnSettings*>(this); }
 
@@ -145,7 +145,7 @@ class OQueryDescriptor
         ,public OMutexAndBroadcastHelper
         ,public ODataSettings
         ,public OCommandBase
-        ,public ::utl::OPropertyArrayUsageHelper< OQueryDescriptor >
+        ,public ::comphelper::OPropertyArrayUsageHelper< OQueryDescriptor >
         ,public IColumnFactory
 {
 protected:

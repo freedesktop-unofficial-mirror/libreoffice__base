@@ -2,9 +2,9 @@
  *
  *  $RCSfile: apitools.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: fs $ $Date: 2000-09-27 08:48:23 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:20:44 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -89,8 +89,8 @@
 #ifndef _OSL_DIAGNOSE_H_
 #include <osl/diagnose.h>
 #endif
-#ifndef _UTL_STLTYPES_HXX_
-#include <unotools/stl_types.hxx>
+#ifndef _COMPHELPER_STLTYPES_HXX_
+#include <comphelper/stl_types.hxx>
 #endif
 
 //==================================================================================
@@ -152,13 +152,13 @@ class OMutexAndBroadcastHelper
 protected:
     ::osl::Mutex				m_aMutex;
     ::cppu::OBroadcastHelper	m_aBHelper;
-    
+
 public:
     OMutexAndBroadcastHelper() : m_aBHelper( m_aMutex ) { }
-    
+
     ::osl::Mutex&				GetMutex() { return m_aMutex; }
     ::cppu::OBroadcastHelper&	GetBroadcastHelper() { return m_aBHelper; }
-    
+
 };
 
 //==================================================================================
@@ -198,7 +198,7 @@ class FunctionSequenceException : public ::com::sun::star::sdbc::SQLException
 {
 public:
     FunctionSequenceException(const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface >& _Context,
-        const ::com::sun::star::uno::Any& _Next = ::com::sun::star::uno::Any());		
+        const ::com::sun::star::uno::Any& _Next = ::com::sun::star::uno::Any());
 };
 
 
@@ -207,7 +207,7 @@ public:
 //************************************************************
 namespace cppu { class IPropertyArrayHelper; }
 
-typedef std::map< sal_Int32, ::cppu::IPropertyArrayHelper*, std::less< sal_Int32 > > OIdPropertyArrayMap;	
+typedef std::map< sal_Int32, ::cppu::IPropertyArrayHelper*, std::less< sal_Int32 > > OIdPropertyArrayMap;
 template <class TYPE>
 class OIdPropertyArrayUsageHelper
 {
@@ -219,14 +219,14 @@ protected:
 public:
     OIdPropertyArrayUsageHelper();
     virtual ~OIdPropertyArrayUsageHelper()
-    {	
+    {
         ::osl::MutexGuard aGuard(s_aMutex);
         OSL_ENSHURE(s_nRefCount > 0, "OIdPropertyArrayUsageHelper::~OIdPropertyArrayUsageHelper : suspicious call : have a refcount of 0 !");
         if (!--s_nRefCount)
-        {			
+        {
             // delete the element
             for (OIdPropertyArrayMap::iterator i = s_pMap->begin(); i != s_pMap->end(); ++i)
-                delete (*i).second;			
+                delete (*i).second;
             delete s_pMap;
             s_pMap = NULL;
         }
@@ -251,13 +251,13 @@ protected:
 };
 
 //------------------------------------------------------------------
-template<class TYPE> 
+template<class TYPE>
 sal_Int32						OIdPropertyArrayUsageHelper< TYPE >::s_nRefCount	= 0;
 
-template<class TYPE> 
-OIdPropertyArrayMap*			OIdPropertyArrayUsageHelper< TYPE >::s_pMap	= NULL;	
+template<class TYPE>
+OIdPropertyArrayMap*			OIdPropertyArrayUsageHelper< TYPE >::s_pMap	= NULL;
 
-template<class TYPE> 
+template<class TYPE>
 ::osl::Mutex					OIdPropertyArrayUsageHelper< TYPE >::s_aMutex;
 
 //------------------------------------------------------------------
@@ -268,7 +268,7 @@ OIdPropertyArrayUsageHelper<TYPE>::OIdPropertyArrayUsageHelper()
     // create the map if necessary
     if (s_pMap == NULL)
         s_pMap = new OIdPropertyArrayMap();
-    ++s_nRefCount;	
+    ++s_nRefCount;
 }
 
 //------------------------------------------------------------------
@@ -277,12 +277,12 @@ template <class TYPE>
 {
     OSL_ENSHURE(s_nRefCount, "OIdPropertyArrayUsageHelper::getArrayHelper : suspicious call : have a refcount of 0 !");
     ::osl::MutexGuard aGuard(s_aMutex);
-    // do we have the array already?	
+    // do we have the array already?
     if (! (*s_pMap)[nId] )
-    {	
+    {
         (*s_pMap)[nId] = createArrayHelper(nId);
         OSL_ENSHURE((*s_pMap)[nId], "OIdPropertyArrayUsageHelper::getArrayHelper : createArrayHelper returned nonsense !");
-    }	
+    }
     return (*s_pMap)[nId];
 }
 

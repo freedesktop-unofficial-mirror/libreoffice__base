@@ -2,9 +2,9 @@
  *
  *  $RCSfile: resultcolumn.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,15 +73,15 @@
 //  OResultColumn
 //************************************************************
 class OResultColumn : public OColumn,
-                      public ::utl::OPropertyArrayUsageHelper < OResultColumn >
-{	
+                      public ::comphelper::OPropertyArrayUsageHelper < OResultColumn >
+{
 protected:
     ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XResultSetMetaData >	m_xMetaData;
-    sal_Int32				m_nPos;	
+    sal_Int32				m_nPos;
 
 public:
-    OResultColumn(const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XResultSetMetaData >& _xMetaData,				  
-                  sal_Int32 _nPos);	
+    OResultColumn(const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XResultSetMetaData >& _xMetaData,
+                  sal_Int32 _nPos);
 
 // com::sun::star::lang::XTypeProvider
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
@@ -93,15 +93,15 @@ public:
 // cppu::OComponentHelper
     virtual void SAL_CALL disposing(void);
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-    
+
 // cppu::OPropertySetHelper
     virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
-    virtual void SAL_CALL getFastPropertyValue( 
-                                ::com::sun::star::uno::Any& rValue, 
-                                sal_Int32 nHandle 
-                                     ) const;	
+    virtual void SAL_CALL getFastPropertyValue(
+                                ::com::sun::star::uno::Any& rValue,
+                                sal_Int32 nHandle
+                                     ) const;
 };
 
 #endif // _DBACORE_RESULTCOLUMN_HXX_

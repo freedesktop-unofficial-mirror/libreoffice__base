@@ -2,9 +2,9 @@
  *
  *  $RCSfile: tablecontainer.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: oj $ $Date: 2000-10-11 08:11:05 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -75,8 +75,8 @@
 #ifndef _WLDCRD_HXX
 #include <tools/wldcrd.hxx>
 #endif
-#ifndef _UNOTOOLS_ENUMHELPER_HXX_
-#include <unotools/enumhelper.hxx>
+#ifndef _COMPHELPER_ENUMHELPER_HXX_
+#include <comphelper/enumhelper.hxx>
 #endif
 
 #ifndef _COM_SUN_STAR_BEANS_XPROPERTYSET_HPP_
@@ -99,7 +99,7 @@ using namespace ::com::sun::star::beans;
 using namespace ::com::sun::star::sdbc;
 using namespace ::com::sun::star::container;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 
 //==========================================================================
@@ -137,7 +137,7 @@ NameCompare( const void* pFirst, const void* pSecond)
 }
 // -------------------------------------------------------------------------
 void OTableContainer::construct(const Reference< XNameAccess >& _rxMasterContainer,
-                                const Sequence< ::rtl::OUString >& _rTableFilter, 
+                                const Sequence< ::rtl::OUString >& _rTableFilter,
                                 const Sequence< ::rtl::OUString >& _rTableTypeFilter)
 {
     m_xMasterTables = _rxMasterContainer;
@@ -209,7 +209,7 @@ void OTableContainer::construct(const Reference< XConnection >& _xConnection, co
     Sequence< ::rtl::OUString > aTableFilter(_rTableFilter);
     sal_Int32	nTableFilterLen = aTableFilter.getLength();
 
-    if (nTableFilterLen) 
+    if (nTableFilterLen)
         qsort(aTableFilter.getArray(), nTableFilterLen, sizeof(::rtl::OUString), NameCompare);
 
     sal_Bool bNoTableFilters = (nTableFilterLen == 0);
@@ -251,7 +251,7 @@ void OTableContainer::construct(const Reference< XConnection >& _xConnection, co
             Reference< XRow > xCurrentRow(xTables, UNO_QUERY);
             if (xCurrentRow.is())
             {
-                
+
                     // after creation the set is positioned before the first record, per definitionem
 
                 ::rtl::OUString sCatalog, sSchema, sName, sType;
@@ -292,7 +292,7 @@ void OTableContainer::construct(const Reference< XConnection >& _xConnection, co
                         aSchemas.push_back(sSchema);
                         aNames.push_back(sName);
                         aTypes.push_back(xCurrentRow->getString(4));
-                        aDescs.push_back(xCurrentRow->getString(5));						   
+                        aDescs.push_back(xCurrentRow->getString(5));
                         aComposedNames.push_back(sComposedName);
                     }
                 }
@@ -300,7 +300,7 @@ void OTableContainer::construct(const Reference< XConnection >& _xConnection, co
                 // dispose the tables result set, in case the connection can handle only one concurrent statement
                 // (the table object creation will need it's own statements)
                 disposeComponent(xTables);
-                // 
+                //
                 sal_Bool bCaseSensitive = xMetaData->storesMixedCaseQuotedIdentifiers();
                 for (sal_Int32 i=0; i<aCatalogs.size(); ++i)
                 {

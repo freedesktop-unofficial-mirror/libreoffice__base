@@ -2,9 +2,9 @@
  *
  *  $RCSfile: datacolumn.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -94,7 +94,7 @@ using namespace ::com::sun::star::uno;
 using namespace ::com::sun::star::lang;
 using namespace ::com::sun::star::container;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 
 
@@ -106,8 +106,8 @@ ODataColumn::ODataColumn(
                          sal_Int32 _nPos)
                      :OResultColumn(_xMetaData, _nPos)
                      ,m_xRow(_xRow)
-                     ,m_xRowUpdate(_xRowUpdate)					 
-{		
+                     ,m_xRowUpdate(_xRowUpdate)
+{
 }
 
 // com::sun::star::lang::XTypeProvider
@@ -168,12 +168,12 @@ Sequence< ::rtl::OUString > ODataColumn::getSupportedServiceNames(  ) throw (Run
 // OComponentHelper
 //------------------------------------------------------------------------------
 void ODataColumn::disposing()
-{	
+{
     OResultColumn::disposing();
-    
+
     MutexGuard aGuard(m_aMutex);
     m_xRow = NULL;
-    m_xRowUpdate = NULL;	
+    m_xRowUpdate = NULL;
 }
 
 // ::com::sun::star::sdb::XColumn
@@ -194,7 +194,7 @@ rtl::OUString ODataColumn::getString(void) throw( SQLException, RuntimeException
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getString(m_nPos);	
+    return m_xRow->getString(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -204,7 +204,7 @@ sal_Bool ODataColumn::getBoolean(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getBoolean(m_nPos);	
+    return m_xRow->getBoolean(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -214,7 +214,7 @@ sal_Int8 ODataColumn::getByte(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getByte(m_nPos);	
+    return m_xRow->getByte(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -224,7 +224,7 @@ sal_Int16 ODataColumn::getShort(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getShort(m_nPos);	
+    return m_xRow->getShort(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ sal_Int32 ODataColumn::getInt(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getInt(m_nPos);	
+    return m_xRow->getInt(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ sal_Int64 ODataColumn::getLong(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getLong(m_nPos);	
+    return m_xRow->getLong(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -254,7 +254,7 @@ float ODataColumn::getFloat(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getFloat(m_nPos);	
+    return m_xRow->getFloat(m_nPos);
 }
 //------------------------------------------------------------------------------
 double ODataColumn::getDouble(void) throw( SQLException, RuntimeException )
@@ -263,7 +263,7 @@ double ODataColumn::getDouble(void) throw( SQLException, RuntimeException )
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getDouble(m_nPos);	
+    return m_xRow->getDouble(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -273,7 +273,7 @@ Sequence< sal_Int8 > ODataColumn::getBytes(void) throw( SQLException, RuntimeExc
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getBytes(m_nPos);	
+    return m_xRow->getBytes(m_nPos);
 }
 //------------------------------------------------------------------------------
 com::sun::star::util::Date ODataColumn::getDate(void) throw( SQLException, RuntimeException )
@@ -282,7 +282,7 @@ com::sun::star::util::Date ODataColumn::getDate(void) throw( SQLException, Runti
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getDate(m_nPos);	
+    return m_xRow->getDate(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ com::sun::star::util::Time ODataColumn::getTime(void) throw( SQLException, Runti
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getTime(m_nPos);	
+    return m_xRow->getTime(m_nPos);
 }
 //------------------------------------------------------------------------------
 com::sun::star::util::DateTime ODataColumn::getTimestamp(void) throw( SQLException, RuntimeException )
@@ -301,7 +301,7 @@ com::sun::star::util::DateTime ODataColumn::getTimestamp(void) throw( SQLExcepti
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getTimestamp(m_nPos);	
+    return m_xRow->getTimestamp(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ Reference< ::com::sun::star::io::XInputStream >  ODataColumn::getBinaryStream(vo
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getBinaryStream(m_nPos);	
+    return m_xRow->getBinaryStream(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -321,7 +321,7 @@ Reference< ::com::sun::star::io::XInputStream >  ODataColumn::getCharacterStream
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getCharacterStream(m_nPos);	
+    return m_xRow->getCharacterStream(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -331,7 +331,7 @@ Any ODataColumn::getObject(const Reference< ::com::sun::star::container::XNameAc
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getObject(m_nPos, typeMap);	
+    return m_xRow->getObject(m_nPos, typeMap);
 }
 
 //------------------------------------------------------------------------------
@@ -341,7 +341,7 @@ Reference< XRef >  ODataColumn::getRef(void) throw( SQLException, RuntimeExcepti
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getRef(m_nPos);	
+    return m_xRow->getRef(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -351,7 +351,7 @@ Reference< XBlob >  ODataColumn::getBlob(void) throw( SQLException, RuntimeExcep
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getBlob(m_nPos);	
+    return m_xRow->getBlob(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -361,7 +361,7 @@ Reference< XClob >  ODataColumn::getClob(void) throw( SQLException, RuntimeExcep
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getClob(m_nPos);	
+    return m_xRow->getClob(m_nPos);
 }
 
 //------------------------------------------------------------------------------
@@ -371,7 +371,7 @@ Reference< XArray >  ODataColumn::getArray(void) throw( SQLException, RuntimeExc
     if (OColumnBase::rBHelper.bDisposed)
         throw DisposedException();
 
-    return m_xRow->getArray(m_nPos);	
+    return m_xRow->getArray(m_nPos);
 }
 
 // ::com::sun::star::sdb::XColumnUpdate

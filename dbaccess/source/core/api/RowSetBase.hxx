@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RowSetBase.hxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: fs $ $Date: 2000-10-05 09:33:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -88,7 +88,7 @@
 #ifndef _COM_SUN_STAR_LANG_XSERVICEINFO_HPP_
 #include <com/sun/star/lang/XServiceInfo.hpp>
 #endif
-#ifndef _CPPUHELPER_INTERFACECONTAINER_H_ 
+#ifndef _CPPUHELPER_INTERFACECONTAINER_H_
 #include <cppuhelper/interfacecontainer.h>
 #endif
 #ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
@@ -97,8 +97,8 @@
 #ifndef _COMPHELPER_PROPERTYCONTAINER_HXX_
 #include <comphelper/propertycontainer.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _COM_SUN_STAR_SDBC_XROWSET_HPP_
 #include <com/sun/star/sdbc/XRowSet.hpp>
@@ -128,7 +128,7 @@ namespace dbaccess
     class ORowSetBase : public connectivity::OBaseMutex,
                         public ORowSetBase_BASE,
                         public ::comphelper::OPropertyContainer,
-                        public ::utl::OPropertyArrayUsageHelper<ORowSetBase> // this class hold the static property info
+                        public ::comphelper::OPropertyArrayUsageHelper<ORowSetBase> // this class hold the static property info
     {
     protected:
         ::osl::Mutex							m_aRowCountMutex, // mutex for rowcount changes
@@ -136,19 +136,19 @@ namespace dbaccess
                                                 // for a row
                                                 m_aColumnsMutex;
 
-        ::cppu::OInterfaceContainerHelper		m_aListeners, 
+        ::cppu::OInterfaceContainerHelper		m_aListeners,
                                                 m_aApproveListeners;// when clone -> they are empty
-        
+
         ::com::sun::star::uno::Any				m_aBookmark;
         ORowSetMatrix::iterator					m_aCurrentRow;		// contains the actual fetched row
-                                                                    
+
         ::cppu::OWeakObject*					m_pMySelf;			// set by derived classes
-                                                                    
-        connectivity::OSQLParseTreeIterator*	m_pIterator;		
+
+        connectivity::OSQLParseTreeIterator*	m_pIterator;
         ORowSetCache*							m_pCache;			// the cache is used by the rowset and his clone (shared)
         ORowSetDataColumns*						m_pColumns;			// represent the select columns
         ::cppu::OBroadcastHelper&				m_rBHelper;			// must be set from the derived classes
-                                                                    
+
         sal_Int32								m_nRowCount;		// contains the current count of rows which have been fetched
         sal_Int32								m_nLastColumnIndex;	// the last column ask for, used for wasNull()
         sal_Bool								m_bClone;			// I'm clone or not
@@ -161,26 +161,26 @@ namespace dbaccess
 
         // fire a notification for all that are listening on column::VALUE property
         void firePropertyChange(const ORowSetMatrix::iterator& _rOldRow);
-        virtual void fireRowcount() 
+        virtual void fireRowcount()
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// fire if rowcount changed
-        virtual void notifyAllListenersRowBeforeChange(const ::com::sun::star::sdb::RowChangeEvent &rEvt) 
+        virtual void notifyAllListenersRowBeforeChange(const ::com::sun::star::sdb::RowChangeEvent &rEvt)
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// notify before row will change
-        virtual void notifyAllListenersRowChanged(const ::com::sun::star::sdb::RowChangeEvent &rEvt) 
+        virtual void notifyAllListenersRowChanged(const ::com::sun::star::sdb::RowChangeEvent &rEvt)
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// notify row changed
-        virtual void notifyAllListenersCursorBeforeMove() 
+        virtual void notifyAllListenersCursorBeforeMove()
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// notify before cursor will move
-        virtual void notifyAllListenersCursorMoved() 
+        virtual void notifyAllListenersCursorMoved()
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// notify cursor moved
-        virtual void notifyAllListeners() 
+        virtual void notifyAllListeners()
         {OSL_ASSERT("fireRowcount() not allowed for clone!");}		// notify all that rowset changed
         // check if the insert must be canceled
         virtual void checkInsert() = 0;
 
     // OPropertyContainer
         virtual void SAL_CALL getFastPropertyValue(::com::sun::star::uno::Any& rValue,sal_Int32 nHandle) const;
-        
+
     public:
-        
+
     // OComponentHelper
         virtual void SAL_CALL disposing(void);
 
@@ -189,10 +189,10 @@ namespace dbaccess
         {
             return ::cppu::OPropertySetHelper::createPropertySetInfo(getInfoHelper());
         }
-        
-    // utl::OPropertyArrayUsageHelper
+
+    // comphelper::OPropertyArrayUsageHelper
         virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-        
+
     // cppu::OPropertySetHelper
         virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
 

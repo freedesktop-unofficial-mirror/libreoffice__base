@@ -2,9 +2,9 @@
  *
  *  $RCSfile: datasource.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:40 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:19:39 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,8 +92,8 @@
 #ifndef _CPPUHELPER_PROPSHLP_HXX
 #include <cppuhelper/propshlp.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _CPPUHELPER_WEAKREF_HXX_
 #include <cppuhelper/weakref.hxx>
@@ -124,7 +124,7 @@
 #endif
 #ifndef _STRING_HXX
 #include <tools/string.hxx>
-#endif					   
+#endif
 #ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
 #include <connectivity/CommonTools.hxx>
 #endif
@@ -156,7 +156,7 @@ class ODatabaseSource	:public connectivity::OBaseMutex
                     ,public OContainerElement
                     ,public OConfigurationFlushable
                     ,public ::cppu::OPropertySetHelper
-                    ,public ::utl::OPropertyArrayUsageHelper < ODatabaseSource >
+                    ,public ::comphelper::OPropertyArrayUsageHelper < ODatabaseSource >
                     ,public ODatabaseSource_Base
 {
     friend class ODatabaseContext;
@@ -190,7 +190,7 @@ protected:
     sal_Int32											m_nLoginTimeout;
     sal_Bool											m_bReadOnly : 1;
     sal_Bool											m_bPasswordRequired : 1;
-// </properties>	
+// </properties>
 
 protected:
     ODatabaseSource(
@@ -234,7 +234,7 @@ public:
 // com::sun::star::beans::XPropertySet
     virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
 
 // cppu::OPropertySetHelper

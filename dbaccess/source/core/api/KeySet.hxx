@@ -2,9 +2,9 @@
  *
  *  $RCSfile: KeySet.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -74,7 +74,7 @@ namespace dbaccess
     public:
         OKeySet(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet>& _xDriverSet,
                 const connectivity::OSQLParseTreeIterator*	_pIterator);
-        
+
         // ::com::sun::star::sdbcx::XRowLocate
         virtual ::com::sun::star::uno::Any SAL_CALL getBookmark( const ORowSetRow& _rRow ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
         // -------------------------------------------------------------------------
@@ -108,12 +108,15 @@ namespace dbaccess
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.1.1.1  2000/09/19 00:15:38  hr
+    initial import
+
     Revision 1.2  2000/09/18 14:52:46  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:19:40  oj
     rowset addons
-    
+
     Revision 1.0 01.08.2000 09:07:41  oj
 ------------------------------------------------------------------------*/
 

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: statement.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,14 +73,17 @@
 #ifndef _COM_SUN_STAR_SDBC_XDATABASEMETADATA_HPP_
 #include <com/sun/star/sdbc/XDatabaseMetaData.hpp>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_HXX_
-#include <unotools/property.hxx>
+#ifndef _COMPHELPER_PROPERTY_HXX_
+#include <comphelper/property.hxx>
+#endif
+#ifndef _COMPHELPER_TYPES_HXX_
+#include <comphelper/types.hxx>
 #endif
 #ifndef _TOOLS_DEBUG_HXX //autogen
 #include <tools/debug.hxx>
@@ -103,7 +106,7 @@ OStatementBase::OStatementBase(const Reference< XConnection > & _xConn,
                :OSubComponent(m_aMutex, _xConn)
                ,OPropertySetHelper(OComponentHelper::rBHelper)
                ,m_bUseBookmarks(sal_False)
-               
+
 {
     DBG_CTOR(OStatementBase, NULL);
     m_xAggregateAsSet = Reference< XPropertySet >(_xStatement, UNO_QUERY);
@@ -124,7 +127,7 @@ Sequence< Type > OStatementBase::getTypes() throw (RuntimeException)
                            ::getCppuType( (const Reference< XWarningsSupplier > *)0 ),
                            ::getCppuType( (const Reference< XCloseable > *)0 ),
                            ::getCppuType( (const Reference< XMultipleResults > *)0 ),
-                           ::getCppuType( (const Reference< XPreparedBatchExecution > *)0 ),						   
+                           ::getCppuType( (const Reference< XPreparedBatchExecution > *)0 ),
                            ::getCppuType( (const Reference< ::com::sun::star::util::XCancellable > *)0 ),
                             OSubComponent::getTypes() );
 
@@ -176,11 +179,11 @@ void OStatementBase::disposing()
 {
     OPropertySetHelper::disposing();
 
-    MutexGuard aGuard(m_aMutex);	
-    
+    MutexGuard aGuard(m_aMutex);
+
     // free pending results
-    disposeResultSet();	
-    
+    disposeResultSet();
+
     // free the original statement
     {
         MutexGuard aGuard(m_aCancelMutex);
@@ -188,7 +191,7 @@ void OStatementBase::disposing()
     }
 
     Reference< XCloseable > (m_xAggregateAsSet, UNO_QUERY)->close();
-    m_xAggregateAsSet = NULL;		
+    m_xAggregateAsSet = NULL;
 
     // free the parent at last
     OSubComponent::disposing();
@@ -213,7 +216,7 @@ Reference< XPropertySetInfo > OStatementBase::getPropertySetInfo() throw (Runtim
     return createPropertySetInfo( getInfoHelper() ) ;
 }
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* OStatementBase::createArrayHelper( ) const
 {
@@ -245,21 +248,21 @@ sal_Bool OStatementBase::convertFastPropertyValue( Any & rConvertedValue, Any & 
     switch (nHandle)
     {
         case PROPERTY_ID_USEBOOKMARKS:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bUseBookmarks);			
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bUseBookmarks);
             if (bModified && m_xAggregateAsSet->getPropertySetInfo()->hasPropertyByName(PROPERTY_USEBOOKMARKS))
                 m_xAggregateAsSet->setPropertyValue(PROPERTY_USEBOOKMARKS, rConvertedValue);
             break;
-        default:			
+        default:
         {
-            // get the property name			
+            // get the property name
             ::rtl::OUString aPropName;
             sal_Int16 nAttributes;
             getInfoHelper().fillPropertyMembersByHandle(&aPropName, &nAttributes, nHandle);
             OSL_ENSHURE(aPropName.getLength(), "property not found?");
-            
+
             // now set the value
             m_xAggregateAsSet->setPropertyValue(aPropName, rValue);
-        }								
+        }
     }
     return bModified;
 }
@@ -268,12 +271,12 @@ sal_Bool OStatementBase::convertFastPropertyValue( Any & rConvertedValue, Any & 
 void OStatementBase::setFastPropertyValue_NoBroadcast( sal_Int32 nHandle, const Any& rValue ) throw (Exception)
 {
     switch (nHandle)
-    {		
+    {
         // the other properties are set in convertFast...
         case PROPERTY_ID_USEBOOKMARKS:
-        {			
-            m_bUseBookmarks = ::utl::getBOOL(rValue);
-        }	break;		
+        {
+            m_bUseBookmarks = ::comphelper::getBOOL(rValue);
+        }	break;
     }
 }
 
@@ -284,18 +287,18 @@ void OStatementBase::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) cons
     {
         case PROPERTY_ID_USEBOOKMARKS:
             rValue.setValue(&m_bUseBookmarks, getBooleanCppuType());
-            break;		
+            break;
         default:
         {
-            // get the property name			
+            // get the property name
             ::rtl::OUString aPropName;
             sal_Int16 nAttributes;
             const_cast<OStatementBase*>(this)->getInfoHelper().
                 fillPropertyMembersByHandle(&aPropName, &nAttributes, nHandle);
-            OSL_ENSHURE(aPropName.getLength(), "property not found?");			
+            OSL_ENSHURE(aPropName.getLength(), "property not found?");
             // now read the value
             rValue = m_xAggregateAsSet->getPropertyValue(aPropName);
-        }						
+        }
     }
 }
 
@@ -306,7 +309,7 @@ Any OStatementBase::getWarnings(void) throw( SQLException, RuntimeException )
     MutexGuard aGuard(m_aMutex);
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
-    
+
     return Reference< XWarningsSupplier >(m_xAggregateAsSet, UNO_QUERY)->getWarnings();
 }
 
@@ -316,7 +319,7 @@ void OStatementBase::clearWarnings(void) throw( SQLException, RuntimeException )
     MutexGuard aGuard(m_aMutex);
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
-    
+
     Reference< XWarningsSupplier >(m_xAggregateAsSet, UNO_QUERY)->clearWarnings();
 }
 
@@ -328,7 +331,7 @@ void OStatementBase::cancel(void) throw( RuntimeException )
     ClearableMutexGuard aGuard(m_aCancelMutex);
     if (m_xAggregateAsCancellable.is())
         m_xAggregateAsCancellable->cancel();
-    // else do nothing	
+    // else do nothing
 }
 
 // XMultipleResults
@@ -342,7 +345,7 @@ Reference< XResultSet > SAL_CALL OStatementBase::getResultSet(  ) throw(SQLExcep
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsMultipleResultSets())
         throw FunctionSequenceException(*this);
-    
+
     return Reference< XMultipleResults >(m_xAggregateAsSet, UNO_QUERY)->getResultSet();
 }
 
@@ -356,7 +359,7 @@ sal_Int32 SAL_CALL OStatementBase::getUpdateCount(  ) throw(SQLException, Runtim
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsMultipleResultSets())
         throw FunctionSequenceException(*this);
-    
+
     return Reference< XMultipleResults >(m_xAggregateAsSet, UNO_QUERY)->getUpdateCount();
 }
 
@@ -370,10 +373,10 @@ sal_Bool SAL_CALL OStatementBase::getMoreResults(  ) throw(SQLException, Runtime
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsMultipleResultSets())
         throw FunctionSequenceException(*this);
-    
+
     // free the previous results
-    disposeResultSet();	
-    
+    disposeResultSet();
+
     return Reference< XMultipleResults >(m_xAggregateAsSet, UNO_QUERY)->getMoreResults();
 }
 
@@ -388,7 +391,7 @@ void SAL_CALL OStatementBase::addBatch(  ) throw(SQLException, RuntimeException)
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsBatchUpdates())
         throw FunctionSequenceException(*this);
-    
+
     Reference< XPreparedBatchExecution >(m_xAggregateAsSet, UNO_QUERY)->addBatch();
 }
 
@@ -401,8 +404,8 @@ void SAL_CALL OStatementBase::clearBatch(  ) throw(SQLException, RuntimeExceptio
 
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsBatchUpdates())
-        throw FunctionSequenceException(*this);	
-    
+        throw FunctionSequenceException(*this);
+
     Reference< XPreparedBatchExecution >(m_xAggregateAsSet, UNO_QUERY)->clearBatch();
 }
 
@@ -416,10 +419,10 @@ Sequence< sal_Int32 > SAL_CALL OStatementBase::executeBatch(  ) throw(SQLExcepti
     // first check the meta data
     if (!Reference< XConnection > (m_xParent, UNO_QUERY)->getMetaData()->supportsBatchUpdates())
         throw FunctionSequenceException(*this);
-    
+
     // free the previous results
-    disposeResultSet();	
-    
+    disposeResultSet();
+
     return Reference< XPreparedBatchExecution >(m_xAggregateAsSet, UNO_QUERY)->executeBatch();
 }
 
@@ -488,7 +491,7 @@ rtl::OUString OStatement::getImplementationName(  ) throw(RuntimeException)
 //------------------------------------------------------------------------------
 sal_Bool OStatement::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
@@ -516,10 +519,10 @@ Reference< XResultSet > OStatement::executeQuery(const rtl::OUString& sql) throw
     {
         sal_Bool bCaseSensitive = Reference< XConnection >(m_xParent, UNO_QUERY)->getMetaData()->supportsMixedCaseQuotedIdentifiers();
         xResultSet = new OResultSet(xDrvResultSet, *this, bCaseSensitive);
-        
+
         // keep the resultset weak
         m_aResultSet = xResultSet;
-    }	
+    }
     return xResultSet;
 }
 
@@ -531,7 +534,7 @@ sal_Int32 OStatement::executeUpdate(const rtl::OUString& sql) throw( SQLExceptio
         throw DisposedException();
 
     disposeResultSet();
-    
+
     return Reference< XStatement >(m_xAggregateAsSet, UNO_QUERY)->executeUpdate(sql);
 }
 
@@ -542,7 +545,7 @@ sal_Bool OStatement::execute(const rtl::OUString& sql) throw( SQLException, Runt
     if (OComponentHelper::rBHelper.bDisposed)
         throw DisposedException();
 
-    disposeResultSet();	
+    disposeResultSet();
     return Reference< XStatement >(m_xAggregateAsSet, UNO_QUERY)->execute(sql);
 }
 

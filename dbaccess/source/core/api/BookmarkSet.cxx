@@ -2,9 +2,9 @@
  *
  *  $RCSfile: BookmarkSet.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: oj $ $Date: 2000-09-29 15:20:51 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,7 +92,7 @@ void SAL_CALL OBookmarkSet::insertRow( const ORowSetRow& _rInsertRow,const conne
         for(connectivity::ORowVector< ORowSetValue > ::const_iterator aIter = _rInsertRow->begin()+1;aIter != _rInsertRow->end();++aIter,++i)
             updateColumn(i,xUpdRow,*aIter);
         xUpd->insertRow();
-        (*_rInsertRow->begin()) = m_xRowLocate->getBookmark(); 
+        (*_rInsertRow->begin()) = m_xRowLocate->getBookmark();
     }
     else
         throw SQLException();
@@ -111,7 +111,7 @@ void SAL_CALL OBookmarkSet::updateRow(const ORowSetRow& _rInsertRow ,const ORowS
     {
         updateColumn(i,xUpdRow,*aIter);
     }
-    
+
 
     Reference<XResultSetUpdate> xUpd(m_xRowLocate,UNO_QUERY);
     if(xUpd.is())
@@ -146,8 +146,8 @@ void OBookmarkSet::fillValueRow(ORowSetRow& _rRow)
 {
     OCacheSet::fillValueRow(_rRow);
 
-    (*_rRow->begin()) = m_xRowLocate->getBookmark(); 
-}					    
+    (*_rRow->begin()) = m_xRowLocate->getBookmark();
+}
 // -------------------------------------------------------------------------
 void OBookmarkSet::updateColumn(sal_Int32 nPos,Reference< XRowUpdate > _xParameter,const ORowSetValue& _rValue)
 {
@@ -207,18 +207,21 @@ void OBookmarkSet::updateColumn(sal_Int32 nPos,Reference< XRowUpdate > _xParamet
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.2  2000/09/29 15:20:51  oj
+    rowset impl
+
     Revision 1.1.1.1  2000/09/19 00:15:37  hr
     initial import
-    
+
     Revision 1.3  2000/09/18 14:52:45  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.2  2000/09/05 13:23:34  rt
     typo
-    
+
     Revision 1.1  2000/09/01 15:20:46  oj
     rowset addons
-    
+
     Revision 1.0 01.08.2000 09:54:37  oj
 ------------------------------------------------------------------------*/
 

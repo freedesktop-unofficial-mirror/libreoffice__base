@@ -2,9 +2,9 @@
  *
  *  $RCSfile: CIndexColumn.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:37 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -77,7 +77,7 @@ namespace connectivity
         public:
             OIndexColumn();
             OIndexColumn(	sal_Bool _IsAscending,
-                            const ::rtl::OUString& _Name,			
+                            const ::rtl::OUString& _Name,
                             const ::rtl::OUString& _TypeName,
                             const ::rtl::OUString& _DefaultValue,
                             sal_Int32		_IsNullable,

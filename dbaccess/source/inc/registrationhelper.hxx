@@ -2,9 +2,9 @@
  *
  *  $RCSfile: registrationhelper.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 16:14:56 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:20:45 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -78,9 +78,9 @@
 typedef ::com::sun::star::uno::Reference< ::com::sun::star::lang::XSingleServiceFactory > (SAL_CALL *FactoryInstantiation)
         (
             const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rServiceManager,
-            const ::rtl::OUString & _rComponentName, 
+            const ::rtl::OUString & _rComponentName,
             ::cppu::ComponentInstantiation _pCreateFunction,
-            const ::com::sun::star::uno::Sequence< ::rtl::OUString > & _rServiceNames 
+            const ::com::sun::star::uno::Sequence< ::rtl::OUString > & _rServiceNames
         );
 
 //==========================================================================

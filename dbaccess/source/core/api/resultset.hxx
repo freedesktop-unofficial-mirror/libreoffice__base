@@ -2,9 +2,9 @@
  *
  *  $RCSfile: resultset.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -103,8 +103,8 @@
 #ifndef _CPPUHELPER_PROPSHLP_HXX
 #include <cppuhelper/propshlp.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _OSL_DIAGNOSE_H_
 #include <osl/diagnose.h>
@@ -140,7 +140,7 @@ typedef ::com::sun::star::uno::WeakReference< ::com::sun::star::uno::XInterface>
 class OResultSet :	public connectivity::OBaseMutex,
                     public OResultSetBase,
                     public ::cppu::OPropertySetHelper,
-                    public ::utl::OPropertyArrayUsageHelper < OResultSet >				   
+                    public ::comphelper::OPropertyArrayUsageHelper < OResultSet >
 {
 protected:
     OWeakStatement				m_aStatement;
@@ -148,9 +148,9 @@ protected:
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet > m_xAggregateAsResultSet;
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XRow > m_xAggregateAsRow;
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XRowUpdate > m_xAggregateAsRowUpdate;
-        
-    OColumns					m_aColumns;	
-    sal_Int32					m_nResultSetType;	
+
+    OColumns					m_aColumns;
+    sal_Int32					m_nResultSetType;
     sal_Int32					m_nResultSetConcurrency;
     sal_Bool					m_bIsBookmarkable : 1;
 
@@ -161,11 +161,11 @@ public:
     virtual ~OResultSet();
 
 // ::com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // ::com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 
@@ -181,26 +181,26 @@ public:
     virtual void SAL_CALL close(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
 
 // com::sun::star::beans::XPropertySet
-    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);	
-    
-// utl::OPropertyArrayUsageHelper
+    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
+
+// comphelper::OPropertyArrayUsageHelper
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-    
+
 // cppu::OPropertySetHelper
     virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
 
-    virtual sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    virtual sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    virtual void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
-    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;	
+    virtual void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
+    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;
 
 // ::com::sun::star::sdbc::XWarningsSupplier
     virtual ::com::sun::star::uno::Any SAL_CALL getWarnings(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);

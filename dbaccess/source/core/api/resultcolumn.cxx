@@ -2,9 +2,9 @@
  *
  *  $RCSfile: resultcolumn.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,7 +92,7 @@ using namespace ::com::sun::star::uno;
 using namespace ::com::sun::star::lang;
 using namespace ::com::sun::star::container;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 using namespace dbaccess;
 
@@ -102,7 +102,7 @@ OResultColumn::OResultColumn(
                          sal_Int32 _nPos)
                      :m_xMetaData(_xMetaData)
                      ,m_nPos(_nPos)
-{		
+{
 }
 
 // com::sun::star::lang::XTypeProvider
@@ -141,14 +141,14 @@ Sequence< ::rtl::OUString > OResultColumn::getSupportedServiceNames(  ) throw (R
 // OComponentHelper
 //------------------------------------------------------------------------------
 void OResultColumn::disposing()
-{	
+{
     OColumn::disposing();
-    
+
     MutexGuard aGuard(m_aMutex);
     m_xMetaData = NULL;
 }
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* OResultColumn::createArrayHelper( ) const
 {
@@ -160,12 +160,12 @@ void OResultColumn::disposing()
         DECL_PROP1_BOOL(ISCURRENCY,								READONLY);
         DECL_PROP1_BOOL(ISDEFINITELYWRITABLE,					READONLY);
         DECL_PROP1(ISNULLABLE,				sal_Int32,			READONLY);
-        DECL_PROP1_BOOL(ISREADONLY,								READONLY);		
+        DECL_PROP1_BOOL(ISREADONLY,								READONLY);
         DECL_PROP1_BOOL(ISSEARCHABLE,							READONLY);
         DECL_PROP1_BOOL(ISSIGNED,								READONLY);
         DECL_PROP1_BOOL(ISWRITABLE,								READONLY);
         DECL_PROP1(LABEL,					::rtl::OUString,	READONLY);
-        DECL_PROP1(NAME,					::rtl::OUString,	READONLY);		
+        DECL_PROP1(NAME,					::rtl::OUString,	READONLY);
         DECL_PROP1(PRECISION,				sal_Int32,			READONLY);
         DECL_PROP1(SCALE,					sal_Int32,			READONLY);
         DECL_PROP1(SCHEMANAME,				::rtl::OUString,	READONLY);
@@ -175,12 +175,12 @@ void OResultColumn::disposing()
         DECL_PROP1(TYPENAME,				::rtl::OUString,	READONLY);
     END_PROPERTY_HELPER();
 }
-    
+
 // cppu::OPropertySetHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper& OResultColumn::getInfoHelper()
 {
-    return *static_cast< ::utl::OPropertyArrayUsageHelper< OResultColumn >* >(this)->getArrayHelper();
+    return *static_cast< ::comphelper::OPropertyArrayUsageHelper< OResultColumn >* >(this)->getArrayHelper();
 }
 
 //------------------------------------------------------------------------------
@@ -223,12 +223,12 @@ void OResultColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
             {
                 sal_Bool bVal = m_xMetaData->isReadOnly(m_nPos);
                 rValue.setValue(&bVal, getBooleanCppuType());
-            }	break;			
+            }	break;
             case PROPERTY_ID_ISWRITABLE:
             {
                 sal_Bool bVal = m_xMetaData->isWritable(m_nPos);
                 rValue.setValue(&bVal, getBooleanCppuType());
-            }	break;			
+            }	break;
             case PROPERTY_ID_ISDEFINITELYWRITABLE:
             {
                 sal_Bool bVal = m_xMetaData->isDefinitelyWritable(m_nPos);
@@ -238,16 +238,16 @@ void OResultColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
             {
                 sal_Bool bVal = m_xMetaData->isAutoIncrement(m_nPos);
                 rValue.setValue(&bVal, getBooleanCppuType());
-            }	break;		
+            }	break;
             case PROPERTY_ID_SERVICENAME:
-                rValue <<= m_xMetaData->getColumnServiceName(m_nPos);				
+                rValue <<= m_xMetaData->getColumnServiceName(m_nPos);
                 break;
             case PROPERTY_ID_LABEL:
                 rValue <<= m_xMetaData->getColumnLabel(m_nPos);
                 break;
             case PROPERTY_ID_DISPLAYSIZE:
                 rValue <<= m_xMetaData->getColumnDisplaySize(m_nPos);
-                break;		
+                break;
             case PROPERTY_ID_TYPE:
                 rValue <<= m_xMetaData->getColumnType(m_nPos);
                 break;
@@ -262,7 +262,7 @@ void OResultColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
                 break;
             case PROPERTY_ID_TYPENAME:
                 rValue <<= m_xMetaData->getColumnTypeName(m_nPos);
-                break;					
+                break;
             case PROPERTY_ID_NAME:
                 OColumn::getFastPropertyValue( rValue, nHandle );
                 break;
@@ -272,16 +272,16 @@ void OResultColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
     {
         // default handling if we caught an exception
         switch (nHandle)
-        {			
+        {
             case PROPERTY_ID_LABEL:
             case PROPERTY_ID_TYPENAME:
             case PROPERTY_ID_SERVICENAME:
-            case PROPERTY_ID_TABLENAME:				
+            case PROPERTY_ID_TABLENAME:
             case PROPERTY_ID_SCHEMANAME:
             case PROPERTY_ID_CATALOGNAME:
                 // empty string'S
                 rValue <<= rtl::OUString();
-                break;		
+                break;
             case PROPERTY_ID_ISAUTOINCREMENT:
             case PROPERTY_ID_ISWRITABLE:
             case PROPERTY_ID_ISDEFINITELYWRITABLE:
@@ -302,13 +302,13 @@ void OResultColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
             case PROPERTY_ID_PRECISION:
             case PROPERTY_ID_DISPLAYSIZE:
                 rValue <<= sal_Int32(0);
-                break;		
+                break;
             case PROPERTY_ID_TYPE:
                 rValue <<= sal_Int32(DataType::SQLNULL);
                 break;
             case PROPERTY_ID_ISNULLABLE:
                 rValue <<= ColumnValue::NULLABLE_UNKNOWN;
-                break;		
+                break;
         }
     }
 }

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: CacheSet.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -97,7 +97,7 @@ namespace connectivity{ class OSQLParseTreeIterator; }
 
 namespace dbaccess
 {
-    class OCacheSet 
+    class OCacheSet
     {
     protected:
         ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet>			m_xDriverSet;
@@ -113,11 +113,11 @@ namespace dbaccess
         sal_Bool									m_bDeleted;
 
         OCacheSet(	const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet>& _xDriverSet,
-                    const connectivity::OSQLParseTreeIterator*	_pIterator) 
+                    const connectivity::OSQLParseTreeIterator*	_pIterator)
             : m_xDriverSet(_xDriverSet)
             ,m_xDriverRow(m_xDriverSet,::com::sun::star::uno::UNO_QUERY)
             ,m_xSetMetaData(
-                    ::com::sun::star::uno::Reference< 
+                    ::com::sun::star::uno::Reference<
                         ::com::sun::star::sdbc::XResultSetMetaDataSupplier>(_xDriverSet,::com::sun::star::uno::UNO_QUERY)->getMetaData())
             ,m_xConnection( ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XStatement>(m_xDriverSet->getStatement(),::com::sun::star::uno::UNO_QUERY)->getConnection())
             ,m_pIterator(_pIterator)
@@ -286,18 +286,18 @@ namespace dbaccess
         // -------------------------------------------------------------------------
         virtual sal_Bool SAL_CALL absolute( sal_Int32 row ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException)
         {
-            return m_xDriverSet->absolute(row);	   
+            return m_xDriverSet->absolute(row);
         }
         // -------------------------------------------------------------------------
         virtual sal_Bool SAL_CALL relative( sal_Int32 rows ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException)
         {
-            return m_xDriverSet->relative(rows);	 
+            return m_xDriverSet->relative(rows);
         }
         // -------------------------------------------------------------------------
         virtual sal_Bool SAL_CALL previous(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException)
         {
             return m_xDriverSet->previous();
-        }						   
+        }
         // -------------------------------------------------------------------------
         virtual void SAL_CALL refreshRow(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException)
         {
@@ -346,12 +346,15 @@ namespace dbaccess
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.1.1.1  2000/09/19 00:15:38  hr
+    initial import
+
     Revision 1.2  2000/09/18 14:52:46  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:24:14  oj
     rowset addon
-    
+
     Revision 1.0 26.07.2000 14:45:35  oj
 ------------------------------------------------------------------------*/
 

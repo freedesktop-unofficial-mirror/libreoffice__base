@@ -2,9 +2,9 @@
  *
  *  $RCSfile: KeySet.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -143,7 +143,7 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
     ::rtl::OUString aSql = ::rtl::OUString::createFromAscii("DELETE FROM ");
     aSql += m_aComposedTableName;
     aSql += ::rtl::OUString::createFromAscii(" WHERE ");
-    
+
     // list all cloumns that should be set
     static ::rtl::OUString aQuote	= m_xConnection->getMetaData()->getIdentifierQuoteString();
     static ::rtl::OUString aAnd		= ::rtl::OUString::createFromAscii(" AND ");
@@ -158,7 +158,7 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
         xKeys = xKeySup->getKeys();
 
     Reference<XColumnsSupplier> xKeyColsSup;
-    Reference<XIndexAccess> xKeyColumns; 
+    Reference<XIndexAccess> xKeyColumns;
     if(xKeys.is() && xKeys->getCount())
     {
         xKeys->getByIndex(0) >>= xKeyColsSup; // there is only one key per table
@@ -178,7 +178,7 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
         xSet->getPropertyValue(PROPERTY_NAME) >>= aColumnName;
         aColumnNames.push_back(aColumnName);
     }
-    
+
     const Any* pBegin	= rows.getConstArray();
     const Any* pEnd		= pBegin + rows.getLength();
 
@@ -201,13 +201,13 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
     // now create end execute the prepared statement
     Reference< XPreparedStatement > xPrep(m_xConnection->prepareStatement(aSql));
     Reference< XParameters > xParameter(xPrep,UNO_QUERY);
-    
+
     pBegin	= rows.getConstArray();
     i=1;
     for(;pBegin != pEnd;++pBegin)
     {
         Sequence< Any >* pValuePair = (Sequence< Any >*)pBegin->getValue();
-        
+
         const Any* pValBegin	= pValuePair->getConstArray();
         const Any* pValEnd		= pValBegin + pValuePair->getLength();
 
@@ -242,7 +242,7 @@ Sequence< sal_Int32 > SAL_CALL OKeySet::deleteRows( const Sequence< Any >& rows 
                 break;
             case TypeClass_DOUBLE:
                 xParameter->setDouble(i,*(double*)pValBegin->getValue());
-                break;			
+                break;
             };
         }
     }
@@ -280,12 +280,15 @@ void SAL_CALL OKeySet::moveToCurrentRow(  ) throw(SQLException, RuntimeException
 /*------------------------------------------------------------------------
 
     $Log: not supported by cvs2svn $
+    Revision 1.1.1.1  2000/09/19 00:15:38  hr
+    initial import
+
     Revision 1.2  2000/09/18 14:52:46  willem.vandorp
     OpenOffice header added.
-    
+
     Revision 1.1  2000/09/01 15:19:46  oj
     rowset addons
-    
+
     Revision 1.0 01.08.2000 09:09:34  oj
 ------------------------------------------------------------------------*/
 

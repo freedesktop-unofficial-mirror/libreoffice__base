@@ -2,9 +2,9 @@
  *
  *  $RCSfile: column.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:38 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:18:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,14 +86,17 @@
 #ifndef _COM_SUN_STAR_LANG_DISPOSEDEXCEPTION_HPP_
 #include <com/sun/star/lang/DisposedException.hpp>
 #endif
-#ifndef _UTL_SEQUENCE_HXX_
-#include <unotools/sequence.hxx>
+#ifndef _COMPHELPER_SEQUENCE_HXX_
+#include <comphelper/sequence.hxx>
 #endif
-#ifndef _UTL_PROPERTY_HXX_
-#include <unotools/property.hxx>
+#ifndef _COMPHELPER_PROPERTY_HXX_
+#include <comphelper/property.hxx>
 #endif
-#ifndef _UNOTOOLS_ENUMHELPER_HXX_
-#include <unotools/enumhelper.hxx>
+#ifndef _COMPHELPER_ENUMHELPER_HXX_
+#include <comphelper/enumhelper.hxx>
+#endif
+#ifndef _COMPHELPER_TYPES_HXX_
+#include <comphelper/types.hxx>
 #endif
 #ifndef _CPPUHELPER_EXTRACT_HXX_
 #include <cppuhelper/extract.hxx>
@@ -101,11 +104,11 @@
 #ifndef _OSL_DIAGNOSE_H_
 #include <osl/diagnose.h>
 #endif
-#ifndef _UTL_SEQSTREAM_HXX
-#include <unotools/seqstream.hxx>
+#ifndef _COMPHELPER_SEQSTREAM_HXX
+#include <comphelper/seqstream.hxx>
 #endif
-#ifndef _UTL_BASIC_IO_HXX_
-#include <unotools/basicio.hxx>
+#ifndef _COMPHELPER_BASIC_IO_HXX_
+#include <comphelper/basicio.hxx>
 #endif
 #ifndef _TOOLS_DEBUG_HXX
 #include <tools/debug.hxx>
@@ -129,7 +132,7 @@ using namespace ::com::sun::star::io;
 using namespace ::com::sun::star::container;
 using namespace ::com::sun::star::registry;
 using namespace ::osl;
-using namespace ::utl;
+using namespace ::comphelper;
 using namespace ::cppu;
 
 DBG_NAME(OColumn);
@@ -172,9 +175,9 @@ Any OColumn::queryInterface( const Type & rType ) throw (RuntimeException)
         aIface = ::cppu::queryInterface(
                     rType,
                     static_cast< XPropertySet * >( this ),
-                    static_cast< XMultiPropertySet * >( this ));	
+                    static_cast< XMultiPropertySet * >( this ));
 
-    return aIface;	
+    return aIface;
 }
 
 //--------------------------------------------------------------------------
@@ -199,7 +202,7 @@ rtl::OUString OColumn::getImplementationName(  ) throw(RuntimeException)
 //------------------------------------------------------------------------------
 sal_Bool OColumn::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
@@ -213,7 +216,7 @@ Sequence< ::rtl::OUString > OColumn::getSupportedServiceNames(  ) throw (Runtime
 // OComponentHelper
 //------------------------------------------------------------------------------
 void OColumn::disposing()
-{	
+{
     OPropertySetHelper::disposing();
 }
 
@@ -229,9 +232,9 @@ void OColumn::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
 {
     switch (nHandle)
     {
-        case PROPERTY_ID_NAME:	
+        case PROPERTY_ID_NAME:
             rValue <<= m_sName;
-            break;				
+            break;
     }
 }
 
@@ -242,13 +245,13 @@ sal_Bool OColumn::convertFastPropertyValue(
                             sal_Int32 nHandle,
                             const Any& rValue )
                                 throw (IllegalArgumentException)
-{	
+{
     sal_Bool bModified = sal_False;
     switch (nHandle)
     {
-        case PROPERTY_ID_NAME:	
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_sName);
-            break;		
+        case PROPERTY_ID_NAME:
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_sName);
+            break;
     }
     return bModified;
 }
@@ -259,14 +262,14 @@ void OColumn::setFastPropertyValue_NoBroadcast(
                                 const Any& rValue
                                                  )
                                                  throw (Exception)
-{	
+{
     switch (nHandle)
     {
         case PROPERTY_ID_NAME:
             OSL_ENSHURE(rValue.getValueType().equals(::getCppuType(static_cast< ::rtl::OUString* >(NULL))),
                 "OColumn::setFastPropertyValue_NoBroadcast(ALIGN) : invalid value !");
             rValue >>= m_sName;
-            break;		
+            break;
     }
 }
 
@@ -304,13 +307,13 @@ void OColumnSettings::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) con
 {
     switch (nHandle)
     {
-        case PROPERTY_ID_ALIGN:	
+        case PROPERTY_ID_ALIGN:
             rValue = m_aAlignment;
-            break;		
-        case PROPERTY_ID_NUMBERFORMAT:			
+            break;
+        case PROPERTY_ID_NUMBERFORMAT:
             rValue = m_aFormatKey;
             break;
-        case PROPERTY_ID_RELATIVEPOSITION:		
+        case PROPERTY_ID_RELATIVEPOSITION:
             rValue = m_aRelativePosition;
             break;
         case PROPERTY_ID_WIDTH:
@@ -319,9 +322,9 @@ void OColumnSettings::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) con
         case PROPERTY_ID_HIDDEN:
             rValue.setValue(&m_bHidden, getBooleanCppuType());
             break;
-        case PROPERTY_ID_CONTROLMODEL:	
+        case PROPERTY_ID_CONTROLMODEL:
             rValue <<= m_xControlModel;
-            break;				
+            break;
     }
 }
 
@@ -337,24 +340,24 @@ sal_Bool OColumnSettings::convertFastPropertyValue(
     switch (nHandle)
     {
         case PROPERTY_ID_ALIGN:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aAlignment,
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aAlignment,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
             break;
         case PROPERTY_ID_WIDTH:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aWidth,
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aWidth,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
             break;
         case PROPERTY_ID_HIDDEN:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bHidden);
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bHidden);
             break;
         case PROPERTY_ID_RELATIVEPOSITION:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aRelativePosition,
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aRelativePosition,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
             break;
-        case PROPERTY_ID_NUMBERFORMAT:	
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aFormatKey,
+        case PROPERTY_ID_NUMBERFORMAT:
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aFormatKey,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
-            break;			
+            break;
         case PROPERTY_ID_CONTROLMODEL:
         {
             Reference< XPropertySet > xTest;
@@ -404,7 +407,7 @@ void OColumnSettings::setFastPropertyValue_NoBroadcast(
         case PROPERTY_ID_HIDDEN:
             OSL_ENSHURE(rValue.getValueType().equals(::getBooleanCppuType()),
                 "OColumnSettings::setFastPropertyValue_NoBroadcast(HIDDEN) : invalid value !");
-            m_bHidden = ::utl::getBOOL(rValue);
+            m_bHidden = ::comphelper::getBOOL(rValue);
             break;
     }
 }
@@ -493,19 +496,19 @@ void OColumnSettings::readUIFrom(const Reference< XRegistryKey >& _rxConfigNode)
 DBG_NAME(OColumns);
 
 //--------------------------------------------------------------------------
-OColumns::OColumns(::cppu::OWeakObject& _rParent, 
-                   ::osl::Mutex& _rMutex, 
+OColumns::OColumns(::cppu::OWeakObject& _rParent,
+                   ::osl::Mutex& _rMutex,
                    sal_Bool _bCaseSensitive,const ::std::vector< ::rtl::OUString> &_rVector,
                    sal_Bool _bAddColumn,sal_Bool _bDropColumn)
                    : connectivity::sdbcx::OCollection(_rParent,_bCaseSensitive,_rMutex,_rVector)
                    ,m_pTable(NULL)
 //	:m_rParent(_rParent)
-//	,m_rMutex(_rMutex)	
+//	,m_rMutex(_rMutex)
     ,m_bInitialized(sal_False)
     ,m_bAddColumn(_bAddColumn)
     ,m_bDropColumn(_bDropColumn)
 {
-    //	m_pColMap = new OColumnMap(17, ::utl::UStringMixHash(_bCaseSensitive), ::utl::UStringMixEqual(_bCaseSensitive));
+    //	m_pColMap = new OColumnMap(17, ::comphelper::UStringMixHash(_bCaseSensitive), ::comphelper::UStringMixEqual(_bCaseSensitive));
     DBG_CTOR(OColumns, NULL);
 }
 
@@ -526,14 +529,14 @@ rtl::OUString OColumns::getImplementationName(  ) throw(RuntimeException)
 //------------------------------------------------------------------------------
 sal_Bool OColumns::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
 Sequence< ::rtl::OUString > OColumns::getSupportedServiceNames(  ) throw (RuntimeException)
 {
     Sequence< ::rtl::OUString > aSNS( 1 );
-    aSNS[0] = SERVICE_SDBCX_CONTAINER;	
+    aSNS[0] = SERVICE_SDBCX_CONTAINER;
     return aSNS;
 }
 
@@ -546,7 +549,7 @@ void OColumns::append(const ::rtl::OUString& rName, OColumn* pCol)
     pCol->m_sName = rName;
     ObjectIter aIter = m_aNameMap.find(rName);
     OSL_ENSURE(aIter == m_aNameMap.end(),"OColumns::append: Column already exists");
-    
+
     m_aElements.push_back(m_aNameMap.insert(m_aNameMap.begin(), ObjectMap::value_type(rName,::com::sun::star::uno::WeakReference< ::com::sun::star::container::XNamed >(pCol))));
 
     //	(*m_pColMap)[rName] = pCol;
@@ -673,7 +676,7 @@ void OColumns::storeSettings()
             aIter != m_aElements.end();
             ++aIter
         )
-    {		
+    {
         // set the name
         Reference< ::com::sun::star::lang::XUnoTunnel> xTunnel((*aIter)->second.get(),UNO_QUERY);
         if(xTunnel.is())
@@ -799,7 +802,7 @@ Reference< XNamed > OColumns::createObject(const ::rtl::OUString& _rName)
                 sal_Int32		nField7 = xRow->getInt(7)
                             ,	nField9 = xRow->getInt(9)
                             ,	nField11= xRow->getInt(11);
-                
+
 
                 connectivity::sdbcx::OColumn* pRet = new connectivity::sdbcx::OColumn(_rName,
                                             aField6,
@@ -846,9 +849,9 @@ Sequence< Type > SAL_CALL OColumns::getTypes(  ) throw(RuntimeException)
     Type aDropType = getCppuType( (Reference<XDrop>*)0);
 
     Sequence< Type > aTypes(OColumns_BASE::getTypes());
-    Sequence< Type > aRet(aTypes.getLength() - 
-        ((m_pTable && m_pTable->isNew()) ? 0 : 
-            ((m_bDropColumn ? 
+    Sequence< Type > aRet(aTypes.getLength() -
+        ((m_pTable && m_pTable->isNew()) ? 0 :
+            ((m_bDropColumn ?
                 (m_bAddColumn ? 0 : 1) : (m_bAddColumn ? 1 : 2)))));
 
     const Type* pBegin = aTypes.getConstArray();
@@ -1190,15 +1193,15 @@ sal_Bool OColumn::convertFastPropertyValue(
     switch (nHandle)
     {
         case PROPERTY_ID_ALIGN:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aAlignment,
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aAlignment,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
             break;
         case PROPERTY_ID_WIDTH:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aWidth,
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_aWidth,
                 ::getCppuType(static_cast< sal_Int32* >(NULL)));
             break;
         case PROPERTY_ID_HIDDEN:
-            bModified = ::utl::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bHidden);
+            bModified = ::comphelper::tryPropertyValue(rConvertedValue, rOldValue, rValue, m_bHidden);
             break;
     }
     return bModified;
@@ -1226,7 +1229,7 @@ void OColumn::setFastPropertyValue_NoBroadcast(
         case PROPERTY_ID_HIDDEN:
             OSL_ENSHURE(rValue.getValueType().equals(::getBooleanCppuType()),
                 "OColumn::setFastPropertyValue_NoBroadcast(HIDDEN) : invalid value !");
-            m_bHidden = ::utl::getBOOL(rValue);
+            m_bHidden = ::comphelper::getBOOL(rValue);
             break;
     }
 }
@@ -1237,7 +1240,7 @@ Reference< XPropertySetInfo > OColumn::getPropertySetInfo() throw (RuntimeExcept
     return createPropertySetInfo( getInfoHelper() ) ;
 }
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
 //------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* OColumn::createArrayHelper( ) const
 {
@@ -1258,7 +1261,7 @@ Reference< XPropertySetInfo > OColumn::getPropertySetInfo() throw (RuntimeExcept
         DECL_PROP2(WIDTH,				sal_Int32,			BOUND, MAYBEVOID);
     END_PROPERTY_HELPER();
 }
-    
+
 // cppu::OPropertySetHelper
 //------------------------------------------------------------------------------
 IPropertyArrayHelper& OColumn::getInfoHelper()
@@ -1289,7 +1292,7 @@ rtl::OUString OColumn::getImplementationName(  ) throw(RuntimeException)
 //------------------------------------------------------------------------------
 sal_Bool OColumn::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
@@ -1311,7 +1314,7 @@ OColumns::OColumns(::cppu::OWeakObject& _rParent, ::osl::Mutex& _rMutex, sal_Boo
     ,m_rMutex(_rMutex)
     ,m_bCaseSensitive(_bCaseSensitive)
 {
-    m_pColMap = new OColumnMap(17, ::utl::UStringMixHash(_bCaseSensitive), ::utl::UStringMixEqual(_bCaseSensitive));
+    m_pColMap = new OColumnMap(17, ::comphelper::UStringMixHash(_bCaseSensitive), ::comphelper::UStringMixEqual(_bCaseSensitive));
 }
 
 //--------------------------------------------------------------------------
@@ -1330,7 +1333,7 @@ rtl::OUString OColumns::getImplementationName(  ) throw(RuntimeException)
 //------------------------------------------------------------------------------
 sal_Bool OColumns::supportsService( const ::rtl::OUString& _rServiceName ) throw (RuntimeException)
 {
-    return ::utl::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
+    return ::comphelper::findValue(getSupportedServiceNames(), _rServiceName, sal_True).getLength() != 0;
 }
 
 //------------------------------------------------------------------------------
@@ -1361,7 +1364,7 @@ sal_Bool OColumns::hasElements(void) throw( RuntimeException )
 Reference< XEnumeration >  OColumns::createEnumeration(void) throw( RuntimeException )
 {
     MutexGuard aGuard(m_rMutex);
-    return new ::utl::OEnumerationByIndex(this);
+    return new ::comphelper::OEnumerationByIndex(this);
 }
 
 // XIndexAccess
@@ -1481,7 +1484,7 @@ void OColumns::setCaseSensitive(sal_Bool bCaseSensitive)
         return;
 
     delete(m_pColMap);
-    m_pColMap = new OColumnMap(17, ::utl::UStringMixHash(bCaseSensitive), ::utl::UStringMixEqual(bCaseSensitive));
+    m_pColMap = new OColumnMap(17, ::comphelper::UStringMixHash(bCaseSensitive), ::comphelper::UStringMixEqual(bCaseSensitive));
 }
 
 //------------------------------------------------------------------
