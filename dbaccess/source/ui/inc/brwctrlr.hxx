@@ -2,9 +2,9 @@
  *
  *  $RCSfile: brwctrlr.hxx,v $
  *
- *  $Revision: 1.29 $
+ *  $Revision: 1.30 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-16 14:31:49 $
+ *  last change: $Author: obo $ $Date: 2005-01-05 12:36:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -71,10 +71,10 @@
 #ifndef _SBA_GRID_HXX
 #include "sbagrid.hxx"
 #endif
-#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_ 
+#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_
 #include <com/sun/star/form/XLoadable.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCONTAINERLISTENER_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCONTAINERLISTENER_HPP_
 #include <com/sun/star/container/XContainerListener.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBC_XSQLERRORLISTENER_HPP_
@@ -100,9 +100,6 @@
 #endif
 #ifndef _COM_SUN_STAR_SDBCX_XCOLUMNSSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XColumnsSupplier.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDB_XSINGLESELECTQUERYANALYZER_HPP_
-#include <com/sun/star/sdb/XSingleSelectQueryAnalyzer.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDB_XSINGLESELECTQUERYCOMPOSER_HPP_
 #include <com/sun/star/sdb/XSingleSelectQueryComposer.hpp>
@@ -138,7 +135,7 @@ struct FmSearchContext;
 
 namespace dbaui
 {
-    
+
     // =========================================================================
 
     typedef ::cppu::ImplHelper8	<	::com::sun::star::sdb::XSQLErrorListener
@@ -169,8 +166,7 @@ namespace dbaui
         ::com::sun::star::uno::Reference< ::com::sun::star::form::XFormComponent > 		m_xGridModel;	// the model of our grid
         ::com::sun::star::uno::Reference< ::com::sun::star::util::XNumberFormatter > 	m_xFormatter;	// a number formatter working with the connection's NumberFormatsSupplier
         ::com::sun::star::uno::Reference< ::com::sun::star::uno::XAggregation >			m_xFormControllerImpl;
-        ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSingleSelectQueryAnalyzer > 	m_xParser;		// for sorting 'n filtering
-        ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSingleSelectQueryComposer >	m_xComposer;
+        ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSingleSelectQueryComposer > 	m_xParser;		// for sorting 'n filtering
 
         AutoTimer				m_aInvalidateClipboard;				// for testing the state of the CUT/COPY/PASTE-slots
 
@@ -199,7 +195,7 @@ namespace dbaui
         sal_Bool				m_bClosingKillOpen : 1;			// are we killing the load thread because we are to be suspended ?
         sal_Bool				m_bErrorOccured : 1;			// see enter-/leaveFormAction
 
-    protected:	
+    protected:
         class FormErrorHelper
         {
             SbaXDataBrowserController*	m_pOwner;
@@ -219,7 +215,7 @@ namespace dbaui
         ::com::sun::star::uno::Reference< ::com::sun::star::form::XFormComponent > 		getFormComponent()	const	{ return m_xGridModel; }
         ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlModel > 		getControlModel()	const	{ return ::com::sun::star::uno::Reference< ::com::sun::star::awt::XControlModel > (m_xGridModel, ::com::sun::star::uno::UNO_QUERY); }
         ::com::sun::star::uno::Reference< ::com::sun::star::util::XNumberFormatter > 	getNumberFormatter()const	{ return m_xFormatter; }
-        
+
         sal_Bool	isValid() const			{ return m_xRowSet.is() && m_xGridModel.is(); }
         sal_Bool	isValidCursor() const;	// checks the ::com::sun::star::data::XDatabaseCursor-interface of m_xRowSet
         sal_Bool	isLoaded() const;
@@ -229,9 +225,6 @@ namespace dbaui
 
         const TransferableDataHelper&
             getViewClipboard() const { return m_aSystemClipboard; }
-
-    protected:
-        ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSingleSelectQueryAnalyzer > 	getParser() const { return m_xParser; }
 
     public:
         SbaXDataBrowserController(const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rM);
@@ -296,7 +289,7 @@ namespace dbaui
         // ::com::sun::star::form::XResetListener
         virtual sal_Bool SAL_CALL approveReset(const ::com::sun::star::lang::EventObject& rEvent) throw( ::com::sun::star::uno::RuntimeException );
         virtual void SAL_CALL resetted(const ::com::sun::star::lang::EventObject& rEvent) throw( ::com::sun::star::uno::RuntimeException );
-        
+
         // SbaGridListener
         virtual void RowChanged();
         virtual void ColumnChanged();
@@ -350,7 +343,7 @@ namespace dbaui
         virtual void AddColumnListener(const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet > & xCol);
         virtual void RemoveColumnListener(const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet > & xCol);
 
-        
+
             // call after "major changes" (e.g. the completion of the async load).
             // invalidates all toolbox slots and all supported features.
 
@@ -371,7 +364,7 @@ namespace dbaui
             // whole process (_both_ XLoadable::reload calls _together_) form the "reload operation"
 
         // --------------------
-        
+
             // empty the frame where our view resides
         virtual sal_Bool CommitCurrent();
             // commit the current column (i.e. cell)
