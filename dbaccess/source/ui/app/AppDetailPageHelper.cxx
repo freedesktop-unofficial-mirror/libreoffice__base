@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AppDetailPageHelper.cxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: rt $ $Date: 2004-09-09 09:39:13 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-22 12:00:02 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -79,7 +79,7 @@
 #ifndef _COM_SUN_STAR_AWT_XTABCONTROLLER_HPP_
 #include <com/sun/star/awt/XTabController.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XCONNECTION_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XCONNECTION_HPP_
 #include <com/sun/star/sdbc/XConnection.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBCX_XTABLESSUPPLIER_HPP_
@@ -121,10 +121,10 @@
 #ifndef _COM_SUN_STAR_UCB_COMMAND_HPP_
 #include <com/sun/star/ucb/Command.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_ 
+#ifndef _COM_SUN_STAR_FORM_XLOADABLE_HPP_
 #include <com/sun/star/form/XLoadable.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
 #include <com/sun/star/container/XChild.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XCONTAINER_HPP_
@@ -189,7 +189,7 @@ namespace
         SvLBoxEntry* pReturn = NULL;
         sal_Int32 nIndex = 0;
         String sName( _rName.getToken(0,'/',nIndex) );
-        
+
         SvLBoxEntry* pEntry = _pFirst;
         while( pEntry )
         {
@@ -204,7 +204,7 @@ namespace
                 {
                     pReturn = pEntry;
                     break;
-                }				
+                }
             }
             else
                 pEntry = rTree.NextSibling(pEntry);
@@ -269,7 +269,7 @@ OAppDetailPageHelper::OAppDetailPageHelper(Window* _pParent,OAppBorderWindow* _p
     m_aTBPreview.SetDropdownClickHdl( LINK( this, OAppDetailPageHelper, OnDropdownClickHdl ) );
     m_aTBPreview.EnableMenuStrings();
     m_aTBPreview.Enable(!m_pBorderWin->getView()->getCommandController()->isDataSourceReadOnly());
-    
+
     m_aBorder.SetUniqueId(UID_APP_VIEW_PREVIEW_1);
 
     m_aPreview.SetHelpId(HID_APP_VIEW_PREVIEW_1);
@@ -280,7 +280,7 @@ OAppDetailPageHelper::OAppDetailPageHelper(Window* _pParent,OAppBorderWindow* _p
     m_aDocumentInfo.SetHelpId(HID_APP_VIEW_PREVIEW_3);
 
     m_xWindow = VCLUnoHelper::GetInterface( m_pTablePreview );
-    
+
     SetUniqueId(UID_APP_DETAILPAGE_HELPER);
     for (int i=0; i < CONTROL_COUNT; ++i)
         m_pLists[i] = NULL;
@@ -307,7 +307,7 @@ OAppDetailPageHelper::~OAppDetailPageHelper()
             ::std::auto_ptr<Window> aTemp(m_pLists[i]);
             m_pLists[i] = NULL;
         }
-        
+
     }
 }
 // -----------------------------------------------------------------------------
@@ -414,7 +414,7 @@ void OAppDetailPageHelper::getSelectionElementNames(::std::vector< ::rtl::OUStri
 
         SvLBoxEntry* pEntry = _pEntry;
         if ( !pEntry )
-            pEntry = rTree.FirstSelected();		
+            pEntry = rTree.FirstSelected();
 
         if ( pEntry )
         {
@@ -446,7 +446,7 @@ void OAppDetailPageHelper::getSelectionElementNames(::std::vector< ::rtl::OUStri
                     }
                 }
                 sTable = rTree.GetEntryText(pEntry);
-                
+
                 ::dbtools::composeTableName(_xMetaData,sCatalog,sSchema,sTable,sComposedName,sal_False,::dbtools::eInDataManipulation);
             }
             else
@@ -512,7 +512,7 @@ sal_Bool OAppDetailPageHelper::isCopyAllowed()
 sal_Bool OAppDetailPageHelper::isPasteAllowed()
 {
     //	int nPos = getVisibleControlIndex();
-    return sal_True;	
+    return sal_True;
 }
 // -----------------------------------------------------------------------------
 void OAppDetailPageHelper::copy()
@@ -596,7 +596,7 @@ void OAppDetailPageHelper::createTablesPage(const Reference< XConnection>& _xCon
             Sequence< ::rtl::OUString> sTables,sViews;
             if ( xTables.is() )
                 sTables = xTables->getElementNames();
-            
+
             xViewSupp.set(xTableSupp,UNO_QUERY);
             if ( xViewSupp.is() )
             {
@@ -616,39 +616,61 @@ void OAppDetailPageHelper::createTablesPage(const Reference< XConnection>& _xCon
         }
         m_pLists[E_TABLE]->SelectAll(FALSE);
     }
-    
+
     setDetailPage(m_pLists[E_TABLE]);
 }
+
+// -----------------------------------------------------------------------------
+void OAppDetailPageHelper::getElementIcons( ElementType _eType, USHORT& _rImageId, USHORT& _rHighContrastImageId )
+{
+    _rImageId = _rHighContrastImageId = 0;
+    switch(_eType )
+    {
+        case E_FORM:
+            _rImageId = FORM_TREE_ICON;
+            _rHighContrastImageId = FORM_TREE_ICON_SCH;
+            break;
+        case E_REPORT:
+            _rImageId = REPORT_TREE_ICON;
+            _rHighContrastImageId = REPORT_TREE_ICON_SCH;
+            break;
+        case E_QUERY:
+            _rImageId = QUERY_TREE_ICON;
+            _rHighContrastImageId = QUERY_TREE_ICON_SCH;
+            break;
+        default:
+            OSL_ENSURE( sal_False, "OAppDetailPageHelper::GetElementIcons: invalid element type!" );
+            break;
+    }
+}
+
 // -----------------------------------------------------------------------------
 void OAppDetailPageHelper::createPage(ElementType _eType,const Reference< XNameAccess >& _xContainer)
 {
     OSL_ENSURE(E_TABLE != _eType,"E_TABLE isn't allowed.");
 
-    USHORT nHelpId = 0, nIcon = 0, nIconH = 0, nImageId = 0;
-    sal_Bool bHiContrast = GetBackground().GetColor().IsDark();
-    switch(_eType )
+    USHORT nHelpId = 0, nIcon = 0, nIconH = 0, nImageId = 0, nImageIdH = 0;
+    switch( _eType )
     {
         case E_FORM:
             nHelpId = HID_APP_FORM_TREE;
             nIcon = IMG_FORMFOLDER_TREE_S;
             nIconH = IMG_FORMFOLDER_TREE_SCH;
-            nImageId = bHiContrast ? FORM_TREE_ICON_SCH : FORM_TREE_ICON;
             break;
         case E_REPORT:
             nHelpId = HID_APP_REPORT_TREE;
             nIcon = IMG_REPORTFOLDER_TREE_S;
             nIconH = IMG_REPORTFOLDER_TREE_SCH;
-            nImageId = bHiContrast ? REPORT_TREE_ICON_SCH : REPORT_TREE_ICON;
             break;
         case E_QUERY:
             nHelpId = HID_APP_QUERY_TREE;
             nIcon = QUERYFOLDER_TREE_ICON;
             nIconH = QUERYFOLDER_TREE_ICON_SCH;
-            nImageId = bHiContrast ? QUERY_TREE_ICON_SCH : QUERY_TREE_ICON;
             break;
         default:
             OSL_ENSURE(0,"Illegal call!");
     }
+    getElementIcons( _eType, nImageId, nImageIdH );
 
     if ( !m_pLists[_eType] )
     {
@@ -659,7 +681,7 @@ void OAppDetailPageHelper::createPage(ElementType _eType,const Reference< XNameA
     {
         if ( !m_pLists[_eType]->GetEntryCount() && _xContainer.is() )
         {
-            fillNames(_xContainer,*m_pLists[_eType],nImageId);
+            fillNames( _xContainer, *m_pLists[ _eType ], nImageId, nImageIdH );
 
             m_pLists[_eType]->SelectAll(FALSE);
         }
@@ -684,9 +706,10 @@ void OAppDetailPageHelper::setDetailPage(Window* _pWindow)
     Resize();
 }
 // -----------------------------------------------------------------------------
-void OAppDetailPageHelper::fillNames(const Reference< XNameAccess >& _xContainer,DBTreeListBox& _rList,USHORT _nImageId,SvLBoxEntry* _pParent)
+void OAppDetailPageHelper::fillNames( const Reference< XNameAccess >& _xContainer, DBTreeListBox& _rList,
+                                      USHORT _nImageId, USHORT _nHighContrastImageId, SvLBoxEntry* _pParent )
 {
-    fillTreeListNames(_xContainer,_rList,_nImageId,_pParent,m_pBorderWin->getView()->getContainerListener());
+    fillTreeListNames( _xContainer, _rList, _nImageId, _nHighContrastImageId, _pParent, m_pBorderWin->getView()->getContainerListener() );
 }
 // -----------------------------------------------------------------------------
 DBTreeListBox* OAppDetailPageHelper::createSimpleTree(ULONG _nHelpId, USHORT _nCollapsedBitmap,USHORT _nCollapsedBitmap_HI)
@@ -711,7 +734,7 @@ DBTreeListBox* OAppDetailPageHelper::createTree(DBTreeListBox* _pTreeView,USHORT
     _pTreeView->SetDefaultExpandedEntryBmp(Image(ModuleRes(_nCollapsedBitmap_HI)),BMP_COLOR_HIGHCONTRAST);
 
     _pTreeView->SetDoubleClickHdl(LINK(this, OAppDetailPageHelper, OnEntryDoubleClick));
-    _pTreeView->SetEnterKeyHdl(LINK(this, OAppDetailPageHelper, OnEntryDoubleClick));	
+    _pTreeView->SetEnterKeyHdl(LINK(this, OAppDetailPageHelper, OnEntryDoubleClick));
     _pTreeView->SetSelectHdl(LINK(this, OAppDetailPageHelper, OnEntrySelectHdl));
     //	_pTreeView->SetDeselectHdl(LINK(this, OAppDetailPageHelper, OnDeSelectHdl));
 
@@ -761,7 +784,7 @@ void OAppDetailPageHelper::elementReplaced(ElementType _eType
                 static_cast<OTableTreeListBox*>(pTreeView)->removedTable(_rxConn,_rOldName);
                 static_cast<OTableTreeListBox*>(pTreeView)->addedTable(_rxConn,_rNewName, Any());
                 return;
-                
+
             case E_QUERY:
                 pEntry = lcl_findEntry_impl(*pTreeView,_rOldName,pTreeView->First());
                 break;
@@ -791,7 +814,7 @@ SvLBoxEntry* OAppDetailPageHelper::elementAdded(ElementType _eType,const ::rtl::
     }
     else if ( pTreeView )
     {
-    
+
         SvLBoxEntry* pEntry = NULL;
         Reference<XChild> xChild(_rObject,UNO_QUERY);
         if ( xChild.is() && E_QUERY != _eType )
@@ -804,34 +827,25 @@ SvLBoxEntry* OAppDetailPageHelper::elementAdded(ElementType _eType,const ::rtl::
             }
         }
 
-        USHORT nImageId = 0;
-        sal_Bool bHiContrast = GetBackground().GetColor().IsDark();
-        switch(_eType )
-        {
-            case E_FORM:
-                nImageId = bHiContrast ? FORM_TREE_ICON_SCH : FORM_TREE_ICON;
-                break;
-            case E_REPORT:
-                nImageId = bHiContrast ? REPORT_TREE_ICON_SCH : REPORT_TREE_ICON;
-                break;
-            case E_QUERY:
-                nImageId = bHiContrast ? QUERY_TREE_ICON_SCH : QUERY_TREE_ICON;
-                break;
-            default:
-                OSL_ENSURE(0,"Illegal call!");
-        }
-
+        USHORT nImageId = 0, nImageIdH = 0;
+        getElementIcons( _eType, nImageId, nImageIdH );
         Reference<XNameAccess> xContainer(_rObject,UNO_QUERY);
         if ( xContainer.is() )
         {
             pRet = pTreeView->InsertEntry(_rName,pEntry,FALSE,LIST_APPEND,reinterpret_cast<void*>(FOLDER_TYPE));
-            fillNames(xContainer,*pTreeView,nImageId,pRet);			
+            fillNames( xContainer, *pTreeView, nImageId, nImageIdH, pRet );
         }
         else
         {
-            Image aImage = Image(ModuleRes(nImageId)); 
+            pRet = pTreeView->InsertEntry( _rName, pEntry );
 
-            pRet = pTreeView->InsertEntry(_rName,aImage,aImage,pEntry);
+            Image aImage = Image( ModuleRes( nImageId ) );
+            pTreeView->SetExpandedEntryBmp( pRet, aImage, BMP_COLOR_NORMAL );
+            pTreeView->SetCollapsedEntryBmp( pRet, aImage, BMP_COLOR_NORMAL );
+
+            Image aHCImage = Image( ModuleRes( nImageIdH ) );
+            pTreeView->SetExpandedEntryBmp( pRet, aHCImage, BMP_COLOR_HIGHCONTRAST );
+            pTreeView->SetCollapsedEntryBmp( pRet, aHCImage, BMP_COLOR_HIGHCONTRAST );
         }
     }
     return pRet;
@@ -938,15 +952,15 @@ void OAppDetailPageHelper::Resize()
         long nHalfOutputWidth = static_cast<long>(nOutputWidth * 0.5);
 
         pWindow->SetPosSizePixel( Point(0, 0), Size(nHalfOutputWidth - n6PPT, nOutputHeight) );
-        
+
         m_aFL.SetPosSizePixel( Point(nHalfOutputWidth , 0 ), Size(aFLSize.Width(), nOutputHeight ) );
 
         String sText = m_aTBPreview.GetItemText(SID_DB_APP_DISABLE_PREVIEW);
         Size aTBSize = m_aTBPreview.CalcWindowSizePixel();
-        m_aTBPreview.SetPosSizePixel(	Point(nOutputWidth - aTBSize.getWidth(), 0 ), 
+        m_aTBPreview.SetPosSizePixel(	Point(nOutputWidth - aTBSize.getWidth(), 0 ),
                                         aTBSize );
 
-        m_aBorder.SetPosSizePixel(		Point(nHalfOutputWidth + aFLSize.Width() + n6PPT, aTBSize.getHeight() + n6PPT ), 
+        m_aBorder.SetPosSizePixel(		Point(nHalfOutputWidth + aFLSize.Width() + n6PPT, aTBSize.getHeight() + n6PPT ),
                                         Size(nHalfOutputWidth - aFLSize.Width() - n6PPT, nOutputHeight - 2*n6PPT - aTBSize.getHeight()) );
         m_aPreview.SetPosSizePixel(		Point(0,0),m_aBorder.GetSizePixel() );
         m_aDocumentInfo.SetPosSizePixel(Point(0,0),m_aBorder.GetSizePixel() );
@@ -997,7 +1011,7 @@ void OAppDetailPageHelper::switchPreview(PreviewMode _eMode,BOOL _bForce)
         m_aMenu->CheckItem(nSelectedAction);
         m_aTBPreview.SetItemText(SID_DB_APP_DISABLE_PREVIEW, m_aMenu->GetItemText(nSelectedAction));
         Resize();
-        
+
         if ( isPreviewEnabled() )
         {
             DBTreeListBox* pTree = getCurrentView();
@@ -1050,7 +1064,7 @@ void OAppDetailPageHelper::showPreview(const Reference< XContent >& _xContent)
                         SvMemoryStream  aData( aBmpSequence.getArray(),
                                             aBmpSequence.getLength(),
                                             STREAM_READ );
-                        
+
                         GraphicConverter::Import(aData,aGraphic);
                     }
                     m_aPreview.setGraphic( aGraphic );
@@ -1086,7 +1100,7 @@ void OAppDetailPageHelper::showPreview(	const ::rtl::OUString& _sDataSourceName,
                                         const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>& _xConnection,
                                         const ::rtl::OUString& _sName,
                                         sal_Bool _bTable)
-{	
+{
     if ( isPreviewEnabled() )
     {
         WaitObject aWaitCursor( this );
@@ -1125,7 +1139,7 @@ void OAppDetailPageHelper::showPreview(	const ::rtl::OUString& _sDataSourceName,
 
         Reference<XFrame> xFrame(pDispatcher->edit(makeAny(_sDataSourceName), _sName,_xConnection,aArgs),UNO_QUERY);
         sal_Bool bClearPreview = !xFrame.is();
-        
+
         // clear the preview when the query or table could not be loaded
         if ( !bClearPreview )
         {
@@ -1154,8 +1168,8 @@ IMPL_LINK(OAppDetailPageHelper, OnDropdownClickHdl, ToolBox*, pToolBox)
     m_aTBPreview.MouseMove( aMove );
 
     m_aTBPreview.Update();
- 
-    // execute the menu	
+
+    // execute the menu
     IController* pControler = getBorderWin()->getView()->getCommandController();
     ::std::auto_ptr<PopupMenu> aMenu(new PopupMenu( ModuleRes( RID_MENU_APP_PREVIEW ) ));
 
@@ -1169,7 +1183,7 @@ IMPL_LINK(OAppDetailPageHelper, OnDropdownClickHdl, ToolBox*, pToolBox)
         aMenu->CheckItem(pActions[i],m_aMenu->IsItemChecked(pActions[i]));
     }
     aMenu->EnableItem( SID_DB_APP_VIEW_DOCINFO_PREVIEW, pControler->isCommandEnabled(SID_DB_APP_VIEW_DOCINFO_PREVIEW) );
-    
+
     // no disabled entries
     aMenu->RemoveDisabledEntries();
 
@@ -1205,8 +1219,29 @@ void OAppDetailPageHelper::KeyInput( const KeyEvent& rKEvt )
     else
         Window::KeyInput(rKEvt);
 }
-// -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+void OAppDetailPageHelper::DataChanged( const DataChangedEvent& rDCEvt )
+{
+    Window::DataChanged( rDCEvt );
+
+    if (  (  ( rDCEvt.GetType() == DATACHANGED_SETTINGS )
+          || ( rDCEvt.GetType() == DATACHANGED_DISPLAY )
+          )
+       && ( rDCEvt.GetFlags() & SETTINGS_STYLE )
+       )
+    {
+        if ( m_pLists[ E_TABLE ] )
+        {
+            OTableTreeListBox* pTableTree = dynamic_cast< OTableTreeListBox* >( m_pLists[ E_TABLE ] );
+            OSL_ENSURE( pTableTree != NULL, "OAppDetailPageHelper::DataChanged: a tree list for tables which is no TableTreeList?" );
+            if ( pTableTree )
+                pTableTree->notifyHiContrastChanged();
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
 BOOL OPreviewWindow::ImplGetGraphicCenterRect( const Graphic& rGraphic, Rectangle& rResultRect ) const
 {
     const Size	aWinSize( GetOutputSizePixel() );
