@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UITools.cxx,v $
  *
- *  $Revision: 1.50 $
+ *  $Revision: 1.51 $
  *
- *  last change: $Author: pjunck $ $Date: 2004-10-22 12:07:19 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-27 13:07:06 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -61,6 +61,9 @@
 
 #ifndef DBAUI_TOOLS_HXX
 #include "UITools.hxx"
+#endif
+#ifndef _SFX_DOCFILT_HACK_HXX
+#include <sfx2/docfilt.hxx>
 #endif
 #ifndef _DBACCESS_UI_CALLBACKS_HXX_
 #include "callbacks.hxx"
@@ -270,25 +273,25 @@
 #ifndef _SVTOOLS_EDITBROWSEBOX_HXX_
 #include <svtools/editbrowsebox.hxx>
 #endif
-#ifndef _UTL_CONFIGMGR_HXX_ 
+#ifndef _UTL_CONFIGMGR_HXX_
 #include <unotools/configmgr.hxx>
 #endif
-#ifndef INCLUDED_SVTOOLS_HELPOPT_HXX 
+#ifndef INCLUDED_SVTOOLS_HELPOPT_HXX
 #include <svtools/helpopt.hxx>
 #endif
-#ifndef _UCBHELPER_CONTENT_HXX 
+#ifndef _UCBHELPER_CONTENT_HXX
 #include <ucbhelper/content.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
-#ifndef _NUMUNO_HXX 
+#ifndef _NUMUNO_HXX
 #include <svtools/numuno.hxx>
 #endif
 #ifndef _DBAUI_DSNTYPES_HXX_
 #include "dsntypes.hxx"
 #endif
-#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX 
+#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
 #include <svtools/pathoptions.hxx>
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX_
@@ -324,15 +327,15 @@ SQLExceptionInfo createConnection(	const ::rtl::OUString& _rsDataSourceName,
                                     Reference< ::com::sun::star::sdbc::XConnection>& _rOUTConnection )
 {
     Reference<XPropertySet> xProp;
-    try 
-    { 
+    try
+    {
         xProp.set(_xDatabaseContext->getByName(_rsDataSourceName),UNO_QUERY);
     }
-    catch(Exception&) 
+    catch(Exception&)
     {
     }
     SQLExceptionInfo aInfo;
-    
+
     return createConnection(xProp,_rMF,_rEvtLst,_rOUTConnection);
 }
 // -----------------------------------------------------------------------------
@@ -361,7 +364,7 @@ SQLExceptionInfo createConnection(	const Reference< ::com::sun::star::beans::XPr
         OSL_ENSURE(0,"createConnection: error while retrieving data source properties!");
     }
 
-    
+
     try
     {
         if(bPwdReq && !sPwd.getLength())
@@ -421,7 +424,7 @@ void showError(const SQLExceptionInfo& _rInfo,Window* _pParent,const Reference< 
         xKeys = xKeySup->getKeys();
 
     ::std::vector< Reference<XNameAccess> > vRet;
-    
+
     if(xKeys.is())
     {
         Reference<XPropertySet> xProp;
@@ -468,14 +471,14 @@ TOTypeInfoSP getTypeInfoFromType(const OTypeInfoMap& _rTypeInfo,
             sal_Int32		nDBTypeScale		= aIter->second->nMaximumScale;
             sal_Bool		bDBAutoIncrement	= aIter->second->bAutoIncrement;
     #endif
-            if	(	(	
+            if	(	(
                         !_sTypeName.getLength()
                     ||	(aIter->second->aTypeName.equalsIgnoreAsciiCase(_sTypeName))
                     )
                 &&	(
-                        ( 
-                                !aIter->second->aCreateParams.getLength() 
-                            &&	!_sCreateParams.getLength() 
+                        (
+                                !aIter->second->aCreateParams.getLength()
+                            &&	!_sCreateParams.getLength()
                         )
                     ||	(
                                 (aIter->second->nPrecision		>= _nPrecision)
@@ -544,7 +547,7 @@ TOTypeInfoSP getTypeInfoFromType(const OTypeInfoMap& _rTypeInfo,
         }
         if (aIter == aPair.second)
         {
-            if ( _bAutoIncrement ) 
+            if ( _bAutoIncrement )
             {
                 for(aIter = aPair.first; aIter != aPair.second; ++aIter)
                 {
@@ -593,11 +596,11 @@ TOTypeInfoSP getTypeInfoFromType(const OTypeInfoMap& _rTypeInfo,
             if ( aCase(aIter->second->getDBName() , _sTypeName) )
                 break;
         }
-        
+
         if ( aIter != aEnd )
             pTypeInfo = aIter->second;
     }
-        
+
 // we can not assert here because we could be in d&d
 //	OSL_ENSURE(pTypeInfo, "getTypeInfoFromType: no type info found for this type!");
     return pTypeInfo;
@@ -618,7 +621,7 @@ void fillTypeInfo(	const Reference< ::com::sun::star::sdbc::XConnection>& _rxCon
         static const ::rtl::OUString aB1 = ::rtl::OUString::createFromAscii(" [ ");
         static const ::rtl::OUString aB2 = ::rtl::OUString::createFromAscii(" ]");
         // Loop on the result set until we reach end of file
-        while (xRs->next()) 
+        while (xRs->next())
         {
             TOTypeInfoSP pInfo(new OTypeInfo());
             pInfo->aTypeName		= xRow->getString (1);
@@ -646,7 +649,7 @@ void fillTypeInfo(	const Reference< ::com::sun::star::sdbc::XConnection>& _rxCon
                 pInfo->nMaximumScale = 0;
             if( pInfo->nNumPrecRadix < 0)
                 pInfo->nNumPrecRadix = 10;
-            
+
             String aName;
             switch(pInfo->nType)
             {
@@ -741,7 +744,7 @@ void fillTypeInfo(	const Reference< ::com::sun::star::sdbc::XConnection>& _rxCon
             pInfo->aUIName += aB1;
             pInfo->aUIName += pInfo->aTypeName;
             pInfo->aUIName += aB2;
-            // Now that we have the type info, save it in the multimap 
+            // Now that we have the type info, save it in the multimap
             _rTypeInfoMap.insert(OTypeInfoMap::value_type(pInfo->nType,pInfo));
         }
         // for a faster index access
@@ -761,7 +764,7 @@ void setColumnProperties(const Reference<XPropertySet>& _rxColumn,const OFieldDe
 {
     _rxColumn->setPropertyValue(PROPERTY_NAME,makeAny(_pFieldDesc->GetName()));
     _rxColumn->setPropertyValue(PROPERTY_TYPENAME,makeAny(_pFieldDesc->getTypeInfo()->aTypeName));
-    _rxColumn->setPropertyValue(PROPERTY_TYPE,makeAny(_pFieldDesc->GetType()));	
+    _rxColumn->setPropertyValue(PROPERTY_TYPE,makeAny(_pFieldDesc->GetType()));
     _rxColumn->setPropertyValue(PROPERTY_PRECISION,makeAny(_pFieldDesc->GetPrecision()));
     _rxColumn->setPropertyValue(PROPERTY_SCALE,makeAny(_pFieldDesc->GetScale()));
     _rxColumn->setPropertyValue(PROPERTY_ISNULLABLE, makeAny(_pFieldDesc->GetIsNullable()));
@@ -928,7 +931,7 @@ float ConvertFontWidth( ::FontWidth eWidth )
         return ::com::sun::star::awt::FontWidth::EXTRAEXPANDED;
     else if( eWidth == WIDTH_ULTRA_EXPANDED )
         return ::com::sun::star::awt::FontWidth::ULTRAEXPANDED;
-    
+
     OSL_ENSURE(0, "Unknown FontWidth" );
     return ::com::sun::star::awt::FontWidth::DONTKNOW;
 }
@@ -955,7 +958,7 @@ float ConvertFontWidth( ::FontWidth eWidth )
     return aFD;
 }
 // -----------------------------------------------------------------------------
-void callColumnFormatDialog(const Reference<XPropertySet>& xAffectedCol, 
+void callColumnFormatDialog(const Reference<XPropertySet>& xAffectedCol,
                             const Reference<XPropertySet>& xField,
                             SvNumberFormatter* _pFormatter,
                             Window* _pParent)
@@ -1003,7 +1006,7 @@ sal_Bool callColumnFormatDialog(Window* _pParent,
     sal_Bool bRet = sal_False;
     // the allowed format changes depend of the type of the field ...
     _nFlags = TP_ATTR_ALIGN;
-    
+
     if (_bHasFormat)
         _nFlags |= TP_ATTR_NUMBER;
 
@@ -1111,8 +1114,19 @@ sal_Bool callColumnFormatDialog(Window* _pParent,
 
     return bRet;
 }
+
+//------------------------------------------------------------------------------
+const SfxFilter* getStandardDatabaseFilter()
+{
+    static const String s_sDatabaseType = String::CreateFromAscii("StarOffice XML (Base)");
+    const SfxFilter* pFilter = SfxFilter::GetFilterByName( s_sDatabaseType);
+    OSL_ENSURE(pFilter,"Filter: StarOffice XML (Base) could not be found!");
+    return pFilter;
+}
+
+
 // -----------------------------------------------------------------------------
-sal_Bool appendToFilter(const Reference<XConnection>& _xConnection, 
+sal_Bool appendToFilter(const Reference<XConnection>& _xConnection,
                         const ::rtl::OUString& _sName,
                         const Reference< XMultiServiceFactory >& _xFactory,
                         Window* _pParent)
@@ -1414,12 +1428,12 @@ TOTypeInfoSP queryPrimaryKeyType(const OTypeInfoMap& _rTypeInfo)
     OTypeInfoMap::const_iterator aEnd  = _rTypeInfo.end();
     for(;aIter != aEnd;++aIter)
     {
-        // OJ: we don't want to set an autoincrement column to be key 
+        // OJ: we don't want to set an autoincrement column to be key
         // because we don't have the possiblity to know how to create
         // such auto increment column later on
         // so until we know how to do it, we create a column without autoincrement
         //	if ( !aIter->second->bAutoIncrement )
-        {	// therefor we have searched 
+        {	// therefor we have searched
             if ( aIter->second->nType == DataType::INTEGER )
             {
                 pTypeInfo = aIter->second; // alternative
@@ -1439,10 +1453,10 @@ TOTypeInfoSP queryPrimaryKeyType(const OTypeInfoMap& _rTypeInfo)
 }
 // -----------------------------------------------------------------------------
 TOTypeInfoSP queryTypeInfoByType(sal_Int32 _nDataType,const OTypeInfoMap& _rTypeInfo)
-{ 
+{
     OTypeInfoMap::const_iterator aIter = _rTypeInfo.find(_nDataType);
     if(aIter != _rTypeInfo.end())
-        return aIter->second; 
+        return aIter->second;
     OSL_ENSURE(0,"Wrong DataType supplied!");
     return TOTypeInfoSP();
 }
@@ -1477,7 +1491,7 @@ sal_Int32 askForUserAction(Window* _pParent,USHORT _nTitle,USHORT _nText,sal_Boo
         aAsk.GetPushButton(RET_ALL)->SetHelpId(HID_CONFIRM_DROP_BUTTON_ALL);
     }
     return aAsk.Execute();
-} 
+}
 // -----------------------------------------------------------------------------
 Reference<XPropertySet> createView( const ::rtl::OUString& _sName
                                    ,const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >& _xConnection
@@ -1549,7 +1563,7 @@ String convertURLtoUI(sal_Bool _bPrefix,ODsnTypeCollection* _pCollection,const :
         static ODsnTypeCollection s_TypeCollection;
         pCollection = &s_TypeCollection;
     }
-    
+
     String sURL( _sURL );
     DATASOURCE_TYPE eType = pCollection->getType( sURL );
 
@@ -1575,7 +1589,7 @@ String convertURLtoUI(sal_Bool _bPrefix,ODsnTypeCollection* _pCollection,const :
         if ( sFileURLEncoded.Len() )
         {
             OFileNotation aFileNotation(sFileURLEncoded);
-            // set this decoded URL as text					
+            // set this decoded URL as text
             sURL += String(aFileNotation.get(OFileNotation::N_SYSTEM));
         }
     }
@@ -1638,7 +1652,7 @@ sal_Bool insertHierachyElement(Window* _pParent
         {
             Reference<XChild> xChild(_xNames->getByHierarchicalName(sName),UNO_QUERY);
             xNameAccess.set(xChild,UNO_QUERY);
-            if ( !xNameAccess.is() && xChild.is() ) 
+            if ( !xNameAccess.is() && xChild.is() )
                 xNameAccess.set(xChild->getParent(),UNO_QUERY);
         }
 
@@ -1659,14 +1673,14 @@ sal_Bool insertHierachyElement(Window* _pParent
                     else
                         sTargetName = String(ModuleRes( _bCollection ? STR_NEW_FOLDER : ((_bForm) ? RID_STR_FORM : RID_STR_REPORT)));
                     sLabel = String(ModuleRes( _bCollection ? STR_FOLDER_LABEL  : ((_bForm) ? STR_FRM_LABEL : STR_RPT_LABEL)));
-                    sTargetName = ::dbtools::createUniqueName(xNameAccess,sTargetName);							
+                    sTargetName = ::dbtools::createUniqueName(xNameAccess,sTargetName);
 
-                    
+
                     // here we have everything needed to create a new query object ...
                     // ... ehm, except a new name
-                    OSaveAsDlg aAskForName(	_pParent, 
-                                            _xNames.get(), 
-                                            sTargetName, 
+                    OSaveAsDlg aAskForName(	_pParent,
+                                            _xNames.get(),
+                                            sTargetName,
                                             sLabel,
                                             sName,
                                             SAD_ADDITIONAL_DESCRIPTION | SAD_TITLE_PASTE_AS);
@@ -1687,7 +1701,7 @@ sal_Bool insertHierachyElement(Window* _pParent
             if ( sNewName.getLength() )
             {
                 try
-                {	
+                {
                     Reference<XMultiServiceFactory> xORB(xNameAccess,UNO_QUERY);
                     OSL_ENSURE(xORB.is(),"No service factory given");
                     if ( xORB.is() )
@@ -1707,7 +1721,7 @@ sal_Bool insertHierachyElement(Window* _pParent
                         aValue.Value <<= _xContent;
                         aArguments[2] <<= aValue;
 
-                        ::rtl::OUString sServiceName = 
+                        ::rtl::OUString sServiceName =
                             (_bCollection ? ((_bForm) ? SERVICE_NAME_FORM_COLLECTION : SERVICE_NAME_REPORT_COLLECTION) : SERVICE_SDB_DOCUMENTDEFINITION);
 
                         Reference<XContent > xNew(xORB->createInstanceWithArguments(sServiceName,aArguments),UNO_QUERY);
