@@ -2,9 +2,9 @@
  *
  *  $RCSfile: AppControllerDnD.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: rt $ $Date: 2004-09-09 09:38:51 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-22 11:59:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,7 +62,7 @@
 #ifndef DBAUI_APPCONTROLLER_HXX
 #include "AppController.hxx"
 #endif
-#ifndef _COMPHELPER_SEQUENCE_HXX_ 
+#ifndef _COMPHELPER_SEQUENCE_HXX_
 #include <comphelper/sequence.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
@@ -74,7 +74,7 @@
 #ifndef _COM_SUN_STAR_UNO_XNAMINGSERVICE_HPP_
 #include <com/sun/star/uno/XNamingService.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XDATASOURCE_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XDATASOURCE_HPP_
 #include <com/sun/star/sdbc/XDataSource.hpp>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_XSTORABLE_HPP_
@@ -83,7 +83,7 @@
 #ifndef _COM_SUN_STAR_SDBC_XPARAMETERS_HPP_
 #include <com/sun/star/sdbc/XParameters.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
 #include <com/sun/star/container/XChild.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XHIERARCHICALNAMECONTAINER_HPP_
@@ -128,25 +128,25 @@
 #ifndef _COM_SUN_STAR_SDBCX_XDROP_HPP_
 #include <com/sun/star/sdbcx/XDrop.hpp>
 #endif
-#ifndef _TOOLS_DEBUG_HXX 
+#ifndef _TOOLS_DEBUG_HXX
 #include <tools/debug.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
-#ifndef _UNOTOOLS_UCBHELPER_HXX 
+#ifndef _UNOTOOLS_UCBHELPER_HXX
 #include <unotools/ucbhelper.hxx>
 #endif
 #ifndef DBAUI_DLGSAVE_HXX
 #include "dlgsave.hxx"
 #endif
-#ifndef _COMPHELPER_TYPES_HXX_ 
+#ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
-#ifndef _CPPUHELPER_TYPEPROVIDER_HXX_ 
+#ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
 #ifndef _DBHELPER_DBEXCEPTION_HXX_
@@ -154,6 +154,9 @@
 #endif
 #ifndef _SV_WAITOBJ_HXX
 #include <vcl/waitobj.hxx>
+#endif
+#ifndef _RTL_USTRBUF_HXX_
+#include <rtl/ustrbuf.hxx>
 #endif
 #ifndef DBAUI_APPVIEW_HXX
 #include "AppView.hxx"
@@ -329,7 +332,7 @@ void insertRows(const Reference<XResultSet>& xSrcRs,
     ::rtl::OUString aQuote;
     if ( _xMetaData.is() )
         aQuote = _xMetaData->getIdentifierQuoteString();
-    
+
     Reference<XColumnsSupplier> xColsSup(_xDestTable,UNO_QUERY);
     OSL_ENSURE(xColsSup.is(),"OApplicationController::insertRows: No columnsSupplier!");
     if(!xColsSup.is())
@@ -382,7 +385,7 @@ void insertRows(const Reference<XResultSet>& xSrcRs,
     // now create,fill and execute the prepared statement
     Reference< XPreparedStatement > xPrep(_xMetaData->getConnection()->prepareStatement(aSql));
     Reference< XParameters > xParameter(xPrep,UNO_QUERY);
-    
+
 
     sal_Int32 nRowCount = 0;
     const Any* pSelBegin	= _aSelection.getConstArray();
@@ -407,7 +410,7 @@ void insertRows(const Reference<XResultSet>& xSrcRs,
                 }
                 ++pSelBegin;
             }
-            else 
+            else
                 bNext = sal_False;
         }
         else
@@ -580,14 +583,14 @@ Reference<XResultSet> createResultSet(  OApplicationController* _pBrowser,sal_Bo
                         xSrcRs = xPrepStmt->executeQuery();
                     }
                 }
-                catch(SQLContext&) 
-                { 
+                catch(SQLContext&)
+                {
                     if(bDispose)
                         ::comphelper::disposeComponent(_xSrcConnection);
                     throw;
                 }
-                catch(SQLWarning&) 
-                { 
+                catch(SQLWarning&)
+                {
                     if(bDispose)
                         ::comphelper::disposeComponent(_xSrcConnection);
                     throw;
@@ -613,7 +616,7 @@ void OApplicationController::deleteTables(const ::std::vector< ::rtl::OUString>&
 {
     Reference<XConnection> xConnection;
     ensureConnection(xConnection);
-    
+
     Reference<XTablesSupplier> xSup(xConnection,UNO_QUERY);
     OSL_ENSURE(xSup.is(),"OApplicationController::deleteTable: no XTablesSuppier!");
     if ( xSup.is() )
@@ -690,12 +693,120 @@ void OApplicationController::deleteTables(const ::std::vector< ::rtl::OUString>&
     }
 }
 // -----------------------------------------------------------------------------
-void OApplicationController::deleteObjects(ElementType _eType
-                                           ,const ::std::vector< ::rtl::OUString>& _rList
-                                           ,sal_uInt16 _nTextResource)
+void OApplicationController::deleteObjects( ElementType _eType, const ::std::vector< ::rtl::OUString>& _rList, bool _bConfirm )
 {
-    Reference<XNameContainer> xNames(getElements(_eType), UNO_QUERY);
-    dbaui::deleteObjects(getView(),getORB(),xNames,_rList,_nTextResource);	
+    deleteObjects( Reference< XNameContainer >( getElements( _eType ), UNO_QUERY ), _rList, _bConfirm );
+}
+
+// -----------------------------------------------------------------------------
+void OApplicationController::deleteObjects( const Reference< XNameContainer>& _rxNames, const ::std::vector< ::rtl::OUString>& _rList, bool _bConfirm )
+{
+    Reference< XHierarchicalNameContainer > xHierarchyName( _rxNames, UNO_QUERY );
+    if ( _rxNames.is() )
+    {
+        bool bConfirm = true;
+        ByteString sDialogPosition;
+        svtools::QueryDeleteResult_Impl eResult = _bConfirm ? svtools::QUERYDELETE_YES : svtools::QUERYDELETE_ALL;
+
+        // The list of elements to delete is allowed to contain related elements: A given element may
+        // be the ancestor or child of another element from the list.
+        // We want to ensure that ancestors get deleted first, so we normalize the list in this respect.
+        // #i33353# - 2004-09-27 - fs@openoffice.org
+        ::std::set< ::rtl::OUString > aDeleteNames;
+            // Note that this implicitly uses ::std::less< ::rtl::OUString > a comparison operation, which
+            // results in lexicographical order, which is exactly what we need, because "foo" is *before*
+            // any "foo/bar" in this order.
+        ::std::copy(
+            _rList.begin(), _rList.end(),
+            ::std::insert_iterator< ::std::set< ::rtl::OUString > >( aDeleteNames, aDeleteNames.begin() )
+        );
+
+        ::std::set< ::rtl::OUString >::size_type nCount = aDeleteNames.size();
+        for ( ::std::set< ::rtl::OUString >::size_type nObjectsLeft = nCount; !aDeleteNames.empty(); )
+        {
+            ::std::set< ::rtl::OUString >::iterator  aThisRound = aDeleteNames.begin();
+
+            if ( eResult != svtools::QUERYDELETE_ALL )
+            {
+                svtools::QueryDeleteDlg_Impl aDlg( getView(), *aThisRound );
+
+                if ( sDialogPosition.Len() )
+                    aDlg.SetWindowState( sDialogPosition );
+
+                if ( nObjectsLeft > 1 )
+                    aDlg.EnableAllButton();
+
+                if ( aDlg.Execute() == RET_OK )
+                    eResult = aDlg.GetResult();
+                else
+                    return;
+
+                sDialogPosition = aDlg.GetWindowState( );
+            }
+
+            bool bSuccess = false;
+
+            if ( ( eResult == svtools::QUERYDELETE_ALL ) ||
+                 ( eResult == svtools::QUERYDELETE_YES ) )
+            {
+                try
+                {
+                    if ( xHierarchyName.is() )
+                        xHierarchyName->removeByHierarchicalName( *aThisRound );
+                    else
+                        _rxNames->removeByName( *aThisRound );
+
+                    bSuccess = true;
+
+                    // now that we removed the element, care for all it's child elements
+                    // which may also be a part of the list
+                    // #i33353# - 2004-09-27 - fs@openoffice.org
+                    sal_Int32 nLastCharPos = aThisRound->getLength() - 1;
+                    OSL_ENSURE( nLastCharPos >= 0, "OApplicationController::deleteObjects: empty name?" );
+                    ::rtl::OUStringBuffer sSmallestSiblingName( aThisRound->copy( 0, nLastCharPos ) );
+                    sSmallestSiblingName.append( (sal_Unicode)( aThisRound->getStr()[ nLastCharPos ] + 1 ) );
+
+                    ::std::set< ::rtl::OUString >::iterator aUpperChildrenBound = aDeleteNames.lower_bound( sSmallestSiblingName.makeStringAndClear() );
+                    for ( ::std::set< ::rtl::OUString >::iterator aObsolete = aThisRound;
+                          aObsolete != aUpperChildrenBound;
+                        )
+                    {
+#if OSL_DEBUG_LEVEL > 0
+                        ::rtl::OUString sObsoleteName = *aObsolete;
+#endif
+                        ::std::set< ::rtl::OUString >::iterator aNextObsolete = aObsolete; ++aNextObsolete;
+                        aDeleteNames.erase( aObsolete );
+                        --nObjectsLeft;
+                        aObsolete = aNextObsolete;
+                    }
+                }
+                catch(SQLException& e)
+                {
+                    showError( SQLExceptionInfo(e) );
+                }
+                catch(WrappedTargetException& e)
+                {
+                    SQLException aSql;
+                    if(e.TargetException >>= aSql)
+                        showError( SQLExceptionInfo( aSql ) );
+                    else
+                        OSL_ENSURE( sal_False, "OApplicationController::deleteObjects: something strange happended!" );
+                }
+                catch(Exception&)
+                {
+                    DBG_ERROR( "OApplicationController::deleteObjects: caught a generic exception!" );
+                }
+            }
+
+            if ( !bSuccess )
+            {
+                // okay, this object could not be deleted (or the user did not want to delete it),
+                // but continue with the rest
+                aDeleteNames.erase( aThisRound );
+                --nObjectsLeft;
+            }
+        }
+    }
 }
 // -----------------------------------------------------------------------------
 void OApplicationController::deleteEntries()
@@ -714,13 +825,13 @@ void OApplicationController::deleteEntries()
             deleteTables(aList);
             break;
         case E_QUERY:
-            deleteObjects(E_QUERY,aList,STR_QUERY_DELETE_QUERY);
+            deleteObjects( E_QUERY, aList, true );
             break;
         case E_FORM:
-            deleteObjects(E_FORM,aList,STR_QUERY_DELETE_FORM);
+            deleteObjects( E_FORM, aList, true );
             break;
-        case E_REPORT: 
-            deleteObjects(E_REPORT,aList,STR_QUERY_DELETE_REPORT);
+        case E_REPORT:
+            deleteObjects( E_REPORT, aList, true );
             break;
         }
     }
@@ -751,7 +862,7 @@ void OApplicationController::ensureConnection(Reference<XConnection>& _xConnecti
         aFind = m_aDataSourceConnections.insert(TDataSourceConnections::value_type(sDataSourceName,Reference<XConnection>())).first;
 
     if ( !aFind->second.is() && _bCreate )
-    {		
+    {
         WaitObject aWO(getView());
         String sConnectingContext( ModuleRes( STR_COULDNOTCONNECT_DATASOURCE ) );
         sConnectingContext.SearchAndReplaceAscii("$name$", sDataSourceName);
@@ -774,7 +885,7 @@ sal_Bool OApplicationController::isConnectionReadOnly() const
 {
     sal_Bool bIsConnectionReadOnly = sal_True;
     Reference<XConnection> xConnection = getActiveConnection();
-    
+
     if ( xConnection.is() )
     {
         try
@@ -886,7 +997,7 @@ void OApplicationController::impl_initialize( const Sequence< Any >& aArguments 
         WinBits nBits(WB_STDMODAL|WB_SAVEAS);
         ::sfx2::FileDialogHelper aFileDlg( ::sfx2::FILESAVE_AUTOEXTENSION,static_cast<sal_uInt32>(nBits) ,getView());
         aFileDlg.SetDisplayDirectory( SvtPathOptions().GetWorkPath() );
-        
+
         const SfxFilter* pFilter = getStandardFilter();
         if ( pFilter )
         {
@@ -897,7 +1008,7 @@ void OApplicationController::impl_initialize( const Sequence< Any >& aArguments 
         Reference< XNameAccess > xDatabaseContext(getORB()->createInstance(SERVICE_SDB_DATABASECONTEXT), UNO_QUERY);
         if ( xDatabaseContext.is() )
         {
-            if ( aFileDlg.Execute() == ERRCODE_NONE ) 
+            if ( aFileDlg.Execute() == ERRCODE_NONE )
             {
                 INetURLObject aURL( aFileDlg.GetPath() );
                 if( aURL.GetProtocol() != INET_PROT_NOT_VALID )
@@ -914,8 +1025,8 @@ void OApplicationController::impl_initialize( const Sequence< Any >& aArguments 
                         if ( xStr.is() )
                             xStr->store();
 
-                        Execute(SID_DB_APP_DSCONNECTION_TYPE,Sequence<PropertyValue>());	
-                        getContainer()->disableControls(isDataSourceReadOnly());					
+                        Execute(SID_DB_APP_DSCONNECTION_TYPE,Sequence<PropertyValue>());
+                        getContainer()->disableControls(isDataSourceReadOnly());
                     }
                     catch(Exception)
                     {
@@ -925,14 +1036,14 @@ void OApplicationController::impl_initialize( const Sequence< Any >& aArguments 
             else
                 throw Exception();
         }
-        
+
     }
 }
 // -----------------------------------------------------------------------------
 void OApplicationController::getSelectionElementNames(::std::vector< ::rtl::OUString>& _rNames)
 {
     ::vos::OGuard aSolarGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
 
     OSL_ENSURE(getContainer(),"View isn't valid! -> GPF");
 
@@ -944,7 +1055,7 @@ void OApplicationController::getSelectionElementNames(::std::vector< ::rtl::OUSt
         if ( xConnection.is() )
             xMetaData = xConnection->getMetaData();
     }
-    
+
     getContainer()->getSelectionElementNames(_rNames,xMetaData);
 }
 // -----------------------------------------------------------------------------
@@ -1007,7 +1118,7 @@ TransferableHelper* OApplicationController::copyObject()
                 ::rtl::OUString sName = getContainer()->getQualifiedName(NULL,xMetaData);
                 OSL_ENSURE(sName.getLength(),"NO name given!");
                 ::rtl::OUString sDataSource	= getDatabaseName();
-                
+
                 if ( eType == E_TABLE )
                 {
                     pData = new ODataClipboard(sDataSource, CommandType::TABLE, sName, xConnection, getNumberFormatter(xConnection), getORB());
@@ -1016,7 +1127,7 @@ TransferableHelper* OApplicationController::copyObject()
                 {
                     pData = new ODataClipboard(sDataSource, CommandType::QUERY, sName, getNumberFormatter(xConnection), getORB());
                 }
-                
+
             }
                 break;
             case E_FORM:
@@ -1033,7 +1144,7 @@ TransferableHelper* OApplicationController::copyObject()
             }
                 break;
         }
-        
+
         // the owner ship goes to ODataClipboards
         return pData;
     }
@@ -1058,14 +1169,14 @@ sal_Bool OApplicationController::paste( ElementType _eType,const ::svx::ODataAcc
             sal_Int32 nCommandType = CommandType::TABLE;
             if ( _rPasteData.has(daCommandType) )
                 _rPasteData[daCommandType]		>>= nCommandType;
-            
+
             if ( CommandType::QUERY == nCommandType || CommandType::COMMAND == nCommandType )
             {
                 // read all nescessary data
-                
+
                 ::rtl::OUString	sCommand;
                 sal_Bool		bEscapeProcessing = sal_True;
-                
+
                 _rPasteData[daCommand] >>= sCommand;
                 if ( _rPasteData.has(daEscapeProcessing) )
                     _rPasteData[daEscapeProcessing]	>>= bEscapeProcessing;
@@ -1139,7 +1250,7 @@ sal_Bool OApplicationController::paste( ElementType _eType,const ::svx::ODataAcc
                     }
                 }
 
-                
+
                 Reference< XNameContainer > xDestQueries(getQueryDefintions(), UNO_QUERY);
                 Reference< XSingleServiceFactory > xQueryFactory(xDestQueries, UNO_QUERY);
                 if (!xQueryFactory.is())
@@ -1147,15 +1258,15 @@ sal_Bool OApplicationController::paste( ElementType _eType,const ::svx::ODataAcc
                     DBG_ERROR("OApplicationController::pasteQuery: invalid destination query container!");
                     return sal_False;
                 }
-                
+
                 // here we have everything needed to create a new query object ...
                 // ... ehm, except a new name
-                OSaveAsDlg aAskForName(	getView(), 
-                                        CommandType::QUERY, 
-                                        xDestQueries.get(), 
-                                        Reference< XDatabaseMetaData>(), 
-                                        Reference< XConnection>(), 
-                                        sTargetName, 
+                OSaveAsDlg aAskForName(	getView(),
+                                        CommandType::QUERY,
+                                        xDestQueries.get(),
+                                        Reference< XDatabaseMetaData>(),
+                                        Reference< XConnection>(),
+                                        sTargetName,
                                         SAD_ADDITIONAL_DESCRIPTION | SAD_TITLE_PASTE_AS);
                 if ( RET_OK != aAskForName.Execute() )
                     // cancelled by the user
@@ -1210,7 +1321,7 @@ void OApplicationController::pasteTable( SotFormatStringId _nFormatId,const Tran
     {
         try
         {
-            
+
             DropDescriptor aTrans;
             if ( _nFormatId != SOT_FORMAT_RTF )
                 const_cast<TransferableDataHelper&>(_rTransData).GetSotStorageStream(_rTransData.HasFormat(SOT_FORMATSTR_ID_HTML) ? SOT_FORMATSTR_ID_HTML : SOT_FORMATSTR_ID_HTML_SIMPLE,aTrans.aHtmlRtfStorage);
@@ -1292,7 +1403,7 @@ void OApplicationController::insertTable(sal_Int32 _nCommandType
         if ( CommandType::QUERY == _nCommandType || CommandType::TABLE == _nCommandType )
         {
             ::vos::OGuard aSolarGuard( Application::GetSolarMutex() );
-            ::osl::MutexGuard aGuard(m_aMutex);			
+            ::osl::MutexGuard aGuard(m_aMutex);
 
             ::rtl::OUString sDataSourceName = getDatabaseName();
 
@@ -1304,7 +1415,7 @@ void OApplicationController::insertTable(sal_Int32 _nCommandType
 
             xSrcConnection = _xSrcConnection;
             Reference<XResultSet> xSrcRs = _xSrcRs;
-            
+
 
             // get the source connection
             sal_Bool bDispose = sal_False;
@@ -1386,12 +1497,12 @@ void OApplicationController::insertTable(sal_Int32 _nCommandType
                             } // run through
                         case OCopyTableWizard::WIZARD_APPEND_DATA:
                             {
-                                
+
                                 if(!xTable.is())
                                     xTable = aWizard.createTable();
                                 if(!xTable.is())
                                     break;
-                                
+
                                 Reference<XStatement> xStmt; // needed to hold a reference to the statement
                                 Reference<XPreparedStatement> xPrepStmt;// needed to hold a reference to the statement
 
@@ -1405,10 +1516,10 @@ void OApplicationController::insertTable(sal_Int32 _nCommandType
                                                             xSourceObject,
                                                             xStmt,
                                                             xPrepStmt);
-                                else 
+                                else
                                 {
-                                    // here I use the ResultSet directly so I have to adjust 
-                                    // the column mapping given by the wizard, because the resultset could use 
+                                    // here I use the ResultSet directly so I have to adjust
+                                    // the column mapping given by the wizard, because the resultset could use
                                     // another order of the columns
                                     Reference< XColumnLocate> xLocate(xSrcRs,UNO_QUERY);
                                     Reference<XColumnsSupplier> xSrcColsSup(xSourceObject,UNO_QUERY);
@@ -1503,7 +1614,7 @@ void OApplicationController::getSupportedFormats(ElementType _eType,::std::vecto
         case E_QUERY:
             _rFormatIds.push_back(SOT_FORMATSTR_ID_DBACCESS_QUERY);
             break;
-    }	
+    }
 }
 // -----------------------------------------------------------------------------
 sal_Bool OApplicationController::isTableFormat()  const
@@ -1538,7 +1649,7 @@ sal_Bool OApplicationController::copyTagTable(DropDescriptor& _rDesc, sal_Bool _
     SvStream* pStream = (SvStream*)(SotStorageStream*)_rDesc.aHtmlRtfStorage;
     if ( _bCheck )
         pImport->enableCheckOnly();
-    
+
     pImport->setStream(pStream);
     return pImport->Read();
 }
@@ -1568,7 +1679,7 @@ IMPL_LINK( OApplicationController, OnAsyncDrop, void*, NOTINTERESTEDIN )
     }
     else
     {
-        if ( paste(m_aAsyncDrop.nType,m_aAsyncDrop.aDroppedData,m_aAsyncDrop.aUrl,m_aAsyncDrop.nAction == DND_ACTION_MOVE) 
+        if ( paste(m_aAsyncDrop.nType,m_aAsyncDrop.aDroppedData,m_aAsyncDrop.aUrl,m_aAsyncDrop.nAction == DND_ACTION_MOVE)
             && m_aAsyncDrop.nAction == DND_ACTION_MOVE )
         {
             Reference<XContent> xContent;
@@ -1581,7 +1692,7 @@ IMPL_LINK( OApplicationController, OnAsyncDrop, void*, NOTINTERESTEDIN )
             {
                 aList.push_back(sName.copy(sErase.getLength() + 1));
                 Reference<XNameContainer> xNames(getElements(m_aAsyncDrop.nType), UNO_QUERY);
-                dbaui::deleteObjects(getView(),getORB(),xNames,aList,0,sal_False);	
+                deleteObjects( xNames, aList, false );
             }
         }
     }
