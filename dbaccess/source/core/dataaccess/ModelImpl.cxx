@@ -2,9 +2,9 @@
  *
  *  $RCSfile: ModelImpl.cxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: vg $ $Date: 2005-03-23 09:45:22 $
+ *  last change: $Author: rt $ $Date: 2005-03-30 11:54:58 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -74,7 +74,7 @@
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _COMPHELPER_SEQSTREAM_HXX 
+#ifndef _COMPHELPER_SEQSTREAM_HXX
 #include <comphelper/seqstream.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBASTRINGS_HRC
@@ -104,7 +104,7 @@
 #ifndef _COM_SUN_STAR_XML_SAX_XDOCUMENTHANDLER_HPP_
 #include <com/sun/star/xml/sax/XDocumentHandler.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_
 #include <com/sun/star/sdbc/XDriverAccess.hpp>
 #endif
 #ifndef _COM_SUN_STAR_EMBED_XTRANSACTIONBROADCASTER_HPP_
@@ -146,10 +146,10 @@
 #ifndef _DBA_CORE_CONNECTION_HXX_
 #include "connection.hxx"
 #endif
-#ifndef _COMPHELPER_GUARDING_HXX_ 
+#ifndef _COMPHELPER_GUARDING_HXX_
 #include <comphelper/guarding.hxx>
 #endif
-#ifndef _RTL_DIGEST_H_ 
+#ifndef _RTL_DIGEST_H_
 #include <rtl/digest.h>
 #endif
 #ifndef _COM_SUN_STAR_EMBED_XTRANSACTEDOBJECT_HPP_
@@ -161,7 +161,7 @@
 #ifndef _COM_SUN_STAR_DOCUMENT_XFILTER_HPP_
 #include <com/sun/star/document/XFilter.hpp>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
 #ifndef _ERRCODE_HXX
@@ -264,7 +264,7 @@ ODatabaseModelImpl::ODatabaseModelImpl(
 {
     DBG_CTOR(ODatabaseModelImpl,NULL);
     // adjust our readonly flag
-    
+
     lateInit();
 }
 
@@ -282,37 +282,28 @@ void ODatabaseModelImpl::lateInit()
 // -----------------------------------------------------------------------------
 ::rtl::OUString ODatabaseModelImpl::getURL(  )
 {
-      return m_sFileURL;
+      return m_sRealFileURL;
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL ODatabaseModelImpl::disposing( const ::com::sun::star::lang::EventObject& Source ) throw(RuntimeException)
-{    
+{
     Reference<XConnection> xCon(Source.Source,UNO_QUERY);
     if ( xCon.is() )
     {
-        sal_Bool bStore = sal_False;
+        bool bStore = false;
         OWeakConnectionArray::iterator aEnd = m_aConnections.end();
         for (OWeakConnectionArray::iterator i = m_aConnections.begin(); aEnd != i; ++i)
         {
             if ( xCon == i->get() )
             {
                 *i = OWeakConnection();
+                bStore = true;
+                break;
             }
         }
-        
+
         if ( bStore )
-        {
-            try
-            {
-                Reference<XTransactedObject> xTransact(getStorage(),UNO_QUERY);
-                if ( xTransact.is() )
-                    xTransact->commit();
-            }
-            catch(Exception)
-            {
-                OSL_ENSURE(0,"Exception Caught: Could not store embedded database!");
-            }
-        }
+            commitRootStorage();
     }
     else // storage
     {
@@ -365,27 +356,16 @@ void ODatabaseModelImpl::dispose()
     clearConnections();
 
     disposeControllerFrames();
-    
+
     m_xCurrentController = NULL;
     m_xNumberFormatsSupplier = NULL;
-    
+
     try
     {
         sal_Bool bStore = commitEmbeddedStorage();
         disposeStorages();
         if ( bStore )
-        {
-            try
-            {
-                Reference<XTransactedObject> xTransact(getStorage(),UNO_QUERY);
-                if ( xTransact.is() )
-                    xTransact->commit();
-            }
-            catch(Exception)
-            {
-                OSL_ENSURE(0,"Exception Caught: Could not store embedded database!");
-            }
-        }
+            commitRootStorage();
 
         if ( m_bOwnStorage )
             ::comphelper::disposeComponent(m_xStorage);
@@ -438,14 +418,37 @@ void ODatabaseModelImpl::disposeStorages() SAL_THROW(())
     m_bDisposingSubStorages = sal_False;
 }
 // -----------------------------------------------------------------------------
+Reference< XSingleServiceFactory > ODatabaseModelImpl::createStorageFactory() const
+{
+    return Reference< XSingleServiceFactory >(
+        m_xServiceFactory->createInstance(
+            ::rtl::OUString( RTL_CONSTASCII_USTRINGPARAM( "com.sun.star.embed.StorageFactory" ) )
+        ),
+        UNO_QUERY
+    );
+}
+// -----------------------------------------------------------------------------
+void ODatabaseModelImpl::commitRootStorage()
+{
+    try
+    {
+        Reference< XTransactedObject > xTransact( getStorage(), UNO_QUERY );
+        OSL_ENSURE( xTransact.is() || !getStorage().is(), "ODatabaseModelImpl::commitRootStorage: cannot commit the storage (missing interface)!" );
+        if ( xTransact.is() )
+            xTransact->commit();
+    }
+    catch(Exception)
+    {
+        OSL_ENSURE( false, "ODatabaseModelImpl::commitRootStorage: caught an exception!" );
+    }
+}
+// -----------------------------------------------------------------------------
 Reference<XStorage> ODatabaseModelImpl::getStorage()
 {
     if ( !m_xStorage.is() )
     {
-        Reference< XSingleServiceFactory> xStorageFactory;
-        xStorageFactory.set(m_xServiceFactory->createInstance( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.embed.StorageFactory"))),UNO_QUERY);
-
-        if ( xStorageFactory.is() && m_sFileURL.getLength() )
+        Reference< XSingleServiceFactory> xStorageFactory = createStorageFactory();
+        if ( xStorageFactory.is() && m_sRealFileURL.getLength() )
         {
             Sequence<Any> aArgs(2);
             const PropertyValue* pEnd = m_aArgs.getConstArray() + m_aArgs.getLength();
@@ -471,14 +474,14 @@ Reference<XStorage> ODatabaseModelImpl::getStorage()
 
                 if ( pValue && pValue != pEnd )
                     aArgs[0] = pValue->Value;
-                else if ( m_sFileURL.getLength() )
-                    aArgs[0] <<= m_sFileURL;
+                else if ( m_sRealFileURL.getLength() )
+                    aArgs[0] <<= m_sRealFileURL;
             }
 
             if ( aArgs[0].hasValue() )
             {
                 aArgs[1] <<= ElementModes::READWRITE;
-                    
+
                 try
                 {
                     m_xStorage.set( xStorageFactory->createInstanceWithArguments( aArgs ),UNO_QUERY );
@@ -629,7 +632,7 @@ oslInterlockedCount SAL_CALL ODatabaseModelImpl::release()
     {
         clear();
         dispose();
-        m_pDBContext->deregisterPrivate(m_sFileURL);
+        m_pDBContext->deregisterPrivate(m_sRealFileURL);
         delete this;
         return 0;
     }
