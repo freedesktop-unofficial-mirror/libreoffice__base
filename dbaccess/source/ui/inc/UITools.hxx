@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UITools.hxx,v $
  *
- *  $Revision: 1.23 $
+ *  $Revision: 1.24 $
  *
- *  last change: $Author: pjunck $ $Date: 2004-10-22 12:05:29 $
+ *  last change: $Author: pjunck $ $Date: 2004-10-27 13:05:22 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -70,10 +70,10 @@
 #ifndef DBAUI_TYPEINFO_HXX
 #include "TypeInfo.hxx"
 #endif
-#ifndef _SVX_SVXENUM_HXX 
+#ifndef _SVX_SVXENUM_HXX
 #include <svx/svxenum.hxx>
 #endif
-#ifndef _SV_TASKPANELIST_HXX 
+#ifndef _SV_TASKPANELIST_HXX
 #include <vcl/taskpanelist.hxx>
 #endif
 #ifndef _CONNECTIVITY_DBTOOLS_HXX_
@@ -86,14 +86,14 @@
 namespace com { namespace sun { namespace star {
 
     namespace beans		{ class XPropertySet;}
-    namespace container 
-    { 
+    namespace container
+    {
         class XNameAccess;
         class XHierarchicalNameContainer;
         class XNameContainer;
     }
-    namespace lang 
-    { 
+    namespace lang
+    {
         class XEventListener;
         class XMultiServiceFactory;
     }
@@ -101,8 +101,8 @@ namespace com { namespace sun { namespace star {
     {
         struct FontDescriptor;
     }
-    namespace sdbc 
-    { 
+    namespace sdbc
+    {
         class XDatabaseMetaData;
         class XConnection;
     }
@@ -112,7 +112,7 @@ namespace com { namespace sun { namespace star {
         class XNumberFormatter;
     }
     namespace ucb { class XContent; }
-    
+
 }}}
 
 namespace svt
@@ -124,6 +124,7 @@ class Window;
 class ToolBox;
 class Font;
 class SvNumberFormatter;
+class SfxFilter;
 class SvLBoxEntry;
 
 // .........................................................................
@@ -141,7 +142,7 @@ namespace dbaui
         @param	_rOUTConnection			this parameter will be filled with the new created connection
         @return	SQLExceptionInfo		contains a SQLException, SQLContext or a SQLWarning when they araised else .isValid() will return false
     */
-    ::dbtools::SQLExceptionInfo createConnection(	
+    ::dbtools::SQLExceptionInfo createConnection(
                                     const ::rtl::OUString& _rsDataSourceName,
                                      const ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >& _xDatabaseContext,
                                     const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rMF,
@@ -153,7 +154,7 @@ namespace dbaui
         @param	_rOUTConnection			this parameter will be filled with the new created connection
         @return	SQLExceptionInfo		contains a SQLException, SQLContext or a SQLWarning when they araised else .isValid() will return false
     */
-    ::dbtools::SQLExceptionInfo createConnection(	
+    ::dbtools::SQLExceptionInfo createConnection(
                                      const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _xDataSource,
                                     const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rMF,
                                     ::com::sun::star::uno::Reference< ::com::sun::star::lang::XEventListener>& _rEvtLst,
@@ -173,7 +174,7 @@ namespace dbaui
         @param	_nKeyType				@see com::sun::star::sdbc::KeyType
     */
 
-    ::std::vector< ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess> > 
+    ::std::vector< ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess> >
         getKeyColumns(	const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _rxTable,
                         sal_Int32 _nKeyType);
 
@@ -234,7 +235,7 @@ namespace dbaui
         @param	_xAffectedCol	Font to be converted
         @param	_xField			Font to be converted
     */
-    void callColumnFormatDialog(const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet>& _xAffectedCol, 
+    void callColumnFormatDialog(const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet>& _xAffectedCol,
                                 const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet>& _xField,
                                 SvNumberFormatter* _pFormatter,
                                 Window* _pParent);
@@ -255,7 +256,7 @@ namespace dbaui
         @param	_pParent		needed when an error must be shown
         @return false when datsource is not available otherwise true
     */
-    sal_Bool appendToFilter(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>& _xConnection, 
+    sal_Bool appendToFilter(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>& _xConnection,
                             const ::rtl::OUString& _sName,
                             const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _xFactory,
                             Window* _pParent);
@@ -267,12 +268,12 @@ namespace dbaui
             The window which should be added or removed on the TaskPaneList.
         @param	_rMemFunc
             The member function which should be called at the SystemWindow when found.
-            Possible values are: 
-            ::comphelper::mem_fun(&TaskPaneList::AddWindow) 
+            Possible values are:
+            ::comphelper::mem_fun(&TaskPaneList::AddWindow)
             ::comphelper::mem_fun(&TaskPaneList::RemoveWindow)
     */
     void notifySystemWindow(Window* _pWindow,
-                            Window* _pToRegister, 
+                            Window* _pToRegister,
                             ::comphelper::mem_fun1_t<TaskPaneList,Window*> _rMemFunc);
 
     /** adjustToolBoxSize checks if the size of the ToolBox is still valid. If not it will be resized.
@@ -434,7 +435,13 @@ namespace dbaui
     */
     String convertURLtoUI(sal_Bool _bPrefix,ODsnTypeCollection* _pCollection,const ::rtl::OUString& _sURL);
 
-    /** fills the tree list box with the elements from the given container and sub elements. 
+    /** returns the standard database filter
+        @retrun
+            the filter
+    */
+    const SfxFilter* getStandardDatabaseFilter();
+
+    /** fills the tree list box with the elements from the given container and sub elements.
         @param	_xContainer
             The container.
         @param	_rList
