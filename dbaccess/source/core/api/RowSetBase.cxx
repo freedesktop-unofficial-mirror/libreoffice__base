@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RowSetBase.cxx,v $
  *
- *  $Revision: 1.67 $
+ *  $Revision: 1.68 $
  *
- *  last change: $Author: vg $ $Date: 2003-04-01 15:20:56 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:02:32 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -235,7 +235,7 @@ void SAL_CALL ORowSetBase::disposing(void)
     }
     if ( m_pCache )
         m_pCache->deregisterOldRow(m_aOldRow);
-    m_pCache = NULL;					 
+    m_pCache = NULL;
 }
 // -------------------------------------------------------------------------
 // comphelper::OPropertyArrayUsageHelper
@@ -257,7 +257,7 @@ sal_Bool SAL_CALL ORowSetBase::wasNull(  ) throw(SQLException, RuntimeException)
 {
     ::osl::MutexGuard aGuard( *m_pMutex );
     checkCache();
-    
+
     return ((m_nLastColumnIndex != -1) && m_aCurrentRow && m_aCurrentRow != m_pCache->getEnd() && !m_aCurrentRow.isNull() && m_aCurrentRow->isValid()) ? (*(*m_aCurrentRow))[m_nLastColumnIndex].isNull() : sal_True;
 }
 // -----------------------------------------------------------------------------
@@ -269,7 +269,7 @@ const ORowSetValue& ORowSetBase::getValue(sal_Int32 columnIndex)
 
     if ( m_aCurrentRow && m_aCurrentRow != m_pCache->getEnd() && !m_aCurrentRow.isNull() && m_aCurrentRow->isValid() )
     {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         ORowSetMatrix::iterator aCacheEnd = m_pCache->getEnd();
         ORowSetMatrix::iterator aCurrentRow = m_aCurrentRow;
 #endif
@@ -282,7 +282,7 @@ const ORowSetValue& ORowSetBase::getValue(sal_Int32 columnIndex)
         {
             positionCache();
             m_aCurrentRow	= m_pCache->m_aMatrixIter;
-            
+
             OSL_ENSURE(m_aCurrentRow,"ORowSetBase::getValue: we don't stand on a valid row! Row is null.");
             return getValue(columnIndex);
         }
@@ -367,7 +367,7 @@ Reference< ::com::sun::star::io::XInputStream > SAL_CALL ORowSetBase::getBinaryS
         {
             positionCache();
             m_aCurrentRow	= m_pCache->m_aMatrixIter;
-            
+
             OSL_ENSURE(m_aCurrentRow,"ORowSetBase::getValue: we don't stand on a valid row! Row is null.");
             return getBinaryStream(columnIndex);
         }
@@ -451,11 +451,11 @@ sal_Bool SAL_CALL ORowSetBase::moveToBookmark( const Any& bookmark ) throw(SQLEx
             OSL_ENSURE(0,"Bookmark is not valid");
         throwFunctionSequenceException(*m_pMySelf);
     }
-    
+
 
     checkCache();
 
-    sal_Bool bRet; 
+    sal_Bool bRet;
     if(bRet = notifyAllListenersCursorBeforeMove(aGuard))
     {
         // check if we are inserting a row
@@ -854,7 +854,7 @@ sal_Int32 SAL_CALL ORowSetBase::getRow(  ) throw(SQLException, RuntimeException)
                     OSL_ENSURE(bRet,"moveToBookamrk failed so the position isn't valid!");
 #else
                     m_pCache->moveToBookmark(m_aBookmark);
-                    
+
 #endif
                 }
                 nPos = m_pCache->getRow();
@@ -871,7 +871,7 @@ sal_Bool SAL_CALL ORowSetBase::absolute( sal_Int32 row ) throw(SQLException, Run
     checkPositioningAllowed();
 
     sal_Bool bRet = !(m_bAfterLast && row > 1); // m_bAfterLast && row > 1 we are already behind the last row
-    
+
     if ( bRet && (bRet = notifyAllListenersCursorBeforeMove(aGuard)) )
     {
         // check if we are inserting a row
@@ -918,8 +918,8 @@ sal_Bool SAL_CALL ORowSetBase::relative( sal_Int32 rows ) throw(SQLException, Ru
     checkPositioningAllowed();
 
     sal_Bool bRet =!((m_bAfterLast && rows > 1) || (m_bBeforeFirst && rows < 0)); // we are already behind the last row or before the first
-    
-    
+
+
     if(bRet && (bRet = notifyAllListenersCursorBeforeMove(aGuard)))
     {
         // check if we are inserting a row
@@ -964,7 +964,7 @@ sal_Bool SAL_CALL ORowSetBase::previous(  ) throw(SQLException, RuntimeException
     checkPositioningAllowed();
 
     sal_Bool bRet = !m_bBeforeFirst;
-    
+
     if(bRet && (bRet = notifyAllListenersCursorBeforeMove(aGuard)))
     {
         // check if we are inserting a row
@@ -1024,7 +1024,7 @@ void ORowSetBase::setCurrentRow(sal_Bool _bMoved,const ORowSetRow& _rOldValues,:
         m_aOldRow->clearRow();
         m_aCurrentRow	= m_pCache->getEnd();
         m_aBookmark		= Any();
-        m_aCurrentRow.setBookmark(m_aBookmark);	
+        m_aCurrentRow.setBookmark(m_aBookmark);
     }
 
     if ( _bMoved )
@@ -1126,7 +1126,7 @@ void SAL_CALL ORowSetBase::clearWarnings(  ) throw(SQLException, RuntimeExceptio
 void ORowSetBase::firePropertyChange(const ORowSetRow& _rOldRow)
 {
     OSL_ENSURE(m_pColumns,"Columns can not be NULL here!");
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     sal_Bool bNull = m_aCurrentRow.isNull();
     ORowSetMatrix::iterator atest = m_aCurrentRow;
 #endif
@@ -1184,7 +1184,7 @@ void ORowSetBase::movementFailed()
     m_bBeforeFirst	= m_pCache->isBeforeFirst();
     m_bAfterLast	= m_pCache->isAfterLast();
     m_aBookmark		= Any();
-    m_aCurrentRow.setBookmark(m_aBookmark);	
+    m_aCurrentRow.setBookmark(m_aBookmark);
     OSL_ENSURE(m_bBeforeFirst || m_bAfterLast,"BeforeFirst or AfterLast is wrong!");
 }
 // -----------------------------------------------------------------------------
