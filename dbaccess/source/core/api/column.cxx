@@ -2,9 +2,9 @@
  *
  *  $RCSfile: column.cxx,v $
  *
- *  $Revision: 1.42 $
+ *  $Revision: 1.43 $
  *
- *  last change: $Author: vg $ $Date: 2002-10-30 14:56:52 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:02:56 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -125,7 +125,7 @@ using namespace connectivity;
 using namespace ::com::sun::star::sdbc;
 using namespace ::com::sun::star::sdbcx;
 using namespace ::com::sun::star::beans;
-using namespace ::com::sun::star::uno;						   
+using namespace ::com::sun::star::uno;
 using namespace ::com::sun::star::lang;
 using namespace ::com::sun::star::awt;
 using namespace ::com::sun::star::io;
@@ -310,9 +310,9 @@ void SAL_CALL OColumn::setName( const ::rtl::OUString& _rName ) throw(::com::sun
     m_sName = _rName;
 }
 // -----------------------------------------------------------------------------
-OColumnSettings*	OColumn::getSettings() 
-{ 
-    return NULL; 
+OColumnSettings*	OColumn::getSettings()
+{
+    return NULL;
 }
 // -----------------------------------------------------------------------------
 void OColumn::fireValueChange(const ::connectivity::ORowSetValue& _rOldValue)
@@ -508,7 +508,7 @@ sal_Bool OColumnSettings::writeUITo(const OConfigurationNode& _rConfigNode, cons
 
             // extract it
             sal_Int32 nFormatKey = 0;
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             sal_Bool bSuccess =
 #endif
             m_aFormatKey >>= nFormatKey;
@@ -563,7 +563,7 @@ sal_Bool OColumnSettings::writeUITo(const OConfigurationNode& _rConfigNode, cons
     _rConfigNode.setNodeValue( CONFIGKEY_FORMATLOCALE, aPersistentFomatLocale );
 
     _rConfigNode.setNodeValue( CONFIGKEY_COLUMN_HELPTEXT,		m_aHelpText );
-    _rConfigNode.setNodeValue( CONFIGKEY_COLUMN_CONTROLDEFAULT, m_aControlDefault );	
+    _rConfigNode.setNodeValue( CONFIGKEY_COLUMN_CONTROLDEFAULT, m_aControlDefault );
 
     return sal_True;
 }
@@ -652,7 +652,7 @@ DBG_NAME(OColumns);
 //--------------------------------------------------------------------------
 OColumns::OColumns(::cppu::OWeakObject& _rParent,
                    ::osl::Mutex& _rMutex,
-                   sal_Bool _bCaseSensitive,const ::std::vector< ::rtl::OUString> &_rVector, 
+                   sal_Bool _bCaseSensitive,const ::std::vector< ::rtl::OUString> &_rVector,
                    IColumnFactory* _pColFactory,
                    ::connectivity::sdbcx::IRefreshableColumns* _pRefresh,
                    sal_Bool _bAddColumn,sal_Bool _bDropColumn)
@@ -667,9 +667,9 @@ OColumns::OColumns(::cppu::OWeakObject& _rParent,
     DBG_CTOR(OColumns, NULL);
 }
 // -------------------------------------------------------------------------
-OColumns::OColumns(::cppu::OWeakObject& _rParent, ::osl::Mutex& _rMutex, 
+OColumns::OColumns(::cppu::OWeakObject& _rParent, ::osl::Mutex& _rMutex,
         const ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >& _rxDrvColumns,
-        sal_Bool _bCaseSensitive,const ::std::vector< ::rtl::OUString> &_rVector, 
+        sal_Bool _bCaseSensitive,const ::std::vector< ::rtl::OUString> &_rVector,
         IColumnFactory* _pColFactory,
         ::connectivity::sdbcx::IRefreshableColumns* _pRefresh,
         sal_Bool _bAddColumn,sal_Bool _bDropColumn)
@@ -928,7 +928,7 @@ Reference< XNamed > OColumns::createObject(const ::rtl::OUString& _rName)
 
     if (m_pColFactoryImpl)
         return m_pColFactoryImpl->createColumn(_rName);
-    else															  
+    else
         return Reference< XNamed >();
 }
 // -------------------------------------------------------------------------
@@ -946,7 +946,7 @@ Any SAL_CALL OColumns::queryInterface( const Type & rType ) throw(RuntimeExcepti
     if(m_xDrvColumns.is())
     {
         aRet = m_xDrvColumns->queryInterface(rType);
-        if(aRet.hasValue()) 
+        if(aRet.hasValue())
             aRet = OColumns_BASE::queryInterface( rType);
     }
     else if(!m_pTable || (m_pTable && !m_pTable->isNew()))
@@ -971,10 +971,10 @@ Sequence< Type > SAL_CALL OColumns::getTypes(  ) throw(RuntimeException)
     {
         Reference<XTypeProvider> xTypes(m_xDrvColumns,UNO_QUERY);
         Sequence< Type > aTypes(xTypes->getTypes());
-        
+
         Sequence< Type > aSecTypes(OColumns_BASE::getTypes());
 
-        
+
         const Type* pBegin = aTypes.getConstArray();
         const Type* pEnd = pBegin + aTypes.getLength();
         for (;pBegin != pEnd ; ++pBegin)
