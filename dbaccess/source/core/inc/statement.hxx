@@ -2,9 +2,9 @@
  *
  *  $RCSfile: statement.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:40 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:07:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -88,8 +88,8 @@
 #ifndef _CPPUHELPER_PROPSHLP_HXX
 #include <cppuhelper/propshlp.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _DBASHARED_APITOOLS_HXX_
 #include "apitools.hxx"
@@ -98,36 +98,36 @@
 #include <connectivity/CommonTools.hxx>
 #endif
 //************************************************************
-//  OStatementBase 
+//  OStatementBase
 //************************************************************
 class OStatementBase :	public connectivity::OBaseMutex,
                         public OSubComponent,
                         public ::cppu::OPropertySetHelper,
-                        public ::utl::OPropertyArrayUsageHelper < OStatementBase >,
+                        public ::comphelper::OPropertyArrayUsageHelper < OStatementBase >,
                         public ::com::sun::star::util::XCancellable,
                         public ::com::sun::star::sdbc::XWarningsSupplier,
                         public ::com::sun::star::sdbc::XPreparedBatchExecution,
                         public ::com::sun::star::sdbc::XMultipleResults,
                         public ::com::sun::star::sdbc::XCloseable
-{	
+{
 protected:
-    ::osl::Mutex			m_aCancelMutex;		
+    ::osl::Mutex			m_aCancelMutex;
 
-    ::com::sun::star::uno::WeakReferenceHelper	m_aResultSet;		
+    ::com::sun::star::uno::WeakReferenceHelper	m_aResultSet;
     ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet > m_xAggregateAsSet;
     ::com::sun::star::uno::Reference< ::com::sun::star::util::XCancellable > m_xAggregateAsCancellable;
-    sal_Bool				m_bUseBookmarks;	
+    sal_Bool				m_bUseBookmarks;
 
 public:
     OStatementBase(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > & _xConn,
-                   const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & _xStatement);		
+                   const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & _xStatement);
     virtual ~OStatementBase();
 
 // ::com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
 
 // ::com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 
@@ -135,26 +135,26 @@ public:
     virtual void SAL_CALL disposing(void);
 
 // com::sun::star::beans::XPropertySet
-    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);	
-    
-// utl::OPropertyArrayUsageHelper
+    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
+
+// comphelper::OPropertyArrayUsageHelper
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-    
+
 // cppu::OPropertySetHelper
     virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
 
-    virtual sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    virtual sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    virtual void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
-    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;	
+    virtual void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
+    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;
 
 // ::com::sun::star::sdbc::XWarningsSupplier
     virtual ::com::sun::star::uno::Any SAL_CALL getWarnings(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
@@ -177,27 +177,27 @@ public:
     virtual ::com::sun::star::uno::Sequence< sal_Int32 > SAL_CALL executeBatch(  ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
 
 // Helper
-    void disposeResultSet();	
+    void disposeResultSet();
 };
 
 //************************************************************
-//  OStatement 
+//  OStatement
 //************************************************************
-class OStatement : public OStatementBase,				   
-                   public ::com::sun::star::sdbc::XStatement,						
-                   public ::com::sun::star::lang::XServiceInfo				   
-{		
+class OStatement : public OStatementBase,
+                   public ::com::sun::star::sdbc::XStatement,
+                   public ::com::sun::star::lang::XServiceInfo
+{
 public:
     OStatement(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > & _xConn,
                const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & _xStatement)
-        :OStatementBase(_xConn, _xStatement) {}	
+        :OStatementBase(_xConn, _xStatement) {}
 
 // ::com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // ::com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 

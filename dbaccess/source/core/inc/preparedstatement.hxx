@@ -2,9 +2,9 @@
  *
  *  $RCSfile: preparedstatement.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:07:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -91,26 +91,26 @@
 //************************************************************
 class OPreparedStatement : public OStatementBase,
                            public ::com::sun::star::sdbc::XPreparedStatement,
-                           public ::com::sun::star::sdbc::XParameters,						   
+                           public ::com::sun::star::sdbc::XParameters,
                            public ::com::sun::star::sdbc::XResultSetMetaDataSupplier,
-                           public ::com::sun::star::sdbcx::XColumnsSupplier,						   
+                           public ::com::sun::star::sdbcx::XColumnsSupplier,
                            public ::com::sun::star::lang::XServiceInfo
-{	
+{
 protected:
-    OColumns		m_aColumns;	
+    OColumns		m_aColumns;
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XParameters > m_xAggregateAsParameters;
 
 public:
     OPreparedStatement(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > & _xConn,
-                       const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & _xStatement);			
+                       const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & _xStatement);
     virtual ~OPreparedStatement();
 
 // ::com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // ::com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 

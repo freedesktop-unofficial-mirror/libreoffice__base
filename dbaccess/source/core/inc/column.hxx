@@ -2,9 +2,9 @@
  *
  *  $RCSfile: column.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-19 00:15:39 $
+ *  last change: $Author: fs $ $Date: 2000-10-11 11:07:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -122,8 +122,8 @@
 #ifndef _CPPUHELPER_PROPSHLP_HXX
 #include <cppuhelper/propshlp.hxx>
 #endif
-#ifndef _UNOTOOLS_PROPERTY_ARRAY_HELPER_HXX_
-#include <unotools/proparrhlp.hxx>
+#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
+#include <comphelper/proparrhlp.hxx>
 #endif
 #ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
 #include <connectivity/CommonTools.hxx>
@@ -145,46 +145,46 @@ class OColumn	:public connectivity::OBaseMutex
                 ,public OColumnBase
                 ,public ::cppu::OPropertySetHelper
 
-{		
+{
     friend class OColumns;
 
 protected:
     ::rtl::OUString m_sName;
 
 protected:
-    OColumn();	
+    OColumn();
 
-public:		
+public:
     virtual ~OColumn();
 
 // com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException) = 0;
 
 // com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 
 // com::sun::star::beans::XPropertySet
-    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
 
 // ::cppu::OPropertySetHelper
-    virtual void SAL_CALL getFastPropertyValue( 
-                                ::com::sun::star::uno::Any& rValue, 
-                                sal_Int32 nHandle 
-                                     ) const;	
-    virtual sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    virtual void SAL_CALL getFastPropertyValue(
+                                ::com::sun::star::uno::Any& rValue,
+                                sal_Int32 nHandle
+                                     ) const;
+    virtual sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    virtual void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
+    virtual void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
 
     // com::sun::star::lang::XUnoTunnel
     virtual sal_Int64 SAL_CALL getSomething( const ::com::sun::star::uno::Sequence< sal_Int8 >& aIdentifier ) throw(::com::sun::star::uno::RuntimeException);
@@ -229,7 +229,7 @@ class OColumnSettings
     ::com::sun::star::uno::Any	m_aAlignment;	// sal_Int32 (::com::sun::star::awt::TextAlign) or void
     ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >
                                 m_xControlModel;
-    
+
     sal_Bool					m_bHidden;
 //	</properties>
 
@@ -237,18 +237,18 @@ class OColumnSettings
 public:
     OColumnSettings():m_bHidden(sal_False){}
 
-    sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
-    void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;	
+    void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
+    void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;
 
 public:
     /** write the connection independent information (i.e. the hidden flag or the column width) to the given stream.
@@ -273,11 +273,11 @@ public:
 };
 
 //============================================================
-//= OColumns 
+//= OColumns
 //= general columns map, could be used for readonly access
 //= no appending and dropping is supported
 //============================================================
-typedef ::std::hash_map<rtl::OUString, OColumn*, ::utl::UStringMixHash, ::utl::UStringMixEqual> OColumnMap;
+typedef ::std::hash_map<rtl::OUString, OColumn*, ::comphelper::UStringMixHash, ::comphelper::UStringMixEqual> OColumnMap;
 typedef ::std::vector<OColumn*> OColumnArray;
 
 //typedef ::cppu::WeakImplHelper4< ::com::sun::star::lang::XServiceInfo,
@@ -289,22 +289,22 @@ class ODBTable;
 typedef connectivity::sdbcx::OCollection OColumns_BASE;
 //------------------------------------------------------------
 class OColumns : public OColumns_BASE
-{	
-protected:	
+{
+protected:
 //	// parent access
 //	::cppu::OWeakObject&		m_rParent;		// used for ref counting
 //	::osl::Mutex&				m_rMutex;		// the parent mutex
 //
 //	// single column access
 //	OColumnArray				m_aColArray;
-//	OColumnMap*					m_pColMap;	
+//	OColumnMap*					m_pColMap;
     ODBTable*					m_pTable;		// in some cases this is the parent
 
     // configuration
     ::com::sun::star::uno::Reference< ::com::sun::star::registry::XRegistryKey >
                                 m_xConfigurationNode;
 
-    sal_Bool					m_bInitialized	: 1;	    
+    sal_Bool					m_bInitialized	: 1;
     sal_Bool					m_bAddColumn	: 1;
     sal_Bool					m_bDropColumn	: 1;
 
@@ -414,16 +414,16 @@ protected:
     OColumn();
     OColumn(const ::rtl::OUString& _rName);
 
-public:	
+public:
     OColumn(const OColumn& _rSource);
     virtual ~OColumn();
 
 // com::sun::star::lang::XTypeProvider
-    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);		
+    virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
 
 // com::sun::star::uno::XInterface
-    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type & rType ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL acquire() throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException);
 
@@ -431,26 +431,26 @@ public:
     virtual void SAL_CALL disposing(void);
 
 // com::sun::star::beans::XPropertySet
-    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);	
+    virtual ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
 
-// utl::OPropertyArrayUsageHelper
+// comphelper::OPropertyArrayUsageHelper
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
-    
+
 // cppu::OPropertySetHelper
     virtual ::cppu::IPropertyArrayHelper& SAL_CALL getInfoHelper();
 
-    virtual sal_Bool SAL_CALL convertFastPropertyValue( 
-                            ::com::sun::star::uno::Any & rConvertedValue, 
-                            ::com::sun::star::uno::Any & rOldValue, 
-                            sal_Int32 nHandle, 
+    virtual sal_Bool SAL_CALL convertFastPropertyValue(
+                            ::com::sun::star::uno::Any & rConvertedValue,
+                            ::com::sun::star::uno::Any & rOldValue,
+                            sal_Int32 nHandle,
                             const ::com::sun::star::uno::Any& rValue )
                                 throw (::com::sun::star::lang::IllegalArgumentException);
-    virtual void SAL_CALL setFastPropertyValue_NoBroadcast( 
-                                sal_Int32 nHandle, 
-                                const ::com::sun::star::uno::Any& rValue 
-                                                 ) 
-                                                 throw (::com::sun::star::uno::Exception);	
-    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;	
+    virtual void SAL_CALL setFastPropertyValue_NoBroadcast(
+                                sal_Int32 nHandle,
+                                const ::com::sun::star::uno::Any& rValue
+                                                 )
+                                                 throw (::com::sun::star::uno::Exception);
+    virtual void SAL_CALL getFastPropertyValue( ::com::sun::star::uno::Any& rValue, sal_Int32 nHandle ) const;
 
 // ::com::sun::star::container::XNamed
     virtual ::rtl::OUString SAL_CALL getName( ) throw(::com::sun::star::uno::RuntimeException);
@@ -477,7 +477,7 @@ protected:
     */
     void		readUIFrom(const ::com::sun::star::uno::Reference< ::com::sun::star::registry::XRegistryKey >& _rxConfigNode);
 
-protected:	
+protected:
     void construct();
     void construct(const OColumn& _rSource);
 //	void construct(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet >& _rxSet, sal_Int32 _nRelativePosition);
@@ -486,9 +486,9 @@ protected:
 
 
 //============================================================
-//= OColumns 
+//= OColumns
 //============================================================
-typedef ::std::hash_map<rtl::OUString, OColumn*, ::utl::UStringMixHash, ::utl::UStringMixEqual> OColumnMap;
+typedef ::std::hash_map<rtl::OUString, OColumn*, ::comphelper::UStringMixHash, ::comphelper::UStringMixEqual> OColumnMap;
 typedef ::std::vector<OColumn*> OColumnArray;
 
 typedef ::cppu::WeakImplHelper6< ::com::sun::star::lang::XServiceInfo,
@@ -500,8 +500,8 @@ typedef ::cppu::WeakImplHelper6< ::com::sun::star::lang::XServiceInfo,
                                  > OColumns_Base;
 //------------------------------------------------------------
 class OColumns : public OColumns_Base
-{	
-protected:	
+{
+protected:
     // parent access
     ::cppu::OWeakObject&		m_rParent;		// used for ref counting
     ::osl::Mutex&				m_rMutex;		// the parent mutex
@@ -514,7 +514,7 @@ protected:
     ::com::sun::star::uno::Reference< ::com::sun::star::registry::XRegistryKey >
                                 m_xConfigurationNode;
 
-    sal_Bool					m_bInitialized : 1;	    
+    sal_Bool					m_bInitialized : 1;
 
 public:
     sal_Bool	isCaseSensitive() const { return m_pColMap->key_comp().isCaseSensitive(); }
@@ -526,7 +526,7 @@ public:
     */
     sal_Bool	isInitialized() const { return m_bInitialized; }
     void		setInitialized() {m_bInitialized = sal_True;}
-        
+
 
 public:
     /** constructs an empty container without configuration location.
@@ -629,10 +629,10 @@ public:
     */
     void	clearColumns();
 
-    virtual void disposing();	
+    virtual void disposing();
 //	const OColumn* at(const rtl::OUString& rName) const;
-//	OColumn* operator[] (sal_Int32 nIndex) {return m_aColArray[nIndex];}		
-//	const OColumn* operator[] (sal_Int32 nIndex) const {return m_aColArray[nIndex];}	
+//	OColumn* operator[] (sal_Int32 nIndex) {return m_aColArray[nIndex];}
+//	const OColumn* operator[] (sal_Int32 nIndex) const {return m_aColArray[nIndex];}
 
 protected:
     /** creates an empty column. May be overwritten by derived classes.
