@@ -2,9 +2,9 @@
  *
  *  $RCSfile: sbagrid.cxx,v $
  *
- *  $Revision: 1.69 $
+ *  $Revision: 1.70 $
  *
- *  last change: $Author: hr $ $Date: 2004-08-02 15:34:57 $
+ *  last change: $Author: hr $ $Date: 2004-08-02 17:17:31 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -69,14 +69,14 @@
 
 #define ITEMID_HORJUSTIFY		SID_ATTR_ALIGN_HOR_JUSTIFY
 #define ITEMID_VERJUSTIFY		SID_ATTR_ALIGN_VER_JUSTIFY
-#define ITEMID_ORIENTATION		SID_ATTR_ALIGN_ORIENTATION
+//#define ITEMID_ORIENTATION     SID_ATTR_ALIGN_ORIENTATION
 #define ITEMID_LINEBREAK		SID_ATTR_ALIGN_LINEBREAK
 #define ITEMID_MARGIN			SID_ATTR_ALIGN_MARGIN
 #define ITEMID_NUMBERINFO		SID_ATTR_NUMBERFORMAT_INFO
 
 
 #define _ZFORLIST_DECLARE_TABLE
-#ifndef _SVX_NUMINF_HXX 
+#ifndef _SVX_NUMINF_HXX
 #include <svx/numinf.hxx>
 #endif
 #ifndef _EEITEMID_HXX
@@ -85,7 +85,7 @@
 #ifndef _SVX_DBAEXCHANGE_HXX_
 #include <svx/dbaexchange.hxx>
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_
 #include <com/sun/star/ui/dialogs/XExecutableDialog.hpp>
 #endif
 
@@ -120,7 +120,7 @@
 #include <com/sun/star/util/NumberFormat.hpp>
 #endif
 
-#ifndef _COM_SUN_STAR_VIEW_XSELECTIONSUPPLIER_HPP_ 
+#ifndef _COM_SUN_STAR_VIEW_XSELECTIONSUPPLIER_HPP_
 #include <com/sun/star/view/XSelectionSupplier.hpp>
 #endif
 #ifndef _COM_SUN_STAR_FORM_DATASELECTIONTYPE_HPP_
@@ -148,7 +148,7 @@
 #include <tools/urlobj.hxx>
 #endif
 
-#ifndef _SFXINTITEM_HXX 
+#ifndef _SFXINTITEM_HXX
 #include <svtools/intitem.hxx>
 #endif
 
