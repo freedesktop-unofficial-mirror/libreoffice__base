@@ -2,9 +2,9 @@
  *
  *  $RCSfile: RowSet.cxx,v $
  *
- *  $Revision: 1.118 $
+ *  $Revision: 1.119 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-19 17:51:57 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:02:20 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -131,7 +131,7 @@
 #ifndef _DBA_REGHELPER_HXX_
 #include "dba_reghelper.hxx"
 #endif
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #ifndef _COM_SUN_STAR_SDBC_XDRIVERMANAGER_HPP_
 #include <com/sun/star/sdbc/XDriverManager.hpp>
 #endif
@@ -274,7 +274,7 @@ extern "C" void SAL_CALL createRegistryInfo_ORowSet()
     }																			  \
     _rGuard.reset();
 
-                                                                                  
+
 //..................................................................
 namespace dbaccess
 {
@@ -474,7 +474,7 @@ void SAL_CALL ORowSet::getFastPropertyValue(Any& rValue,sal_Int32 nHandle) const
         {
         case PROPERTY_ID_ISMODIFIED:
             rValue.setValue(&m_bModified,::getCppuBooleanType());
-            break;			
+            break;
         case PROPERTY_ID_ISNEW:
             rValue.setValue(&m_bNew,::getCppuBooleanType());
             break;
@@ -490,7 +490,7 @@ void SAL_CALL ORowSet::getFastPropertyValue(Any& rValue,sal_Int32 nHandle) const
         default:
             ORowSetBase::getFastPropertyValue(rValue,nHandle);
         };
-    }	
+    }
     else
     {
         switch(nHandle)
@@ -633,7 +633,7 @@ void SAL_CALL ORowSet::disposing(void)
     if(m_bOwnConnection)
         ::comphelper::disposeComponent(m_xActiveConnection);
     m_xActiveConnection = NULL;
-    
+
 
     ORowSetBase::disposing();
 }
@@ -665,7 +665,7 @@ void ORowSet::freeResources()
         m_xComposer		= NULL;
 
         DELETEZ(m_pCache);
-        
+
         if(m_pTables)
         {
             m_pTables->dispose(); // clear all references
@@ -674,7 +674,7 @@ void ORowSet::freeResources()
 
         m_xStatement	= NULL;
         m_xTypeMap		= NULL;
-        
+
         m_aBookmark		= Any();
         m_bBeforeFirst	= sal_True;
         m_bAfterLast	= sal_False;
@@ -744,7 +744,7 @@ void SAL_CALL ORowSet::disposing( const ::com::sun::star::lang::EventObject& Sou
         close();
         {
             MutexGuard aGuard( m_aMutex );
-            Reference< XConnection > xXConnection; 
+            Reference< XConnection > xXConnection;
             setActiveConnection( xXConnection );
         }
     }
@@ -887,7 +887,7 @@ void SAL_CALL ORowSet::updateBinaryStream( sal_Int32 columnIndex, const Referenc
         aOldValue = (*(*m_aCurrentRow))[columnIndex];
         (*(*m_aCurrentRow))[columnIndex] = aSeq;
     }
-    
+
     firePropertyChange(columnIndex-1 ,aOldValue);
     fireProperty(PROPERTY_ID_ISMODIFIED,sal_True,sal_False);
 }
@@ -934,9 +934,9 @@ void SAL_CALL ORowSet::updateObject( sal_Int32 columnIndex, const Any& x ) throw
                 double nValue;
                 if ( x >>= nValue )
                 {
-                    if ( DataType::TIMESTAMP == nColType ) 
+                    if ( DataType::TIMESTAMP == nColType )
                         aNewValue <<= dbtools::DBTypeConversion::toDateTime( nValue );
-                    else if ( DataType::DATE == nColType ) 
+                    else if ( DataType::DATE == nColType )
                         aNewValue <<= dbtools::DBTypeConversion::toDate( nValue );
                     else
                         aNewValue <<= dbtools::DBTypeConversion::toTime( nValue );
@@ -978,8 +978,8 @@ void SAL_CALL ORowSet::updateNumericObject( sal_Int32 columnIndex, const Any& x,
 void SAL_CALL ORowSet::insertRow(  ) throw(SQLException, RuntimeException)
 {
     ::connectivity::checkDisposed(ORowSet_BASE1::rBHelper.bDisposed);
-    // insertRow is not allowd when 
-    // standing not on the insert row nor 
+    // insertRow is not allowd when
+    // standing not on the insert row nor
     // when the row isn't modified
     // or the concurency is read only
     ::osl::ResettableMutexGuard aGuard( *m_pMutex );
@@ -1074,16 +1074,16 @@ void SAL_CALL ORowSet::deleteRow(  ) throw(SQLException, RuntimeException)
     ::connectivity::checkDisposed(ORowSet_BASE1::rBHelper.bDisposed);
 
     ::osl::ResettableMutexGuard aGuard( *m_pMutex );
-    // deleteRow is not allowed when: 
+    // deleteRow is not allowed when:
     // stands before the first row
     // after the last row
     // stands on the insert row
     // the concurrency is read only
     if(!m_pCache || m_bBeforeFirst || m_bAfterLast || m_bNew || m_nResultSetConcurrency == ResultSetConcurrency::READ_ONLY)
         throwFunctionSequenceException(*this);
-    
 
-    // this call position the cache indirect 
+
+    // this call position the cache indirect
     notifyClonesRowDelete(m_aBookmark);
 
     positionCache();
@@ -1125,7 +1125,7 @@ void ORowSet::implCancelRowUpdates( sal_Bool _bNotifyModified ) SAL_THROW( ( SQL
     if(m_bBeforeFirst || m_bAfterLast)
         return; // nothing to do so return
 
-    // cancelRowUpdates is not allowed when: 
+    // cancelRowUpdates is not allowed when:
     // standing on the insert row
     // the concurrency is read only
     if(!m_pCache || m_bNew || m_nResultSetConcurrency == ResultSetConcurrency::READ_ONLY)
@@ -1450,7 +1450,7 @@ void SAL_CALL ORowSet::executeWithCompletion( const Reference< XInteractionHandl
     approveExecution();
 
     ResettableMutexGuard aGuard( m_aMutex );
-    
+
     try
     {
         // create and fill a composer
@@ -1481,7 +1481,7 @@ void SAL_CALL ORowSet::executeWithCompletion( const Reference< XInteractionHandl
     {
         DBG_ERROR("ORowSet::executeWithCompletion: caught an unexpected exception type while filling in the parameters!");
     }
-    
+
     // we're done with the parameters, now for the real execution
 
     //  do the real execute
@@ -1552,21 +1552,21 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
         {
             m_xStatement = m_xActiveConnection->prepareStatement(
                                         aSql = getComposedQuery(m_aActiveCommand, bUseEscapeProcessing,xTables));
-        
+
             if(m_xStatement.is())
             {
                 Reference<XPropertySet> xProp(m_xStatement,UNO_QUERY);
-                
+
                 try
                 {
                     xProp->setPropertyValue(PROPERTY_USEBOOKMARKS,makeAny(sal_True));
                     xProp->setPropertyValue(PROPERTY_RESULTSETTYPE,makeAny(ResultSetType::SCROLL_SENSITIVE));
                     xProp->setPropertyValue(PROPERTY_RESULTSETCONCURRENCY,makeAny(ResultSetConcurrency::UPDATABLE));
-                    
+
                 }
                 catch(Exception&)
                 {
-                    // this exception doesn't matter here because when we catch an exception 
+                    // this exception doesn't matter here because when we catch an exception
                     // than the driver doesn't support this feature
                 }
                 //	xProp->setPropertyValue(PROPERTY_RESULTSETTYPE,makeAny(m_nResultSetType));
@@ -1581,7 +1581,7 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                     {
                         ::dbtools::setObjectWithInfo(xParam,i,aIter->makeAny(),aIter->getTypeKind());
                     }
-                    
+
                     Reference< XResultSet> xRs = m_xStatement->executeQuery();
                     // create the composed table name
                     ::rtl::OUString aComposedTableName;
@@ -1616,7 +1616,7 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                         }
                     }
 
-                    ::vos::ORef< ::connectivity::OSQLColumns> aColumns = new ::connectivity::OSQLColumns();	
+                    ::vos::ORef< ::connectivity::OSQLColumns> aColumns = new ::connectivity::OSQLColumns();
                     ::std::vector< ::rtl::OUString> aNames;
                     ::rtl::OUString aDescription;
                     sal_Int32 nFormatKey = 0;
@@ -1624,10 +1624,10 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                     if(!m_xColumns.is())
                     {
                         // use the meta data
-                        Reference<XResultSetMetaDataSupplier> xMetaSup(m_xStatement,UNO_QUERY); 
+                        Reference<XResultSetMetaDataSupplier> xMetaSup(m_xStatement,UNO_QUERY);
                         Reference<XResultSetMetaData> xMetaData = xMetaSup->getMetaData();
-                        
-                        
+
+
                         try
                         {
                             sal_Int32 nCount = xMetaData->getColumnCount();
@@ -1668,8 +1668,8 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                                     nFormatKey = 0;
                                     if(m_xNumberFormatTypes.is())
                                         nFormatKey = ::dbtools::getDefaultNumberFormat(pColumn,m_xNumberFormatTypes,aLocale);
-                                    
-                                    
+
+
                                     pColumn->setFastPropertyValue_NoBroadcast(PROPERTY_ID_NUMBERFORMAT,makeAny(nFormatKey));
                                     pColumn->setFastPropertyValue_NoBroadcast(PROPERTY_ID_RELATIVEPOSITION,makeAny(sal_Int32(i+1)));
                                     pColumn->setFastPropertyValue_NoBroadcast(PROPERTY_ID_WIDTH,makeAny(sal_Int32(227)));
@@ -1706,7 +1706,7 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                             // check if column already in the list we need another
                             if(aColumnMap.find(xColumn) != aColumnMap.end())
                             {
-                                xColumn = NULL; 
+                                xColumn = NULL;
                                 bReFetchName = sal_True;
                             }
                             if(!xColumn.is())
@@ -1762,7 +1762,7 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                                     nFormatKey = comphelper::getINT32(xColumn->getPropertyValue(PROPERTY_NUMBERFORMAT));
                                 if (!nFormatKey && xColumn.is() && m_xNumberFormatTypes.is())
                                     nFormatKey = ::dbtools::getDefaultNumberFormat(xColumn,m_xNumberFormatTypes,aLocale);
-                                
+
                                 pColumn->setFastPropertyValue_NoBroadcast(PROPERTY_ID_NUMBERFORMAT,makeAny(nFormatKey));
                                 if(xInfo.is() && xInfo->hasPropertyByName(PROPERTY_RELATIVEPOSITION))
                                     pColumn->setFastPropertyValue_NoBroadcast(PROPERTY_ID_RELATIVEPOSITION,xColumn->getPropertyValue(PROPERTY_RELATIVEPOSITION));
@@ -1897,7 +1897,7 @@ Sequence< sal_Int32 > SAL_CALL ORowSet::deleteRows( const Sequence< Any >& rows 
                     m_aOldRow->clearRow();
                     m_aCurrentRow	= m_pCache->getEnd();
                     m_aBookmark		= Any();
-                    m_aCurrentRow.setBookmark(m_aBookmark);	
+                    m_aCurrentRow.setBookmark(m_aBookmark);
                 }
             }
         }
@@ -1930,7 +1930,7 @@ void ORowSet::notifyClonesRowDelete(const Any& _rBookmark)
         if(xTunnel.is())
         {
             ORowSetClone* pClone = (ORowSetClone*)xTunnel->getSomething(ORowSetClone::getUnoTunnelImplementationId());
-            if(pClone)		  
+            if(pClone)
                 pClone->rowDelete(_rBookmark);
         }
     }
@@ -1944,7 +1944,7 @@ void ORowSet::notifyClonesRowDeleted(const Any& _rBookmark)
         if(xTunnel.is())
         {
             ORowSetClone* pClone = (ORowSetClone*)xTunnel->getSomething(ORowSetClone::getUnoTunnelImplementationId());
-            if(pClone)		  
+            if(pClone)
                 pClone->rowDeleted(_rBookmark);
         }
     }
@@ -2128,7 +2128,7 @@ rtl::OUString ORowSet::getComposedQuery(const rtl::OUString& rQuery, sal_Bool bE
 
             if (m_aOrder.getLength())
                 m_xComposer->setOrder(m_aOrder);
-            
+
             aFilterStatement = m_xComposer->getComposedQuery();
             if(!m_xColumns.is())
             {
@@ -2160,7 +2160,7 @@ void SAL_CALL ORowSet::setNull( sal_Int32 parameterIndex, sal_Int32 sqlType ) th
 // -------------------------------------------------------------------------
 void SAL_CALL ORowSet::setObjectNull( sal_Int32 parameterIndex, sal_Int32 sqlType, const ::rtl::OUString& typeName ) throw(SQLException, RuntimeException)
 {
-    
+
     ::osl::MutexGuard aGuard( m_aColumnsMutex );
     checkAndResizeParameters(parameterIndex);
     m_aParameterRow[parameterIndex-1].setNull();
@@ -2170,7 +2170,7 @@ void ORowSet::setParameter(sal_Int32 parameterIndex, const ORowSetValue& x)
 {
     ::osl::MutexGuard aGuard( m_aColumnsMutex );
     checkAndResizeParameters(parameterIndex);
-    
+
     m_aParameterRow[parameterIndex-1] = x;
 }
 // -------------------------------------------------------------------------
@@ -2279,7 +2279,7 @@ void SAL_CALL ORowSet::setObject( sal_Int32 parameterIndex, const Any& x ) throw
     checkAndResizeParameters(parameterIndex);
     if (!::dbtools::implSetObject(this, parameterIndex, x))
     {	// there is no other setXXX call which can handle the value in x
-        throw SQLException();		
+        throw SQLException();
     }
 }
 // -------------------------------------------------------------------------
@@ -2533,9 +2533,9 @@ void ORowSetClone::disposing()
 {
     MutexGuard aGuard( m_aMutex );
     ORowSetBase::disposing();
-    
+
     m_pParent	= NULL;
-    m_pMutex	= &m_aMutex; // this must be done here because someone could hold a ref to us and try to do something 
+    m_pMutex	= &m_aMutex; // this must be done here because someone could hold a ref to us and try to do something
     OSubComponent::disposing();
 }
 
@@ -2625,7 +2625,7 @@ void SAL_CALL ORowSetClone::setFastPropertyValue_NoBroadcast(sal_Int32 nHandle,c
     default:
         OPropertyContainer::setFastPropertyValue_NoBroadcast(nHandle,rValue);
     }
-    
+
 }
 
 // -----------------------------------------------------------------------------
