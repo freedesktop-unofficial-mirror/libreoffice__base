@@ -2,9 +2,9 @@
  *
  *  $RCSfile: dsntypes.cxx,v $
  *
- *  $Revision: 1.24 $
+ *  $Revision: 1.25 $
  *
- *  last change: $Author: vg $ $Date: 2005-02-21 12:46:35 $
+ *  last change: $Author: vg $ $Date: 2005-02-21 14:15:14 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,7 +58,6 @@
  *
  *
  ************************************************************************/
-
 #ifndef _DBAUI_DSNTYPES_HXX_
 #include "dsntypes.hxx"
 #endif
@@ -107,7 +106,7 @@ namespace dbaui
     using namespace ::com::sun::star::lang;
     using namespace ::com::sun::star::sdbc;
 
-    namespace 
+    namespace
     {
         void lcl_extractHostAndPort(const String& _sUrl,String& _sHostname,sal_Int32& _nPortNumber)
         {
@@ -128,7 +127,7 @@ namespace dbaui
                 {
                     m_aStrings.push_back(String(ResId(i)));
                 }
-                
+
             }
             ~ODataSourceTypeStringListResource()
             {
@@ -147,11 +146,11 @@ namespace dbaui
             /** returns the String with a given resource id
                 @param	_nResId
                     The resource id. It will not be checked if this id exists.
-                
+
                 @return	String
                     The string.
             */
-            String getString(USHORT _nResId) 
+            String getString(USHORT _nResId)
             {
                 return String(ResId(_nResId));
             }
@@ -168,7 +167,7 @@ ODsnTypeCollection::ODsnTypeCollection()
 #endif
 {
     ::vos::OGuard aGuard( Application::GetSolarMutex() );
-    DBG_CTOR(ODsnTypeCollection,NULL); 
+    DBG_CTOR(ODsnTypeCollection,NULL);
     ODataSourceTypeStringListResource aTypes(RSC_DATASOURCE_TYPES);
     aTypes.fill(m_aDsnPrefixes);
 
@@ -189,8 +188,8 @@ ODsnTypeCollection::ODsnTypeCollection()
 //-------------------------------------------------------------------------
 ODsnTypeCollection::~ODsnTypeCollection()
 {
-    DBG_DTOR(ODsnTypeCollection,NULL); 
-    DBG_ASSERT(0 == m_nLivingIterators, "ODsnTypeCollection::~ODsnTypeCollection : there are still living iterator objects!");	
+    DBG_DTOR(ODsnTypeCollection,NULL);
+    DBG_ASSERT(0 == m_nLivingIterators, "ODsnTypeCollection::~ODsnTypeCollection : there are still living iterator objects!");
 }
 // -----------------------------------------------------------------------------
 void ODsnTypeCollection::initUserDriverTypes(const Reference< XMultiServiceFactory >& _rxORB)
@@ -405,7 +404,7 @@ sal_Bool ODsnTypeCollection::isFileSystemBased(DATASOURCE_TYPE _eType) const
 
 
 sal_Bool ODsnTypeCollection::supportsTableCreation(DATASOURCE_TYPE _eType)
-{     
+{
     BOOL bSupportsTableCreation;
         switch( _eType )
         {
@@ -436,7 +435,7 @@ sal_Bool ODsnTypeCollection::supportsTableCreation(DATASOURCE_TYPE _eType)
 }
 // -----------------------------------------------------------------------------
 sal_Bool ODsnTypeCollection::supportsBrowsing(DATASOURCE_TYPE _eType)
-{     
+{
     sal_Bool bEnableBrowseButton = sal_False;
     switch( _eType )
     {
@@ -492,7 +491,6 @@ sal_Bool ODsnTypeCollection::hasAuthentication(DATASOURCE_TYPE _eType) const
         case DST_ODBC:
         case DST_ADO:
         case DST_LDAP:
-        case DST_CALC:
             return sal_True;
             break;
         case DST_MSACCESS:
@@ -503,6 +501,7 @@ sal_Bool ODsnTypeCollection::hasAuthentication(DATASOURCE_TYPE _eType) const
         case DST_OUTLOOKEXP: //????
         case DST_DBASE:
         case DST_FLAT:
+        case DST_CALC:
         case DST_EMBEDDED:
         default:
             return sal_False;
@@ -546,13 +545,13 @@ DATASOURCE_TYPE ODsnTypeCollection::implDetermineType(const String& _rDsn) const
         return DST_ODBC;
     if (_rDsn.EqualsIgnoreCaseAscii("sdbc:dbase", 0, nSeparator))
         return DST_DBASE;
-    
+
     if (_rDsn.EqualsIgnoreCaseAscii("sdbc:ado:", 0, nSeparator))
     {
         nSeparator = _rDsn.Search((sal_Unicode)':', nSeparator + 1);
         if (STRING_NOTFOUND != nSeparator && _rDsn.EqualsIgnoreCaseAscii("sdbc:ado:access",0, nSeparator) )
             return DST_MSACCESS;
-        return DST_ADO;	
+        return DST_ADO;
     }
     if (_rDsn.EqualsIgnoreCaseAscii("sdbc:flat:", 0, nSeparator))
         return DST_FLAT;
@@ -591,8 +590,8 @@ DATASOURCE_TYPE ODsnTypeCollection::implDetermineType(const String& _rDsn) const
         return DST_MYSQL_ODBC;
     if (_rDsn.EqualsIgnoreCaseAscii("sdbc:mysql:jdbc", 0, nSeparator))
         return DST_MYSQL_JDBC;
-    
-    
+
+
 
     DBG_ERROR("ODsnTypeCollection::implDetermineType : unrecognized data source type !");
     return DST_UNKNOWN;
@@ -687,7 +686,7 @@ Sequence<PropertyValue> ODsnTypeCollection::getEmbeddedDatabaseProperties(const 
                 pInfos->Name = *pNodeNames;
                 pInfos->Value = aItemSubNode.getNodeValue(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Value")));
             }
-        }			
+        }
     }
     return aRet;
 }
@@ -698,7 +697,7 @@ sal_Int32 ODsnTypeCollection::implDetermineTypeIndex(const String& _rDsn) const
 }
 // -----------------------------------------------------------------------------
 String ODsnTypeCollection::getTypeExtension(DATASOURCE_TYPE _eType) const
-{ 
+{
     StringVector::size_type nPos = static_cast<sal_Int16>(_eType-DST_USERDEFINE1);
     return nPos < m_aUserExtensions.size() ? m_aUserExtensions[nPos] : String();
 }
