@@ -2,9 +2,9 @@
  *
  *  $RCSfile: WCPage.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: tbe $ $Date: 2001-05-14 09:45:25 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:26:43 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,7 +86,7 @@
 #ifndef _COM_SUN_STAR_SDBCX_XTABLESSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XTablesSupplier.hpp>
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 
@@ -104,11 +104,9 @@ DBG_NAME(OCopyTable);
 //------------------------------------------------------------------------
 OCopyTable::OCopyTable( Window * pParent, EImportMode atWhat, sal_Bool bIsQuery, OCopyTableWizard::Wizard_Create_Style nLastAction )
     : OWizardPage( pParent, ModuleRes(TAB_WIZ_COPYTABLE) ),
-    m_aFBmpCopyTable(		this, ResId( BMP_COPYTABLE		) ),
-    m_aGB_Temp(				this, ResId( GB_TEMP			) ),
     m_ftTableName(			this, ResId( FT_TABLENAME		) ),
     m_edTableName(			this, ResId( ET_TABLENAME		) ),
-    m_aGB_Options(			this, ResId( GB_OPTIONS			) ),
+    m_aFL_Options(          this, ResId( FL_OPTIONS         ) ),
     m_aRB_DefData(			this, ResId( RB_DEFDATA			) ),
     m_aRB_Def(				this, ResId( RB_DEF				) ),
     m_aRB_View(				this, ResId( RB_VIEW			) ),
@@ -144,7 +142,7 @@ OCopyTable::OCopyTable( Window * pParent, EImportMode atWhat, sal_Bool bIsQuery,
     catch(SQLException&)
     {
     }
-    
+
     if(!m_bIsViewAllowed)
         m_aRB_View.Disable();
 
@@ -295,7 +293,7 @@ sal_Bool OCopyTable::LeavePage()
             return LeavePage();
         }
     }
-    else 
+    else
     { // table exist and is not new or doesn't exist and so on
         switch(m_pParent->m_eCreateStyle)
         {
@@ -326,7 +324,7 @@ sal_Bool OCopyTable::LeavePage()
             {
                 //////////////////////////////////////////////////////////////////////////
                 // Immer neue Tabelle erzeugen
-                
+
             }
         }
     }
@@ -354,7 +352,7 @@ void OCopyTable::ActivatePage()
     //	if (m_pParent->m_xSourceDef.Is() && (m_pParent->m_xSourceDef->GetDatabase() == m_pParent->m_xDatabase))
         // copying within the same database -> assume that the name should be modified at first
         m_edTableName.GrabFocus();
-    //	else 
+    //	else
         //	m_pParent->GetOKButton().GrabFocus();
 }
 //------------------------------------------------------------------------
@@ -363,7 +361,7 @@ String OCopyTable::GetTitle() const { return String(ModuleRes(STR_WIZ_TABLE_COPY
 void OCopyTable::Reset()
 {
     m_bFirstTime = sal_False;
-    
+
     sal_Int32 nLen = m_pParent->m_xConnection->getMetaData()->getMaxTableNameLength();
 
     m_edTableName.SetMaxTextLen(nLen ? (xub_StrLen)nLen : EDIT_NOLIMIT);

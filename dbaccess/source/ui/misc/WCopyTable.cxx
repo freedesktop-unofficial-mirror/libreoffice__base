@@ -2,9 +2,9 @@
  *
  *  $RCSfile: WCopyTable.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: oj $ $Date: 2001-06-01 11:23:46 $
+ *  last change: $Author: fme $ $Date: 2001-06-21 15:26:43 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -71,7 +71,7 @@
 #ifndef _COM_SUN_STAR_SDBCX_XVIEWSSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XViewsSupplier.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBCX_XDATADESCRIPTORFACTORY_HPP_ 
+#ifndef _COM_SUN_STAR_SDBCX_XDATADESCRIPTORFACTORY_HPP_
 #include <com/sun/star/sdbcx/XDataDescriptorFactory.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBCX_XCOLUMNSSUPPLIER_HPP_
@@ -101,7 +101,7 @@
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
 #include "dbustrings.hrc"
 #endif
-#ifndef _SV_LSTBOX_HXX 
+#ifndef _SV_LSTBOX_HXX
 #include <vcl/lstbox.hxx>
 #endif
 #ifndef _DBU_RESOURCE_HRC_
@@ -145,10 +145,11 @@ OCopyTableWizard::OCopyTableWizard(Window * pParent,
                                    const Reference< XNumberFormatter >&	_xFormatter,
                                    const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rM)
     : WizardDialog( pParent, ModuleRes(WIZ_RTFCOPYTABLE))
-    ,m_pbFinish( this , ModuleRes(PB_OK))
+    ,m_pbHelp( this , ModuleRes(PB_HELP))
     ,m_pbCancel( this , ModuleRes(PB_CANCEL))
-    ,m_pbNext( this , ModuleRes(PB_NEXT))
     ,m_pbPrev( this , ModuleRes(PB_PREV))
+    ,m_pbNext( this , ModuleRes(PB_NEXT))
+    ,m_pbFinish( this , ModuleRes(PB_OK))
     ,m_nPageCount(0)
     ,m_xConnection(_xConnection)
     ,m_xSourceObject(_xSourceObject)
@@ -192,10 +193,11 @@ OCopyTableWizard::OCopyTableWizard(Window * pParent,
                                    const Reference< XNumberFormatter >&	_xFormatter,
                                    const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rM)
     : WizardDialog( pParent, ModuleRes(WIZ_RTFCOPYTABLE))
-    ,m_pbFinish( this , ModuleRes(PB_OK))
+    ,m_pbHelp( this , ModuleRes(PB_HELP))
     ,m_pbCancel( this , ModuleRes(PB_CANCEL))
-    ,m_pbNext( this , ModuleRes(PB_NEXT))
     ,m_pbPrev( this , ModuleRes(PB_PREV))
+    ,m_pbNext( this , ModuleRes(PB_NEXT))
+    ,m_pbFinish( this , ModuleRes(PB_OK))
     ,m_nPageCount(0)
     ,m_xConnection(_xConnection)
     ,m_bCreatePrimaryColumn(sal_False)
@@ -214,10 +216,10 @@ OCopyTableWizard::OCopyTableWizard(Window * pParent,
 // -----------------------------------------------------------------------------
 void OCopyTableWizard::construct()
 {
+    AddButton( &m_pbHelp, WIZARDDIALOG_BUTTON_STDOFFSET_X );
+    AddButton( &m_pbCancel, WIZARDDIALOG_BUTTON_STDOFFSET_X );
     AddButton( &m_pbPrev );
     AddButton( &m_pbNext, WIZARDDIALOG_BUTTON_STDOFFSET_X );
-
-    AddButton( &m_pbCancel, WIZARDDIALOG_BUTTON_STDOFFSET_X );
     AddButton( &m_pbFinish );
 
     m_pbPrev.SetClickHdl( LINK( this, OCopyTableWizard, ImplPrevHdl ) );
@@ -240,7 +242,7 @@ void OCopyTableWizard::construct()
         m_pbFinish.SetStyle(m_pbFinish.GetStyle() | WB_DEFBUTTON);
 
     FreeResource();
-    
+
     fillTypeInfo();
 }
 //------------------------------------------------------------------------
@@ -303,7 +305,7 @@ void OCopyTableWizard::CheckColumns()
     Reference< XDatabaseMetaData >  xMetaData(m_xConnection->getMetaData());
     sal_Bool bPKeyAllowed = xMetaData->supportsCoreSQLGrammar();
 
-    
+
     if(m_vDestColumns.size())
     {	// we have dest columns so look for the column matching
         ODatabaseExport::TColumnVector::const_iterator aSrcIter = m_vSourceVec.begin();
@@ -343,7 +345,7 @@ void OCopyTableWizard::CheckColumns()
                 ::rtl::OUString sName(aAlias);
                 sal_Int32 nPos = 1;
                 sName += ::rtl::OUString::valueOf(nPos);
-                
+
                 while(m_vDestColumns.find(sName) != m_vDestColumns.end())
                 {
                     sName = aAlias;
@@ -490,9 +492,9 @@ void OCopyTableWizard::fillTypeInfo()
     // Information for a single SQL type
     ::rtl::OUString aB1 = ::rtl::OUString::createFromAscii(" [ ");
     ::rtl::OUString aB2 = ::rtl::OUString::createFromAscii(" ]");
-    
+
     // Loop on the result set until we reach end of file
-    while (xRs->next()) 
+    while (xRs->next())
     {
         OTypeInfo* pInfo = new OTypeInfo();
         pInfo->aTypeName		= xRow->getString (1);
@@ -511,7 +513,7 @@ void OCopyTableWizard::fillTypeInfo()
         pInfo->nMinimumScale	= xRow->getShort (14);
         pInfo->nMaximumScale	= xRow->getShort (15);
         pInfo->nNumPrecRadix	= xRow->getInt (18);
-        
+
         String aName;
         switch(pInfo->nType)
         {
@@ -606,7 +608,7 @@ void OCopyTableWizard::fillTypeInfo()
         pInfo->aUIName += aB1;
         pInfo->aUIName += pInfo->aTypeName;
         pInfo->aUIName += aB2;
-        // Now that we have the type info, save it in the multimap 
+        // Now that we have the type info, save it in the multimap
         m_aTypeInfo.insert(OTypeInfoMap::value_type(pInfo->nType,pInfo));
     }
     // for a faster index access
@@ -695,13 +697,13 @@ void OCopyTableWizard::loadData()
             OTypeInfoMap::iterator aIter = aPair.first;
             if(aIter == m_aTypeInfo.end())
             {	// type not in destination database
-                aPair = m_aTypeInfo.equal_range(DataType::VARCHAR);				
+                aPair = m_aTypeInfo.equal_range(DataType::VARCHAR);
             }
             for(;aIter != aPair.second;++aIter)
             {
                 // search the best matching type
-                if(	aIter->second->aTypeName == sTypeName	&& 
-                    aIter->second->nPrecision >= nPrecision && 
+                if(	aIter->second->aTypeName == sTypeName	&&
+                    aIter->second->nPrecision >= nPrecision &&
                     aIter->second->nMaximumScale >= nScale)
                     break;
             }
@@ -820,7 +822,7 @@ void OCopyTableWizard::appendColumns(Reference<XColumnsSupplier>& _rxColSup,cons
         OFieldDescription* pField = (*aIter)->second;
         if(!pField)
             continue;
-        
+
         Reference<XPropertySet> xColumn;
         if(pField->IsPrimaryKey() || !_bKeyColumns)
             xColumn = xColumnFactory->createDataDescriptor();
@@ -849,7 +851,7 @@ void OCopyTableWizard::appendColumns(Reference<XColumnsSupplier>& _rxColSup,cons
             {
                 OSL_ENSURE(sal_False, "OCopyTableWizard::appendColumns: invalid field name!");
             }
-            
+
         }
     }
 }
@@ -910,8 +912,8 @@ Reference< XPropertySet > OCopyTableWizard::createView()
     ::rtl::OUString sCatalog,sSchema,sTable;
     ::dbtools::qualifiedNameComponents(m_xConnection->getMetaData(),
                                         m_sName,
-                                        sCatalog, 
-                                        sSchema, 
+                                        sCatalog,
+                                        sSchema,
                                         sTable);
 
     m_xDestObject->setPropertyValue(PROPERTY_CATALOGNAME,makeAny(sCatalog));
@@ -956,12 +958,12 @@ Reference< XPropertySet > OCopyTableWizard::createTable()
     OSL_ENSURE(m_xDestObject.is(),"Could not create a new object!");
     if(!m_xDestObject.is())
         return NULL;
-    
+
     ::rtl::OUString sCatalog,sSchema,sTable;
     ::dbtools::qualifiedNameComponents(m_xConnection->getMetaData(),
                                         m_sName,
-                                        sCatalog, 
-                                        sSchema, 
+                                        sCatalog,
+                                        sSchema,
                                         sTable);
 
     m_xDestObject->setPropertyValue(PROPERTY_CATALOGNAME,makeAny(sCatalog));
