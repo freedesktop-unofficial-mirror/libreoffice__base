@@ -2,9 +2,9 @@
  *
  *  $RCSfile: tabletree.src,v $
  *
- *  $Revision: 1.19 $
+ *  $Revision: 1.20 $
  *
- *  last change: $Author: vg $ $Date: 2001-11-16 22:30:20 $
+ *  last change: $Author: pb $ $Date: 2001-11-29 11:24:25 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -199,7 +199,7 @@ String STR_NOREGISTEREDDRIVER
 
 String STR_COULDNOTCONNECT
 {
-    Text = "Es konnte keine Verbindung für die URL #connurl# aufgebaut werden.";
+    Text = "Es konnte keine Verbindung für den URL #connurl# aufgebaut werden.";
     Text [ english ] = "A connection could not be established for URL #connurl#.";
     Text [ english_us ] = "A connection could not be established for URL #connurl#.";
     Text[ portuguese ] = "Foi impossível estabelecer ligação para o URL #connurl#.";
@@ -224,7 +224,7 @@ String STR_COULDNOTCONNECT
 };
 String STR_COULDNOTCONNECT_PLEASECHECK
 {
-    Text = "Bitte ueberpruefen Sie die aktuellen Einstellungen, zum Beispiel hinsichtlich Benutzername und Passwort.";
+    Text = "Bitte überprüfen Sie die aktuellen Einstellungen, zum Beispiel hinsichtlich Benutzername und Passwort.";
     Text [ english ] = "Please check the current settings, e.g. with respect to user name and password.";
     Text [ english_us ] = "Please check the current settings, e.g. regarding user name and password.";
     Text[ portuguese ] = "Verifique as definições actuais, por exemplo, nome de utilizador e senha.";
@@ -351,60 +351,63 @@ String STR_ALL_TABLES_AND_VIEWS
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.19  2001/11/16 22:30:20  vg
+ *	Merge SRC638: 16.11.01 - 22:30:53
+ *
  *	Revision 1.18  2001/08/29 13:52:35  kz
  *	Merge SRC638: 29.08.01 - 15:51:47
- *	
+ *
  *	Revision 1.17  2001/08/25 20:18:40  obo
  *	Merge SRC638: 25.08.01 - 22:19:09
- *	
+ *
  *	Revision 1.16  2001/08/21 22:01:29  kz
  *	Merge SRC638: 22.08.01 - 00:00:54
- *	
+ *
  *	Revision 1.15  2001/08/14 15:07:09  kz
  *	Merge SRC638: 14.08.01 - 17:06:33
- *	
+ *
  *	Revision 1.14  2001/08/07 14:48:58  kz
  *	Merge SRC638: 07.08.01 - 16:48:26
- *	
+ *
  *	Revision 1.13  2001/07/13 20:47:36  kz
  *	Merge SRC638: 13.07.01 - 22:46:26
- *	
+ *
  *	Revision 1.12  2001/05/16 15:24:36  rt
  *	Merge SRC632: 16.05.01 - 17:24:45 (NoBranch)
- *	
+ *
  *	Revision 1.11  2001/05/12 06:32:10  kz
  *	Merge SRC631: 12.05.01 - 08:31:35 (NoBranch)
- *	
+ *
  *	Revision 1.10  2001/05/10 05:40:48  rt
  *	Merge SRC631: 10.05.01 - 07:40:06 (NoBranch)
- *	
+ *
  *	Revision 1.9  2001/05/04 19:48:56  rt
  *	Merge SRC630: 04.05.01 - 21:48:13 (NoBranch)
- *	
+ *
  *	Revision 1.8  2001/03/19 11:32:51  kz
  *	Merge SRC625: 19.03.01 - 12:32:26 (NoBranch)
- *	
+ *
  *	Revision 1.7  2001/03/09 20:38:12  kz
  *	Merge SRC624: 09.03.01 - 21:38:15 (NoBranch)
- *	
+ *
  *	Revision 1.6  2001/01/30 08:29:43  fs
  *	'wildcard checking'
- *	
+ *
  *	Revision 1.5  2000/11/29 09:47:43  kz
  *	Merge SRC614: 29.11.00 - 10:46:56 (NoBranch)
- *	
+ *
  *	Revision 1.4  2000/10/30 15:23:23  fs
  *	#79816# STR_INVALID_REGISTEREDDRIVER is obsolete
- *	
+ *
  *	Revision 1.3  2000/10/27 15:17:01  kz
  *	Merge SRC610: 27.10.00 - 17:16:44 (NoBranch)
- *	
+ *
  *	Revision 1.2  2000/10/09 12:37:02  fs
  *	STR_COULDNOTCONNECT
- *	
+ *
  *	Revision 1.1  2000/10/05 10:01:18  fs
  *	initial checkin
- *	
+ *
  *
  *	Revision 1.0 28.09.00 13:36:13  fs
  ************************************************************************/
