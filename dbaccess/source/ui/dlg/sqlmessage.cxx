@@ -2,9 +2,9 @@
  *
  *  $RCSfile: sqlmessage.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: sj $ $Date: 2001-05-17 13:28:14 $
+ *  last change: $Author: pb $ $Date: 2001-11-29 11:21:37 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -311,6 +311,7 @@ void OSQLMessageBox::Construct(const UniString& rTitle,
     m_aTitle.SetFont(aFont);
     m_aTitle.Show();
 
+    m_aMessage.SetStyle( m_aMessage.GetStyle() | WB_NOLABEL );
     m_aMessage.SetPosSizePixel(LogicToPixel(Point(45, 29),MAP_APPFONT),
                                LogicToPixel(Size(169, 1),MAP_APPFONT));
     m_aMessage.Show();
@@ -576,24 +577,27 @@ IMPL_LINK( OSQLMessageBox, ButtonClickHdl, Button *, pButton )
 /*************************************************************************
  * history:
  *	$Log: not supported by cvs2svn $
+ *	Revision 1.9  2001/05/17 13:28:14  sj
+ *	#86988# dialog redesign
+ *
  *	Revision 1.8  2001/03/02 17:04:27  fs
  *	correcting the building of the exception tree
- *	
+ *
  *	Revision 1.7  2001/02/05 09:48:50  fs
  *	unique id for the 'more' button
- *	
+ *
  *	Revision 1.6  2001/01/29 13:21:19  oj
  *	use second exception for message text
- *	
+ *
  *	Revision 1.5  2000/12/08 17:56:46  fs
  *	#79541# wrong define in the previous brandname fix - and, cause I was just touching it, adjusted the changes to our own style :)
- *	
+ *
  *	Revision 1.4  2000/12/07 18:55:34  csaba
  *	79541 Branding/Configuration Change
- *	
+ *
  *	Revision 1.3  2000/10/18 09:11:18  obo
  *	Syntax error with linux compiler
- *	
+ *
  *	Revision 1.2  2000/10/09 12:39:29  fs
  *	some (a lot of) new imlpementations - still under development
  *
