@@ -1,10 +1,10 @@
 /*************************************************************************
  *
- *  $RCSfile: TableWindowListBox.hxx,v $
+ *  $RCSfile: ScrollHelper.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.1 $
  *
- *  last change: $Author: oj $ $Date: 2002-03-26 09:18:50 $
+ *  last change: $Author: oj $ $Date: 2002-03-26 09:20:24 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,91 +58,57 @@
  *
  *
  ************************************************************************/
-#ifndef DBAUI_TABLEWINDOWLISTBOX_HXX
-#define DBAUI_TABLEWINDOWLISTBOX_HXX
 
-#ifndef _SVTREEBOX_HXX
-#include <svtools/svtreebx.hxx>
-#endif
-
-#ifndef _DBACCESS_UI_CALLBACKS_HXX_
-#include "callbacks.hxx"
-#endif
 #ifndef DBAUI_SCROLLHELPER_HXX
 #include "ScrollHelper.hxx"
 #endif
 
-struct AcceptDropEvent;
-struct ExecuteDropEvent;
+#define	SCROLLING_TIMESPAN		500
+#define LISTBOX_SCROLLING_AREA	6
 namespace dbaui
 {
-    class OTableWindowListBox;
-    struct OJoinExchangeData
+    // -----------------------------------------------------------------------------
+    OScrollHelper::OScrollHelper()
     {
-    public:
-        OTableWindowListBox*	pListBox;		// die ListBox innerhalb desselben (daraus kann man sich das TabWin und daraus den WinName besorgen)
-        SvLBoxEntry*			pEntry;			// der Eintrag, der gedraggt oder auf den gedroppt wurde
-
-        OJoinExchangeData(OTableWindowListBox* pBox);
-        OJoinExchangeData() : pListBox(NULL), pEntry(NULL) { }
-    };
-    struct OJoinDropData
+        m_aScrollTimer.SetTimeout( SCROLLING_TIMESPAN );
+    }
+    // -----------------------------------------------------------------------------
+    OScrollHelper::~OScrollHelper()
     {
-        OJoinExchangeData aSource;
-        OJoinExchangeData aDest;
-    };
-
-    class OTableWindow;
-    class OTableWindowListBox
-            :public SvTreeListBox
-            ,public IDragTransferableListener
+        if( m_aScrollTimer.IsActive() )
+            m_aScrollTimer.Stop();
+    }
+    // -----------------------------------------------------------------------------
+    void OScrollHelper::scroll(const Point& _rPoint, const Size& _rOutputSize)
     {
-        DECL_LINK( DoubleClickHdl, SvTreeListBox* );
-        DECL_LINK( ScrollUpHdl, SvTreeListBox* );
-        DECL_LINK( ScrollDownHdl, SvTreeListBox* );
-        DECL_LINK( DropHdl, void* );
+        // Scrolling Areas
+        Rectangle aScrollArea( Point(0, _rOutputSize.Height() - LISTBOX_SCROLLING_AREA),
+                                     Size(_rOutputSize.Width(), LISTBOX_SCROLLING_AREA) );
 
-        OScrollHelper				m_aScrollHelper;
-        Point						m_aMousePos;
-
-        OTableWindow*				m_pTabWin;
-        sal_Int32					m_nDropEvent;
-        OJoinDropData				m_aDropInfo;
-
-        BOOL						m_bReallyScrolled : 1;
-        BOOL						m_bDragSource : 1;
-
-    protected:
-        virtual void LoseFocus();
-        virtual void GetFocus();
-        virtual	void NotifyScrolled();
-        virtual void NotifyEndScroll();
-
-        virtual long PreNotify(NotifyEvent& rNEvt);
-
-        virtual void dragFinished( );
-        
-        
-
-    public:
-        OTableWindowListBox(OTableWindow* pParent, const String& rDatabaseName, const String& rTableName);
-        virtual ~OTableWindowListBox();
-
-        // DnD stuff
-        virtual void		StartDrag( sal_Int8 nAction, const Point& rPosPixel );
-        virtual sal_Int8	AcceptDrop( const AcceptDropEvent& rEvt );
-        virtual sal_Int8	ExecuteDrop( const ExecuteDropEvent& rEvt );
-
-        // window
-        virtual void Command(const CommandEvent& rEvt);
-
-        OTableWindow* GetTabWin(){ return m_pTabWin; }
-        SvLBoxEntry* GetEntryFromText( const String& rEntryText );
-
-        
-    };
+        Link aToCall;
+        // if pointer in bottom area begin scroll
+        if( aScrollArea.IsInside(_rPoint) )
+            aToCall = m_aUpScroll;
+        else
+        {
+            aScrollArea.SetPos(Point(0,0));
+            // if pointer in top area begin scroll
+            if( aScrollArea.IsInside(_rPoint) )
+                aToCall = m_aDownScroll;
+            else if( m_aScrollTimer.IsActive() )
+                m_aScrollTimer.Stop();
+        }
+        if ( aToCall.IsSet() )
+        {
+            if( !m_aScrollTimer.IsActive() )
+            {
+                m_aScrollTimer.SetTimeoutHdl( aToCall );
+                aToCall.Call( NULL );
+            }
+        }
+    }
+    // -----------------------------------------------------------------------------
 }
-#endif // DBAUI_TABLEWINDOWLISTBOX_HXX
-
+// -----------------------------------------------------------------------------
 
 
