@@ -2,9 +2,9 @@
  *
  *  $RCSfile: FieldDescControl.cxx,v $
  *
- *  $Revision: 1.31 $
+ *  $Revision: 1.32 $
  *
- *  last change: $Author: hr $ $Date: 2004-08-02 15:35:21 $
+ *  last change: $Author: hr $ $Date: 2004-08-02 17:17:43 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -61,7 +61,7 @@
 
 #define ITEMID_HORJUSTIFY		SID_ATTR_ALIGN_HOR_JUSTIFY
 #define ITEMID_VERJUSTIFY		SID_ATTR_ALIGN_VER_JUSTIFY
-#define ITEMID_ORIENTATION		SID_ATTR_ALIGN_ORIENTATION
+//#define ITEMID_ORIENTATION     SID_ATTR_ALIGN_ORIENTATION
 #define ITEMID_LINEBREAK		SID_ATTR_ALIGN_LINEBREAK
 #define ITEMID_MARGIN			SID_ATTR_ALIGN_MARGIN
 
@@ -81,13 +81,13 @@
 #ifndef DBAUI_TABLEDESIGNHELPBAR_HXX
 #include "TableDesignHelpBar.hxx"
 #endif
-#ifndef _SV_SCRBAR_HXX 
+#ifndef _SV_SCRBAR_HXX
 #include <vcl/scrbar.hxx>
 #endif
-#ifndef _SV_BUTTON_HXX 
+#ifndef _SV_BUTTON_HXX
 #include <vcl/button.hxx>
 #endif
-#ifndef _SVX_NUMFMTSH_HXX 
+#ifndef _SVX_NUMFMTSH_HXX
 #include <svx/numfmtsh.hxx>
 #endif
 #ifndef _DBAUI_MODULE_DBU_HXX_
@@ -100,10 +100,10 @@
 #include "dbu_tbl.hrc"
 #endif
 
-#ifndef _SV_SVAPP_HXX 
+#ifndef _SV_SVAPP_HXX
 #include <vcl/svapp.hxx>
 #endif
-#ifndef _SV_FIXED_HXX 
+#ifndef _SV_FIXED_HXX
 #include <vcl/fixed.hxx>
 #endif
 #ifndef _SV_MSGBOX_HXX
@@ -115,7 +115,7 @@
 #ifndef DBAUI_FIELDDESCRIPTIONS_HXX
 #include "FieldDescriptions.hxx"
 #endif
-#ifndef _SFXITEMPOOL_HXX 
+#ifndef _SFXITEMPOOL_HXX
 #include <svtools/itempool.hxx>
 #endif
 #ifndef DBAUI_SBATTRDLG_HXX
@@ -154,7 +154,7 @@
 #ifndef _DBA_DBACCESS_HELPID_HRC_
 #include "dbaccess_helpid.hrc"
 #endif
-#ifndef _NUMUNO_HXX 
+#ifndef _NUMUNO_HXX
 #include <svtools/numuno.hxx>
 #endif
 #ifndef _CONNECTIVITY_DBTOOLS_HXX_
@@ -170,7 +170,7 @@
 #ifndef _DBHELPER_DBCONVERSION_HXX_
 #include <connectivity/dbconversion.hxx>
 #endif
-#ifndef _TRANSFER_HXX 
+#ifndef _TRANSFER_HXX
 #include <svtools/transfer.hxx>
 #endif
 
@@ -208,7 +208,7 @@ namespace
     {
         double nValue = _nValue;
         sal_Int32 nNumberFormat = ::comphelper::getNumberFormatType(_xNumberFormatter,_nFormatKey);
-        if(		(nNumberFormat & ::com::sun::star::util::NumberFormat::DATE)	== ::com::sun::star::util::NumberFormat::DATE 
+        if(		(nNumberFormat & ::com::sun::star::util::NumberFormat::DATE)	== ::com::sun::star::util::NumberFormat::DATE
             || (nNumberFormat & ::com::sun::star::util::NumberFormat::DATETIME) == ::com::sun::star::util::NumberFormat::DATETIME )
         {
             nValue = DBTypeConversion::toStandardDbDate(DBTypeConversion::getNULLDate(_xNumberFormatter->getNumberFormatsSupplier()),nValue);
@@ -347,7 +347,7 @@ OFieldDescControl::OFieldDescControl( Window* pParent, OTableDesignHelpBar* pHel
 OFieldDescControl::~OFieldDescControl()
 {
     DBG_DTOR(OFieldDescControl,NULL);
-    
+
     {
         ::std::auto_ptr<Window> aTemp(m_pVertScroll);
         m_pVertScroll	 = NULL;
@@ -571,10 +571,10 @@ void OFieldDescControl::ScrollAllAggregates()
                                         , pScaleText, m_pColumnNameText
                                         , m_pTypeText, m_pAutoIncrementValueText};
         OSL_ENSURE(sizeof(ppAggregates)/sizeof(ppAggregates[0]) == sizeof(ppAggregatesText)/sizeof(ppAggregatesText[0]),"Lists are not identical!");
-        
+
         for (sal_uInt16 i=0; i<sizeof(ppAggregates)/sizeof(ppAggregates[0]); ++i)
             ScrollAggregate(ppAggregatesText[i],ppAggregates[i],NULL,nDeltaX, nDeltaY);
-        
+
         ScrollAggregate(pFormatText,pFormatSample,pFormat,nDeltaX, nDeltaY);
     }
 }
@@ -1099,10 +1099,10 @@ void OFieldDescControl::ActivateAggregate( EControlType eType )
             m_pColumnNameText  =new FixedText( this );
             m_pColumnNameText->SetText( ModuleRes(STR_TAB_FIELD_NAME) );
             ::rtl::OUString aTmpString( xMetaData.is() ? xMetaData->getExtraNameCharacters() : ::rtl::OUString() );
-            m_pColumnName = new OPropColumnEditCtrl( this, 
+            m_pColumnName = new OPropColumnEditCtrl( this,
                                                     aTmpString,
-                                                    STR_HELP_DEFAULT_VALUE, 
-                                                    FIELD_PRPOERTY_COLUMNNAME, 
+                                                    STR_HELP_DEFAULT_VALUE,
+                                                    FIELD_PRPOERTY_COLUMNNAME,
                                                     WB_BORDER );
             m_pColumnName->SetHelpId(HID_TAB_ENT_COLUMNNAME);
             m_pColumnName->SetMaxTextLen(xub_StrLen( nMax ? nMax : EDIT_NOLIMIT));
@@ -1495,7 +1495,7 @@ void OFieldDescControl::DisplayData(OFieldDescription* pFieldDescr )
     }
 
     ::dbaui::notifySystemWindow(this,this,::comphelper::mem_fun(&TaskPaneList::AddWindow));
-    
+
     TOTypeInfoSP pFieldType;
     if( pFieldDescr )
         pFieldType = pFieldDescr->getTypeInfo();
@@ -1518,7 +1518,7 @@ void OFieldDescControl::DisplayData(OFieldDescription* pFieldDescr )
 
         //////////////////////////////////////////////////////////////////////
         // determine which controls we should show and which not
-        
+
         // 1. the required control
         if ( pFieldType->bNullable )
             ActivateAggregate( tpRequired );
@@ -1568,7 +1568,7 @@ void OFieldDescControl::DisplayData(OFieldDescription* pFieldDescr )
         {
             case DataType::CHAR:
             case DataType::VARCHAR:
-            case DataType::LONGVARCHAR:	
+            case DataType::LONGVARCHAR:
                 DeactivateAggregate( tpLength );
                 DeactivateAggregate( tpBoolDefault );
 
@@ -2017,11 +2017,11 @@ void OFieldDescControl::LoseFocus()
 // -----------------------------------------------------------------------------
 sal_Bool OFieldDescControl::isCopyAllowed()
 {
-    sal_Bool bAllowed = (m_pActFocusWindow != NULL) && 
+    sal_Bool bAllowed = (m_pActFocusWindow != NULL) &&
                         (m_pActFocusWindow == pDefault || m_pActFocusWindow == pFormatSample	||
-                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			|| 
+                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			||
                         m_pActFocusWindow == pScale	 || m_pActFocusWindow == m_pColumnName		||
-                        m_pActFocusWindow == m_pAutoIncrementValue) && 
+                        m_pActFocusWindow == m_pAutoIncrementValue) &&
                         reinterpret_cast<Edit*>(m_pActFocusWindow)->GetSelected().Len() != 0;
 
     return bAllowed;
@@ -2029,20 +2029,20 @@ sal_Bool OFieldDescControl::isCopyAllowed()
 // -----------------------------------------------------------------------------
 sal_Bool OFieldDescControl::isCutAllowed()
 {
-    sal_Bool bAllowed = (m_pActFocusWindow != NULL) && 
+    sal_Bool bAllowed = (m_pActFocusWindow != NULL) &&
                         (m_pActFocusWindow == pDefault || m_pActFocusWindow == pFormatSample	||
-                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			|| 
+                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			||
                         m_pActFocusWindow == pScale	 || m_pActFocusWindow == m_pColumnName		||
-                        m_pActFocusWindow == m_pAutoIncrementValue) && 
+                        m_pActFocusWindow == m_pAutoIncrementValue) &&
                         reinterpret_cast<Edit*>(m_pActFocusWindow)->GetSelected().Len() != 0;
     return bAllowed;
 }
 // -----------------------------------------------------------------------------
 sal_Bool OFieldDescControl::isPasteAllowed()
 {
-    sal_Bool bAllowed = (m_pActFocusWindow != NULL) && 
+    sal_Bool bAllowed = (m_pActFocusWindow != NULL) &&
                         (m_pActFocusWindow == pDefault || m_pActFocusWindow == pFormatSample	||
-                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			|| 
+                        m_pActFocusWindow == pTextLen || m_pActFocusWindow == pLength			||
                         m_pActFocusWindow == pScale	 || m_pActFocusWindow == m_pColumnName		||
                         m_pActFocusWindow == m_pAutoIncrementValue);
     if ( bAllowed )
@@ -2061,13 +2061,13 @@ void OFieldDescControl::cut()
 // -----------------------------------------------------------------------------
 void OFieldDescControl::copy()
 {
-    if(isCopyAllowed()) // this only checks if the focus window is valid 
+    if(isCopyAllowed()) // this only checks if the focus window is valid
         reinterpret_cast<Edit*>(m_pActFocusWindow)->Copy();
 }
 // -----------------------------------------------------------------------------
 void OFieldDescControl::paste()
 {
-    if(m_pActFocusWindow) // this only checks if the focus window is valid 
+    if(m_pActFocusWindow) // this only checks if the focus window is valid
         reinterpret_cast<Edit*>(m_pActFocusWindow)->Paste();
 }
 // -----------------------------------------------------------------------------
@@ -2094,9 +2094,9 @@ sal_Bool OFieldDescControl::isTextFormat(const OFieldDescription* _pFieldDescr,s
     }
     catch(const Exception&)
     {
-        
+
     }
-        
+
     return bTextFormat;
 }
 // -----------------------------------------------------------------------------
@@ -2133,26 +2133,26 @@ String OFieldDescControl::getControlDefault( const OFieldDescription* _pFieldDes
             else
                 _pFieldDescr->GetControlDefault() >>= nValue;
 
-            
+
             Reference< ::com::sun::star::util::XNumberFormatter> xNumberFormatter = GetFormatter();
             Reference<XPropertySet> xFormSet = xNumberFormatter->getNumberFormatsSupplier()->getNumberFormats()->getByKey(nFormatKey);
             OSL_ENSURE(xFormSet.is(),"XPropertySet is null!");
             ::rtl::OUString sFormat;
             xFormSet->getPropertyValue(::rtl::OUString::createFromAscii("FormatString")) >>= sFormat;
-            
+
             if ( !bTextFormat )
             {
                 Locale aLocale;
                 ::comphelper::getNumberFormatProperty(xNumberFormatter,nFormatKey,::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Locale"))) >>= aLocale;
 
                 sal_Int32 nNumberFormat = ::comphelper::getNumberFormatType(xNumberFormatter,nFormatKey);
-                if(		(nNumberFormat & ::com::sun::star::util::NumberFormat::DATE)	== ::com::sun::star::util::NumberFormat::DATE 
+                if(		(nNumberFormat & ::com::sun::star::util::NumberFormat::DATE)	== ::com::sun::star::util::NumberFormat::DATE
                     || (nNumberFormat & ::com::sun::star::util::NumberFormat::DATETIME) == ::com::sun::star::util::NumberFormat::DATETIME )
                 {
                     nValue = DBTypeConversion::toNullDate(DBTypeConversion::getNULLDate(xNumberFormatter->getNumberFormatsSupplier()),nValue);
                 }
 
-                
+
 
                 Reference< ::com::sun::star::util::XNumberFormatPreviewer> xPreViewer(xNumberFormatter,UNO_QUERY);
                 OSL_ENSURE(xPreViewer.is(),"XNumberFormatPreviewer is null!");
@@ -2163,7 +2163,7 @@ String OFieldDescControl::getControlDefault( const OFieldDescription* _pFieldDes
         }
         catch(const Exception&)
         {
-            
+
         }
     }
 
