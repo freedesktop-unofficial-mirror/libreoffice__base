@@ -2,9 +2,9 @@
  *
  *  $RCSfile: warnings.hxx,v $
  *
- *  $Revision: 1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: fs $ $Date: 2001-08-28 16:26:11 $
+ *  last change: $Author: hr $ $Date: 2003-03-19 17:52:06 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -88,11 +88,4 @@ namespace dbaccess
 //.........................................................................
 
 #endif // DBA_CORE_WARNINGS_HXX
-
-/*************************************************************************
- * history:
- *	$Log: not supported by cvs2svn $
- *
- *	Revision 1.0 24.08.01 14:15:27  fs
- ************************************************************************/
 
