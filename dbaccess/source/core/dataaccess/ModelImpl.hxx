@@ -2,9 +2,9 @@
  *
  *  $RCSfile: ModelImpl.hxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: vg $ $Date: 2005-03-23 09:45:36 $
+ *  last change: $Author: rt $ $Date: 2005-03-30 11:55:09 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,6 +73,9 @@
 #endif
 #ifndef _COM_SUN_STAR_LANG_XMULTISERVICEFACTORY_HPP_
 #include <com/sun/star/lang/XMultiServiceFactory.hpp>
+#endif
+#ifndef _COM_SUN_STAR_LANG_XSINGLESERVICEFACTORY_HPP_
+#include <com/sun/star/lang/XSingleServiceFactory.hpp>
 #endif
 #ifndef _COM_SUN_STAR_CONTAINER_XCONTAINERLISTENER_HPP_
 #include <com/sun/star/container/XContainerListener.hpp>
@@ -200,7 +203,7 @@ class ODatabaseModelImpl : public ::rtl::IReference
     friend class OConnection;
     friend class OSharedConnectionManager;
 
-public:	
+public:
 
     enum
     {
@@ -222,7 +225,18 @@ public:
     ::com::sun::star::uno::WeakReference< ::com::sun::star::container::XNameAccess >	m_xForms;
     ::com::sun::star::uno::WeakReference< ::com::sun::star::container::XNameAccess >	m_xReports;
 
+    /// the URL the document was loaded from
     ::rtl::OUString										m_sFileURL;
+    /** the URL which the document should report as it's URL
+
+        This might differ from ->m_sFileURL in case the document was loaded
+        as part of a crash recovery process. In this case, ->m_sFileURL points to
+        the temporary file where the DB had been saved to, after a crash.
+        ->m_sRealFileURL then is the URL of the document which actually had
+        been recovered.
+    */
+    ::rtl::OUString                                     m_sRealFileURL;
+
 // <properties>
     ::com::sun::star::uno::Reference< ::com::sun::star::util::XNumberFormatsSupplier >
                                                         m_xNumberFormatsSupplier;
@@ -230,7 +244,7 @@ public:
     ::rtl::OUString										m_sName;		// transient, our creator has to tell us the title
     ::rtl::OUString										m_sUser;
     ::rtl::OUString										m_aPassword;	// transient !
-    ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>			
+    ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>
                                                         m_aLayoutInformation;
     sal_Int32											m_nLoginTimeout;
     sal_Bool											m_bReadOnly : 1;
@@ -247,7 +261,7 @@ public:
                                                         m_aArgs;
 // </properties>
 
-    
+
     // ::cppu::OInterfaceContainerHelper					m_aStorageListeners;
 
     ::com::sun::star::uno::Reference< ::com::sun::star::lang::XEventListener>				m_xSharedConnectionManager;
@@ -286,13 +300,13 @@ public:
 
     /** notifies the global event broadcaster
         @param  _sEventName
-            One of 
+            One of
             OnNew      => new document
-            OnLoad      => load document 
-            OnUnload   => close document 
+            OnLoad      => load document
+            OnUnload   => close document
             OnSaveDone   => "Save" ended
             OnSaveAsDone   => "SaveAs" ended
-            OnModifyChanged   => modified/unmodified 
+            OnModifyChanged   => modified/unmodified
     */
     void notifyEvent(const ::rtl::OUString& _sEventName);
 
@@ -307,7 +321,7 @@ public:
         ,const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rxFactory
         ,ODatabaseContext* _pDBContext = NULL
         );
-    
+
 // com::sun::star::beans::XPropertySet
     ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySetInfo > SAL_CALL getPropertySetInfo(  ) throw(::com::sun::star::uno::RuntimeException);
     // XEventListener
@@ -332,7 +346,7 @@ public:
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > SAL_CALL getIsolatedConnection( const ::rtl::OUString& user, const ::rtl::OUString& password ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
     ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > SAL_CALL getIsolatedConnectionWithCompletion( const ::com::sun::star::uno::Reference< ::com::sun::star::task::XInteractionHandler >& handler ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
 
-    void dispose(  ); 
+    void dispose(  );
 
     ::rtl::OUString getURL();
 
@@ -342,7 +356,7 @@ public:
 
 // ::com::sun::star::document::XEventListener
     void SAL_CALL notifyEvent( const ::com::sun::star::document::EventObject& aEvent ) throw (::com::sun::star::uno::RuntimeException);
-    
+
 // XCloseable
     void SAL_CALL close( sal_Bool DeliverOwnership ) throw (::com::sun::star::util::CloseVetoException, ::com::sun::star::uno::RuntimeException);
 
@@ -358,8 +372,15 @@ public:
     // disposes all elements in m_aStorages, and clears it
     void    disposeStorages() SAL_THROW(());
 
+    /// creates a ->com::sun::star::embed::StorageFactory
+    ::com::sun::star::uno::Reference< ::com::sun::star::lang::XSingleServiceFactory >
+            createStorageFactory() const;
+
+    /// commits our storage
+    void    commitRootStorage();
+
     void clearConnections();
-    
+
     ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStorage> getStorage();
 
     /** returns the data source. If it doesn't exist it will be created
@@ -379,7 +400,7 @@ public:
      */
     virtual oslInterlockedCount SAL_CALL release();
 
-    
+
 };
 
 //........................................................................
