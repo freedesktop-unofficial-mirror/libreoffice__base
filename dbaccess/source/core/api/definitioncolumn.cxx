@@ -2,9 +2,9 @@
  *
  *  $RCSfile: definitioncolumn.cxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: oj $ $Date: 2001-09-20 12:56:18 $
+ *  last change: $Author: oj $ $Date: 2001-10-12 11:58:44 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -443,7 +443,7 @@ OColumnWrapper::OColumnWrapper(const Reference< XPropertySet > & rCol)
     {
         // we distingish the properties by the containment of optional properties, these are:
         // Description	0x0001
-        // Hidden		0x0002
+        // Hidden		0x0002									    
         // IsRowVersion 0x0004
         Reference <XPropertySetInfo > xInfo(m_xAggregate->getPropertySetInfo());
         m_nColTypeID = 0;
