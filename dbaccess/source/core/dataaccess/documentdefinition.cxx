@@ -2,9 +2,9 @@
  *
  *  $RCSfile: documentdefinition.cxx,v $
  *
- *  $Revision: 1.23 $
+ *  $Revision: 1.24 $
  *
- *  last change: $Author: obo $ $Date: 2005-03-16 15:49:18 $
+ *  last change: $Author: kz $ $Date: 2005-03-18 16:32:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -265,7 +265,7 @@ namespace css = ::com::sun::star;
 namespace dbaccess
 {
         typedef ::cppu::WeakComponentImplHelper1<	::com::sun::star::embed::XStateChangeListener > TEmbedObjectHolder;
-        class OEmbedObjectHolder :	 public ::comphelper::OBaseMutex 
+        class OEmbedObjectHolder :	 public ::comphelper::OBaseMutex
                                     ,public TEmbedObjectHolder
         {
             Reference< XEmbeddedObject > m_xBroadCaster;
@@ -274,7 +274,7 @@ namespace dbaccess
         protected:
             virtual void SAL_CALL disposing();
         public:
-            OEmbedObjectHolder(const Reference< XEmbeddedObject >& _xBroadCaster,ODocumentDefinition* _pDefinition) 
+            OEmbedObjectHolder(const Reference< XEmbeddedObject >& _xBroadCaster,ODocumentDefinition* _pDefinition)
                 : TEmbedObjectHolder(m_aMutex)
                 ,m_xBroadCaster(_xBroadCaster)
                 ,m_pDefinition(_pDefinition)
@@ -285,7 +285,7 @@ namespace dbaccess
                     m_xBroadCaster->addStateChangeListener(this);
                 osl_decrementInterlockedCount( &m_refCount );
             }
-            
+
             virtual void SAL_CALL changingState( const ::com::sun::star::lang::EventObject& aEvent, ::sal_Int32 nOldState, ::sal_Int32 nNewState ) throw (::com::sun::star::embed::WrongStateException, ::com::sun::star::uno::RuntimeException);
             virtual void SAL_CALL stateChanged( const ::com::sun::star::lang::EventObject& aEvent, ::sal_Int32 nOldState, ::sal_Int32 nNewState ) throw (::com::sun::star::uno::RuntimeException);
             virtual void SAL_CALL disposing( const ::com::sun::star::lang::EventObject& Source ) throw (::com::sun::star::uno::RuntimeException);
@@ -421,7 +421,7 @@ namespace dbaccess
             else if ( aMediaType.equalsAscii( "application/vnd.sun.xml.math" ) )
                 sResult = ::rtl::OUString::createFromAscii( "com.sun.star.comp.Math.FormulaDocument" );
 
-            try 
+            try
             {
                 ::comphelper::disposeComponent(xPropSet);
             }
@@ -495,7 +495,7 @@ ODocumentDefinition::~ODocumentDefinition()
         acquire();
         dispose();
     }
-    
+
     if ( m_pInterceptor )
     {
         m_pInterceptor->DisconnectContentHolder();
@@ -580,7 +580,7 @@ Any SAL_CALL ODocumentDefinition::execute( const Command& aCommand, sal_Int32 Co
     ::osl::MutexGuard aGuard(m_aMutex);
     sal_Bool bOpenInDesign = aCommand.Name.equalsAscii("openDesign");
     sal_Bool bOpenForMail = aCommand.Name.equalsAscii("openForMail");
-    if ( aCommand.Name.compareToAscii( "open" ) == 0 || bOpenInDesign || bOpenForMail ) 
+    if ( aCommand.Name.compareToAscii( "open" ) == 0 || bOpenInDesign || bOpenForMail )
     {
         //////////////////////////////////////////////////////////////////
         // open command for a folder content
@@ -619,6 +619,8 @@ Any SAL_CALL ODocumentDefinition::execute( const Command& aCommand, sal_Int32 Co
             ( ( aOpenCommand.Mode == OpenMode::ALL ) ||
               ( aOpenCommand.Mode == OpenMode::FOLDERS ) ||
               ( aOpenCommand.Mode == OpenMode::DOCUMENTS ) );
+        if ( xConnection.is() )
+            m_xLastKnownConnection = xConnection;
 
         if ( bOpenFolder )
         {
@@ -666,7 +668,7 @@ Any SAL_CALL ODocumentDefinition::execute( const Command& aCommand, sal_Int32 Co
                     else
                     {
                         m_xEmbeddedObject->changeState(EmbedStates::ACTIVE);
-                    
+
                         // object is new, so we an interceptor for save
                         xModel.set(getComponent(),UNO_QUERY);
                         Reference< XFrame > xFrame;
@@ -753,7 +755,7 @@ Any SAL_CALL ODocumentDefinition::execute( const Command& aCommand, sal_Int32 Co
                                             xProp->setPropertyValue(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("RasterSubdivisionY")),makeAny(sal_Int32(5)));
                                         }
                                         catch(Exception&)
-                                        { 
+                                        {
                                         }
 
                                         // setting of the ruler changes the visual area so it should be restored
@@ -860,7 +862,7 @@ Any SAL_CALL ODocumentDefinition::execute( const Command& aCommand, sal_Int32 Co
 
         dispose();
     }
-    else 
+    else
         aRet = OContentHelper::execute(aCommand,CommandId,Environment);
     return aRet;
 }
@@ -937,10 +939,10 @@ sal_Bool ODocumentDefinition::save(sal_Bool _bApprove)
     // default handling: instantiate an interaction handler and let it handle the parameter request
     try
     {
-        
+
         {
             ::vos::OGuard aSolarGuard(Application::GetSolarMutex());
-            
+
             // the request
             Reference<XNameAccess> xName(m_xParentContainer,UNO_QUERY);
             DocumentSaveRequest aRequest;
@@ -952,15 +954,15 @@ sal_Bool ODocumentDefinition::save(sal_Bool _bApprove)
                 else
                     aRequest.Name = DBACORE_RESSTRING( RID_STR_REPORT );
                 aRequest.Name = ::dbtools::createUniqueName(xName,aRequest.Name);
-            }			
-            
+            }
+
             aRequest.Content.set(m_xParentContainer,UNO_QUERY);
             OInteractionRequest* pRequest = new OInteractionRequest(makeAny(aRequest));
             Reference< XInteractionRequest > xRequest(pRequest);
             // some knittings
             // two continuations allowed: OK and Cancel
             ODocumentSaveContinuation* pDocuSave = NULL;
-            
+
             if ( !m_pImpl->m_aProps.aTitle.getLength() )
             {
                 pDocuSave = new ODocumentSaveContinuation;
@@ -976,8 +978,8 @@ sal_Bool ODocumentDefinition::save(sal_Bool _bApprove)
             OInteraction< XInteractionDisapprove >* pDisApprove = new OInteraction< XInteractionDisapprove >;
             pRequest->addContinuation(pDisApprove);
 
-            OInteractionAbort* pAbort = new OInteractionAbort;			
-            pRequest->addContinuation(pAbort);			
+            OInteractionAbort* pAbort = new OInteractionAbort;
+            pRequest->addContinuation(pAbort);
 
             // create the handler, let it handle the request
             Reference< XInteractionHandler > xHandler(m_xORB->createInstance(SERVICE_SDB_INTERACTION_HANDLER), UNO_QUERY);
@@ -1002,7 +1004,7 @@ sal_Bool ODocumentDefinition::save(sal_Bool _bApprove)
                 }
             }
         }
-        
+
         ::osl::MutexGuard aGuard(m_aMutex);
         Reference<XEmbedPersist> xPersist(m_xEmbeddedObject,UNO_QUERY);
         if ( xPersist.is() )
@@ -1028,7 +1030,7 @@ void ODocumentDefinition::fillLoadArgs(Sequence<PropertyValue>& _rArgs,Sequence<
 
         aDocumentContext[1].Name = PROPERTY_APPLYFORMDESIGNMODE;
         aDocumentContext[1].Value <<= !_bReadOnly;
-        
+
         _rArgs.realloc(nLen+1);
         _rArgs[nLen].Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ComponentData"));
         _rArgs[nLen++].Value <<= aDocumentContext;
@@ -1047,7 +1049,7 @@ void ODocumentDefinition::fillLoadArgs(Sequence<PropertyValue>& _rArgs,Sequence<
         _rArgs[nLen].Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("DocumentTitle"));
         _rArgs[nLen++].Value <<= m_pImpl->m_aProps.aTitle;
     }
-    
+
     if ( m_pInterceptor )
     {
         m_pInterceptor->DisconnectContentHolder();
@@ -1089,7 +1091,7 @@ void ODocumentDefinition::loadEmbeddedObject(const Sequence< sal_Int8 >& _aClass
                     aClassID = lcl_GetSequenceClassID(SO3_SW_CLASSID);
                     sDocumentService = lcl_GetDocumentServiceFromMediaType(xStorage,m_pImpl->m_aProps.sPersistentName);
                 }
-                
+
                 Sequence<PropertyValue> aArgs,aEmbeddedObjectDescriptor;
                 fillLoadArgs(aArgs,aEmbeddedObjectDescriptor,_xConnection,_bReadOnly);
 
@@ -1129,7 +1131,7 @@ void ODocumentDefinition::loadEmbeddedObject(const Sequence< sal_Int8 >& _aClass
             m_pClientHelper = new OEmbeddedClientHelper(this);
         Reference<XEmbeddedClient> xClient = m_pClientHelper;
         m_xEmbeddedObject->setClientSite(xClient);
-        
+
         Sequence<PropertyValue> aArgs,aEmbeddedObjectDescriptor;
         fillLoadArgs(aArgs,aEmbeddedObjectDescriptor,_xConnection,_bReadOnly);
         Reference<XCommonEmbedPersist> xCommon(m_xEmbeddedObject,UNO_QUERY);
@@ -1193,7 +1195,7 @@ void ODocumentDefinition::generateNewImage(Any& _rImage)
     loadEmbeddedObject();
     if ( m_xEmbeddedObject.is() )
     {
-        try 
+        try
         {
             Reference<XTransferable> xTransfer(getComponent(),UNO_QUERY);
             if ( xTransfer.is() )
@@ -1222,7 +1224,7 @@ void ODocumentDefinition::fillDocumentInfo(Any& _rInfo)
     loadEmbeddedObject();
     if ( m_xEmbeddedObject.is() )
     {
-        try 
+        try
         {
             Reference<XDocumentInfoSupplier> xDocSup(getComponent(),UNO_QUERY);
             if ( xDocSup.is() )
@@ -1247,7 +1249,7 @@ Reference< ::com::sun::star::util::XCloseable> ODocumentDefinition::getComponent
             m_xEmbeddedObject->changeState( EmbedStates::RUNNING );
             nState = EmbedStates::RUNNING;
         }
-        
+
         if ( nState == EmbedStates::ACTIVE || nState == EmbedStates::RUNNING )
         {
             Reference<XComponentSupplier> xCompProv(m_xEmbeddedObject,UNO_QUERY);
@@ -1305,7 +1307,7 @@ void SAL_CALL ODocumentDefinition::rename( const ::rtl::OUString& newName ) thro
 }
 // -----------------------------------------------------------------------------
 Reference< XStorage> ODocumentDefinition::getStorage() const
-{ 
+{
     static const ::rtl::OUString s_sForms = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("forms"));
     static const ::rtl::OUString s_sReports = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("reports"));
     Reference<css::embed::XTransactionListener> xEvt(m_pImpl->m_pDataSource->m_xModel,UNO_QUERY);
@@ -1345,11 +1347,15 @@ void ODocumentDefinition::fillReportData(sal_Bool _bFill)
     if ( !m_bForm && _bFill && m_pImpl->m_aProps.bAsTemplate && !m_bOpenInDesign ) // open a report in alive mode, so we need to fill it
     {
         setModelReadOnly(sal_False);
-        Sequence<Any> aArgs(1);
+        Sequence<Any> aArgs(2);
         PropertyValue aValue;
         aValue.Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("TextDocument"));
         aValue.Value <<= getComponent();
         aArgs[0] <<= aValue;
+           aValue.Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ActiveConnection"));
+           aValue.Value <<= m_xLastKnownConnection;
+           aArgs[1] <<= aValue;
+
         Reference< XJobExecutor > xExecuteable(m_xORB->createInstanceWithArguments(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.wizards.report.CallReportWizard")),aArgs),UNO_QUERY);
         if ( xExecuteable.is() )
             xExecuteable->trigger(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("fill")));
