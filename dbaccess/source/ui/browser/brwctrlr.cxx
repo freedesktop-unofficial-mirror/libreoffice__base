@@ -2,9 +2,9 @@
  *
  *	$RCSfile: brwctrlr.cxx,v $
  *
- *  $Revision: 1.65 $
+ *  $Revision: 1.66 $
  *
- *	last change: $Author: fs $ $Date: 2002-05-23 12:25:52 $
+ *	last change: $Author: as $ $Date: 2002-06-24 10:29:26 $
  *
  *	The Contents of this file are made available subject to the terms of
  *	either of the following licenses
@@ -78,7 +78,7 @@
 #ifndef _DBAUI_SQLMESSAGE_HXX_
 #include "sqlmessage.hxx"
 #endif
-#ifndef _COM_SUN_STAR_FORM_XFORMCONTROLLER_HPP_ 
+#ifndef _COM_SUN_STAR_FORM_XFORMCONTROLLER_HPP_
 #include <com/sun/star/form/XFormController.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDB_COMMANDTYPE_HPP_
@@ -177,7 +177,7 @@
 #ifndef _TOOLS_COLOR_HXX
 #include <tools/color.hxx>
 #endif
-#ifndef _COMPHELPER_SEQUENCE_HXX_ 
+#ifndef _COMPHELPER_SEQUENCE_HXX_
 #include <comphelper/sequence.hxx>
 #endif
 #ifndef _CONNECTIVITY_DBTOOLS_HXX_
@@ -221,9 +221,6 @@
 #endif
 #ifndef DBAUI_QUERYORDER_HXX
 #include "queryorder.hxx"
-#endif
-#ifndef _COM_SUN_STAR_FRAME_XTASK_HPP_ 
-#include <com/sun/star/frame/XTask.hpp>
 #endif
 
 using namespace ::com::sun::star::uno;
@@ -592,8 +589,7 @@ void SAL_CALL SbaXDataBrowserController::attachFrame(const Reference< ::com::sun
     // 22.05.2002 - 99030 - fs@openoffice.org
     if ( m_xCurrentFrame.is() && getView() && getView()->getToolBox() )
     {
-        Reference< XTask > xTask( m_xCurrentFrame, UNO_QUERY );
-        sal_Bool bToplevelFrame = xTask.is();
+        sal_Bool bToplevelFrame = m_xCurrentFrame.isTop();
 
         getView()->getToolBox()->ShowItem( SID_CUT, bToplevelFrame );
         getView()->getToolBox()->ShowItem( SID_COPY, bToplevelFrame );
@@ -678,7 +674,7 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
         xNameCont->insertByName(::rtl::OUString(sText), makeAny(m_xGridModel));
     }
 
-    
+
 
     // ---------------
     // create the view
@@ -700,14 +696,14 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
     {
         DBG_ERROR("SbaXDataBrowserController::Construct : the construction of UnoDataBrowserView failed !");
     }
-    
+
     if (!bSuccess)
     {
         delete m_pView;
         m_pView = NULL;
         return sal_False;
     }
-    
+
     // now that we have a view we can create the clipboard listener
     m_aSystemClipboard = TransferableDataHelper::CreateFromSystemClipboard( getView() );
     m_aSystemClipboard.StartClipboardListening( );
@@ -1463,7 +1459,7 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
                     {
                         case ID_BROWSER_CUT:	aReturn.bEnabled = m_bFrameUiActive && bHasLen && !bIsReadOnly; break;
                         case SID_COPY	:		aReturn.bEnabled = m_bFrameUiActive && bHasLen; break;
-                        case ID_BROWSER_PASTE:	
+                        case ID_BROWSER_PASTE:
                             aReturn.bEnabled = m_bFrameUiActive && !bIsReadOnly;
                             if(aReturn.bEnabled)
                             {
@@ -1507,8 +1503,8 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
                 {
                     Reference< XPropertySet >  xCurrentField = getBoundField();
                     // we are not in the handle column
-                    aReturn.bEnabled = getBrowserView()->getVclControl()->GetCurColumnId() != 0 && 
-                                        xCurrentField.is() && 
+                    aReturn.bEnabled = getBrowserView()->getVclControl()->GetCurColumnId() != 0 &&
+                                        xCurrentField.is() &&
                                        ::comphelper::getBOOL(xCurrentField->getPropertyValue(PROPERTY_ISSEARCHABLE));
 
                     Reference< XRowSet > xRow = getRowSet();
@@ -2065,7 +2061,7 @@ sal_Bool SbaXDataBrowserController::SaveModified(sal_Bool bCommit)
         DBG_ERROR("SbaXDataBrowserController::SaveModified : could not save the current record !");
         bResult = sal_False;
     }
-    
+
     InvalidateFeature(ID_BROWSER_SAVEDOC);
     InvalidateFeature(ID_BROWSER_UNDO);
     return bResult;

@@ -2,9 +2,9 @@
  *
  *	$RCSfile: genericcontroller.cxx,v $
  *
- *	$Revision: 1.39 $
+ *	$Revision: 1.40 $
  *
- *	last change: $Author: fs $ $Date: 2002-06-05 08:15:05 $
+ *	last change: $Author: as $ $Date: 2002-06-24 10:29:26 $
  *
  *	The Contents of this file are made available subject to the terms of
  *	either of the following licenses
@@ -70,7 +70,7 @@
 #ifndef DBACCESS_UI_BROWSER_ID_HXX
 #include "browserids.hxx"
 #endif
-#ifndef _SV_TOOLBOX_HXX 
+#ifndef _SV_TOOLBOX_HXX
 #include <vcl/toolbox.hxx>
 #endif
 #ifndef _TOOLKIT_HELPER_VCLUNOHELPER_HXX_
@@ -91,7 +91,7 @@
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _COMPHELPER_SEQUENCE_HXX_ 
+#ifndef _COMPHELPER_SEQUENCE_HXX_
 #include <comphelper/sequence.hxx>
 #endif
 #ifndef _COMPHELPER_EXTRACT_HXX_
@@ -112,16 +112,13 @@
 #ifndef _COM_SUN_STAR_TASK_XINTERACTIONHANDLER_HPP_
 #include <com/sun/star/task/XInteractionHandler.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FRAME_XTASK_HPP_
-#include <com/sun/star/frame/XTask.hpp>
-#endif
 #ifndef DBAUI_TOOLS_HXX
 #include "UITools.hxx"
 #endif
-#ifndef _SV_WAITOBJ_HXX 
+#ifndef _SV_WAITOBJ_HXX
 #include <vcl/waitobj.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
 #ifndef SVTOOLS_URIHELPER_HXX
@@ -194,7 +191,7 @@ sal_Bool OGenericUnoController::Construct(Window* pParent)
         pTB->SetSelectHdl( LINK( this, OGenericUnoController, OnToolBoxSelected ) );
         pTB->SetClickHdl( LINK( this, OGenericUnoController, OnToolBoxClicked ) );
     }
-    
+
     AddSupportedFeatures();
 
     // create the database context
@@ -250,7 +247,7 @@ void SAL_CALL OGenericUnoController::initialize( const Sequence< Any >& aArgumen
                 {
                     throw Exception(::rtl::OUString::createFromAscii("Parent window is null"),*this);
                 }
-                
+
                 if(xFrame.is() && Construct(pParentWin))
                 {
                     xFrame->setComponent(getComponentWindow(), this);
@@ -938,7 +935,7 @@ void OGenericUnoController::loadMenu(const Reference< XFrame >& _xFrame)
     if(sMenuName.Len())
     {
         INetURLObject aEntry( URIHelper::SmartRelToAbs(OModule::getResManager()->GetFileName()) );
-        String aMenuRes( RTL_CONSTASCII_USTRINGPARAM( "private:resource/" ));		
+        String aMenuRes( RTL_CONSTASCII_USTRINGPARAM( "private:resource/" ));
         aMenuRes += ( aEntry.GetName() += '/' );
         aMenuRes += sMenuName;
 
@@ -975,16 +972,19 @@ IMPL_LINK(OGenericUnoController, OnAsyncCloseTask, void*, EMPTYARG)
 {
     if(!OGenericUnoController_COMPBASE::rBHelper.bInDispose)
     {
-        Reference<XTask> xTask(m_xCurrentFrame,UNO_QUERY);
-        if(xTask.is())
-            xTask->close();
+        try
+        {
+            Reference< ::com::sun::star::util::XCloseable > xCloseable(m_xCurrentFrame,UNO_QUERY);
+            if(xCloseable.is())
+                xCloseable->close(sal_False); // false - holds the owner ship for this frame inside this object!
+        } catch(CloseVetoException&) {}
     }
     return 0L;
 }
 // -----------------------------------------------------------------------------
 Any SAL_CALL OGenericUnoController::getViewData(void) throw( RuntimeException )
-{ 
-    return Any(); 
+{
+    return Any();
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OGenericUnoController::restoreViewData(const Any& Data) throw( RuntimeException )
@@ -992,8 +992,8 @@ void SAL_CALL OGenericUnoController::restoreViewData(const Any& Data) throw( Run
 }
 // -----------------------------------------------------------------------------
 sal_Bool SAL_CALL OGenericUnoController::attachModel(const Reference< XModel > & xModel) throw( RuntimeException )
-{ 
-    return sal_False; 
+{
+    return sal_False;
 }
 // -----------------------------------------------------------------------------
 void OGenericUnoController::executeUnChecked(const ::com::sun::star::util::URL& _rCommand)

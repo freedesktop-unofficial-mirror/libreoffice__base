@@ -2,9 +2,9 @@
  *
  *  $RCSfile: querycontroller.cxx,v $
  *
- *  $Revision: 1.77 $
+ *  $Revision: 1.78 $
  *
- *  last change: $Author: hr $ $Date: 2002-05-15 10:15:12 $
+ *  last change: $Author: as $ $Date: 2002-06-24 10:28:54 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,11 +73,11 @@
 #ifndef _DBU_RESOURCE_HRC_
 #include "dbu_resource.hrc"
 #endif
-#ifndef _SV_TOOLBOX_HXX 
+#ifndef _SV_TOOLBOX_HXX
 #include <vcl/toolbox.hxx>
 #endif
 #ifndef DBACCESS_UI_BROWSER_ID_HXX
-#include "browserids.hxx"		   
+#include "browserids.hxx"
 #endif
 #ifndef DBAUI_QUERYCONTAINERWINDOW_HXX
 #include "querycontainerwindow.hxx"
@@ -88,10 +88,10 @@
 #ifndef DBAUI_QUERYDESIGNVIEW_HXX
 #include "QueryDesignView.hxx"
 #endif
-#ifndef _COMPHELPER_TYPES_HXX_ 
+#ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
@@ -100,7 +100,7 @@
 #ifndef _CONNECTIVITY_DBTOOLS_HXX_
 #include <connectivity/dbtools.hxx>
 #endif
-#ifndef _COM_SUN_STAR_SDB_XSQLQUERYCOMPOSERFACTORY_HPP_ 
+#ifndef _COM_SUN_STAR_SDB_XSQLQUERYCOMPOSERFACTORY_HPP_
 #include <com/sun/star/sdb/XSQLQueryComposerFactory.hpp>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_XLOADEVENTLISTENER_HPP_
@@ -118,13 +118,10 @@
 #ifndef _COM_SUN_STAR_SDB_COMMANDTYPE_HPP_
 #include <com/sun/star/sdb/CommandType.hpp>
 #endif
-#ifndef _COM_SUN_STAR_FRAME_XTASK_HPP_
-#include <com/sun/star/frame/XTask.hpp>
-#endif
 #ifndef DBAUI_DLGSAVE_HXX
 #include "dlgsave.hxx"
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCHILD_HPP_
 #include <com/sun/star/container/XChild.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDB_XQUERIESSUPPLIER_HPP_
@@ -133,13 +130,13 @@
 #ifndef _COM_SUN_STAR_SDB_XQUERYDEFINITIONSSUPPLIER_HPP_
 #include <com/sun/star/sdb/XQueryDefinitionsSupplier.hpp>
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XNAMECONTAINER_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XNAMECONTAINER_HPP_
 #include <com/sun/star/container/XNameContainer.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBCX_XDATADESCRIPTORFACTORY_HPP_ 
+#ifndef _COM_SUN_STAR_SDBCX_XDATADESCRIPTORFACTORY_HPP_
 #include <com/sun/star/sdbcx/XDataDescriptorFactory.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBCX_XDROP_HPP_ 
+#ifndef _COM_SUN_STAR_SDBCX_XDROP_HPP_
 #include <com/sun/star/sdbcx/XDrop.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBCX_XAPPEND_HPP_
@@ -157,7 +154,7 @@
 #ifndef _DBHELPER_DBEXCEPTION_HXX_
 #include <connectivity/dbexception.hxx>
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XEXECUTABLEDIALOG_HPP_
 #include <com/sun/star/ui/dialogs/XExecutableDialog.hpp>
 #endif
 #ifndef DBAUI_TABLECONNECTIONDATA_HXX
@@ -276,7 +273,7 @@ Reference< XInterface > SAL_CALL OQueryController::Create(const Reference<XMulti
 }
 DBG_NAME(OQueryController);
 // -----------------------------------------------------------------------------
-OQueryController::OQueryController(const Reference< XMultiServiceFactory >& _rM) 
+OQueryController::OQueryController(const Reference< XMultiServiceFactory >& _rM)
         : OJoinController(_rM)
     ,m_bDesign(sal_False)
     ,m_bDistinct(sal_False)
@@ -289,7 +286,7 @@ OQueryController::OQueryController(const Reference< XMultiServiceFactory >& _rM)
     ,m_nVisibleRows(0x400)
     ,m_bCreateView(sal_False)
 {
-    DBG_CTOR(OQueryController,NULL); 
+    DBG_CTOR(OQueryController,NULL);
     m_pParseContext = new OSystemParseContext();
     m_pSqlParser	= new OSQLParser(_rM,m_pParseContext);
     InvalidateAll();
@@ -297,7 +294,7 @@ OQueryController::OQueryController(const Reference< XMultiServiceFactory >& _rM)
 // -----------------------------------------------------------------------------
 OQueryController::~OQueryController()
 {
-    DBG_DTOR(OQueryController,NULL); 
+    DBG_DTOR(OQueryController,NULL);
 }
 // -----------------------------------------------------------------------------
 void OQueryController::deleteIterator()
@@ -313,7 +310,7 @@ void OQueryController::deleteIterator()
 // -----------------------------------------------------------------------------
 void OQueryController::disposing()
 {
-    deleteIterator();	
+    deleteIterator();
 
     delete m_pSqlParser;
     delete m_pParseContext;
@@ -322,7 +319,7 @@ void OQueryController::disposing()
     OTableFields().swap(m_vUnUsedFieldsDesc);
 
     m_pView		= NULL;
-    
+
     ::comphelper::disposeComponent(m_xComposer);
     OJoinController::disposing();
 }
@@ -482,7 +479,7 @@ void OQueryController::Execute(sal_uInt16 _nId)
                             }
                         }
                         else
-                        {   
+                        {
                             ModuleRes aModuleRes(STR_QRY_SYNTAX);
                             String sTmpStr(aModuleRes);
                             ::rtl::OUString sError(sTmpStr);
@@ -510,7 +507,7 @@ void OQueryController::Execute(sal_uInt16 _nId)
                 m_aUndoManager.EnterListAction( String( ModuleRes(STR_QUERY_UNDO_TABWINDELETE) ), String() );
                 getContainer()->clear();
                 m_aUndoManager.LeaveListAction();
-    
+
                 m_sStatement = ::rtl::OUString();
                 if(m_bDesign)
                     InvalidateFeature(ID_BROWSER_ADDTABLE);
@@ -530,7 +527,7 @@ void OQueryController::Execute(sal_uInt16 _nId)
         case ID_BROWSER_QUERY_EXECUTE:
             if ( getContainer()->checkStatement() )
                 executeQuery();
-            break;		
+            break;
         case ID_QUERY_ZOOM_IN:
             {
 //				m_aZoom *= Fraction(1,10);
@@ -650,7 +647,7 @@ void SAL_CALL OQueryController::initialize( const Sequence< Any >& aArguments ) 
         resetImpl();
         switchDesignModeImpl(getContainer(),m_bDesign);
         getUndoMgr()->Clear();
-        
+
         if(m_bDesign && !m_sName.getLength())
             Execute(ID_BROWSER_ADDTABLE);
         setModified(sal_False);
@@ -806,7 +803,7 @@ void OQueryController::Save(const Reference< XObjectOutputStream>& _rxOut)
     OJoinController::Save(_rxOut);
     OStreamSection aSection(_rxOut.get());
 
-    // some data 
+    // some data
     _rxOut->writeLong(m_nSplitPos);
     _rxOut->writeLong(m_nVisibleRows);
 
@@ -922,13 +919,13 @@ void OQueryController::executeQuery()
     // we don't need to check the connection here because we already check the composer
     // which can't live without his connection
     ::rtl::OUString sTranslatedStmt = translateStatement();
-    
+
     if ( getDataSourceName().getLength() && sTranslatedStmt.getLength() )
     {
         try
         {
             getContainer()->showPreview(m_xCurrentFrame);
-                        
+
 //			Reference< XFrame > xBeamer = getContainer()->getPreviewFrame();
 //			Reference< XLoadEventListener> xLoadEvtL = new OQueryControllerLoadListener(this);
 //			xBeamer->addFrameActionListener( xLoadEvtL );
@@ -957,10 +954,10 @@ void OQueryController::executeQuery()
                 Sequence< PropertyValue> aProps(10);
                 aProps[0].Name = PROPERTY_DATASOURCENAME;
                 aProps[0].Value <<= getDataSourceName();
-                
+
                 aProps[1].Name = PROPERTY_COMMANDTYPE;
                 aProps[1].Value <<= CommandType::COMMAND;
-                
+
                 aProps[2].Name = PROPERTY_COMMAND;
                 aProps[2].Value <<= sTranslatedStmt;
 
@@ -1037,7 +1034,7 @@ sal_Bool OQueryController::askForNewName(const Reference<XNameAccess>& _xElement
                 aDefaultName = String(::dbtools::createUniqueName(_xElements,aName));
         }
 
-        
+
         OSaveAsDlg aDlg(
             getView(), m_bCreateView ? CommandType::TABLE : CommandType::QUERY, _xElements,
                 xMetaData, aDefaultName,
@@ -1094,7 +1091,7 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
                         {
                             if(xElements->hasByName(m_sName))
                             {
-                                Reference<XDrop> xNameCont(xElements,UNO_QUERY);	    
+                                Reference<XDrop> xNameCont(xElements,UNO_QUERY);
                                 if(xNameCont.is())
                                     xNameCont->dropByName(m_sName);
                                 else
@@ -1119,17 +1116,17 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
                                 xProp = Reference<XPropertySet>(xSingleFac->createInstance(),UNO_QUERY);
                             }
                             OSL_ENSURE(xProp.is(),"OQueryController::Execute ID_BROWSER_SAVEDOC: Create query failed!");
-                            
+
                         }
                         else
                         {
                             xElements->getByName(m_sName) >>= xProp;
                         }
 
-                        
+
 
                         xProp->setPropertyValue(PROPERTY_COMMAND,makeAny(sTranslatedStmt));
-                        
+
                         // some properties are only valid for a query object
                         if(m_bCreateView)
                         {
@@ -1144,11 +1141,11 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
                             xProp->setPropertyValue(PROPERTY_USE_ESCAPE_PROCESSING,::cppu::bool2any(m_bEsacpeProcessing));
 
                             // now we save the layout information
-                            //  create the output stream 
+                            //  create the output stream
                             getContainer()->SaveUIConfig();
                             Sequence< sal_Int8 > aOutputSeq;
                             {
-                                Reference< XOutputStream>		xOutStreamHelper = new OSequenceOutputStream(aOutputSeq); 	
+                                Reference< XOutputStream>		xOutStreamHelper = new OSequenceOutputStream(aOutputSeq);
                                 Reference< XObjectOutputStream>	xOutStream(getORB()->createInstance(::rtl::OUString::createFromAscii("com.sun.star.io.ObjectOutputStream")),UNO_QUERY);
                                 Reference< XOutputStream>	xMarkOutStream(getORB()->createInstance(::rtl::OUString::createFromAscii("com.sun.star.io.MarkableOutputStream")),UNO_QUERY);
                                 Reference< XActiveDataSource >(xMarkOutStream,UNO_QUERY)->setOutputStream(xOutStreamHelper);
@@ -1188,7 +1185,7 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
                                 if(xElements->hasByName(m_sName))
                                     xElements->getByName(m_sName) >>= xProp2;
                                 if(!xProp2.is()) // correct name and try again
-                                {	
+                                {
                                     // it can be that someone inserted new data for us
                                     ::rtl::OUString sCatalog,sSchema,sTable,sComposedName;
                                     xProp->getPropertyValue(PROPERTY_CATALOGNAME)	>>= sCatalog;
@@ -1210,20 +1207,20 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
                         }
                         setModified(sal_False);
                     }
-                    catch(SQLContext& e) 
-                    { 
+                    catch(SQLContext& e)
+                    {
                         m_sName = ::rtl::OUString();
-                        aInfo = SQLExceptionInfo(e); 
+                        aInfo = SQLExceptionInfo(e);
                     }
-                    catch(SQLWarning& e) 
-                    { 
+                    catch(SQLWarning& e)
+                    {
                         m_sName = ::rtl::OUString();
-                        aInfo = SQLExceptionInfo(e); 
+                        aInfo = SQLExceptionInfo(e);
                     }
-                    catch(SQLException& e) 
-                    { 
+                    catch(SQLException& e)
+                    {
                         m_sName = ::rtl::OUString();
-                        aInfo = SQLExceptionInfo(e); 
+                        aInfo = SQLExceptionInfo(e);
                     }
                     catch(Exception&)
                     {
@@ -1263,7 +1260,7 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
             ::dbtools::SQLExceptionInfo aInfo(e);
             showError(aInfo);
             // an error occured so we clear the statement
-            sTranslatedStmt = ::rtl::OUString(); 
+            sTranslatedStmt = ::rtl::OUString();
         }
     }
     else if(!m_sStatement.getLength())
@@ -1273,7 +1270,7 @@ void OQueryController::doSaveAsDoc(sal_Bool _bSaveAs)
         ::rtl::OUString sError(sTmpStr);
         showError(SQLException(sError,NULL,::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("S1000") ),1000,Any()));
     }
-    else 
+    else
         sTranslatedStmt = m_sStatement;
 
     return sTranslatedStmt;
@@ -1305,7 +1302,7 @@ void OQueryController::resetImpl()
         if(xQueries.is())
         {
             Reference<XPropertySet> xProp;
-            if(xQueries->hasByName(m_sName) && ::cppu::extractInterface(xProp,xQueries->getByName(m_sName)) && xProp.is()) 
+            if(xQueries->hasByName(m_sName) && ::cppu::extractInterface(xProp,xQueries->getByName(m_sName)) && xProp.is())
             {
                 xProp->getPropertyValue(PROPERTY_COMMAND) >>= m_sStatement;
                 m_bDesign = m_bDesign && (m_bEsacpeProcessing = ::cppu::any2bool(xProp->getPropertyValue(PROPERTY_USE_ESCAPE_PROCESSING)));
@@ -1364,7 +1361,7 @@ void OQueryController::resetImpl()
                 }
             }
         }
-        
+
     }
     if(!m_pSqlIterator)
         setQueryComposer();
