@@ -4,9 +4,9 @@
  *
  *  $RCSfile: datasource.cxx,v $
  *
- *  $Revision: 1.62 $
+ *  $Revision: 1.63 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 13:28:51 $
+ *  last change: $Author: hr $ $Date: 2005-09-23 12:05:24 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -48,7 +48,7 @@
 #ifndef _CPPUHELPER_TYPEPROVIDER_HXX_
 #include <cppuhelper/typeprovider.hxx>
 #endif
-#ifndef _COMPHELPER_SEQSTREAM_HXX 
+#ifndef _COMPHELPER_SEQSTREAM_HXX
 #include <comphelper/seqstream.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBASTRINGS_HRC
@@ -69,7 +69,7 @@
 #ifndef _COMPHELPER_EXTRACT_HXX_
 #include <comphelper/extract.hxx>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_
 #include <com/sun/star/sdbc/XDriverAccess.hpp>
 #endif
 #ifndef _COM_SUN_STAR_LANG_DISPOSEDEXCEPTION_HPP_
@@ -102,13 +102,13 @@
 #ifndef _DBA_CORE_CONNECTION_HXX_
 #include "connection.hxx"
 #endif
-#ifndef _COMPHELPER_GUARDING_HXX_ 
+#ifndef _COMPHELPER_GUARDING_HXX_
 #include <comphelper/guarding.hxx>
 #endif
 #ifndef DBA_CORE_SHARED_CONNECTION_HXX
 #include "SharedConnection.hxx"
 #endif
-#ifndef _RTL_DIGEST_H_ 
+#ifndef _RTL_DIGEST_H_
 #include <rtl/digest.h>
 #endif
 #ifndef _COM_SUN_STAR_EMBED_XTRANSACTEDOBJECT_HPP_
@@ -156,7 +156,7 @@ namespace dbaccess
     class OAuthenticationContinuation : public OInteraction< XInteractionSupplyAuthentication >
     {
         sal_Bool	m_bDatasourceReadonly : 1;	// if sal_True, the data source using this continuation
-                                                // is readonly, which means that no user can be set and 
+                                                // is readonly, which means that no user can be set and
                                                 // the password can't be remembered
         sal_Bool	m_bRemberPassword : 1;		// remember the password for this session ?
 
@@ -280,29 +280,29 @@ namespace dbaccess
         {
             m_pBuffer[0] = 0;
         }
-        
+
     };
 
     class OSharedConnectionManager : public OConnectionHelper_BASE
     {
 
          // contains the currently used master connections
-        typedef struct 
+        typedef struct
         {
             Reference< XConnection >	xMasterConnection;
-            oslInterlockedCount			nALiveCount; 
+            oslInterlockedCount			nALiveCount;
         } TConnectionHolder;
 
         // the less-compare functor, used for the stl::map
         struct TDigestLess : public ::std::binary_function< TDigestHolder, TDigestHolder, bool>
         {
-            bool operator() (const TDigestHolder& x, const TDigestHolder& y) const 
-            { 
+            bool operator() (const TDigestHolder& x, const TDigestHolder& y) const
+            {
                 sal_uInt32 i;
                 for(i=0;i < RTL_DIGEST_LENGTH_SHA1 && (x.m_pBuffer[i] >= y.m_pBuffer[i]); ++i)
                     ;
                 return i < RTL_DIGEST_LENGTH_SHA1;
-            }      
+            }
         };
 
         typedef ::std::map< TDigestHolder,TConnectionHolder,TDigestLess>		TConnectionMap;		 // holds the master connections
@@ -312,7 +312,7 @@ namespace dbaccess
         TConnectionMap				m_aConnections;			// remeber the master connection in conjunction with the digest
         TSharedConnectionMap		m_aSharedConnection;	// the shared connections with conjunction with an iterator into the connections map
         Reference< XProxyFactory >	m_xProxyFactory;
-        
+
     protected:
         ~OSharedConnectionManager();
 
@@ -321,23 +321,23 @@ namespace dbaccess
 
         void SAL_CALL disposing( const ::com::sun::star::lang::EventObject& Source ) throw(RuntimeException);
         Reference<XConnection> getConnection(	const rtl::OUString& url,
-                                                const rtl::OUString& user, 
+                                                const rtl::OUString& user,
                                                 const rtl::OUString& password,
                                                 Sequence< PropertyValue >& _aInfo,
                                                 ODatabaseSource* _pDataSource);
         void addEventListener(const Reference<XConnection>& _rxConnection,TConnectionMap::iterator& _rIter);
     };
 
-    DBG_NAME(OSharedConnectionManager)	
+    DBG_NAME(OSharedConnectionManager)
     OSharedConnectionManager::OSharedConnectionManager(const Reference< XMultiServiceFactory >& _rxServiceFactory)
     {
-        DBG_CTOR(OSharedConnectionManager,NULL);		
+        DBG_CTOR(OSharedConnectionManager,NULL);
         m_xProxyFactory.set(_rxServiceFactory->createInstance(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.reflection.ProxyFactory"))),UNO_QUERY);
     }
 
     OSharedConnectionManager::~OSharedConnectionManager()
     {
-        DBG_DTOR(OSharedConnectionManager,NULL);		
+        DBG_DTOR(OSharedConnectionManager,NULL);
     }
 
     void SAL_CALL OSharedConnectionManager::disposing( const ::com::sun::star::lang::EventObject& Source ) throw(RuntimeException)
@@ -358,7 +358,7 @@ namespace dbaccess
     }
 
     Reference<XConnection> OSharedConnectionManager::getConnection(	const rtl::OUString& url,
-                                            const rtl::OUString& user, 
+                                            const rtl::OUString& user,
                                             const rtl::OUString& password,
                                             Sequence< PropertyValue >& _aInfo,
                                             ODatabaseSource* _pDataSource)
@@ -403,7 +403,7 @@ namespace dbaccess
             m_aSharedConnection.insert(TSharedConnectionMap::value_type(xRet,aIter));
             addEventListener(xRet,aIter);
         }
-        
+
         return xRet;
     }
     void OSharedConnectionManager::addEventListener(const Reference<XConnection>& _rxConnection,TConnectionMap::iterator& _rIter)
@@ -414,7 +414,7 @@ namespace dbaccess
         osl_incrementInterlockedCount(&_rIter->second.nALiveCount);
     }
 
-    namespace 
+    namespace
     {
         Sequence< PropertyValue > lcl_filterDriverProperties(const Reference< XDriver >& _xDriver,const ::rtl::OUString& _sUrl,const Sequence< PropertyValue >& _rDataSourceSettings)
         {
@@ -461,7 +461,7 @@ namespace dbaccess
                         {   // the particular setting is known
 
                             const DriverPropertyInfo* pAllowedDriverSetting = aDriverInfo.getConstArray();
-                            const DriverPropertyInfo* pDriverSettingsEnd = pAllowedDriverSetting + aDriverInfo.getLength();						
+                            const DriverPropertyInfo* pDriverSettingsEnd = pAllowedDriverSetting + aDriverInfo.getLength();
                             for ( ; pAllowedDriverSetting != pDriverSettingsEnd; ++pAllowedDriverSetting )
                             {
                                 if ( !pAllowedDriverSetting->Name.compareToAscii( pKnownSettings[i] ) )
@@ -595,7 +595,7 @@ void ODatabaseSource::release() throw ()
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL ODatabaseSource::disposing( const ::com::sun::star::lang::EventObject& Source ) throw(RuntimeException)
-{    
+{
     if ( m_pImpl.is() )
         m_pImpl->disposing(Source);
 }
@@ -644,7 +644,7 @@ void ODatabaseSource::disposing()
 {
     OSubComponent::disposing();
     OPropertySetHelper::disposing();
-    
+
     EventObject aDisposeEvent(static_cast<XWeak*>(this));
     m_aFlushListeners.disposeAndClear( aDisposeEvent );
     m_pImpl.clear();
@@ -820,7 +820,7 @@ sal_Bool ODatabaseSource::convertFastPropertyValue(Any & rConvertedValue, Any & 
                         throw IllegalArgumentException();
                 }
 
-                            
+
                 bModified = m_pImpl->m_aInfo.getLength() != aValues.getLength();
                 if ( !bModified )
                 {
@@ -1089,7 +1089,7 @@ Reference< XConnection > ODatabaseSource::getConnection(const rtl::OUString& use
         }
         xConn = m_pImpl->m_pSharedConnectionManager->getConnection(m_pImpl->m_sConnectURL,user,password,m_pImpl->m_aInfo,this);
     }
-    
+
     if ( xConn.is() )
     {
         Reference< XComponent> xComp(xConn,UNO_QUERY);
@@ -1169,10 +1169,12 @@ void SAL_CALL ODatabaseSource::flush(  ) throw (RuntimeException)
     {
         ResettableMutexGuard _rGuard(m_aMutex);
         ::connectivity::checkDisposed(OComponentHelper::rBHelper.bDisposed);
-        Reference< css::frame::XStorable> xStorable(getModelWithPossibleLeak(),UNO_QUERY);
+
+        SharedModel xModel( impl_getModel( true ) );
+        Reference< css::frame::XStorable> xStorable( xModel, UNO_QUERY );
         if ( xStorable.is() )
             xStorable->store();
-        
+
         css::lang::EventObject aEvt(*this);
         NOTIFY_LISTERNERS(m_aFlushListeners,XFlushListener,flushed)
     }
@@ -1209,28 +1211,14 @@ void SAL_CALL ODatabaseSource::elementReplaced( const ContainerEvent& Event ) th
         m_pImpl->setModified(sal_True);
 }
 // -----------------------------------------------------------------------------
-Reference< XModel > ODatabaseSource::getModelWithPossibleLeak()
+ODatabaseSource::SharedModel ODatabaseSource::impl_getModel( bool _bTakeOwnershipIfNewlyCreated )
 {
-    Reference< XModel > xModel;
+    SharedModel xModel;
     if ( m_pImpl.is() )
     {
-        xModel = m_pImpl->getModel_noCreate();
+        xModel.reset( m_pImpl->getModel_noCreate(), SharedModel::NoTakeOwnership );
         if ( !xModel.is() )
-        {
-            // In the course of #i50905#, the ownership of a XModel instance was more clearly
-            // defined and respected throughout all involved implementations. This place
-            // here is the last one where a fix wasn't easily possible within the restrictions
-            // which applied to the fix (time frame, risk)
-            //
-            // There's a pretty large comment in ODatabaseDocument::disconnectController
-            // explaining how this dilemma could be solved (which in fact suggests to
-            // get completely rid of the "sole ownership" concept, and replace it with
-            // shared ownership, and vetoable closing).
-            //
-            // #i50905# / 2005-06-20 / frank.schoenheit@sun.com
-            DBG_ERROR( "ODatabaseSource::getModelWithPossibleLeak: creating a model instance with undefined ownership! Probably a resource leak!" );
-            xModel = m_pImpl->createNewModel_deliverOwnership();
-        }
+            xModel.reset( m_pImpl->createNewModel_deliverOwnership(), _bTakeOwnershipIfNewlyCreated ? SharedModel::TakeOwnership : SharedModel::NoTakeOwnership );
     }
     return xModel;
 }
@@ -1238,7 +1226,11 @@ Reference< XModel > ODatabaseSource::getModelWithPossibleLeak()
 // XDocumentDataSource
 Reference< XOfficeDatabaseDocument > SAL_CALL ODatabaseSource::getDatabaseDocument() throw (RuntimeException)
 {
-    return Reference< XOfficeDatabaseDocument >( getModelWithPossibleLeak(), UNO_QUERY );
+    return Reference< XOfficeDatabaseDocument >( impl_getModel( false ), UNO_QUERY );
+    // by definition, clients of getDatabaseDocument are responsible for the model they obtain,
+    // including responsibility for (attempting to) close the model when they don't need it anymore.
+    // Thus the "false" parameter in the call to impl_getModel: We don't take the ownership
+    // of the model, even if it had to be newly created during this call.
 }
 // -----------------------------------------------------------------------------
 //........................................................................
