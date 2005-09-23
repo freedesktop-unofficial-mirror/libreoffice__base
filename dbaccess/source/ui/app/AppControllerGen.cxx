@@ -4,9 +4,9 @@
  *
  *  $RCSfile: AppControllerGen.cxx,v $
  *
- *  $Revision: 1.13 $
+ *  $Revision: 1.14 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 14:19:40 $
+ *  last change: $Author: hr $ $Date: 2005-09-23 12:15:14 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -216,7 +216,11 @@ void OApplicationController::pasteFormat(sal_uInt32 _nFormatId)
             {
                 Reference<XConnection> xDestConnection;
                 ensureConnection(xDestConnection);
-                m_aTableCopyHelper.pasteTable(_nFormatId, rClipboard,getDatabaseName() , xDestConnection);
+
+                SharedConnection xConnection( xDestConnection, SharedConnection::NoTakeOwnership );
+                // TODO: migrate ensureConnection to the SharedConnection-API
+
+                m_aTableCopyHelper.pasteTable( _nFormatId, rClipboard, getDatabaseName(), xConnection);
             }
             else
                 paste( eType,ODataAccessObjectTransferable::extractObjectDescriptor(rClipboard) );
@@ -429,6 +433,7 @@ void OApplicationController::askToReconnect()
         {
             ElementType eType = getContainer()->getElementType();
             clearConnections();
+            getContainer()->getDetailView()->clearPages(sal_False);
             getContainer()->changeContainer(E_NONE); // invalidate the old selection
             getContainer()->changeContainer(eType); // reselect the current one again
         }
@@ -653,11 +658,11 @@ void OApplicationController::doAction(sal_uInt16 _nId ,OLinkedDocumentsAccess::E
         for (; aIter != aEnd && SfxMailModel::SEND_MAIL_OK == eResult; ++aIter)
         {
             Reference< XModel > xModel(aIter->second,UNO_QUERY);
-        
-            eResult = aSendMail.AttachDocument(SfxMailModel::TYPE_SELF,xModel,aIter->first);			
+
+            eResult = aSendMail.AttachDocument(SfxMailModel::TYPE_SELF,xModel,aIter->first);
         }
         if ( !aSendMail.IsEmpty() )
-            aSendMail.Send();		
+            aSendMail.Send();
     }
 }
 // -----------------------------------------------------------------------------
@@ -673,7 +678,7 @@ ElementType OApplicationController::getElementType(const Reference< XContainer >
             eRet = E_FORM;
         else if ( xServiceInfo->supportsService(SERVICE_NAME_REPORT_COLLECTION) )
             eRet = E_REPORT;
-        else 
+        else
             eRet = E_QUERY;
     }
     return eRet;
