@@ -4,9 +4,9 @@
  *
  *  $RCSfile: AppController.hxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 14:19:02 $
+ *  last change: $Author: hr $ $Date: 2005-09-23 12:14:43 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -39,7 +39,7 @@
 #ifndef DBAUI_GENERICCONTROLLER_HXX
 #include "genericcontroller.hxx"
 #endif
-#ifndef _COM_SUN_STAR_CONTAINER_XCONTAINERLISTENER_HPP_ 
+#ifndef _COM_SUN_STAR_CONTAINER_XCONTAINERLISTENER_HPP_
 #include <com/sun/star/container/XContainerListener.hpp>
 #endif
 #ifndef _SV_TIMER_HXX
@@ -84,6 +84,9 @@
 #ifndef _DBAUI_LINKEDDOCUMENTS_HXX_
 #include "linkeddocuments.hxx"
 #endif
+#ifndef DBACCESS_SOURCE_UI_INC_DOCUMENTCONTROLLER_HXX
+#include "documentcontroller.hxx"
+#endif
 
 #include <memory>
 
@@ -124,9 +127,12 @@ namespace dbaui
     {
         friend class OConnectionChangeBroadcaster;
     public:
-        typedef ::std::vector< ::com::sun::star::uno::Reference< ::com::sun::star::container::XContainer > > TContainerVector;
-        typedef ::std::map< ::com::sun::star::uno::Reference< ::com::sun::star::lang::XComponent >
-                , ::com::sun::star::uno::Reference< ::com::sun::star::lang::XComponent > > TDocuments;
+        typedef ::com::sun::star::uno::Reference< ::com::sun::star::container::XContainer > TContainer;
+        typedef ::std::vector< TContainer >                                                 TContainerVector;
+
+        typedef ::com::sun::star::uno::Reference< ::com::sun::star::lang::XComponent >      TComponent;
+        typedef ::std::map< TComponent, TComponent >                                        TDocuments;
+
     private:
 
         DECLARE_STL_USTRINGACCESS_MAP(::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >,TDataSourceConnections);
@@ -135,7 +141,10 @@ namespace dbaui
         TDataSourceConnections	m_aDataSourceConnections;
         TransferableDataHelper	m_aSystemClipboard;		// content of the clipboard
         ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >   m_xDataSource;
-        ::com::sun::star::uno::Reference< ::com::sun::star::frame::XModel >         m_xModel;
+        ::com::sun::star::uno::Reference< ::com::sun::star::frame::XModel >
+                                m_xModel;
+        ModelControllerConnector
+                                m_aModelConnector;
         TContainerVector		m_aCurrentContainers;	// the containers where we are listener on
         TDocuments				m_aDocuments;
         ODsnTypeCollection		m_aTypeCollection;
@@ -149,7 +158,7 @@ namespace dbaui
         sal_Bool				m_bPreviewEnabled;			// true when the preview should enabled
         sal_Bool				m_bNeedToReconnect;			// true when the settings of the data source were modified and the connection is no longer up to date
         sal_Bool				m_bSuspended		: 1;	// is true when the controller was already suspended
-        
+
 
         OApplicationView*		getContainer() const;
 
@@ -182,7 +191,7 @@ namespace dbaui
         */
         ::com::sun::star::uno::Reference< ::com::sun::star::lang::XComponent > openElement(const ::rtl::OUString& _sName,ElementType _eType = E_TABLE,OLinkedDocumentsAccess::EOpenMode _eOpenMode = OLinkedDocumentsAccess::OPEN_NORMAL);
 
-        /** opens a new frame for creation or auto pilot 
+        /** opens a new frame for creation or auto pilot
             @param	_eType
                 Defines the type to open
             @param	_bSQLView
@@ -201,24 +210,24 @@ namespace dbaui
 
         /** converts the query to a view
             @param	_sName
-                The name of the query.			
+                The name of the query.
         */
         void convertToView(const ::rtl::OUString& _sName);
 
         /** checks if the selected data source is read only
-            @return 
+            @return
                 <TRUE/> if read only, otherwise <FALSE/>
         */
         virtual sal_Bool isDataSourceReadOnly() const;
 
         /** checks if the connection for the selected data source is read only. If the connection doesn't exist, <TRUE/> will be returned.
-            @return 
+            @return
                 <TRUE/> if read only or doesn't exist, otherwise <FALSE/>
         */
         sal_Bool isConnectionReadOnly() const;
 
         /** checks if the database allows the creation of relation
-            @return 
+            @return
                 <TRUE/> if read only, otherwise <FALSE/>
         */
         sal_Bool isRelationDesignAllowed() const;
@@ -279,11 +288,11 @@ namespace dbaui
         /// returns the nameaccess
         ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess > getElements(ElementType _eType);
 
-        /// 
+        ///
 
         /** returns the document access for the specific type
             @param	_eType
-                the type 			
+                the type
             @return	::std::auto_ptr<OLinkedDocumentsAccess>
         */
         ::std::auto_ptr<OLinkedDocumentsAccess> getDocumentsAccess(ElementType _eType);
@@ -358,7 +367,7 @@ namespace dbaui
         */
         void openDirectSQLDialog();
 
-        /** when the settings of the data source changed, 
+        /** when the settings of the data source changed,
             it opens a dialog which ask to close all depending documents, then recreate the connection.
             The SolarMutex has to be locked before calling this.
         */
@@ -453,7 +462,7 @@ namespace dbaui
         OApplicationController(const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rxORB);
 
         DECLARE_XINTERFACE( )
-        DECLARE_XTYPEPROVIDER( )		
+        DECLARE_XTYPEPROVIDER( )
 
         // XServiceInfo
         virtual ::rtl::OUString SAL_CALL getImplementationName() throw(::com::sun::star::uno::RuntimeException);
@@ -491,7 +500,7 @@ namespace dbaui
         bool ensureConnection(::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection >& _xConnection,sal_Bool _bCreate = sal_True);
 
         /** returns the connection for the currently active data source
-            @return	
+            @return
                 The connection for the currently active data source
         */
         ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection > getActiveConnection() const;
