@@ -4,9 +4,9 @@
  *
  *  $RCSfile: FieldDescriptions.cxx,v $
  *
- *  $Revision: 1.19 $
+ *  $Revision: 1.20 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 16:38:53 $
+ *  last change: $Author: hr $ $Date: 2005-12-28 17:37:14 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -93,20 +93,20 @@ OFieldDescription::OFieldDescription() :
 
 //------------------------------------------------------------------------------
 OFieldDescription::OFieldDescription( const OFieldDescription& rDescr ) :
-     m_sName(rDescr.m_sName)          
-    ,m_sTypeName(rDescr.m_sTypeName)      
-    ,m_sDescription(rDescr.m_sDescription)   
-    ,m_aDefaultValue(rDescr.m_aDefaultValue)  
-    ,m_aControlDefault(rDescr.m_aControlDefault)  
-    ,m_sAutoIncrementValue(rDescr.m_sAutoIncrementValue)  
-    ,m_pType(rDescr.m_pType)          
-    ,m_nPrecision(rDescr.m_nPrecision)      
-    ,m_nScale(rDescr.m_nScale)          
-    ,m_nIsNullable(rDescr.m_nIsNullable)     
-    ,m_nFormatKey(rDescr.m_nFormatKey)     
-    ,m_eHorJustify(rDescr.m_eHorJustify)    
+     m_sName(rDescr.m_sName)
+    ,m_sTypeName(rDescr.m_sTypeName)
+    ,m_sDescription(rDescr.m_sDescription)
+    ,m_aDefaultValue(rDescr.m_aDefaultValue)
+    ,m_aControlDefault(rDescr.m_aControlDefault)
+    ,m_sAutoIncrementValue(rDescr.m_sAutoIncrementValue)
+    ,m_pType(rDescr.m_pType)
+    ,m_nPrecision(rDescr.m_nPrecision)
+    ,m_nScale(rDescr.m_nScale)
+    ,m_nIsNullable(rDescr.m_nIsNullable)
+    ,m_nFormatKey(rDescr.m_nFormatKey)
+    ,m_eHorJustify(rDescr.m_eHorJustify)
     ,m_bIsAutoIncrement(rDescr.m_bIsAutoIncrement)
-    ,m_bIsPrimaryKey(rDescr.m_bIsPrimaryKey) 
+    ,m_bIsPrimaryKey(rDescr.m_bIsPrimaryKey)
     ,m_nType(DataType::VARCHAR)
 {
     DBG_CTOR(OFieldDescription,NULL);
@@ -127,20 +127,20 @@ OFieldDescription::OFieldDescription(	const ::rtl::OUString&	_sName,
                     sal_Bool				_bIsAutoIncrement,
                     sal_Bool				_bIsPrimaryKey,
                     sal_Bool				_bIsCurrency)	 :
- m_sName(_sName)          
-,m_sTypeName(_sTypeName)      
-,m_sDescription(_sDescription)   
-,m_aDefaultValue(_aDefaultValue)  
-,m_aControlDefault(_aControlDefault)  
+ m_sName(_sName)
+,m_sTypeName(_sTypeName)
+,m_sDescription(_sDescription)
+,m_aDefaultValue(_aDefaultValue)
+,m_aControlDefault(_aControlDefault)
 ,m_sAutoIncrementValue(_sAutoIncrementValue)
-,m_pType(_pType)          
-,m_nPrecision(_nPrecision)      
-,m_nScale(_nScale)          
-,m_nIsNullable(_nIsNullable)     
-,m_nFormatKey(_nFormatKey)     
-,m_eHorJustify(_eHorJustify)    
+,m_pType(_pType)
+,m_nPrecision(_nPrecision)
+,m_nScale(_nScale)
+,m_nIsNullable(_nIsNullable)
+,m_nFormatKey(_nFormatKey)
+,m_eHorJustify(_eHorJustify)
 ,m_bIsAutoIncrement(_bIsAutoIncrement)
-,m_bIsPrimaryKey(_bIsPrimaryKey) 
+,m_bIsPrimaryKey(_bIsPrimaryKey)
 ,m_bIsCurrency(_bIsCurrency)
 {
      DBG_DTOR(OFieldDescription,NULL);
@@ -184,7 +184,7 @@ OFieldDescription::OFieldDescription(const Reference< XPropertySet >& xAffectedC
                     SetDescription(::comphelper::getString(xAffectedCol->getPropertyValue(PROPERTY_DESCRIPTION)));
                 if(xPropSetInfo->hasPropertyByName(PROPERTY_DEFAULTVALUE))
                     SetDefaultValue( xAffectedCol->getPropertyValue(PROPERTY_DEFAULTVALUE) );
-                
+
                 if(xPropSetInfo->hasPropertyByName(PROPERTY_CONTROLDEFAULT))
                     SetControlDefault( xAffectedCol->getPropertyValue(PROPERTY_CONTROLDEFAULT) );
 
@@ -214,7 +214,7 @@ OFieldDescription::OFieldDescription(const Reference< XPropertySet >& xAffectedC
 }
 // -----------------------------------------------------------------------------
 void OFieldDescription::FillFromTypeInfo(const TOTypeInfoSP& _pType,sal_Bool _bForce,sal_Bool _bReset)
-{							  
+{
     TOTypeInfoSP pOldType = getTypeInfo();
     if ( _pType != pOldType )
     {
@@ -261,17 +261,18 @@ void OFieldDescription::FillFromTypeInfo(const TOTypeInfoSP& _pType,sal_Bool _bF
             SetAutoIncrement(sal_False);
         SetCurrency( _pType->bCurrency );
         SetType(_pType);
+        SetTypeName(_pType->aTypeName);
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetName(const ::rtl::OUString& _rName)							
-{ 
+void OFieldDescription::SetName(const ::rtl::OUString& _rName)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_NAME) )
             m_xDest->setPropertyValue(PROPERTY_NAME,makeAny(_rName));
         else
-            m_sName = _rName; 
+            m_sName = _rName;
     }
     catch(Exception)
     {
@@ -279,14 +280,14 @@ void OFieldDescription::SetName(const ::rtl::OUString& _rName)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetDescription(const ::rtl::OUString& _rDescription)			
-{ 
+void OFieldDescription::SetDescription(const ::rtl::OUString& _rDescription)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_DESCRIPTION) )
             m_xDest->setPropertyValue(PROPERTY_DESCRIPTION,makeAny(_rDescription));
         else
-            m_sDescription = _rDescription; 
+            m_sDescription = _rDescription;
     }
     catch(Exception)
     {
@@ -294,14 +295,14 @@ void OFieldDescription::SetDescription(const ::rtl::OUString& _rDescription)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetDefaultValue(const Any& _rDefaultValue)		
-{ 
+void OFieldDescription::SetDefaultValue(const Any& _rDefaultValue)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_DEFAULTVALUE) )
             m_xDest->setPropertyValue(PROPERTY_DEFAULTVALUE,makeAny(_rDefaultValue));
         else
-            m_aDefaultValue = _rDefaultValue; 
+            m_aDefaultValue = _rDefaultValue;
     }
     catch(Exception)
     {
@@ -309,14 +310,14 @@ void OFieldDescription::SetDefaultValue(const Any& _rDefaultValue)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetControlDefault(const Any& _rControlDefault)	
-{ 
+void OFieldDescription::SetControlDefault(const Any& _rControlDefault)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_CONTROLDEFAULT) )
             m_xDest->setPropertyValue(PROPERTY_CONTROLDEFAULT,makeAny(_rControlDefault));
         else
-            m_aControlDefault = _rControlDefault; 
+            m_aControlDefault = _rControlDefault;
     }
     catch(Exception)
     {
@@ -324,14 +325,14 @@ void OFieldDescription::SetControlDefault(const Any& _rControlDefault)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetAutoIncrementValue(const ::rtl::OUString& _sAutoIncValue)	
-{ 
+void OFieldDescription::SetAutoIncrementValue(const ::rtl::OUString& _sAutoIncValue)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_AUTOINCREMENTCREATION) )
             m_xDest->setPropertyValue(PROPERTY_AUTOINCREMENTCREATION,makeAny(_sAutoIncValue));
         else
-            m_sAutoIncrementValue = _sAutoIncValue; 
+            m_sAutoIncrementValue = _sAutoIncValue;
     }
     catch(Exception)
     {
@@ -339,17 +340,17 @@ void OFieldDescription::SetAutoIncrementValue(const ::rtl::OUString& _sAutoIncVa
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetType(TOTypeInfoSP _pType)									
-{ 
-    m_pType = _pType; 
-    if ( m_pType.get() ) 
+void OFieldDescription::SetType(TOTypeInfoSP _pType)
+{
+    m_pType = _pType;
+    if ( m_pType.get() )
     {
         try
         {
             if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_TYPE) )
                 m_xDest->setPropertyValue(PROPERTY_TYPE,makeAny(m_pType->nType));
             else
-                m_nType = m_pType->nType; 
+                m_nType = m_pType->nType;
         }
         catch(Exception)
         {
@@ -358,15 +359,15 @@ void OFieldDescription::SetType(TOTypeInfoSP _pType)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetTypeValue(sal_Int32 _nType)									
-{ 
+void OFieldDescription::SetTypeValue(sal_Int32 _nType)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_TYPE) )
             m_xDest->setPropertyValue(PROPERTY_TYPE,makeAny(_nType));
         else
         {
-            m_nType = _nType; 
+            m_nType = _nType;
             OSL_ENSURE(!m_pType.get(),"Invalid call here!");
         }
     }
@@ -376,14 +377,14 @@ void OFieldDescription::SetTypeValue(sal_Int32 _nType)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetPrecision(const sal_Int32& _rPrecision)						
-{ 
+void OFieldDescription::SetPrecision(const sal_Int32& _rPrecision)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_PRECISION) )
             m_xDest->setPropertyValue(PROPERTY_PRECISION,makeAny(_rPrecision));
         else
-            m_nPrecision = _rPrecision; 
+            m_nPrecision = _rPrecision;
     }
     catch(Exception)
     {
@@ -391,14 +392,14 @@ void OFieldDescription::SetPrecision(const sal_Int32& _rPrecision)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetScale(const sal_Int32& _rScale)								
-{ 
+void OFieldDescription::SetScale(const sal_Int32& _rScale)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_SCALE) )
             m_xDest->setPropertyValue(PROPERTY_SCALE,makeAny(_rScale));
         else
-            m_nScale = _rScale; 
+            m_nScale = _rScale;
     }
     catch(Exception)
     {
@@ -406,14 +407,14 @@ void OFieldDescription::SetScale(const sal_Int32& _rScale)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetIsNullable(const sal_Int32& _rIsNullable)					
-{ 
+void OFieldDescription::SetIsNullable(const sal_Int32& _rIsNullable)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ISNULLABLE) )
             m_xDest->setPropertyValue(PROPERTY_ISNULLABLE,makeAny(_rIsNullable));
         else
-            m_nIsNullable = _rIsNullable; 
+            m_nIsNullable = _rIsNullable;
     }
     catch(Exception)
     {
@@ -421,8 +422,8 @@ void OFieldDescription::SetIsNullable(const sal_Int32& _rIsNullable)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetFormatKey(const sal_Int32& _rFormatKey)						
-{ 
+void OFieldDescription::SetFormatKey(const sal_Int32& _rFormatKey)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_FORMATKEY) )
@@ -436,14 +437,14 @@ void OFieldDescription::SetFormatKey(const sal_Int32& _rFormatKey)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetHorJustify(const SvxCellHorJustify& _rHorJustify)			
-{ 
+void OFieldDescription::SetHorJustify(const SvxCellHorJustify& _rHorJustify)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ALIGN) )
             m_xDest->setPropertyValue(PROPERTY_ALIGN,makeAny( dbaui::mapTextAllign(_rHorJustify)));
         else
-            m_eHorJustify = _rHorJustify; 
+            m_eHorJustify = _rHorJustify;
     }
     catch(Exception)
     {
@@ -451,14 +452,14 @@ void OFieldDescription::SetHorJustify(const SvxCellHorJustify& _rHorJustify)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetAutoIncrement(sal_Bool _bAuto)								
-{ 
+void OFieldDescription::SetAutoIncrement(sal_Bool _bAuto)
+{
     try
     {
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ISAUTOINCREMENT) )
             m_xDest->setPropertyValue(PROPERTY_ISAUTOINCREMENT,makeAny(_bAuto));
         else
-            m_bIsAutoIncrement = _bAuto; 
+            m_bIsAutoIncrement = _bAuto;
     }
     catch(Exception)
     {
@@ -466,144 +467,144 @@ void OFieldDescription::SetAutoIncrement(sal_Bool _bAuto)
     }
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetPrimaryKey(sal_Bool _bPKey)									
-{ 
-    m_bIsPrimaryKey = _bPKey; 
-    if ( _bPKey ) 
-        SetIsNullable(::com::sun::star::sdbc::ColumnValue::NO_NULLS); 
+void OFieldDescription::SetPrimaryKey(sal_Bool _bPKey)
+{
+    m_bIsPrimaryKey = _bPKey;
+    if ( _bPKey )
+        SetIsNullable(::com::sun::star::sdbc::ColumnValue::NO_NULLS);
 }
 // -----------------------------------------------------------------------------
-void OFieldDescription::SetCurrency(sal_Bool _bIsCurrency)								
-{ 
-    m_bIsCurrency = _bIsCurrency; 
+void OFieldDescription::SetCurrency(sal_Bool _bIsCurrency)
+{
+    m_bIsCurrency = _bIsCurrency;
 }
 // -----------------------------------------------------------------------------
 
-::rtl::OUString				OFieldDescription::GetName()				const 
-{ 
+::rtl::OUString				OFieldDescription::GetName()				const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_NAME) )
         return ::comphelper::getString(m_xDest->getPropertyValue(PROPERTY_NAME));
     else
-        return m_sName; 
+        return m_sName;
 }
 // -----------------------------------------------------------------------------
-::rtl::OUString				OFieldDescription::GetDescription()			const 
-{ 
+::rtl::OUString				OFieldDescription::GetDescription()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_DESCRIPTION) )
         return ::comphelper::getString(m_xDest->getPropertyValue(PROPERTY_DESCRIPTION));
     else
-        return m_sDescription; 
+        return m_sDescription;
 }
 // -----------------------------------------------------------------------------
-::com::sun::star::uno::Any	OFieldDescription::GetDefaultValue()		const 
-{ 
+::com::sun::star::uno::Any	OFieldDescription::GetDefaultValue()		const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_DEFAULTVALUE) )
         return m_xDest->getPropertyValue(PROPERTY_DEFAULTVALUE);
     else
-        return m_aDefaultValue; 
+        return m_aDefaultValue;
 }
 // -----------------------------------------------------------------------------
-::com::sun::star::uno::Any	OFieldDescription::GetControlDefault()		const 
-{ 
+::com::sun::star::uno::Any	OFieldDescription::GetControlDefault()		const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_CONTROLDEFAULT) )
         return m_xDest->getPropertyValue(PROPERTY_CONTROLDEFAULT);
     else
-        return m_aControlDefault; 
+        return m_aControlDefault;
 }
 // -----------------------------------------------------------------------------
-::rtl::OUString				OFieldDescription::GetAutoIncrementValue()	const 
-{ 
+::rtl::OUString				OFieldDescription::GetAutoIncrementValue()	const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_AUTOINCREMENTCREATION) )
         return ::comphelper::getString(m_xDest->getPropertyValue(PROPERTY_AUTOINCREMENTCREATION));
     else
-        return m_sAutoIncrementValue; 
+        return m_sAutoIncrementValue;
 }
 // -----------------------------------------------------------------------------
-sal_Int32					OFieldDescription::GetType()				const 
-{ 
+sal_Int32					OFieldDescription::GetType()				const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_TYPE) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_TYPE));
     else
-        return m_pType.get() ? m_pType->nType : m_nType; 
+        return m_pType.get() ? m_pType->nType : m_nType;
 }
 // -----------------------------------------------------------------------------
-::rtl::OUString             OFieldDescription::GetTypeName()			const 
-{ 
+::rtl::OUString             OFieldDescription::GetTypeName()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_TYPENAME) )
         return ::comphelper::getString(m_xDest->getPropertyValue(PROPERTY_TYPENAME));
     else
-        return m_pType.get() ? m_pType->aTypeName : m_sTypeName; 
+        return m_pType.get() ? m_pType->aTypeName : m_sTypeName;
 }
 // -----------------------------------------------------------------------------
-sal_Int32					OFieldDescription::GetPrecision()			const 
-{ 
+sal_Int32					OFieldDescription::GetPrecision()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_PRECISION) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_PRECISION));
     else
-        return m_nPrecision; 
+        return m_nPrecision;
 }
 // -----------------------------------------------------------------------------
-sal_Int32					OFieldDescription::GetScale()				const 
-{ 
+sal_Int32					OFieldDescription::GetScale()				const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_SCALE) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_SCALE));
     else
-        return m_nScale; 
+        return m_nScale;
 }
 // -----------------------------------------------------------------------------
-sal_Int32					OFieldDescription::GetIsNullable()			const 
-{ 
+sal_Int32					OFieldDescription::GetIsNullable()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ISNULLABLE) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_ISNULLABLE));
     else
-        return m_nIsNullable; 
+        return m_nIsNullable;
 }
 // -----------------------------------------------------------------------------
-sal_Int32					OFieldDescription::GetFormatKey()			const 
-{ 
+sal_Int32					OFieldDescription::GetFormatKey()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_FORMATKEY) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_FORMATKEY));
     else
-        return m_nFormatKey; 
+        return m_nFormatKey;
 }
 // -----------------------------------------------------------------------------
-SvxCellHorJustify			OFieldDescription::GetHorJustify()			const 
-{ 
+SvxCellHorJustify			OFieldDescription::GetHorJustify()			const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ALIGN) )
         return ::dbaui::mapTextJustify(::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_ALIGN)));
     else
-        return m_eHorJustify; 
+        return m_eHorJustify;
 }
 // -----------------------------------------------------------------------------
-TOTypeInfoSP				OFieldDescription::getTypeInfo()			const 
-{ 
-    return m_pType; 
+TOTypeInfoSP				OFieldDescription::getTypeInfo()			const
+{
+    return m_pType;
 }
 // -----------------------------------------------------------------------------
-sal_Bool					OFieldDescription::IsAutoIncrement()		const 
-{ 
+sal_Bool					OFieldDescription::IsAutoIncrement()		const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ISAUTOINCREMENT) )
         return ::cppu::any2bool(m_xDest->getPropertyValue(PROPERTY_ISAUTOINCREMENT));
     else
-        return m_bIsAutoIncrement; 
+        return m_bIsAutoIncrement;
 }
 // -----------------------------------------------------------------------------
-sal_Bool					OFieldDescription::IsPrimaryKey()			const 
-{ 
-    return m_bIsPrimaryKey; 
+sal_Bool					OFieldDescription::IsPrimaryKey()			const
+{
+    return m_bIsPrimaryKey;
 }
 // -----------------------------------------------------------------------------
-sal_Bool					OFieldDescription::IsCurrency()				const 
-{ 
-        return m_bIsCurrency; 
+sal_Bool					OFieldDescription::IsCurrency()				const
+{
+        return m_bIsCurrency;
 }
 // -----------------------------------------------------------------------------
-sal_Bool					OFieldDescription::IsNullable()				const 
-{ 
+sal_Bool					OFieldDescription::IsNullable()				const
+{
     if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_ISNULLABLE) )
         return ::comphelper::getINT32(m_xDest->getPropertyValue(PROPERTY_ISNULLABLE)) == ::com::sun::star::sdbc::ColumnValue::NULLABLE;
     else
-        return m_nIsNullable == ::com::sun::star::sdbc::ColumnValue::NULLABLE; 
+        return m_nIsNullable == ::com::sun::star::sdbc::ColumnValue::NULLABLE;
 }
 // -----------------------------------------------------------------------------
 void OFieldDescription::SetTypeName(const ::rtl::OUString& _sTypeName)
@@ -613,7 +614,7 @@ void OFieldDescription::SetTypeName(const ::rtl::OUString& _sTypeName)
         if ( m_xDest.is() && m_xDestInfo->hasPropertyByName(PROPERTY_TYPENAME) )
             m_xDest->setPropertyValue(PROPERTY_TYPENAME,makeAny(_sTypeName));
         else
-            m_sTypeName = _sTypeName; 
+            m_sTypeName = _sTypeName;
     }
     catch(Exception)
     {
