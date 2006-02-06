@@ -4,9 +4,9 @@
  *
  *  $RCSfile: CRowSetDataColumn.cxx,v $
  *
- *  $Revision: 1.31 $
+ *  $Revision: 1.32 $
  *
- *  last change: $Author: hr $ $Date: 2006-01-25 13:42:21 $
+ *  last change: $Author: rt $ $Date: 2006-02-06 16:53:31 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -99,14 +99,14 @@ ORowSetDataColumn::~ORowSetDataColumn()
         DECL_PROP2(CONTROLDEFAULT,			::rtl::OUString,	BOUND,MAYBEVOID);
         DECL_PROP1_IFACE(CONTROLMODEL,		XPropertySet, 		BOUND		);
         DECL_PROP1(DESCRIPTION,				::rtl::OUString,	READONLY);
-        DECL_PROP1(DISPLAYSIZE,				sal_Int32,			READONLY);		
+        DECL_PROP1(DISPLAYSIZE,				sal_Int32,			READONLY);
         DECL_PROP2(NUMBERFORMAT,			sal_Int32,			BOUND,MAYBEVOID);
         DECL_PROP2(HELPTEXT,			::rtl::OUString,	BOUND,MAYBEVOID);
         DECL_PROP1_BOOL(HIDDEN,	 							BOUND);
         DECL_PROP1_BOOL(ISAUTOINCREMENT,						READONLY);
         DECL_PROP1_BOOL(ISCASESENSITIVE,						READONLY);
         DECL_PROP1_BOOL(ISCURRENCY,								READONLY);
-        DECL_PROP1_BOOL(ISDEFINITELYWRITABLE,					READONLY);		
+        DECL_PROP1_BOOL(ISDEFINITELYWRITABLE,					READONLY);
         DECL_PROP1(ISNULLABLE,				sal_Int32,			READONLY);
         DECL_PROP1_BOOL(ISREADONLY,								READONLY);
         DECL_PROP1_BOOL(ISROWVERSION,                           READONLY);
@@ -142,9 +142,9 @@ void SAL_CALL ORowSetDataColumn::getFastPropertyValue( Any& rValue, sal_Int32 nH
         case PROPERTY_ID_DESCRIPTION:
             rValue <<= m_aDescription;
             break;
-        case PROPERTY_ID_ALIGN:			
-        case PROPERTY_ID_NUMBERFORMAT:			
-        case PROPERTY_ID_RELATIVEPOSITION:		
+        case PROPERTY_ID_ALIGN:
+        case PROPERTY_ID_NUMBERFORMAT:
+        case PROPERTY_ID_RELATIVEPOSITION:
         case PROPERTY_ID_WIDTH:
         case PROPERTY_ID_HIDDEN:
         case PROPERTY_ID_CONTROLMODEL:
@@ -155,7 +155,11 @@ void SAL_CALL ORowSetDataColumn::getFastPropertyValue( Any& rValue, sal_Int32 nH
         case PROPERTY_ID_VALUE:
             if ( !m_aColumnValue.isNull() && m_aColumnValue->isValid() )
             {
+                ::osl::Mutex* pMutex = m_aColumnValue.getMutex();
+                ::osl::MutexGuard aGuard( *pMutex );
+#if OSL_DEBUG_LEVEL > 0
                 ORowSetRow aRow = *m_aColumnValue;
+#endif
                 OSL_ENSURE((sal_Int32)aRow->size() > m_nPos,"Pos is greater than size of vector");
                 rValue = (*(*m_aColumnValue))[m_nPos].makeAny();
             }
@@ -253,7 +257,7 @@ void ORowSetDataColumn::fireValueChange(const ORowSetValue& _rOldValue)
     }
 }
 // -----------------------------------------------------------------------------
-DBG_NAME(ORowSetDataColumns ) 
+DBG_NAME(ORowSetDataColumns )
 ORowSetDataColumns::ORowSetDataColumns(
                 sal_Bool _bCase,
                 const ::vos::ORef< ::connectivity::OSQLColumns>& _rColumns,
@@ -268,7 +272,7 @@ ORowSetDataColumns::ORowSetDataColumns(
 // -----------------------------------------------------------------------------
 ORowSetDataColumns::~ORowSetDataColumns()
 {
-    DBG_DTOR(ORowSetDataColumns ,NULL); 
+    DBG_DTOR(ORowSetDataColumns ,NULL);
 }
 // -----------------------------------------------------------------------------
 sdbcx::ObjectType ORowSetDataColumns::createObject(const ::rtl::OUString& _rName)
@@ -279,7 +283,7 @@ sdbcx::ObjectType ORowSetDataColumns::createObject(const ::rtl::OUString& _rName
     ::connectivity::OSQLColumns::const_iterator first =  ::connectivity::find(m_aColumns->begin(),m_aColumns->end(),_rName,aCase);
     if(first != m_aColumns->end())
         xNamed.set(*first,UNO_QUERY);
-        
+
     return xNamed;
 }
 // -----------------------------------------------------------------------------
