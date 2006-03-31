@@ -4,9 +4,9 @@
  *
  *  $RCSfile: TEditControl.cxx,v $
  *
- *  $Revision: 1.48 $
+ *  $Revision: 1.49 $
  *
- *  last change: $Author: vg $ $Date: 2006-03-31 09:20:27 $
+ *  last change: $Author: vg $ $Date: 2006-03-31 12:16:01 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -80,7 +80,7 @@
 #ifndef DBAUI_FIELDDESCRIPTIONS_HXX
 #include "FieldDescriptions.hxx"
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef DBAUI_TABLEUNDO_HXX
@@ -98,7 +98,7 @@
 #ifndef DBAUI_TABLEROW_EXCHANGE_HXX
 #include "TableRowExchange.hxx"
 #endif
-#ifndef _SOT_STORAGE_HXX 
+#ifndef _SOT_STORAGE_HXX
 #include <sot/storage.hxx>
 #endif
 #ifndef DBAUI_TOOLS_HXX
@@ -324,7 +324,7 @@ void OTableEditorCtrl::InitCellController()
         nMaxTextLen = ((xub_StrLen)xMetaData.is() ? static_cast<xub_StrLen>(xMetaData->getMaxColumnNameLength()) : 0);
 
         if( nMaxTextLen == 0 )
-            nMaxTextLen = EDIT_NOLIMIT;	
+            nMaxTextLen = EDIT_NOLIMIT;
         sExtraNameChars = xMetaData.is() ? xMetaData->getExtraNameCharacters() : ::rtl::OUString();
 
     }
@@ -341,6 +341,7 @@ void OTableEditorCtrl::InitCellController()
     //////////////////////////////////////////////////////////////////////
     // Zelle Typ
     pTypeCell = new ListBoxControl( &GetDataWindow() );
+    pTypeCell->SetDropDownLineCount( 15 );
 
     //////////////////////////////////////////////////////////////////////
     // Zelle Beschreibung
@@ -446,8 +447,8 @@ CellController* OTableEditorCtrl::GetController(long nRow, sal_uInt16 nColumnId)
     //////////////////////////////////////////////////////////////////////
     // Wenn EditorCtrl ReadOnly ist, darf nicht editiert werden
     Reference<XPropertySet> xTable = GetView()->getController()->getTable();
-    if (IsReadOnly() || (	xTable.is() && 
-                            xTable->getPropertySetInfo()->hasPropertyByName(PROPERTY_TYPE) && 
+    if (IsReadOnly() || (	xTable.is() &&
+                            xTable->getPropertySetInfo()->hasPropertyByName(PROPERTY_TYPE) &&
                             ::comphelper::getString(xTable->getPropertyValue(PROPERTY_TYPE)) == ::rtl::OUString::createFromAscii("VIEW")))
         return NULL;
 
@@ -501,7 +502,7 @@ void OTableEditorCtrl::InitController(CellControllerRef&, long nRow, sal_uInt16 
                 pTypeCell->Clear();
                 if( !pActFieldDescr )
                     break;
-                    
+
                 const OTypeInfoMap* pTypeInfo = GetView()->getController()->getTypeInfo();
                 OTypeInfoMap::const_iterator aIter = pTypeInfo->begin();
                 for(;aIter != pTypeInfo->end();++aIter)
@@ -825,7 +826,7 @@ void OTableEditorCtrl::CellModified( long nRow, sal_uInt16 nColId )
             SwitchType(TOTypeInfoSP());
 
     }
-    
+
     SaveData(nRow,nColId);
     // SaveData could create a undo action as well
     GetUndoManager()->LeaveListAction();
@@ -833,7 +834,7 @@ void OTableEditorCtrl::CellModified( long nRow, sal_uInt16 nColId )
     CellControllerRef xController(Controller());
     if(xController.Is())
         xController->SetModified();
-    
+
     //////////////////////////////////////////////////////////////////////
     // Das ModifyFlag setzen
     GetView()->getController()->setModified( sal_True );
@@ -996,7 +997,7 @@ void OTableEditorCtrl::DeleteRows()
     //////////////////////////////////////////////////////////////////////
     // Undo-Action erzeugen
     GetUndoManager()->AddUndoAction( new OTableEditorDelUndoAct(this) );
-    
+
 
     //////////////////////////////////////////////////////////////////////
     // Alle markierten Zeilen loeschen
@@ -1137,7 +1138,7 @@ void OTableEditorCtrl::SetData( long nRow, sal_uInt16 nColId, const ::com::sun::
     OFieldDescription* pFieldDescr = GetFieldDescr( nRow );
     if( !pFieldDescr && nColId != FIELD_TYPE)
         return;
-    
+
     String sValue;
     //////////////////////////////////////////////////////////////////////
     // Einzelne Felder setzen
@@ -1316,7 +1317,7 @@ OFieldDescription* OTableEditorCtrl::GetFieldDescr( long nRow )
 sal_Bool OTableEditorCtrl::IsCutAllowed( long nRow )
 {
     DBG_CHKTHIS(OTableEditorCtrl,NULL);
-    sal_Bool bIsCutAllowed = (GetView()->getController()->isAddAllowed() && GetView()->getController()->isDropAllowed()) || 
+    sal_Bool bIsCutAllowed = (GetView()->getController()->isAddAllowed() && GetView()->getController()->isDropAllowed()) ||
                             GetView()->getController()->isAlterAllowed();
 
     if(bIsCutAllowed)
@@ -1371,7 +1372,7 @@ sal_Bool OTableEditorCtrl::IsCopyAllowed( long nRow )
 
         bIsCopyAllowed = sal_True;
     }
-    
+
     return bIsCopyAllowed;
 }
 
@@ -1475,7 +1476,7 @@ sal_Bool OTableEditorCtrl::IsDeleteAllowed( long nRow )
 //	Reference<XConnection> xCon = GetView()->getController()->getConnection();
 //	Reference< XDatabaseMetaData> xMetaData = xCon.is() ? xCon->getMetaData() : NULL;
 //
-//	return	!(xTable.is() && xTable->getPropertySetInfo()->getPropertyByName(PROPERTY_NAME).Attributes & PropertyAttribute::READONLY) || 
+//	return	!(xTable.is() && xTable->getPropertySetInfo()->getPropertyByName(PROPERTY_NAME).Attributes & PropertyAttribute::READONLY) ||
 //			( xMetaData.is() && xMetaData->supportsAlterTableWithAddColumn() && xMetaData->supportsAlterTableWithDropColumn());
 }
 
@@ -1547,7 +1548,7 @@ sal_Bool OTableEditorCtrl::IsPrimaryKeyAllowed( long nRow )
             // oder wenn Spalten nicht gedroped werden können und das Required Flag ist nicht gesetzt
             // oder wenn eine ::com::sun::star::sdbcx::View vorhanden ist und das Required Flag nicht gesetzt ist
             TOTypeInfoSP pTypeInfo = pFieldDescr->getTypeInfo();
-            if( pTypeInfo->nSearchType == ColumnSearch::NONE					|| 
+            if( pTypeInfo->nSearchType == ColumnSearch::NONE					||
                 (pFieldDescr->IsNullable() && pRow->IsReadOnly())
               )
                 return sal_False;
@@ -1741,7 +1742,7 @@ IMPL_LINK( OTableEditorCtrl, DelayedInsNewRows, void*, EMPTYTAG )
     return 0;
 }
 // -----------------------------------------------------------------------------
-void OTableEditorCtrl::AdjustFieldDescription(OFieldDescription* _pFieldDesc, 
+void OTableEditorCtrl::AdjustFieldDescription(OFieldDescription* _pFieldDesc,
                                          MultiSelection& _rMultiSel,
                                          sal_Int32 _nPos,
                                          sal_Bool _bSet,
@@ -1915,7 +1916,7 @@ long OTableEditorCtrl::PreNotify( NotifyEvent& rNEvt )
         else
             m_eChildFocus = ROW;
     }
-        
+
     return OTableRowView::PreNotify(rNEvt);
 }
 // -----------------------------------------------------------------------------
