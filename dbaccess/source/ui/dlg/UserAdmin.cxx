@@ -4,9 +4,9 @@
  *
  *  $RCSfile: UserAdmin.cxx,v $
  *
- *  $Revision: 1.15 $
+ *  $Revision: 1.16 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 14:49:55 $
+ *  last change: $Author: hr $ $Date: 2006-06-20 03:04:47 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -45,7 +45,7 @@
 #ifndef _DBU_DLG_HRC_
 #include "dbu_dlg.hrc"
 #endif
-#ifndef _COMPHELPER_TYPES_HXX_ 
+#ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
 #ifndef _COM_SUN_STAR_SDBC_XDATABASEMETADATA_HPP_
@@ -90,7 +90,7 @@
 #ifndef _DBAUI_MODULE_DBU_HXX_
 #include "moduledbu.hxx"
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef _SFX_PASSWD_HXX
@@ -250,7 +250,7 @@ void OUserAdmin::FillUserNames()
             }
         }
     }
-    
+
     Reference<XAppend> xAppend(m_xUsers,UNO_QUERY);
     m_PB_NEWUSER.Enable(xAppend.is());
     Reference<XDrop> xDrop(m_xUsers,UNO_QUERY);
@@ -291,7 +291,7 @@ IMPL_LINK( OUserAdmin, UserHdl, PushButton *, pButton )
         else if(pButton == &m_PB_CHANGEPWD)
         {
             String sName = GetUser();
-            
+
             if(m_xUsers->hasByName(sName))
             {
                 Reference<XUser> xUser;
@@ -304,14 +304,14 @@ IMPL_LINK( OUserAdmin, UserHdl, PushButton *, pButton )
                     {
                         sNewPassword = aDlg.GetNewPassword();
                         sOldPassword = aDlg.GetOldPassword();
-                        
+
                         if(sNewPassword.getLength())
                             xUser->changePassword(sOldPassword,sNewPassword);
                     }
                 }
             }
         }
-        else 
+        else
         {// delete user
             if(m_xUsers.is() && m_xUsers->hasByName(GetUser()))
             {
@@ -335,11 +335,11 @@ IMPL_LINK( OUserAdmin, UserHdl, PushButton *, pButton )
     {
         return 0;
     }
-    
+
     return 0;
 }
 // -----------------------------------------------------------------------
-IMPL_LINK( OUserAdmin, ListDblClickHdl, ListBox *, pListBox )
+IMPL_LINK( OUserAdmin, ListDblClickHdl, ListBox *, /*pListBox*/ )
 {
     m_TableCtrl.setUserName(GetUser());
     m_TableCtrl.UpdateTables();
@@ -358,11 +358,11 @@ String OUserAdmin::GetUser()
     return m_LB_USER.GetSelectEntry();
 }
 // -----------------------------------------------------------------------------
-void OUserAdmin::fillControls(::std::vector< ISaveValueWrapper* >& _rControlList)
+void OUserAdmin::fillControls(::std::vector< ISaveValueWrapper* >& /*_rControlList*/)
 {
 }
 // -----------------------------------------------------------------------
-void OUserAdmin::fillWindows(::std::vector< ISaveValueWrapper* >& _rControlList)
+void OUserAdmin::fillWindows(::std::vector< ISaveValueWrapper* >& /*_rControlList*/)
 {
 }
 // -----------------------------------------------------------------------------
@@ -381,7 +381,7 @@ void OUserAdmin::implInitControls(const SfxItemSet& _rSet, sal_Bool _bSaveValue)
                 Reference< XDataDefinitionSupplier > xDriver(m_pAdminDialog->getDriver(),UNO_QUERY);
                 if ( xDriver.is() )
                 {
-                    xUsersSup.set(xDriver->getDataDefinitionByConnection(m_xConnection),UNO_QUERY);		
+                    xUsersSup.set(xDriver->getDataDefinitionByConnection(m_xConnection),UNO_QUERY);
                     xTablesSup.set(xUsersSup,UNO_QUERY);
                 }
             }
@@ -397,6 +397,6 @@ void OUserAdmin::implInitControls(const SfxItemSet& _rSet, sal_Bool _bSaveValue)
     {
         ::dbaui::showError(::dbtools::SQLExceptionInfo(e),this,m_xORB);
     }
-    
-    OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);		
+
+    OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);
 }
