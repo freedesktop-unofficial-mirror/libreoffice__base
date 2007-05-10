@@ -4,9 +4,9 @@
  *
  *  $RCSfile: sbagrid.cxx,v $
  *
- *  $Revision: 1.79 $
+ *  $Revision: 1.80 $
  *
- *  last change: $Author: kz $ $Date: 2007-05-10 10:19:51 $
+ *  last change: $Author: kz $ $Date: 2007-05-10 15:05:59 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -55,9 +55,6 @@
 #define _ZFORLIST_DECLARE_TABLE
 #ifndef _SVX_NUMINF_HXX
 #include <svx/numinf.hxx>
-#endif
-#ifndef _EEITEMID_HXX
-#include <svx/eeitemid.hxx>
 #endif
 #ifndef _SVX_DBAEXCHANGE_HXX_
 #include <svx/dbaexchange.hxx>
@@ -197,7 +194,7 @@
 #ifndef _COM_SUN_STAR_SDBC_DATATYPE_HPP_
 #include <com/sun/star/sdbc/DataType.hpp>
 #endif
-#ifndef _SV_MSGBOX_HXX 
+#ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
 #ifndef _SVX_DBEXCH_HRC
