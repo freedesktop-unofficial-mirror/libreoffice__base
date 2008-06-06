@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: AppController.cxx,v $
- * $Revision: 1.60 $
+ * $Revision: 1.61 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -68,12 +68,12 @@
 #include <com/sun/star/container/XHierarchicalNameContainer.hpp>
 #include <com/sun/star/util/XModifyBroadcaster.hpp>
 #include <com/sun/star/util/XModifiable.hpp>
-#include <com/sun/star/frame/XStorable.hpp>
 #include <com/sun/star/frame/FrameSearchFlag.hpp>
 #include <com/sun/star/util/XFlushable.hpp>
 #include "com/sun/star/ui/dialogs/TemplateDescription.hpp"
 #include "com/sun/star/beans/NamedValue.hpp"
 #include <com/sun/star/awt/XTopWindow.hpp>
+#include <com/sun/star/task/XInteractionHandler.hpp>
 /** === end UNO includes === **/
 
 #ifndef _TOOLS_DEBUG_HXX
@@ -87,6 +87,9 @@
 #endif
 #ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
+#endif
+#ifndef _COMPHELPER_INTERACTION_HXX_
+#include <comphelper/interaction.hxx>
 #endif
 #ifndef COMPHELPER_COMPONENTCONTEXT_HXX
 #include <comphelper/componentcontext.hxx>
@@ -227,9 +230,6 @@
 #include "dbaccess_slotid.hrc"
 #endif
 
-#include <boost/mem_fn.hpp>
-#include <boost/bind.hpp>
-#include <boost/utility.hpp>
 #include <algorithm>
 #include <functional>
 
@@ -257,6 +257,7 @@ using namespace ::com::sun::star::sdbc;
 using namespace ::com::sun::star::sdbcx;
 using namespace ::com::sun::star::datatransfer;
 using namespace ::com::sun::star::ui::dialogs;
+using namespace ::com::sun::star::task;
 using ::com::sun::star::document::XEmbeddedScripts;
 
 //------------------------------------------------------------------------------
@@ -659,7 +660,7 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
                 aReturn.bEnabled = !isDataSourceReadOnly() && SvtModuleOptions().IsModuleInstalled(SvtModuleOptions::E_SWRITER);
                 break;
             case SID_APP_NEW_REPORT:
-                aReturn.bEnabled = !isDataSourceReadOnly() 
+                aReturn.bEnabled = !isDataSourceReadOnly()
                                     && SvtModuleOptions().IsModuleInstalled(SvtModuleOptions::E_SWRITER);
                 if ( aReturn.bEnabled )
                 {
@@ -991,6 +992,38 @@ FeatureState OApplicationController::GetState(sal_uInt16 _nId) const
     }
     return aReturn;
 }
+
+// -----------------------------------------------------------------------------
+namespace
+{
+    bool lcl_handleException_nothrow( const Reference< XModel >& _rxDocument, const Any& _rException )
+    {
+        bool bHandled = false;
+
+        // try handling the error with an interaction handler
+        ::comphelper::NamedValueCollection aArgs( _rxDocument->getArgs() );
+        Reference< XInteractionHandler > xHandler( aArgs.getOrDefault( "InteractionHandler", Reference< XInteractionHandler >() ) );
+        if ( xHandler.is() )
+        {
+            ::rtl::Reference< ::comphelper::OInteractionRequest > pRequest( new ::comphelper::OInteractionRequest( _rException ) );
+            ::rtl::Reference< ::comphelper::OInteractionApprove > pApprove( new ::comphelper::OInteractionApprove );
+            pRequest->addContinuation( pApprove.get() );
+
+            try
+            {
+                xHandler->handle( pRequest.get() );
+            }
+            catch( const Exception& )
+            {
+                DBG_UNHANDLED_EXCEPTION();
+            }
+
+            bHandled = pApprove->wasSelected();
+        }
+        return bHandled;
+    }
+}
+
 // -----------------------------------------------------------------------------
 void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyValue >& aArgs)
 {
@@ -1035,7 +1068,7 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                                 m_aTableCopyHelper.pasteTable( rTransferData , getDatabaseName(), ensureConnection() );
                             }
                             break;
-                            
+
                         case E_QUERY:
                             if ( rTransferData.HasFormat(SOT_FORMATSTR_ID_DBACCESS_QUERY) )
                                 paste( E_QUERY, ODataAccessObjectTransferable::extractObjectDescriptor( rTransferData ) );
@@ -1122,11 +1155,18 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                 break;
             case ID_BROWSER_SAVEDOC:
                 {
-                    Reference<XStorable> xStore(m_xModel,UNO_QUERY);
-                    if ( xStore.is() )
+                    Reference< XStorable > xStore( m_xModel, UNO_QUERY_THROW );
+                    try
+                    {
                         xStore->store();
+                    }
+                    catch( const Exception& )
+                    {
+                        lcl_handleException_nothrow( m_xModel, ::cppu::getCaughtException() );
+                    }
                 }
                 break;
+
             case ID_BROWSER_SAVEASDOC:
                 {
                     WinBits nBits(WB_STDMODAL|WB_SAVEAS);
@@ -1146,26 +1186,28 @@ void OApplicationController::Execute(sal_uInt16 _nId, const Sequence< PropertyVa
                         aFileDlg.SetCurrentFilter(pFilter->GetUIName());
                     }
 
-                    if ( aFileDlg.Execute() == ERRCODE_NONE )
+                    if ( aFileDlg.Execute() != ERRCODE_NONE )
+                        break;
+
+                    Reference<XStorable> xStore( m_xModel, UNO_QUERY_THROW );
+                    INetURLObject aURL( aFileDlg.GetPath() );
+                    try
                     {
-                        Reference<XStorable> xStore(m_xModel,UNO_QUERY);
-                        if ( xStore.is() )
-                        {
-                            INetURLObject aURL( aFileDlg.GetPath() );
-                            if( aURL.GetProtocol() != INET_PROT_NOT_VALID )
-                            {
-                                xStore->storeAsURL(aURL.GetMainURL( INetURLObject::NO_DECODE ),Sequence<PropertyValue>());
-                                m_sDatabaseName = ::rtl::OUString();
-                                /*updateTitle();*/
-                                m_bCurrentlyModified = sal_False;
-                                InvalidateFeature(ID_BROWSER_SAVEDOC);
-                                if ( getContainer()->getElementType() == E_NONE )
-                                {
-                                    getContainer()->selectContainer(E_NONE);
-                                    getContainer()->selectContainer(E_TABLE);
-                                }
-                            }
-                        }
+                        xStore->storeAsURL( aURL.GetMainURL( INetURLObject::NO_DECODE ), Sequence< PropertyValue >() );
+                    }
+                    catch( const Exception& )
+                    {
+                        lcl_handleException_nothrow( m_xModel, ::cppu::getCaughtException() );
+                    }
+
+                    m_sDatabaseName = ::rtl::OUString();
+                    /*updateTitle();*/
+                    m_bCurrentlyModified = sal_False;
+                    InvalidateFeature(ID_BROWSER_SAVEDOC);
+                    if ( getContainer()->getElementType() == E_NONE )
+                    {
+                        getContainer()->selectContainer(E_NONE);
+                        getContainer()->selectContainer(E_TABLE);
                     }
                 }
                 break;
@@ -1407,7 +1449,7 @@ void OApplicationController::describeSupportedFeatures()
                                                                                         CommandGroup::APPLICATION );
 
     implDescribeSupportedFeature( ".uno:DBNewReport",		 SID_APP_NEW_REPORT,		CommandGroup::INSERT );
-    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",		 
+    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",
                                                              SID_APP_NEW_REPORT_PRE_SEL,CommandGroup::APPLICATION );
     implDescribeSupportedFeature( ".uno:DBNewReportAutoPilot",
                                                              ID_DOCUMENT_CREATE_REPWIZ, CommandGroup::INSERT );
@@ -1709,8 +1751,7 @@ sal_Bool OApplicationController::onContainerSelect(ElementType _eType)
 
         InvalidateAll();
         EventObject aEvent(*this);
-        m_aSelectionListeners.forEach<XSelectionChangeListener>(
-            ::boost::bind(&XSelectionChangeListener::selectionChanged,_1,boost::cref(aEvent)));
+        m_aSelectionListeners.notifyEach( &XSelectionChangeListener::selectionChanged, aEvent );
     }
     m_eCurrentType = _eType;
 
@@ -1804,7 +1845,7 @@ Reference< XComponent > OApplicationController::openElementWithArguments( const 
         }
     }
     break;
-    
+
     case E_QUERY:
     case E_TABLE:
     {
@@ -2136,8 +2177,7 @@ void OApplicationController::onEntryDeSelect(SvTreeListBox* /*_pTree*/)
 {
     InvalidateAll();
     EventObject aEvent(*this);
-    m_aSelectionListeners.forEach<XSelectionChangeListener>(
-        ::boost::bind(&XSelectionChangeListener::selectionChanged,_1,boost::cref(aEvent)));
+    m_aSelectionListeners.notifyEach( &XSelectionChangeListener::selectionChanged, aEvent );
 }
 // -----------------------------------------------------------------------------
 void OApplicationController::onEntrySelect(SvLBoxEntry* _pEntry)
@@ -2153,10 +2193,9 @@ void OApplicationController::onEntrySelect(SvLBoxEntry* _pEntry)
             const ::rtl::OUString sName = pView->getQualifiedName( _pEntry );
             selectEntry(eType,sName);
         }
-        
+
         EventObject aEvent(*this);
-        m_aSelectionListeners.forEach<XSelectionChangeListener>(
-            ::boost::bind(&XSelectionChangeListener::selectionChanged,_1,boost::cref(aEvent)));
+        m_aSelectionListeners.notifyEach( &XSelectionChangeListener::selectionChanged, aEvent );
     }
 }
 // -----------------------------------------------------------------------------
@@ -2207,7 +2246,7 @@ void OApplicationController::selectEntry(const ElementType _eType,const ::rtl::O
     {
         DBG_UNHANDLED_EXCEPTION();
     }
-    
+
     pView->showPreview(xContent);
 }
 
@@ -2505,14 +2544,25 @@ IMPL_LINK( OApplicationController, OnFirstControllerConnected, void*, /**/ )
         return 0L;
     }
 
-    SQLWarning aWarning;
-    aWarning.Message = String( ModuleRes( STR_SUB_DOCS_WITH_SCRIPTS ) );
-    SQLException aDetail;
-    aDetail.Message = String( ModuleRes( STR_SUB_DOCS_WITH_SCRIPTS_DETAIL ) );
-    aWarning.NextException <<= aDetail;
-
     try
     {
+        // If the migration just happened, but was not successful, the document is reloaded.
+        // In this case, we should not show the warning, again.
+        ::comphelper::NamedValueCollection aModelArgs( m_xModel->getArgs() );
+        if ( aModelArgs.getOrDefault( "SuppressMigrationWarning", sal_False ) )
+            return 0L;
+
+        // also, if the document is read-only, then no migration is possible, and the
+        // respective menu entry is hidden. So, don't show the warning in this case, too.
+        if ( Reference< XStorable >( m_xModel, UNO_QUERY_THROW )->isReadonly() )
+            return 0L;
+
+        SQLWarning aWarning;
+        aWarning.Message = String( ModuleRes( STR_SUB_DOCS_WITH_SCRIPTS ) );
+        SQLException aDetail;
+        aDetail.Message = String( ModuleRes( STR_SUB_DOCS_WITH_SCRIPTS_DETAIL ) );
+        aWarning.NextException <<= aDetail;
+
         ::comphelper::ComponentContext aContext( getORB() );
         Sequence< Any > aArgs(1);
         aArgs[0] <<= NamedValue( PROPERTY_SQLEXCEPTION, makeAny( aWarning ) );
@@ -2623,7 +2673,7 @@ void OApplicationController::containerFound( const Reference< XContainer >& _xCo
 {
     _rnCommandType = ( (getContainer()->getElementType() == E_QUERY)
                                 ? CommandType::QUERY : ( (getContainer()->getElementType() == E_TABLE) ? CommandType::TABLE : -1 ));
-    
+
 
     ::rtl::OUString sName;
     if ( _rnCommandType != -1 )
@@ -2693,13 +2743,13 @@ Any SAL_CALL OApplicationController::getSelection(  ) throw (RuntimeException)
         NamedValue aNames;
         aNames.Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Selection"));
         if ( !aList.empty() )
-            aNames.Value <<= Sequence< ::rtl::OUString>(&aList[0],aList.size());        
+            aNames.Value <<= Sequence< ::rtl::OUString>(&aList[0],aList.size());
 
         aCurrentSelection.realloc(2);
         aCurrentSelection[0] = aType;
         aCurrentSelection[1] = aNames;
     }
-    
+
     return makeAny(aCurrentSelection);
 }
 // -----------------------------------------------------------------------------
