@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: DatabaseDataProvider.cxx,v $
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -27,6 +27,8 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
+// MARKER(update_precomp.py): autogen include statement, do not remove
+#include "precompiled_dbaccess.hxx"
 
 #include "DatabaseDataProvider.hxx"
 #include "dbastrings.hrc"
@@ -384,7 +386,7 @@ void SAL_CALL DatabaseDataProvider::setFilter(const ::rtl::OUString & the_value)
         osl::MutexGuard g(m_aMutex);
         m_aFilterManager.setFilterComponent( dbtools::FilterManager::fcPublicFilter, the_value );
     }
-    set(PROPERTY_FILTER,the_value,m_Filter);  
+    set(PROPERTY_FILTER,the_value,m_Filter);
 }
 // -----------------------------------------------------------------------------
 ::sal_Bool SAL_CALL DatabaseDataProvider::getApplyFilter() throw (RuntimeException)
@@ -480,7 +482,7 @@ uno::Reference< sdbc::XConnection > SAL_CALL DatabaseDataProvider::getActiveConn
 
 void SAL_CALL DatabaseDataProvider::setActiveConnection(const uno::Reference< sdbc::XConnection > & the_value) throw (uno::RuntimeException, lang::IllegalArgumentException)
 {
-    if ( !the_value.is() ) 
+    if ( !the_value.is() )
         throw lang::IllegalArgumentException();
     set(PROPERTY_ACTIVE_CONNECTION,the_value,m_xActiveConnection);
 }
@@ -501,7 +503,7 @@ bool DatabaseDataProvider::impl_executeRowSet_throw(::osl::ResettableMutexGuard&
 {
     uno::Reference<task::XInteractionHandler> xHandler(
                     m_xContext->getServiceManager()->createInstanceWithContext(
-                                ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.sdb.InteractionHandler")) 
+                                ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.sdb.InteractionHandler"))
                                 ,m_xContext),
                     uno::UNO_QUERY);
     if (!fillParameters(_rClearForNotifies, xHandler))
@@ -724,7 +726,7 @@ void SAL_CALL DatabaseDataProvider::execute() throw( SQLException, RuntimeExcept
     impl_fillRowSet_throw();
     bool bRet = impl_executeRowSet_throw(aGuard);
     if ( bRet )
-        impl_fillInternalDataProvider_throw();    
+        impl_fillInternalDataProvider_throw();
 }
 //------------------------------------------------------------------------------
 void SAL_CALL DatabaseDataProvider::addRowSetListener(const uno::Reference<sdbc::XRowSetListener>& _rListener) throw( RuntimeException )
@@ -867,3 +869,4 @@ void DatabaseDataProvider::impl_invalidateParameter_nothrow()
 }
 // -----------------------------------------------------------------------------
 } // namespace dbaccess
+
