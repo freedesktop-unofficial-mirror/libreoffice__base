@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: RowSetCache.cxx,v $
- * $Revision: 1.99 $
+ * $Revision: 1.100 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -31,32 +31,11 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_dbaccess.hxx"
 
-#ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
-#include "RowSetCache.hxx"
-#endif
-#ifndef _DBA_CORE_RESOURCE_HXX_
-#include "core_resource.hxx"
-#endif
-#ifndef _DBA_CORE_RESOURCE_HRC_
-#include "core_resource.hrc"
-#endif
 #ifndef _COMPHELPER_SEQSTREAM_HXX
 #include <comphelper/seqstream.hxx>
 #endif
 #ifndef _COMPHELPER_UNO3_HXX_
 #include <comphelper/uno3.hxx>
-#endif
-#ifndef DBACCESS_CORE_API_BOOKMARKSET_HXX
-#include "BookmarkSet.hxx"
-#endif
-#ifndef DBACCESS_CORE_API_STATICSET_HXX
-#include "StaticSet.hxx"
-#endif
-#ifndef DBACCESS_CORE_API_KEYSET_HXX
-#include "KeySet.hxx"
-#endif
-#ifndef DBACCESS_SHARED_DBASTRINGS_HRC
-#include "dbastrings.hrc"
 #endif
 #ifndef _COMPHELPER_EXTRACT_HXX_
 #include <comphelper/extract.hxx>
@@ -114,6 +93,27 @@
 #endif
 
 #include <algorithm>
+#ifndef DBACCESS_CORE_API_ROWSETCACHE_HXX
+#include "RowSetCache.hxx"
+#endif
+#ifndef _DBA_CORE_RESOURCE_HXX_
+#include "core_resource.hxx"
+#endif
+#ifndef _DBA_CORE_RESOURCE_HRC_
+#include "core_resource.hrc"
+#endif
+#ifndef DBACCESS_CORE_API_BOOKMARKSET_HXX
+#include "BookmarkSet.hxx"
+#endif
+#ifndef DBACCESS_CORE_API_STATICSET_HXX
+#include "StaticSet.hxx"
+#endif
+#ifndef DBACCESS_CORE_API_KEYSET_HXX
+#include "KeySet.hxx"
+#endif
+#ifndef DBACCESS_SHARED_DBASTRINGS_HRC
+#include "dbastrings.hrc"
+#endif
 
 using namespace dbaccess;
 using namespace dbtools;
@@ -395,7 +395,7 @@ ORowSetCache::~ORowSetCache()
 // -------------------------------------------------------------------------
 void ORowSetCache::setMaxRowSize(sal_Int32 _nSize)
 {
-    
+
     if(_nSize == m_nFetchSize)
         return;
 
@@ -419,7 +419,7 @@ void ORowSetCache::setMaxRowSize(sal_Int32 _nSize)
         for(;aCacheIter != m_aCacheIterators.end();++aCacheIter)
         {
             aCacheIterToChange[aCacheIter->first] = sal_False;
-            if ( !aCacheIter->second.pRowSet->isInsertRow() 
+            if ( !aCacheIter->second.pRowSet->isInsertRow()
                 /*&& aCacheIter->second.aIterator != m_pMatrix->end()*/ && !m_bModified )
             {
                 ptrdiff_t nDist = (aCacheIter->second.aIterator - m_pMatrix->begin());
@@ -472,7 +472,7 @@ Reference< XResultSetMetaData > ORowSetCache::getMetaData(  )
 // ::com::sun::star::sdbcx::XRowLocate
 Any ORowSetCache::getBookmark(  )
 {
-    
+
     if(m_bAfterLast)
         throwFunctionSequenceException(m_xSet.get());
 
@@ -546,13 +546,13 @@ sal_Int32 ORowSetCache::compareBookmarks( const Any& _first, const Any& _second 
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::hasOrderedBookmarks(  )
 {
-    
+
     return m_pCacheSet->hasOrderedBookmarks();
 }
 // -------------------------------------------------------------------------
 sal_Int32 ORowSetCache::hashBookmark( const Any& bookmark )
 {
-    
+
     return m_pCacheSet->hashBookmark(bookmark);
 }
 // -------------------------------------------------------------------------
@@ -562,7 +562,7 @@ void ORowSetCache::updateValue(sal_Int32 columnIndex,const ORowSetValue& x)
 {
     checkUpdateConditions(columnIndex);
 
-    
+
     (*(*m_aInsertRow))[columnIndex].setBound(sal_True);
     (*(*m_aInsertRow))[columnIndex] = x;
     (*(*m_aInsertRow))[columnIndex].setModified();
@@ -572,7 +572,7 @@ void ORowSetCache::updateBinaryStream( sal_Int32 columnIndex, const Reference< :
 {
     checkUpdateConditions(columnIndex);
 
-    
+
     Sequence<sal_Int8> aSeq;
     if(x.is())
         x->readSomeBytes(aSeq,length);
@@ -583,7 +583,7 @@ void ORowSetCache::updateCharacterStream( sal_Int32 columnIndex, const Reference
 {
     checkUpdateConditions(columnIndex);
 
-    
+
     Sequence<sal_Int8> aSeq;
     if(x.is())
         x->readSomeBytes(aSeq,length);
@@ -595,7 +595,7 @@ void ORowSetCache::updateObject( sal_Int32 columnIndex, const Any& x )
 {
     checkUpdateConditions(columnIndex);
 
-    
+
     (*(*m_aInsertRow))[columnIndex].setBound(sal_True);
     (*(*m_aInsertRow))[columnIndex] = x;
     (*(*m_aInsertRow))[columnIndex].setModified();
@@ -605,7 +605,7 @@ void ORowSetCache::updateNumericObject( sal_Int32 columnIndex, const Any& x, sal
 {
     checkUpdateConditions(columnIndex);
 
-    
+
     (*(*m_aInsertRow))[columnIndex].setBound(sal_True);
     (*(*m_aInsertRow))[columnIndex] = x;
     (*(*m_aInsertRow))[columnIndex].setModified();
@@ -614,7 +614,7 @@ void ORowSetCache::updateNumericObject( sal_Int32 columnIndex, const Any& x, sal
 // XResultSet
 sal_Bool ORowSetCache::next(  )
 {
-    
+
 
     if(!isAfterLast())
     {
@@ -639,32 +639,32 @@ sal_Bool ORowSetCache::next(  )
 sal_Bool ORowSetCache::isBeforeFirst(  )
 {
     //	return !m_nPosition;
-    
+
     return m_bBeforeFirst;
 }
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::isAfterLast(  )
 {
-    
+
     return m_bAfterLast;
 }
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::isFirst(  )
 {
-    
+
     return m_nPosition == 1; // ask resultset for
 }
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::isLast(  )
 {
     //	return m_bRowCountFinal ? (m_nPosition==m_nRowCount) : m_pCacheSet->isLast();
-    
+
     return m_nPosition == m_nRowCount;
 }
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::beforeFirst(  )
 {
-    
+
 
     if(!m_bBeforeFirst)
     {
@@ -680,7 +680,7 @@ sal_Bool ORowSetCache::beforeFirst(  )
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::afterLast(  )
 {
-    
+
 
     if(!m_bAfterLast)
     {
@@ -772,7 +772,7 @@ sal_Bool ORowSetCache::fillMatrix(sal_Int32& _nNewStartPos,sal_Int32 _nNewEndPos
 // -------------------------------------------------------------------------
 sal_Bool ORowSetCache::moveWindow()
 {
-    
+
     sal_Bool bRet = sal_True;
 
     sal_Int32 nDiff = (sal_Int32)(m_nFetchSize*0.5 -0.5);
@@ -824,7 +824,7 @@ sal_Bool ORowSetCache::moveWindow()
                 ORowSetCacheMap::iterator aCacheIter = m_aCacheIterators.begin();
                 for(;aCacheIter != m_aCacheIterators.end();++aCacheIter)
                 {
-                    if ( !aCacheIter->second.pRowSet->isInsertRow() 
+                    if ( !aCacheIter->second.pRowSet->isInsertRow()
                         && aCacheIter->second.aIterator != m_pMatrix->end() && !m_bModified )
                     {
                         ptrdiff_t nDist = (aCacheIter->second.aIterator - m_pMatrix->begin());
@@ -1346,7 +1346,7 @@ void ORowSetCache::moveToInsertRow(  )
 // -------------------------------------------------------------------------
 ORowSetCacheIterator ORowSetCache::createIterator(ORowSetBase* _pRowSet)
 {
-    
+
     ORowSetCacheIterator_Helper aHelper;
     aHelper.aIterator = m_pMatrix->end();
     aHelper.pRowSet = _pRowSet;
@@ -1588,3 +1588,8 @@ sal_Bool ORowSetCache::fill(ORowSetMatrix::iterator& _aIter,const ORowSetMatrix:
     return _bCheck;
 }
 // -----------------------------------------------------------------------------
+
+
+
+
+
