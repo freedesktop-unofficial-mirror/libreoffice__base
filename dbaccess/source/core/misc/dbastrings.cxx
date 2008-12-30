@@ -6,8 +6,8 @@
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: xmlstrings.cxx,v $
- * $Revision: 1.5 $
+ * $RCSfile: dbastrings.cxx,v $
+ * $Revision: 1.11 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -30,10 +30,22 @@
 
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_dbaccess.hxx"
-#include "xmlstrings.hrc"
+#ifndef DBACCESS_SHARED_DBASTRINGS_HRC
+#include "dbastrings.hrc"
+#endif
 
-namespace dbaxml
+namespace dbaccess
 {
-#include "stringconstants.inc"
-}
 
+#include "stringconstants.inc"
+    //============================================================
+    //= SQLSTATE
+    //============================================================
+    IMPLEMENT_CONSTASCII_USTRING(SQLSTATE_GENERAL, "01000");
+
+    //============================================================
+    //= Properties
+    //============================================================
+    IMPLEMENT_CONSTASCII_USTRING(PROPERTY_APPLYFORMDESIGNMODE, "ApplyFormDesignMode");
+
+}
