@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: UITools.cxx,v $
- * $Revision: 1.7.28.2 $
+ * $Revision: 1.7.36.2 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -281,7 +281,7 @@ void adjustSectionName(const uno::Reference< report::XGroup >& _xGroup,sal_Int32
             pRet->addProperty(PROPERTY_LEFTMARGIN);
             pRet->addProperty(PROPERTY_RIGHTMARGIN);
             pRet->addProperty(PROPERTY_PAPERSIZE);
-            pRet->addProperty(PROPERTY_BACKCOLOR);            
+            pRet->addProperty(PROPERTY_BACKCOLOR);
         }
     }
     return pRet;
@@ -309,7 +309,7 @@ namespace
                 break;
 
         }
-        
+
         Font aDefaultFont = Application::GetDefaultDevice()->GetSettings().GetStyleSettings().GetAppFont();
         return VCLUnoHelper::CreateFont( _out_rControlFont, aDefaultFont );
     }
@@ -374,7 +374,7 @@ namespace
             ++pPropertyMap;
         }
     }
-    
+
     void lcl_fillItemsToShape( const uno::Reference<report::XShape >& _xShape,const SfxItemSet& _rItemSet )
     {
         const uno::Reference< beans::XPropertySetInfo> xInfo = _xShape->getPropertySetInfo();
@@ -422,7 +422,7 @@ namespace
         _rItemSet.Put(SvxAutoKernItem(_rxReportControlFormat->getCharAutoKerning(),ITEMID_AUTOKERN));
         _rItemSet.Put(SvxCrossedOutItem(aFont.GetStrikeout(),ITEMID_CROSSEDOUT));
         _rItemSet.Put(SvxCaseMapItem(static_cast<SvxCaseMap>(_rxReportControlFormat->getCharCaseMap()),ITEMID_CASEMAP));
-        
+
         _rItemSet.Put(SvxEscapementItem(_rxReportControlFormat->getCharEscapement(),_rxReportControlFormat->getCharEscapementHeight(),ITEMID_ESCAPEMENT));
         _rItemSet.Put(SvxBlinkItem(_rxReportControlFormat->getCharFlash(),ITEMID_BLINK));
         _rItemSet.Put(SvxCharHiddenItem(_rxReportControlFormat->getCharHidden(),ITEMID_CHARHIDDEN));
@@ -467,12 +467,12 @@ namespace
         const SfxPoolItem* pItem( NULL );
         if ( SFX_ITEM_SET == _rItemSet.GetItemState( _nFont,sal_True,&pItem) && pItem->ISA(SvxFontItem))
         {
-            const SvxFontItem* pFontItem = static_cast<const SvxFontItem*>(pItem);						
+            const SvxFontItem* pFontItem = static_cast<const SvxFontItem*>(pItem);
             aNewFont.SetName( pFontItem->GetFamilyName());
             aNewFont.SetStyleName(pFontItem->GetStyleName());
             aNewFont.SetFamily(pFontItem->GetFamily());
             aNewFont.SetPitch(pFontItem->GetPitch());
-            aNewFont.SetCharSet(pFontItem->GetCharSet());						
+            aNewFont.SetCharSet(pFontItem->GetCharSet());
         } // if ( SFX_ITEM_SET == _rItemSet.GetItemState( ITEMID_FONT,sal_True,&pItem) && pItem->ISA(SvxFontItem))
         if ( SFX_ITEM_SET == _rItemSet.GetItemState( _nFontHeight,sal_True,&pItem) && pItem->ISA(SvxFontHeightItem))
         {
@@ -499,7 +499,7 @@ namespace
             const SvxCrossedOutItem* pFontItem = static_cast<const SvxCrossedOutItem*>(pItem);
             aNewFont.SetStrikeout(pFontItem->GetStrikeout());
         }
-        
+
         if ( SFX_ITEM_SET == _rItemSet.GetItemState( ITEMID_CHARROTATE,sal_True,&pItem) && pItem->ISA(SvxCharRotateItem))
         {
             const SvxCharRotateItem* pRotateItem = static_cast<const SvxCharRotateItem*>(pItem);
@@ -513,7 +513,7 @@ namespace
         if ( SFX_ITEM_SET == _rItemSet.GetItemState( ITEMID_UNDERLINE,sal_True,&pItem) && pItem->ISA(SvxUnderlineItem))
         {
             const SvxUnderlineItem* pFontItem = static_cast<const SvxUnderlineItem*>(pItem);
-            aNewFont.SetUnderline(pFontItem->GetUnderline());
+            aNewFont.SetUnderline(pFontItem->GetLineStyle());
         }
         if ( SFX_ITEM_SET == _rItemSet.GetItemState( ITEMID_COLOR,sal_True,&pItem) && pItem->ISA(SvxColorItem))
         {
@@ -687,14 +687,14 @@ bool openCharDialog( const uno::Reference<report::XReportControlFormat >& _rxRep
     // ------------
     // UNO->ItemSet
     static SfxItemInfo aItemInfos[] =
-    {			
+    {
         { SID_ATTR_CHAR_FONT, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_FONTHEIGHT, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_LANGUAGE, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_POSTURE, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_WEIGHT, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_SHADOWED, SFX_ITEM_POOLABLE },
-        { SID_ATTR_CHAR_WORDLINEMODE, SFX_ITEM_POOLABLE },		
+        { SID_ATTR_CHAR_WORDLINEMODE, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_CONTOUR, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_STRIKEOUT, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_UNDERLINE, SFX_ITEM_POOLABLE },
@@ -704,7 +704,7 @@ bool openCharDialog( const uno::Reference<report::XReportControlFormat >& _rxRep
         { SID_ATTR_CHAR_ESCAPEMENT, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_FONTLIST, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_AUTOKERN, SFX_ITEM_POOLABLE },
-        { SID_COLOR_TABLE, SFX_ITEM_POOLABLE },		
+        { SID_COLOR_TABLE, SFX_ITEM_POOLABLE },
         { SID_ATTR_FLASH, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_EMPHASISMARK, SFX_ITEM_POOLABLE },
         { SID_ATTR_CHAR_TWO_LINES, SFX_ITEM_POOLABLE },
@@ -774,8 +774,8 @@ bool openCharDialog( const uno::Reference<report::XReportControlFormat >& _rxRep
         new SvxFontHeightItem(240,100,ITEMID_FONTHEIGHT_COMPLEX),
         new SvxLanguageItem(LANGUAGE_GERMAN,ITEMID_LANGUAGE_COMPLEX),
         new SvxPostureItem(ITALIC_NONE,ITEMID_POSTURE_COMPLEX),
-        new SvxWeightItem(WEIGHT_NORMAL,ITEMID_WEIGHT_COMPLEX)        
-        
+        new SvxWeightItem(WEIGHT_NORMAL,ITEMID_WEIGHT_COMPLEX)
+
     };
 
     OSL_ASSERT((sizeof(pDefaults)/sizeof(pDefaults[0])) == (sizeof(aItemInfos)/sizeof(aItemInfos[0])));
@@ -842,7 +842,7 @@ bool openAreaDialog( const uno::Reference<report::XShape >& _xShape,const uno::R
     {
         SfxItemPool& rItemPool = pModel->GetItemPool();
         ::std::auto_ptr<SfxItemSet> pDescriptor( new SfxItemSet( rItemPool, rItemPool.GetFirstWhich(),rItemPool.GetLastWhich() ) );
-        
+
         lcl_fillShapeToItems(_xShape,*pDescriptor);
 
         {	// want the dialog to be destroyed before our set
@@ -879,21 +879,21 @@ void applyCharacterSettings( const uno::Reference< report::XReportControlFormat 
         if ( aSettings.get( "Font" ) >>= aAwtFont )
         {
             ::rtl::OUString sTemp = aAwtFont.Name;
-            aAwtFont.Name = ::rtl::OUString(); // hack to 
+            aAwtFont.Name = ::rtl::OUString(); // hack to
             _rxReportControlFormat->setFontDescriptor( aAwtFont );
             _rxReportControlFormat->setCharFontName( sTemp );
         } // if ( aSettings.get( "Font" ) >>= aAwtFont )
         if ( aSettings.get( "FontAsian" ) >>= aAwtFont )
         {
             ::rtl::OUString sTemp = aAwtFont.Name;
-            aAwtFont.Name = ::rtl::OUString(); // hack to 
+            aAwtFont.Name = ::rtl::OUString(); // hack to
             _rxReportControlFormat->setFontDescriptorAsian( aAwtFont );
             _rxReportControlFormat->setCharFontNameAsian( sTemp );
         } // if ( aSettings.get( "Font" ) >>= aAwtFont )
         if ( aSettings.get( "FontComplex" ) >>= aAwtFont )
         {
             ::rtl::OUString sTemp = aAwtFont.Name;
-            aAwtFont.Name = ::rtl::OUString(); // hack to 
+            aAwtFont.Name = ::rtl::OUString(); // hack to
             _rxReportControlFormat->setFontDescriptorComplex( aAwtFont );
             _rxReportControlFormat->setCharFontNameComplex( sTemp );
         }
@@ -942,12 +942,12 @@ SdrObject* isOver(const Rectangle& _rRect,SdrPage& _rPage,SdrView& _rView,bool _
 {
     SdrObject* pOverlappedObj = NULL;
     SdrObjListIter aIter(_rPage,IM_DEEPNOGROUPS);
-    SdrObject* pObjIter = NULL;        
+    SdrObject* pObjIter = NULL;
 
     while( !pOverlappedObj && (pObjIter = aIter.Next()) != NULL )
     {
         if ( _pIgnore != pObjIter
-            && (_bAllObjects || !_rView.IsObjMarked(pObjIter)) 
+            && (_bAllObjects || !_rView.IsObjMarked(pObjIter))
             && dynamic_cast<OUnoObject*>(pObjIter) != NULL )
         {
             Rectangle aRect = _rRect.GetIntersection(pObjIter->GetLastBoundRect());
@@ -983,8 +983,8 @@ SdrObject* isOver(const Rectangle& _rRect,SdrPage& _rPage,SdrView& _rView,bool _
         {
             continue;
         }
-        
-        if ( (_bAllObjects || !_rView.IsObjMarked(pObjIter)) 
+
+        if ( (_bAllObjects || !_rView.IsObjMarked(pObjIter))
              && dynamic_cast<OUnoObject*>(pObjIter) != NULL )
         {
             Rectangle aRect = _rRect.GetIntersection(pObjIter->GetLastBoundRect());
