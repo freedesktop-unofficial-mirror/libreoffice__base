@@ -345,7 +345,7 @@ public class SDBCReportDataFactory implements DataSourceFactory
                             }
 
                             // now execute
-                            XPreparedStatement xStatement = connection.prepareStatement(sStatementToExecute);
+                            final XPreparedStatement xStatement = connection.prepareStatement(sStatementToExecute);
                             // transfer ownership of this temporary object to the caller
                             out[0] = (XComponent) UnoRuntime.queryInterface(XComponent.class, xStatement);
 

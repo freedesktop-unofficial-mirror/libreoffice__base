@@ -108,7 +108,7 @@ public class TextRawReportProcessor extends SinglePassReportProcessor
         final ReportContext context = super.createReportContext(job, target);
         if (context instanceof ReportContextImpl)
         {
-            ReportContextImpl impl = (ReportContextImpl) context;
+            final ReportContextImpl impl = (ReportContextImpl) context;
             impl.setFormulaContext(new PentahoFormulaContext(impl.getFormulaContext(),job.getConfiguration()));
         }
         return context;

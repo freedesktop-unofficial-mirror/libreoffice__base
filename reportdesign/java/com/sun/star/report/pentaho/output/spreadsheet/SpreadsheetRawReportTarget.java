@@ -159,9 +159,9 @@ public class SpreadsheetRawReportTarget extends OfficeDocumentReportTarget
     private int columnCounter;
     private int columnSpanCounter;
     private String unitsOfMeasure;
-    private ArrayList shapes;
-    private ArrayList ole;
-    private ArrayList rowHeights;
+    final private ArrayList shapes;
+    final private ArrayList ole;
+    final private ArrayList rowHeights;
 
     public SpreadsheetRawReportTarget(final ReportJob reportJob,
             final ResourceManager resourceManager,
@@ -412,7 +412,7 @@ public class SpreadsheetRawReportTarget extends OfficeDocumentReportTarget
             final String styleName = (String) attrs.getAttribute(OfficeNamespaces.TABLE_NS, OfficeToken.STYLE_NAME);
             if (styleName != null)
             {
-                OfficeStyle cellStyle = getPredefinedStylesCollection().getStyle(OfficeToken.TABLE_CELL, styleName);
+                final OfficeStyle cellStyle = getPredefinedStylesCollection().getStyle(OfficeToken.TABLE_CELL, styleName);
                 if (cellStyle != null)
                 {
                     final Element props = cellStyle.getTableCellProperties();

@@ -47,8 +47,8 @@ import org.jfree.util.Configuration;
 public class PentahoFormulaContext implements FormulaContext
 {
 
-    private FormulaContext backend;
-    private Configuration config;
+    final private FormulaContext backend;
+    final private Configuration config;
 
     public PentahoFormulaContext(final FormulaContext backend, final Configuration _config)
     {
