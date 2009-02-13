@@ -194,7 +194,6 @@
 #ifndef DBAUI_QUERYORDER_HXX
 #include "queryorder.hxx"
 #endif
-#include <rtl/logfile.hxx>
 
 #include <svx/svxdlg.hxx> //CHINA001
 //#include <svx/fmresids.hrc> //CHINA001
@@ -423,7 +422,6 @@ void SAL_CALL SbaXDataBrowserController::FormControllerImpl::disposing(const ::c
 //------------------------------------------------------------------
 Sequence< Type > SAL_CALL SbaXDataBrowserController::getTypes(	) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::getTypes" );
     return ::comphelper::concatSequences(
         SbaXDataBrowserController_Base::getTypes(),
         m_pFormControllerImpl->getTypes()
@@ -433,7 +431,6 @@ Sequence< Type > SAL_CALL SbaXDataBrowserController::getTypes(	) throw (RuntimeE
 //------------------------------------------------------------------
 Sequence< sal_Int8 > SAL_CALL SbaXDataBrowserController::getImplementationId(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::getImplementationId" );
     static ::cppu::OImplementationId * pId = 0;
     if (! pId)
     {
@@ -450,7 +447,6 @@ Sequence< sal_Int8 > SAL_CALL SbaXDataBrowserController::getImplementationId(  )
 //------------------------------------------------------------------
 Any SAL_CALL SbaXDataBrowserController::queryInterface(const Type& _rType) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::queryInterface" );
     // check for our additional interfaces
     Any aRet = SbaXDataBrowserController_Base::queryInterface(_rType);
 
@@ -485,7 +481,6 @@ SbaXDataBrowserController::SbaXDataBrowserController(const Reference< ::com::sun
     ,m_bClosingKillOpen( sal_False )
     ,m_bErrorOccured( sal_False )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::SbaXDataBrowserController" );
     DBG_CTOR(SbaXDataBrowserController,NULL);
 
     // create the form controller aggregate
@@ -504,7 +499,6 @@ SbaXDataBrowserController::SbaXDataBrowserController(const Reference< ::com::sun
 //------------------------------------------------------------------------------
 SbaXDataBrowserController::~SbaXDataBrowserController()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::~SbaXDataBrowserController" );
     //	deleteView();
     // release the aggregated form controller
     if (m_xFormControllerImpl.is())
@@ -519,7 +513,6 @@ SbaXDataBrowserController::~SbaXDataBrowserController()
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::startFrameListening( const Reference< XFrame >& _rxFrame )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::startFrameListening" );
     SbaXDataBrowserController_Base::startFrameListening( _rxFrame );
 
     Reference< XFrameActionListener >	xAggListener;
@@ -533,7 +526,6 @@ void SbaXDataBrowserController::startFrameListening( const Reference< XFrame >& 
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::stopFrameListening( const Reference< XFrame >& _rxFrame )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::stopFrameListening" );
     SbaXDataBrowserController_Base::stopFrameListening( _rxFrame );
 
     Reference< XFrameActionListener >	xAggListener;
@@ -547,7 +539,6 @@ void SbaXDataBrowserController::stopFrameListening( const Reference< XFrame >& _
 // -----------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::reloadForm(const Reference< XLoadable >& _rxLoadable)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::reloadForm" );
     WaitObject aWO(getBrowserView());
 
     setLoadingStarted();
@@ -564,7 +555,6 @@ sal_Bool SbaXDataBrowserController::reloadForm(const Reference< XLoadable >& _rx
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::initFormatter()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::initFormatter" );
     // ---------------------------------------------------------------
     // create a formatter working with the connections format supplier
     Reference< ::com::sun::star::util::XNumberFormatsSupplier >  xSupplier(::dbtools::getNumberFormats(::dbtools::getConnection(m_xRowSet), sal_True,getORB()));
@@ -583,7 +573,6 @@ void SbaXDataBrowserController::initFormatter()
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::describeSupportedFeatures()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::describeSupportedFeatures" );
     SbaXDataBrowserController_Base::describeSupportedFeatures();
     implDescribeSupportedFeature( ".uno:FormSlots/undoRecord",      ID_BROWSER_UNDORECORD,  CommandGroup::CONTROLS );
     implDescribeSupportedFeature( ".uno:FormController/undoRecord", ID_BROWSER_UNDORECORD,  CommandGroup::CONTROLS );
@@ -607,7 +596,6 @@ void SbaXDataBrowserController::describeSupportedFeatures()
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::Construct" );
     // ---------------------------------------------
     // create/initialize the form and the grid model
     m_xRowSet = CreateForm();
@@ -724,40 +712,34 @@ sal_Bool SbaXDataBrowserController::Construct(Window* pParent)
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::LoadForm()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::LoadForm" );
     reloadForm( m_xLoadable );
     return sal_True;
 }
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::AddColumnListener(const Reference< XPropertySet > & /*xCol*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::AddColumnListener" );
     // we're not interested in any column properties ...
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::RemoveColumnListener(const Reference< XPropertySet > & /*xCol*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::RemoveColumnListener" );
 }
 //------------------------------------------------------------------------------
 Reference< XRowSet >  SbaXDataBrowserController::CreateForm()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::CreateForm" );
     return Reference< XRowSet > (getORB()->createInstance(::rtl::OUString::createFromAscii("com.sun.star.form.component.Form")), UNO_QUERY);
 }
 
 //------------------------------------------------------------------------------
 Reference< ::com::sun::star::form::XFormComponent >  SbaXDataBrowserController::CreateGridModel()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::CreateGridModel" );
     return Reference< ::com::sun::star::form::XFormComponent > (getORB()->createInstance(::rtl::OUString::createFromAscii("com.sun.star.form.component.GridControl")), UNO_QUERY);
 }
 
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::addModelListeners(const Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::addModelListeners" );
     // ... all the grid columns
     addColumnListeners(_xGridControlModel);
 
@@ -774,7 +756,6 @@ void SbaXDataBrowserController::addModelListeners(const Reference< ::com::sun::s
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::removeModelListeners(const Reference< XControlModel > & _xGridControlModel)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::removeModelListeners" );
     // every single column model
     Reference< XIndexContainer >  xColumns(_xGridControlModel, UNO_QUERY);
     if (xColumns.is())
@@ -799,7 +780,6 @@ void SbaXDataBrowserController::removeModelListeners(const Reference< XControlMo
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::addControlListeners(const Reference< ::com::sun::star::awt::XControl > & _xGridControl)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::addControlListeners" );
     // to ge the 'modified' for the current cell
     Reference< XModifyBroadcaster >  xBroadcaster(getBrowserView()->getGridControl(), UNO_QUERY);
     if (xBroadcaster.is())
@@ -819,7 +799,6 @@ void SbaXDataBrowserController::addControlListeners(const Reference< ::com::sun:
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::removeControlListeners(const Reference< ::com::sun::star::awt::XControl > & _xGridControl)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::removeControlListeners" );
     Reference< XModifyBroadcaster >  xBroadcaster(_xGridControl, UNO_QUERY);
     if (xBroadcaster.is())
         xBroadcaster->removeModifyListener(static_cast<XModifyListener*>(this));
@@ -836,7 +815,6 @@ void SbaXDataBrowserController::removeControlListeners(const Reference< ::com::s
 //------------------------------------------------------------------
 void SAL_CALL SbaXDataBrowserController::focusGained(const FocusEvent& /*e*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::focusGained" );
     // notify our activate listeners (registered on the form controller aggregate)
     EventObject aEvt(*this);
     ::cppu::OInterfaceIteratorHelper aIter(m_pFormControllerImpl->m_aActivateListeners);
@@ -847,7 +825,6 @@ void SAL_CALL SbaXDataBrowserController::focusGained(const FocusEvent& /*e*/) th
 //------------------------------------------------------------------
 void SAL_CALL SbaXDataBrowserController::focusLost(const FocusEvent& e) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::focusLost" );
     // some general checks
     if (!getBrowserView() || !getBrowserView()->getGridControl().is())
         return;
@@ -882,21 +859,18 @@ void SAL_CALL SbaXDataBrowserController::focusLost(const FocusEvent& e) throw( R
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::disposingGridControl(const ::com::sun::star::lang::EventObject& /*Source*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposingGridControl" );
     removeControlListeners(getBrowserView()->getGridControl());
 }
 
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::disposingGridModel(const ::com::sun::star::lang::EventObject& /*Source*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposingGridModel" );
     removeModelListeners(getControlModel());
 }
 
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::disposingFormModel(const ::com::sun::star::lang::EventObject& Source)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposingFormModel" );
     Reference< XPropertySet >  xSourceSet(Source.Source, UNO_QUERY);
     if (xSourceSet.is())
     {
@@ -925,14 +899,12 @@ void SbaXDataBrowserController::disposingFormModel(const ::com::sun::star::lang:
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::disposingColumnModel(const ::com::sun::star::lang::EventObject& Source)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposingColumnModel" );
     RemoveColumnListener(Reference< XPropertySet > (Source.Source, UNO_QUERY));
 }
 
 // -------------------------------------------------------------------------
 void SbaXDataBrowserController::disposing(const EventObject& Source) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposing" );
     // if it's a component other than our aggregate, forward it to the aggregate
     if ( m_xFormControllerImpl != Source.Source )
     {
@@ -973,7 +945,6 @@ void SbaXDataBrowserController::disposing(const EventObject& Source) throw( Runt
 // -----------------------------------------------------------------------
 void SAL_CALL SbaXDataBrowserController::setIdentifier( const ::rtl::OUString& _Identifier ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::setIdentifier" );
     ::osl::MutexGuard aGuard( getMutex() );
     m_sModuleIdentifier = _Identifier;
 }
@@ -981,7 +952,6 @@ void SAL_CALL SbaXDataBrowserController::setIdentifier( const ::rtl::OUString& _
 // -----------------------------------------------------------------------
 ::rtl::OUString SAL_CALL SbaXDataBrowserController::getIdentifier(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::getIdentifier" );
     ::osl::MutexGuard aGuard( getMutex() );
     return m_sModuleIdentifier;
 }
@@ -989,7 +959,6 @@ void SAL_CALL SbaXDataBrowserController::setIdentifier( const ::rtl::OUString& _
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::propertyChange(const PropertyChangeEvent& evt) throw ( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::propertyChange" );
     Reference< XPropertySet >  xSource(evt.Source, UNO_QUERY);
     if (!xSource.is())
         return;
@@ -1014,40 +983,37 @@ void SbaXDataBrowserController::propertyChange(const PropertyChangeEvent& evt) t
             InvalidateAll();
     }
 
-    
     // the filter or the sort criterias have changed ? -> update our parser
-    if (evt.PropertyName.equals(PROPERTY_ACTIVECOMMAND))
+    if (m_xParser.is())
     {
-        initializeParser();
-        if (m_xParser.is())
+        if (evt.PropertyName.equals(PROPERTY_ACTIVECOMMAND))
+        {
             DO_SAFE( m_xParser->setElementaryQuery(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new query to my parser !" );
-    }
-    else if (evt.PropertyName.equals(PROPERTY_FILTER))
-    {
-        initializeParser();
-        if ( m_xParser.is() && m_xParser->getFilter() != ::comphelper::getString(evt.NewValue))
-        {
-            DO_SAFE( m_xParser->setFilter(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new filter to my parser !" );
         }
-        InvalidateFeature(ID_BROWSER_REMOVEFILTER);
-    }
-    else if (evt.PropertyName.equals(PROPERTY_HAVING_CLAUSE))
-    {
-        initializeParser();
-        if ( m_xParser.is() && m_xParser->getHavingClause() != ::comphelper::getString(evt.NewValue))
+        else if (evt.PropertyName.equals(PROPERTY_FILTER))
         {
-            DO_SAFE( m_xParser->setHavingClause(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new filter to my parser !" );
+            if (m_xParser->getFilter() != ::comphelper::getString(evt.NewValue))
+            {
+                DO_SAFE( m_xParser->setFilter(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new filter to my parser !" );
+            }
+            InvalidateFeature(ID_BROWSER_REMOVEFILTER);
         }
-        InvalidateFeature(ID_BROWSER_REMOVEFILTER);
-    }
-    else if (evt.PropertyName.equals(PROPERTY_ORDER))
-    {
-        initializeParser();
-        if ( m_xParser.is() && m_xParser->getOrder() != ::comphelper::getString(evt.NewValue))
+        else if (evt.PropertyName.equals(PROPERTY_HAVING_CLAUSE))
         {
-            DO_SAFE( m_xParser->setOrder(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new order to my parser !" );
+            if (m_xParser->getHavingClause() != ::comphelper::getString(evt.NewValue))
+            {
+                DO_SAFE( m_xParser->setHavingClause(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new filter to my parser !" );
+            }
+            InvalidateFeature(ID_BROWSER_REMOVEFILTER);
         }
-        InvalidateFeature(ID_BROWSER_REMOVEFILTER);
+        else if (evt.PropertyName.equals(PROPERTY_ORDER))
+        {
+            if (m_xParser->getOrder() != ::comphelper::getString(evt.NewValue))
+            {
+                DO_SAFE( m_xParser->setOrder(::comphelper::getString(evt.NewValue)), "SbaXDataBrowserController::propertyChange : could not forward the new order to my parser !" );
+            }
+            InvalidateFeature(ID_BROWSER_REMOVEFILTER);
+        }
     }
 
     // a new record count ? -> may be our search availability has changed
@@ -1064,14 +1030,12 @@ void SbaXDataBrowserController::propertyChange(const PropertyChangeEvent& evt) t
 //------------------------------------------------------------------------
 void SbaXDataBrowserController::modified(const ::com::sun::star::lang::EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::modified" );
     setCurrentModified( sal_True );
 }
 
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::elementInserted(const ::com::sun::star::container::ContainerEvent& evt) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::elementInserted" );
     DBG_ASSERT(Reference< XInterface >(evt.Source, UNO_QUERY).get() == Reference< XInterface >(getControlModel(), UNO_QUERY).get(),
         "SbaXDataBrowserController::elementInserted: where did this come from (not from the grid model)?!");
     Reference< XPropertySet >  xNewColumn(evt.Element,UNO_QUERY);
@@ -1082,7 +1046,6 @@ void SbaXDataBrowserController::elementInserted(const ::com::sun::star::containe
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::elementRemoved(const ::com::sun::star::container::ContainerEvent& evt) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::elementRemoved" );
     DBG_ASSERT(Reference< XInterface >(evt.Source, UNO_QUERY).get() == Reference< XInterface >(getControlModel(), UNO_QUERY).get(),
         "SbaXDataBrowserController::elementRemoved: where did this come from (not from the grid model)?!");
     Reference< XPropertySet >  xOldColumn(evt.Element,UNO_QUERY);
@@ -1093,7 +1056,6 @@ void SbaXDataBrowserController::elementRemoved(const ::com::sun::star::container
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::elementReplaced(const ::com::sun::star::container::ContainerEvent& evt) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::elementReplaced" );
     DBG_ASSERT(Reference< XInterface >(evt.Source, UNO_QUERY).get() == Reference< XInterface >(getControlModel(), UNO_QUERY).get(),
         "SbaXDataBrowserController::elementReplaced: where did this come from (not from the grid model)?!");
     Reference< XPropertySet >  xOldColumn(evt.ReplacedElement,UNO_QUERY);
@@ -1108,7 +1070,6 @@ void SbaXDataBrowserController::elementReplaced(const ::com::sun::star::containe
 // -----------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::suspend(sal_Bool /*bSuspend*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::suspend" );
     // have a pending open operation ?
     if (PendingLoad())
     {
@@ -1159,7 +1120,6 @@ sal_Bool SbaXDataBrowserController::suspend(sal_Bool /*bSuspend*/) throw( Runtim
 // -----------------------------------------------------------------------
 void SbaXDataBrowserController::disposing()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::disposing" );
     // and dispose the aggregate
     if (m_xFormControllerImpl.is())
     {
@@ -1259,7 +1219,6 @@ void SbaXDataBrowserController::disposing()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::frameAction(const ::com::sun::star::frame::FrameActionEvent& aEvent) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::frameAction" );
     ::osl::MutexGuard aGuard( getMutex() );
 
     SbaXDataBrowserController_Base::frameAction( aEvent );
@@ -1297,7 +1256,6 @@ void SbaXDataBrowserController::frameAction(const ::com::sun::star::frame::Frame
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::errorOccured(const ::com::sun::star::sdb::SQLErrorEvent& aEvent) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::errorOccured" );
     SQLExceptionInfo aInfo(aEvent.Reason);
     if ( aInfo.isValid() )
     {
@@ -1312,7 +1270,6 @@ void SbaXDataBrowserController::errorOccured(const ::com::sun::star::sdb::SQLErr
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::approveParameter(const ::com::sun::star::form::DatabaseParameterEvent& aEvent) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::approveParameter" );
     if (aEvent.Source != getRowSet())
     {
         // not my data source -> allow anything
@@ -1398,14 +1355,12 @@ sal_Bool SbaXDataBrowserController::approveParameter(const ::com::sun::star::for
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::approveReset(const ::com::sun::star::lang::EventObject& /*rEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::approveReset" );
     return sal_True;
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::resetted(const ::com::sun::star::lang::EventObject& rEvent) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::resetted" );
     DBG_ASSERT(rEvent.Source == getControlModel(), "SbaXDataBrowserController::resetted : where did this come from ?");
     (void)rEvent;
     setCurrentModified( sal_False );
@@ -1414,7 +1369,6 @@ void SbaXDataBrowserController::resetted(const ::com::sun::star::lang::EventObje
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::confirmDelete(const ::com::sun::star::sdb::RowChangeEvent& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::confirmDelete" );
     if (QueryBox(getBrowserView(), ModuleRes(QUERY_BRW_DELETE_ROWS)).Execute() != RET_YES)
         return sal_False;
 
@@ -1423,7 +1377,6 @@ sal_Bool SbaXDataBrowserController::confirmDelete(const ::com::sun::star::sdb::R
 //------------------------------------------------------------------------------
 FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::GetState" );
     FeatureState aReturn;
         // (disabled automatically)
 
@@ -1437,10 +1390,7 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
         {
             case ID_BROWSER_REMOVEFILTER:
                 if (!m_xParser.is())
-                {
-                    aReturn.bEnabled = false;
-                    return aReturn;
-                }
+                    break;
                 // any filter or sort order set ?
                 aReturn.bEnabled = m_xParser->getFilter().getLength() || m_xParser->getHavingClause().getLength() || m_xParser->getOrder().getLength();
                 return aReturn;
@@ -1513,8 +1463,7 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
             case ID_BROWSER_AUTOFILTER:
             {
                 // a native statement can't be filtered or sorted
-                const Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
-                if ( !::comphelper::getBOOL(xFormSet->getPropertyValue(PROPERTY_ESCAPE_PROCESSING)))
+                if (!m_xParser.is())
                     break;
 
                 Reference< XPropertySet >  xCurrentField = getBoundField();
@@ -1522,7 +1471,8 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
                     break;
 
                 aReturn.bEnabled = ::comphelper::getBOOL(xCurrentField->getPropertyValue(PROPERTY_ISSEARCHABLE));
-                const Reference< XRowSet > xRow = getRowSet();
+                Reference< XRowSet > xRow = getRowSet();
+                Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
                 if(aReturn.bEnabled && xRow.is()) // check if we stand on a valid row
                     aReturn.bEnabled = !(xRow->isBeforeFirst() || xRow->isAfterLast() || xRow->rowDeleted() || ::comphelper::getINT32(xFormSet->getPropertyValue(PROPERTY_ROWCOUNT)) == 0);
             }
@@ -1530,19 +1480,17 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
 
             case ID_BROWSER_ORDERCRIT:
             case ID_BROWSER_FILTERCRIT:
+                if (!m_xParser.is())
+                    break;
                 {
-                    const Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
-                    if ( !::comphelper::getBOOL(xFormSet->getPropertyValue(PROPERTY_ESCAPE_PROCESSING)))
-                        break;
-
                     Reference< XPropertySet >  xCurrentField = getBoundField();
                     // we are not in the handle column
                     aReturn.bEnabled = getBrowserView()->getVclControl()->GetCurColumnId() != 0 &&
                                         xCurrentField.is() &&
                                        ::comphelper::getBOOL(xCurrentField->getPropertyValue(PROPERTY_ISSEARCHABLE));
 
-                    const Reference< XRowSet > xRow = getRowSet();
-                    
+                    Reference< XRowSet > xRow = getRowSet();
+                    Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
                     if(aReturn.bEnabled && xRow.is()) // check if we stand on a valid row
                         aReturn.bEnabled = !(xRow->isBeforeFirst() || xRow->isAfterLast() || xRow->rowDeleted() || ::comphelper::getINT32(xFormSet->getPropertyValue(PROPERTY_ROWCOUNT)) == 0);
                     // a native statement can't be filtered or sorted
@@ -1630,7 +1578,6 @@ FeatureState SbaXDataBrowserController::GetState(sal_uInt16 nId) const
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::applyParserOrder(const ::rtl::OUString& _rOldOrder)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::applyParserOrder" );
     Reference< XPropertySet > xFormSet(getRowSet(), UNO_QUERY);
     if (!m_xLoadable.is())
     {
@@ -1673,7 +1620,6 @@ void SbaXDataBrowserController::applyParserOrder(const ::rtl::OUString& _rOldOrd
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::applyParserFilter(const ::rtl::OUString& _rOldFilter, sal_Bool _bOldFilterApplied,const ::rtl::OUString& _sOldHaving)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::applyParserFilter" );
     Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
     if (!m_xLoadable.is())
     {
@@ -1722,7 +1668,6 @@ void SbaXDataBrowserController::applyParserFilter(const ::rtl::OUString& _rOldFi
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::ExecuteFilterSortCrit(sal_Bool bFilter)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::ExecuteFilterSortCrit" );
     if (!SaveModified())
         return;
 
@@ -1733,9 +1678,8 @@ void SbaXDataBrowserController::ExecuteFilterSortCrit(sal_Bool bFilter)
         getRowSet()->rowDeleted())
         return;
 
-    initializeParser();
-    const ::rtl::OUString sOldVal = bFilter ? m_xParser->getFilter() : m_xParser->getOrder();
-    const ::rtl::OUString sOldHaving = m_xParser->getHavingClause();
+    ::rtl::OUString sOldVal = bFilter ? m_xParser->getFilter() : m_xParser->getOrder();
+    ::rtl::OUString sOldHaving = m_xParser->getHavingClause();
     try
     {
         Reference< ::com::sun::star::sdbcx::XColumnsSupplier> xSup = getColumnsSupplier();
@@ -1792,7 +1736,6 @@ void SbaXDataBrowserController::ExecuteFilterSortCrit(sal_Bool bFilter)
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::ExecuteSearch()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::ExecuteSearch" );
     // calculate the control source of the active field
     Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
     DBG_ASSERT(xGrid.is(), "SbaXDataBrowserController::ExecuteSearch : the control should have an ::com::sun::star::form::XGrid interface !");
@@ -1851,7 +1794,6 @@ void SbaXDataBrowserController::ExecuteSearch()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::Execute(sal_uInt16 nId, const Sequence< PropertyValue >& _rArgs)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::Execute" );
     sal_Bool bSortUp = sal_True;
 
     switch (nId)
@@ -1973,8 +1915,7 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId, const Sequence< Property
             if (!xField.is())
                 break;
 
-            initializeParser();
-            const ::rtl::OUString sOldSort = m_xParser->getOrder();
+            ::rtl::OUString sOldSort = m_xParser->getOrder();
             sal_Bool bParserSuccess = sal_False;
             HANDLE_SQL_ERRORS(
                 m_xParser->setOrder(::rtl::OUString()); m_xParser->appendOrderByColumn(xField, bSortUp),
@@ -2004,7 +1945,6 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId, const Sequence< Property
             sal_Bool bHaving = sal_False;
             ::rtl::OUString sName;
             xField->getPropertyValue(PROPERTY_NAME) >>= sName;
-            initializeParser();
             Reference< XColumnsSupplier > xColumnsSupplier(m_xParser, UNO_QUERY);
             Reference< ::com::sun::star::container::XNameAccess >  xCols = xColumnsSupplier.is() ? xColumnsSupplier->getColumns() : Reference< ::com::sun::star::container::XNameAccess > ();
             if ( xCols.is() && xCols->hasByName(sName) )
@@ -2015,8 +1955,8 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId, const Sequence< Property
                     xProp->getPropertyValue(sAgg) >>= bHaving;
             }
 
-            const ::rtl::OUString sOldFilter = m_xParser->getFilter();
-            const ::rtl::OUString sOldHaving = m_xParser->getHavingClause();
+            ::rtl::OUString sOldFilter = m_xParser->getFilter();
+            ::rtl::OUString sOldHaving = m_xParser->getHavingClause();
 
             Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
             sal_Bool bApplied = ::comphelper::getBOOL(xFormSet->getPropertyValue(PROPERTY_APPLYFILTER));
@@ -2146,7 +2086,6 @@ void SbaXDataBrowserController::Execute(sal_uInt16 nId, const Sequence< Property
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::SaveModified(sal_Bool bAskFor)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::SaveModified" );
     if ( bAskFor && GetState(ID_BROWSER_SAVERECORD).bEnabled )
     {
         getBrowserView()->getVclControl()->GrabFocus();
@@ -2197,7 +2136,6 @@ sal_Bool SbaXDataBrowserController::SaveModified(sal_Bool bAskFor)
 //------------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::CommitCurrent()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::CommitCurrent" );
     if (!getBrowserView())
         return sal_True;
 
@@ -2219,7 +2157,6 @@ sal_Bool SbaXDataBrowserController::CommitCurrent()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::setCurrentModified( sal_Bool _bSet )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::setCurrentModified" );
     m_bCurrentlyModified = _bSet;
     InvalidateFeature( ID_BROWSER_SAVERECORD );
     InvalidateFeature( ID_BROWSER_UNDORECORD );
@@ -2228,14 +2165,12 @@ void SbaXDataBrowserController::setCurrentModified( sal_Bool _bSet )
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::RowChanged()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::RowChanged" );
     setCurrentModified( sal_False );
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::ColumnChanged()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::ColumnChanged" );
     InvalidateFeature(ID_BROWSER_SORTUP);
     InvalidateFeature(ID_BROWSER_SORTDOWN);
     InvalidateFeature(ID_BROWSER_ORDERCRIT);
@@ -2249,14 +2184,12 @@ void SbaXDataBrowserController::ColumnChanged()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::SelectionChanged()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::SelectionChanged" );
     // not interested in
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::CellActivated()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::CellActivated" );
     m_aInvalidateClipboard.Start();
     OnInvalidateClipboard( NULL );
 }
@@ -2264,7 +2197,6 @@ void SbaXDataBrowserController::CellActivated()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::CellDeactivated()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::CellDeactivated" );
     m_aInvalidateClipboard.Stop();
     OnInvalidateClipboard( NULL );
 }
@@ -2330,7 +2262,6 @@ IMPL_LINK(SbaXDataBrowserController, OnInvalidateClipboard, AutoTimer*, _pTimer)
 // -------------------------------------------------------------------------
 Reference< XPropertySet >  SbaXDataBrowserController::getBoundField(sal_uInt16 nViewPos) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::SaveData" );
     Reference< XPropertySet >  xEmptyReturn;
 
     // get the current column from the grid
@@ -2533,41 +2464,27 @@ IMPL_LINK(SbaXDataBrowserController, OnAsyncGetCellFocus, void*, EMPTYARG)
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::criticalFail()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::criticalFail" );
     InvalidateAll();
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::LoadFinished(sal_Bool /*bWasSynch*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::LoadFinished" );
     if (isValid() && !loadingCancelled())
     {
         // --------------------------------
         // switch the control to alive mode
         getBrowserView()->getGridControl()->setDesignMode(sal_False);
 
-        // -------------------------------
-        InvalidateAll();
-
-        m_aAsyncGetCellFocus.Call();
-    }
-}
-// -----------------------------------------------------------------------------
-void SbaXDataBrowserController::initializeParser() const
-{
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::initializeParser" );
-    if ( !m_xParser.is() )
-    {
         // ----------------------------------------------
         // create a parser (needed for filtering/sorting)
         try
         {
-            const Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
+            Reference< XPropertySet >  xFormSet(getRowSet(), UNO_QUERY);
             if (::comphelper::getBOOL(xFormSet->getPropertyValue(PROPERTY_ESCAPE_PROCESSING)))
             {	// (only if the statement isn't native)
                 // (it is allowed to use the PROPERTY_ISPASSTHROUGH : _after_ loading a form it is valid)
-                const Reference<XMultiServiceFactory> xFactory(::dbtools::getConnection(getRowSet()),UNO_QUERY);
+                Reference<XMultiServiceFactory> xFactory(::dbtools::getConnection(getRowSet()),UNO_QUERY);
                 if ( xFactory.is() )
                     m_xParser.set(xFactory->createInstance(SERVICE_NAME_SINGLESELECTQUERYCOMPOSER),UNO_QUERY);
             }
@@ -2583,16 +2500,20 @@ void SbaXDataBrowserController::initializeParser() const
         }
         catch(Exception&)
         {
-            DBG_WARNING("SbaXDataBrowserController::initializeParser: something went wrong while creating the parser !");
+            DBG_WARNING("SbaXDataBrowserController::LoadFinished: something went wrong while creating the parser !");
             m_xParser = NULL;
             // no further handling, we ignore the error
         }
+
+        // -------------------------------
+        InvalidateAll();
+
+        m_aAsyncGetCellFocus.Call();
     }
 }
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::loaded(const EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::loaded" );
     // not interested in
     // we're loading within an separate thread and have a handling	for it's "finished event"
 }
@@ -2600,14 +2521,12 @@ void SbaXDataBrowserController::loaded(const EventObject& /*aEvent*/) throw( Run
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::unloading(const EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::unloading" );
     // not interested in
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::unloaded(const EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::unloaded" );
     InvalidateAll();
         // do this asynchron, there are other listeners reacting on this message ...
         // (it's a little hack : the grid columns are listening to this event, too, and their bound field may
@@ -2627,14 +2546,12 @@ void SbaXDataBrowserController::unloaded(const EventObject& /*aEvent*/) throw( R
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::reloading(const EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::reloading" );
     // not interested in
 }
 
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::reloaded(const EventObject& /*aEvent*/) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::reloaded" );
     InvalidateAll();
         // do this asynchronously, there are other listeners reacting on this message ...
         // (it's a little hack : the grid columns are listening to this event, too, and their bound field may
@@ -2645,7 +2562,6 @@ void SbaXDataBrowserController::reloaded(const EventObject& /*aEvent*/) throw( R
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::enterFormAction()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::enterFormAction" );
     if (!m_nFormActionNestingLevel)
         // first action -> reset flag
         m_bErrorOccured = false;
@@ -2656,7 +2572,6 @@ void SbaXDataBrowserController::enterFormAction()
 //------------------------------------------------------------------------------
 void SbaXDataBrowserController::leaveFormAction()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::leaveFormAction" );
     DBG_ASSERT(m_nFormActionNestingLevel > 0, "SbaXDataBrowserController::leaveFormAction : invalid call !");
     --m_nFormActionNestingLevel;
 }
@@ -2664,32 +2579,21 @@ void SbaXDataBrowserController::leaveFormAction()
 // -------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::isLoaded() const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::isLoaded" );
     return m_xLoadable.is() && m_xLoadable->isLoaded();
 }
 
 // -------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::isValidCursor() const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::isValidCursor" );
     if (!m_xColumnsSupplier.is())
         return sal_False;
     Reference< ::com::sun::star::container::XNameAccess >  xCols = m_xColumnsSupplier->getColumns();
     if (!xCols.is() || !xCols->hasElements())
         return sal_False;
 
-    sal_Bool bIsValid = !(m_xRowSet->isBeforeFirst() || m_xRowSet->isAfterLast());
-    if ( !bIsValid )
-    {
-        Reference<XPropertySet> xProp(m_xRowSet,UNO_QUERY);
-        bIsValid = ::cppu::any2bool(xProp->getPropertyValue(PROPERTY_ISNEW));
-        if ( !bIsValid )
-        {
-            initializeParser();
-            bIsValid = (m_xParser.is() && (m_xParser->getFilter().getLength() || m_xParser->getHavingClause().getLength() || m_xParser->getOrder().getLength()));
-        }
-    } // if ( !bIsValid )
-    return bIsValid;
+    Reference<XPropertySet> xProp(m_xRowSet,UNO_QUERY);
+    return ::cppu::any2bool(xProp->getPropertyValue(PROPERTY_ISNEW)) || !(m_xRowSet->isBeforeFirst() || m_xRowSet->isAfterLast()) ||
+            (m_xParser.is() && (m_xParser->getFilter().getLength() || m_xParser->getHavingClause().getLength() || m_xParser->getOrder().getLength()));
 }
 
 //==================================================================
@@ -3031,7 +2935,6 @@ IMPL_LINK(LoadFormThread::ThreadStopper, OnDeleteInMainThread, LoadFormThread::T
 // -----------------------------------------------------------------------------
 sal_Int16 SbaXDataBrowserController::getCurrentColumnPosition()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::getCurrentColumnPosition" );
     Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
     sal_Int16 nViewPos = -1;
     try
@@ -3045,7 +2948,6 @@ sal_Int16 SbaXDataBrowserController::getCurrentColumnPosition()
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::setCurrentColumnPosition( sal_Int16 _nPos )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::setCurrentColumnPosition" );
     Reference< ::com::sun::star::form::XGrid >	xGrid(getBrowserView()->getGridControl(), UNO_QUERY);
     try
     {
@@ -3057,7 +2959,6 @@ void SbaXDataBrowserController::setCurrentColumnPosition( sal_Int16 _nPos )
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::BeforeDrop()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::BeforeDrop" );
     Reference< ::com::sun::star::sdb::XSQLErrorBroadcaster >  xFormError(getRowSet(), UNO_QUERY);
     if (xFormError.is())
         xFormError->removeSQLErrorListener((::com::sun::star::sdb::XSQLErrorListener*)this);
@@ -3065,7 +2966,6 @@ void SbaXDataBrowserController::BeforeDrop()
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::AfterDrop()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::AfterDrop" );
     Reference< ::com::sun::star::sdb::XSQLErrorBroadcaster >  xFormError(getRowSet(), UNO_QUERY);
     if (xFormError.is())
         xFormError->addSQLErrorListener((::com::sun::star::sdb::XSQLErrorListener*)this);
@@ -3073,7 +2973,6 @@ void SbaXDataBrowserController::AfterDrop()
 // -----------------------------------------------------------------------------
 void SbaXDataBrowserController::addColumnListeners(const Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::addColumnListeners" );
 // ... all the grid columns
     Reference< ::com::sun::star::container::XIndexContainer >  xColumns(_xGridControlModel, UNO_QUERY);
     if (xColumns.is())
@@ -3089,7 +2988,6 @@ void SbaXDataBrowserController::addColumnListeners(const Reference< ::com::sun::
 // -----------------------------------------------------------------------------
 sal_Bool SbaXDataBrowserController::InitializeGridModel(const Reference< ::com::sun::star::form::XFormComponent > & /*xGrid*/)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaXDataBrowserController::InitializeGridModel" );
     return sal_True;
 }
 //..................................................................

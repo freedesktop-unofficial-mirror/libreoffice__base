@@ -209,7 +209,6 @@ OSingleSelectQueryComposer::OSingleSelectQueryComposer(const Reference< XNameAcc
     ,m_pTables(NULL)
     ,m_nBoolCompareMode( BooleanComparisonMode::EQUAL_INTEGER )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::OSingleSelectQueryComposer" );
     DBG_CTOR(OSingleSelectQueryComposer,NULL);
 
     if ( !m_aContext.is() || !m_xConnection.is() || !m_xConnectionTables.is() )
@@ -269,7 +268,6 @@ OSingleSelectQueryComposer::~OSingleSelectQueryComposer()
 // OComponentHelper
 void SAL_CALL OSingleSelectQueryComposer::disposing(void)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::disposing" );
     OSubComponent::disposing();
 
     MutexGuard aGuard(m_aMutex);
@@ -291,7 +289,6 @@ IMPLEMENT_PROPERTYCONTAINER_DEFAULTS(OSingleSelectQueryComposer)
 // com::sun::star::lang::XUnoTunnel
 sal_Int64 SAL_CALL OSingleSelectQueryComposer::getSomething( const Sequence< sal_Int8 >& rId ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getSomething" );
     if (rId.getLength() == 16 && 0 == rtl_compareMemory(getImplementationId().getConstArray(),  rId.getConstArray(), 16 ) )
         return reinterpret_cast<sal_Int64>(this);
 
@@ -302,7 +299,6 @@ sal_Int64 SAL_CALL OSingleSelectQueryComposer::getSomething( const Sequence< sal
 // XSingleSelectQueryAnalyzer
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getQuery(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getQuery" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
 
@@ -349,35 +345,30 @@ void OSingleSelectQueryComposer::setQuery_Impl( const ::rtl::OUString& command )
 // -----------------------------------------------------------------------------
 Sequence< Sequence< PropertyValue > > SAL_CALL OSingleSelectQueryComposer::getStructuredHavingClause(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getStructuredHavingClause" );
     TGetParseNode F_tmp(&OSQLParseTreeIterator::getSimpleHavingTree);
     return getStructuredCondition(F_tmp);
 }
 // -------------------------------------------------------------------------
 Sequence< Sequence< PropertyValue > > SAL_CALL OSingleSelectQueryComposer::getStructuredFilter(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getStructuredFilter" );
     TGetParseNode F_tmp(&OSQLParseTreeIterator::getSimpleWhereTree);
     return getStructuredCondition(F_tmp);
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::appendHavingClauseByColumn( const Reference< XPropertySet >& column, sal_Bool andCriteria ) throw (SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::appendHavingClauseByColumn" );
     ::std::mem_fun1_t<bool,OSingleSelectQueryComposer,::rtl::OUString> F_tmp(&OSingleSelectQueryComposer::implSetHavingClause);
     setConditionByColumn(column,andCriteria,F_tmp);
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::appendFilterByColumn( const Reference< XPropertySet >& column, sal_Bool andCriteria ) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::appendFilterByColumn" );
     ::std::mem_fun1_t<bool,OSingleSelectQueryComposer,::rtl::OUString> F_tmp(&OSingleSelectQueryComposer::implSetFilter);
     setConditionByColumn(column,andCriteria,F_tmp);
 }
 // -------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::appendOrderByColumn( const Reference< XPropertySet >& column, sal_Bool ascending ) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::appendOrderByColumn" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     if ( !column.is()
@@ -459,7 +450,6 @@ void SAL_CALL OSingleSelectQueryComposer::appendOrderByColumn( const Reference< 
 // -------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::appendGroupByColumn( const Reference< XPropertySet >& column) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::appendGroupByColumn" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     if	( !column.is()
@@ -523,7 +513,6 @@ void SAL_CALL OSingleSelectQueryComposer::appendGroupByColumn( const Reference< 
 // -------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::composeStatementFromParts( const ::std::vector< ::rtl::OUString >& _rParts )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::composeStatementFromParts" );
     DBG_ASSERT( _rParts.size() == (size_t)SQLPartCount, "OSingleSelectQueryComposer::composeStatementFromParts: invalid parts array!" );
 
     ::rtl::OUStringBuffer aSql( m_aPureSelectSQL );
@@ -540,7 +529,6 @@ void SAL_CALL OSingleSelectQueryComposer::appendGroupByColumn( const Reference< 
 // -------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getElementaryQuery() throw (::com::sun::star::uno::RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getElementaryQuery" );
     return composeStatementFromParts( m_aElementaryParts );
 }
 
@@ -598,7 +586,6 @@ namespace
 // -------------------------------------------------------------------------
 void OSingleSelectQueryComposer::setSingleAdditiveClause( SQLPart _ePart, const ::rtl::OUString& _rClause )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setSingleAdditiveClause" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
 
@@ -657,26 +644,22 @@ void OSingleSelectQueryComposer::setSingleAdditiveClause( SQLPart _ePart, const 
 // -------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setFilter( const ::rtl::OUString& filter ) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setFilter" );
     setSingleAdditiveClause( Where, filter );
 }
 
 // -------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setOrder( const ::rtl::OUString& order ) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setOrder" );
     setSingleAdditiveClause( Order, order );
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setGroup( const ::rtl::OUString& group ) throw (SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setGroup" );
     setSingleAdditiveClause( Group, group );
 }
 // -------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setHavingClause( const ::rtl::OUString& filter ) throw(SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setHavingClause" );
     setSingleAdditiveClause( Having, filter );
 }
 
@@ -684,7 +667,6 @@ void SAL_CALL OSingleSelectQueryComposer::setHavingClause( const ::rtl::OUString
 // XTablesSupplier
 Reference< XNameAccess > SAL_CALL OSingleSelectQueryComposer::getTables(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getTables" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     ::osl::MutexGuard aGuard( m_aMutex );
@@ -704,7 +686,6 @@ Reference< XNameAccess > SAL_CALL OSingleSelectQueryComposer::getTables(  ) thro
 // XColumnsSupplier
 Reference< XNameAccess > SAL_CALL OSingleSelectQueryComposer::getColumns(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getColumns" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
     if ( !!m_aCurrentColumns[SelectColumns] )
@@ -874,7 +855,6 @@ Reference< XNameAccess > SAL_CALL OSingleSelectQueryComposer::getColumns(  ) thr
 sal_Bool OSingleSelectQueryComposer::setORCriteria(OSQLParseNode* pCondition, OSQLParseTreeIterator& _rIterator,
                                     ::std::vector< ::std::vector < PropertyValue > >& rFilters, const Reference< ::com::sun::star::util::XNumberFormatter > & xFormatter) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setORCriteria" );
     // Runde Klammern um den Ausdruck
     if (pCondition->count() == 3 &&
         SQL_ISPUNCTUATION(pCondition->getChild(0),"(") &&
@@ -913,7 +893,6 @@ sal_Bool OSingleSelectQueryComposer::setORCriteria(OSQLParseNode* pCondition, OS
 sal_Bool OSingleSelectQueryComposer::setANDCriteria( OSQLParseNode * pCondition,
     OSQLParseTreeIterator& _rIterator, ::std::vector < PropertyValue >& rFilter, const Reference< XNumberFormatter > & xFormatter) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setANDCriteria" );
     // Runde Klammern
     if (SQL_ISRULE(pCondition,boolean_primary))
     {
@@ -1003,7 +982,6 @@ sal_Bool OSingleSelectQueryComposer::setANDCriteria( OSQLParseNode * pCondition,
 // -----------------------------------------------------------------------------
 sal_Int32 OSingleSelectQueryComposer::getPredicateType(OSQLParseNode * _pPredicate) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getPredicateType" );
     sal_Int32 nPredicate = SQLFilterOperator::EQUAL;
     switch (_pPredicate->getNodeType())
     {
@@ -1034,7 +1012,6 @@ sal_Int32 OSingleSelectQueryComposer::getPredicateType(OSQLParseNode * _pPredica
 sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCondition, OSQLParseTreeIterator& _rIterator,
                                             ::std::vector < PropertyValue >& rFilter, const Reference< ::com::sun::star::util::XNumberFormatter > & xFormatter) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setComparsionPredicate" );
     DBG_ASSERT(SQL_ISRULE(pCondition, comparison_predicate),"setComparsionPredicate: pCondition ist kein ComparsionPredicate");
     if (SQL_ISRULE(pCondition->getChild(0), column_ref) ||
         SQL_ISRULE(pCondition->getChild(pCondition->count()-1), column_ref))
@@ -1161,7 +1138,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 //--------------------------------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getColumnName( ::connectivity::OSQLParseNode* pColumnRef, OSQLParseTreeIterator& _rIterator ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getColumnName" );
     ::rtl::OUString aTableRange, aColumnName;
     _rIterator.getColumnRange(pColumnRef,aColumnName,aTableRange);
     return aColumnName;
@@ -1169,7 +1145,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 //------------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getFilter(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getFilter" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
     return getSQLPart(Where,m_aAdditiveIterator,sal_False);
@@ -1177,7 +1152,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 // -------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getOrder(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getOrder" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
     return getSQLPart(Order,m_aAdditiveIterator,sal_False);
@@ -1185,7 +1159,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 // -------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getGroup(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getGroup" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
     return getSQLPart(Group,m_aAdditiveIterator,sal_False);
@@ -1193,7 +1166,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 // -----------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getHavingClause() throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getHavingClause" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
     ::osl::MutexGuard aGuard( m_aMutex );
     return getSQLPart(Having,m_aAdditiveIterator,sal_False);
@@ -1201,7 +1173,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 // -----------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getTableAlias(const Reference< XPropertySet >& column) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getTableAlias" );
     ::rtl::OUString sReturn;
     if(m_pTables && m_pTables->getCount() > 1)
     {
@@ -1276,7 +1247,6 @@ sal_Bool OSingleSelectQueryComposer::setComparsionPredicate(OSQLParseNode * pCon
 // -----------------------------------------------------------------------------
 Reference< XIndexAccess > SAL_CALL OSingleSelectQueryComposer::getParameters(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getParameters" );
     // now set the Parameters
     if ( !m_aCurrentColumns[ParameterColumns] )
     {
@@ -1292,7 +1262,6 @@ Reference< XIndexAccess > SAL_CALL OSingleSelectQueryComposer::getParameters(  )
 // -----------------------------------------------------------------------------
 void OSingleSelectQueryComposer::clearParametersCollection()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::clearParametersCollection" );
     if ( m_aCurrentColumns[ParameterColumns] )
     {
         m_aCurrentColumns[ParameterColumns]->disposing();
@@ -1303,7 +1272,6 @@ void OSingleSelectQueryComposer::clearParametersCollection()
 // -----------------------------------------------------------------------------
 void OSingleSelectQueryComposer::clearCurrentCollections()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::clearCurrentCollections" );
     ::std::vector<OPrivateColumns*>::iterator aIter = m_aCurrentColumns.begin();
     ::std::vector<OPrivateColumns*>::iterator aEnd = m_aCurrentColumns.end();
     for (;aIter != aEnd;++aIter)
@@ -1327,7 +1295,6 @@ void OSingleSelectQueryComposer::clearCurrentCollections()
 Reference< XIndexAccess > OSingleSelectQueryComposer::setCurrentColumns( EColumnType _eType,
     const ::vos::ORef< OSQLColumns >& _rCols )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setCurrentColumns" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     ::osl::MutexGuard aGuard( m_aMutex );
@@ -1345,19 +1312,16 @@ Reference< XIndexAccess > OSingleSelectQueryComposer::setCurrentColumns( EColumn
 // -----------------------------------------------------------------------------
 Reference< XIndexAccess > SAL_CALL OSingleSelectQueryComposer::getGroupColumns(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getGroupColumns" );
     return setCurrentColumns( GroupByColumns, m_aAdditiveIterator.getGroupColumns() );
 }
 // -------------------------------------------------------------------------
 Reference< XIndexAccess > SAL_CALL OSingleSelectQueryComposer::getOrderColumns(  ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getOrderColumns" );
     return setCurrentColumns( OrderColumns, m_aAdditiveIterator.getOrderColumns() );
 }
 // -----------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OSingleSelectQueryComposer::getQueryWithSubstitution(  ) throw (SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getQueryWithSubstitution" );
     ::osl::MutexGuard aGuard( m_aMutex );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
@@ -1376,7 +1340,6 @@ Reference< XIndexAccess > SAL_CALL OSingleSelectQueryComposer::getOrderColumns( 
 // -----------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getStatementPart( TGetParseNode& _aGetFunctor, OSQLParseTreeIterator& _rIterator )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getStatementPart" );
     ::rtl::OUString sResult;
 
     const OSQLParseNode* pNode = _aGetFunctor( &_rIterator );
@@ -1464,19 +1427,16 @@ namespace
 // -----------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setStructuredFilter( const Sequence< Sequence< PropertyValue > >& filter ) throw (SQLException, ::com::sun::star::lang::IllegalArgumentException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setStructuredFilter" );
     setFilter(lcl_getCondition(filter));
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OSingleSelectQueryComposer::setStructuredHavingClause( const Sequence< Sequence< PropertyValue > >& filter ) throw (SQLException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setStructuredHavingClause" );
     setHavingClause(lcl_getCondition(filter));
 }
 // -----------------------------------------------------------------------------
 void OSingleSelectQueryComposer::setConditionByColumn( const Reference< XPropertySet >& column, sal_Bool andCriteria ,::std::mem_fun1_t<bool,OSingleSelectQueryComposer,::rtl::OUString>& _aSetFunctor)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::setConditionByColumn" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     if ( !column.is()
@@ -1618,7 +1578,6 @@ void OSingleSelectQueryComposer::setConditionByColumn( const Reference< XPropert
 // -----------------------------------------------------------------------------
 Sequence< Sequence< PropertyValue > > OSingleSelectQueryComposer::getStructuredCondition( TGetParseNode& _aGetFunctor )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getStructuredCondition" );
     ::connectivity::checkDisposed(OSubComponent::rBHelper.bDisposed);
 
     MutexGuard aGuard(m_aMutex);
@@ -1707,7 +1666,6 @@ Sequence< Sequence< PropertyValue > > OSingleSelectQueryComposer::getStructuredC
 // -----------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getKeyword( SQLPart _ePart ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getKeyword" );
     ::rtl::OUString sKeyword;
     switch(_ePart)
     {
@@ -1733,7 +1691,6 @@ Sequence< Sequence< PropertyValue > > OSingleSelectQueryComposer::getStructuredC
 // -----------------------------------------------------------------------------
 ::rtl::OUString OSingleSelectQueryComposer::getSQLPart( SQLPart _ePart, OSQLParseTreeIterator& _rIterator, sal_Bool _bWithKeyword )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OSingleSelectQueryComposer::getSQLPart" );
     TGetParseNode F_tmp(&OSQLParseTreeIterator::getSimpleWhereTree);
     ::rtl::OUString sKeyword( getKeyword( _ePart ) );
     switch(_ePart)

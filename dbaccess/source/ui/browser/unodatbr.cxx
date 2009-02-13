@@ -133,7 +133,6 @@
 #include <vcl/toolbox.hxx>
 #include <vcl/waitobj.hxx>
 #include <vcl/wrkwin.hxx>
-#include <rtl/logfile.hxx>
 
 #include <memory>
 
@@ -195,25 +194,21 @@ void SafeRemovePropertyListener(const Reference< XPropertySet > & xSet, const ::
 //-------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL SbaTableQueryBrowser::getImplementationName() throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getImplementationName" );
     return getImplementationName_Static();
 }
 //-------------------------------------------------------------------------
 ::comphelper::StringSequence SAL_CALL SbaTableQueryBrowser::getSupportedServiceNames() throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getSupportedServiceNames" );
     return getSupportedServiceNames_Static();
 }
 // -------------------------------------------------------------------------
 ::rtl::OUString SbaTableQueryBrowser::getImplementationName_Static() throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getImplementationName_Static" );
     return ::rtl::OUString::createFromAscii("org.openoffice.comp.dbu.ODatasourceBrowser");
 }
 //-------------------------------------------------------------------------
 ::comphelper::StringSequence SbaTableQueryBrowser::getSupportedServiceNames_Static() throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getSupportedServiceNames_Static" );
     ::comphelper::StringSequence aSupported(1);
     aSupported.getArray()[0] = ::rtl::OUString::createFromAscii("com.sun.star.sdb.DataSourceBrowser");
     return aSupported;
@@ -221,7 +216,6 @@ void SafeRemovePropertyListener(const Reference< XPropertySet > & xSet, const ::
 //-------------------------------------------------------------------------
 Reference< XInterface > SAL_CALL SbaTableQueryBrowser::Create(const Reference<XMultiServiceFactory >& _rxFactory)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::Create" );
     ::vos::OGuard aGuard(Application::GetSolarMutex());
     return *(new SbaTableQueryBrowser(_rxFactory));
 }
@@ -244,7 +238,6 @@ SbaTableQueryBrowser::SbaTableQueryBrowser(const Reference< XMultiServiceFactory
     ,m_bInSuspend(sal_False)
     ,m_bEnableBrowser(sal_True)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::SbaTableQueryBrowser" );
     DBG_CTOR(SbaTableQueryBrowser,NULL);
 }
 
@@ -264,7 +257,6 @@ SbaTableQueryBrowser::~SbaTableQueryBrowser()
 //------------------------------------------------------------------------------
 Any SAL_CALL SbaTableQueryBrowser::queryInterface(const Type& _rType) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::queryInterface" );
     if ( _rType.equals( XScriptInvocationContext::static_type() ) )
     {
         OSL_PRECOND( !!m_aDocScriptSupport, "SbaTableQueryBrowser::queryInterface: did not initialize this, yet!" );
@@ -282,7 +274,6 @@ Any SAL_CALL SbaTableQueryBrowser::queryInterface(const Type& _rType) throw (Run
 //------------------------------------------------------------------------------
 Sequence< Type > SAL_CALL SbaTableQueryBrowser::getTypes(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getTypes" );
     Sequence< Type > aTypes( ::comphelper::concatSequences(
         SbaXDataBrowserController::getTypes(),
         SbaTableQueryBrowser_Base::getTypes()
@@ -306,7 +297,6 @@ Sequence< Type > SAL_CALL SbaTableQueryBrowser::getTypes(  ) throw (RuntimeExcep
 //------------------------------------------------------------------------------
 Sequence< sal_Int8 > SAL_CALL SbaTableQueryBrowser::getImplementationId(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getImplementationId" );
     static ::cppu::OImplementationId * pId = 0;
     if (! pId)
     {
@@ -323,7 +313,6 @@ Sequence< sal_Int8 > SAL_CALL SbaTableQueryBrowser::getImplementationId(  ) thro
 //------------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::disposing()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::disposing" );
     ::vos::OGuard aGuard(Application::GetSolarMutex());
         // doin' a lot of VCL stuff here -> lock the SolarMutex
 
@@ -362,7 +351,6 @@ void SAL_CALL SbaTableQueryBrowser::disposing()
 //------------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::Construct(Window* pParent)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::Construct" );
     if (!SbaXDataBrowserController::Construct(pParent))
         return sal_False;
 
@@ -431,7 +419,6 @@ sal_Bool SbaTableQueryBrowser::Construct(Window* pParent)
 // -------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::InitializeForm(const Reference< ::com::sun::star::sdbc::XRowSet > & _rxForm)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::InitializeForm" );
     if(!m_pCurrentlyDisplayed)
         return sal_True;
 
@@ -488,7 +475,6 @@ sal_Bool SbaTableQueryBrowser::InitializeForm(const Reference< ::com::sun::star:
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::initializePreviewMode()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::initializePreviewMode" );
     if ( getBrowserView() && getBrowserView()->getVclControl() )
     {
         getBrowserView()->getVclControl()->AlwaysEnableInput( FALSE );
@@ -507,7 +493,6 @@ void SbaTableQueryBrowser::initializePreviewMode()
 //------------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::star::form::XFormComponent > & xGrid)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::InitializeGridModel" );
     try
     {
         Reference< ::com::sun::star::form::XGridColumnFactory >  xColFactory(xGrid, UNO_QUERY);
@@ -738,7 +723,6 @@ Reference<XPropertySet> getColumnHelper(SvLBoxEntry* _pCurrentlyDisplayed,const 
 // -----------------------------------------------------------------------
 void SbaTableQueryBrowser::transferChangedControlProperty(const ::rtl::OUString& _rProperty, const Any& _rNewValue)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::transferChangedControlProperty" );
     if(m_pCurrentlyDisplayed)
     {
         DBTreeListUserData* pData = static_cast<DBTreeListUserData*>(m_pCurrentlyDisplayed->GetUserData());
@@ -752,7 +736,6 @@ void SbaTableQueryBrowser::transferChangedControlProperty(const ::rtl::OUString&
 // -----------------------------------------------------------------------
 void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(::com::sun::star::uno::RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::propertyChange" );
     SbaXDataBrowserController::propertyChange(evt);
 
     try
@@ -861,7 +844,6 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
 // -----------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::suspend(sal_Bool bSuspend) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::suspend" );
     vos::OGuard aSolarGuard( Application::GetSolarMutex() );
     ::osl::MutexGuard aGuard( getMutex() );
     if ( getView() && getView()->IsInModalMode() )
@@ -886,7 +868,6 @@ sal_Bool SbaTableQueryBrowser::suspend(sal_Bool bSuspend) throw( RuntimeExceptio
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::statusChanged( const FeatureStateEvent& _rEvent ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::statusChanged" );
     // search the external dispatcher causing this call
     Reference< XDispatch > xSource(_rEvent.Source, UNO_QUERY);
     ExternalFeaturesMap::iterator aLoop;
@@ -941,7 +922,6 @@ void SAL_CALL SbaTableQueryBrowser::statusChanged( const FeatureStateEvent& _rEv
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::checkDocumentDataSource()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::checkDocumentDataSource" );
     SvLBoxEntry* pDataSourceEntry = NULL;
     SvLBoxEntry* pContainerEntry = NULL;
     SvLBoxEntry* pObjectEntry = getObjectEntry( m_aDocumentDataSource, &pDataSourceEntry, &pContainerEntry, sal_False );
@@ -979,7 +959,6 @@ void SbaTableQueryBrowser::checkDocumentDataSource()
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::extractDescriptorProps(const ::svx::ODataAccessDescriptor& _rDescriptor, ::rtl::OUString& _rDataSource, ::rtl::OUString& _rCommand, sal_Int32& _rCommandType, sal_Bool& _rEscapeProcessing)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::extractDescriptorProps" );
     _rDataSource = _rDescriptor.getDataSource();
     if ( _rDescriptor.has(daCommand) )
         _rDescriptor[daCommand] >>= _rCommand;
@@ -1031,7 +1010,6 @@ namespace
 // -------------------------------------------------------------------------
 String SbaTableQueryBrowser::getDataSourceAcessor( SvLBoxEntry* _pDataSourceEntry ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getDataSourceAcessor" );
     DBG_ASSERT( _pDataSourceEntry, "SbaTableQueryBrowser::getDataSourceAcessor: invalid entry!" );
 
     DBTreeListUserData* pData = static_cast< DBTreeListUserData* >( _pDataSourceEntry->GetUserData() );
@@ -1045,7 +1023,6 @@ SvLBoxEntry* SbaTableQueryBrowser::getObjectEntry(const ::rtl::OUString& _rDataS
         SvLBoxEntry** _ppDataSourceEntry, SvLBoxEntry** _ppContainerEntry, sal_Bool _bExpandAncestors,
         const SharedConnection& _rxConnection )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getObjectEntry" );
     if (_ppDataSourceEntry)
         *_ppDataSourceEntry = NULL;
     if (_ppContainerEntry)
@@ -1120,7 +1097,6 @@ SvLBoxEntry* SbaTableQueryBrowser::getObjectEntry(const ::svx::ODataAccessDescri
         SvLBoxEntry** _ppDataSourceEntry, SvLBoxEntry** _ppContainerEntry,
         sal_Bool _bExpandAncestors)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getObjectEntry" );
     // extract the props from the descriptor
     ::rtl::OUString sDataSource;
     ::rtl::OUString sCommand;
@@ -1134,7 +1110,6 @@ SvLBoxEntry* SbaTableQueryBrowser::getObjectEntry(const ::svx::ODataAccessDescri
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::connectExternalDispatches()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::connectExternalDispatches" );
     Reference< XDispatchProvider >	xProvider( getFrame(), UNO_QUERY );
     DBG_ASSERT(xProvider.is(), "SbaTableQueryBrowser::connectExternalDispatches: no DispatchProvider !");
     if (xProvider.is())
@@ -1201,7 +1176,6 @@ void SbaTableQueryBrowser::connectExternalDispatches()
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::implCheckExternalSlot( sal_uInt16 _nId )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implCheckExternalSlot" );
     if ( !m_xMainToolbar.is() )
         return;
 
@@ -1224,7 +1198,6 @@ void SbaTableQueryBrowser::implCheckExternalSlot( sal_uInt16 _nId )
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::disposing( const EventObject& _rSource ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::disposing" );
     // our frame ?
     Reference< ::com::sun::star::frame::XFrame >  xSourceFrame(_rSource.Source, UNO_QUERY);
     if (m_xCurrentFrameParent.is() && (xSourceFrame == m_xCurrentFrameParent))
@@ -1287,7 +1260,6 @@ void SAL_CALL SbaTableQueryBrowser::disposing( const EventObject& _rSource ) thr
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::implRemoveStatusListeners()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implRemoveStatusListeners" );
     // clear all old dispatches
     for ( ExternalFeaturesMap::const_iterator aLoop = m_aExternalFeatures.begin();
           aLoop != m_aExternalFeatures.end();
@@ -1312,7 +1284,6 @@ void SbaTableQueryBrowser::implRemoveStatusListeners()
 // -------------------------------------------------------------------------
 sal_Bool SAL_CALL SbaTableQueryBrowser::select( const Any& _rSelection ) throw (IllegalArgumentException, RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::select" );
     ::vos::OGuard aGuard(Application::GetSolarMutex());
         // doin' a lot of VCL stuff here -> lock the SolarMutex
 
@@ -1342,7 +1313,6 @@ sal_Bool SAL_CALL SbaTableQueryBrowser::select( const Any& _rSelection ) throw (
 // -------------------------------------------------------------------------
 Any SAL_CALL SbaTableQueryBrowser::getSelection(  ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getSelection" );
     Any aReturn;
 
     try
@@ -1370,21 +1340,18 @@ Any SAL_CALL SbaTableQueryBrowser::getSelection(  ) throw (RuntimeException)
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::addSelectionChangeListener( const Reference< XSelectionChangeListener >& _rxListener ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::addSelectionChangeListener" );
     m_aSelectionListeners.addInterface(_rxListener);
 }
 
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::removeSelectionChangeListener( const Reference< XSelectionChangeListener >& _rxListener ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::removeSelectionChangeListener" );
     m_aSelectionListeners.removeInterface(_rxListener);
 }
 
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::attachFrame(const Reference< ::com::sun::star::frame::XFrame > & _xFrame) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::attachFrame" );
     implRemoveStatusListeners();
 
     if (m_xCurrentFrameParent.is())
@@ -1429,7 +1396,6 @@ void SbaTableQueryBrowser::attachFrame(const Reference< ::com::sun::star::frame:
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::addModelListeners(const Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::addModelListeners" );
     SbaXDataBrowserController::addModelListeners(_xGridControlModel);
     Reference< XPropertySet >  xSourceSet(_xGridControlModel, UNO_QUERY);
     if (xSourceSet.is())
@@ -1447,7 +1413,6 @@ void SbaTableQueryBrowser::addModelListeners(const Reference< ::com::sun::star::
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::removeModelListeners(const Reference< ::com::sun::star::awt::XControlModel > & _xGridControlModel)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::removeModelListeners" );
     SbaXDataBrowserController::removeModelListeners(_xGridControlModel);
     Reference< XPropertySet >  xSourceSet(_xGridControlModel, UNO_QUERY);
     if (xSourceSet.is())
@@ -1463,7 +1428,6 @@ void SbaTableQueryBrowser::removeModelListeners(const Reference< ::com::sun::sta
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::RowChanged()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::RowChanged" );
     if(getBrowserView())
     {
         SbaGridControl* pControl = getBrowserView()->getVclControl();
@@ -1476,7 +1440,6 @@ void SbaTableQueryBrowser::RowChanged()
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::ColumnChanged()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::ColumnChanged" );
     if(getBrowserView())
     {
         SbaGridControl* pControl = getBrowserView()->getVclControl();
@@ -1488,7 +1451,6 @@ void SbaTableQueryBrowser::ColumnChanged()
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::AddColumnListener(const Reference< XPropertySet > & xCol)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::AddColumnListener" );
     SbaXDataBrowserController::AddColumnListener(xCol);
     SafeAddPropertyListener(xCol, PROPERTY_WIDTH, static_cast<XPropertyChangeListener*>(this));
     SafeAddPropertyListener(xCol, PROPERTY_HIDDEN, static_cast<XPropertyChangeListener*>(this));
@@ -1499,7 +1461,6 @@ void SbaTableQueryBrowser::AddColumnListener(const Reference< XPropertySet > & x
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::RemoveColumnListener(const Reference< XPropertySet > & xCol)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::RemoveColumnListener" );
     SbaXDataBrowserController::RemoveColumnListener(xCol);
     SafeRemovePropertyListener(xCol, PROPERTY_WIDTH, static_cast<XPropertyChangeListener*>(this));
     SafeRemovePropertyListener(xCol, PROPERTY_HIDDEN, static_cast<XPropertyChangeListener*>(this));
@@ -1510,7 +1471,6 @@ void SbaTableQueryBrowser::RemoveColumnListener(const Reference< XPropertySet > 
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::criticalFail()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::criticalFail" );
     SbaXDataBrowserController::criticalFail();
     unloadAndCleanup( sal_False );
 }
@@ -1518,7 +1478,6 @@ void SbaTableQueryBrowser::criticalFail()
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::LoadFinished(sal_Bool _bWasSynch)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::LoadFinished" );
     SbaXDataBrowserController::LoadFinished(_bWasSynch);
 
     m_sQueryCommand = ::rtl::OUString();
@@ -1559,7 +1518,6 @@ void SbaTableQueryBrowser::LoadFinished(sal_Bool _bWasSynch)
 //------------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::getExternalSlotState( sal_uInt16 _nId ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getExternalSlotState" );
     sal_Bool bEnabled = sal_False;
     ExternalFeaturesMap::const_iterator aPos = m_aExternalFeatures.find( _nId );
     if ( ( m_aExternalFeatures.end() != aPos ) && aPos->second.xDispatcher.is() )
@@ -1570,7 +1528,6 @@ sal_Bool SbaTableQueryBrowser::getExternalSlotState( sal_uInt16 _nId ) const
 //------------------------------------------------------------------------------
 FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::GetState" );
     FeatureState aReturn;
         // (disabled automatically)
 
@@ -1766,7 +1723,6 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::Execute(sal_uInt16 nId, const Sequence< PropertyValue >& aArgs)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::Execute" );
     switch (nId)
     {
         default:
@@ -1957,7 +1913,6 @@ void SbaTableQueryBrowser::implAddDatasource(const String& _rDbName, Image& _rDb
         String& _rQueryName, Image& _rQueryImage, String& _rTableName, Image& _rTableImage,
         const SharedConnection& _rxConnection)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implAddDatasource" );
     vos::OGuard aGuard( Application::GetSolarMutex() );
     // initialize the names/images if necessary
     if (!_rQueryName.Len())
@@ -2011,7 +1966,6 @@ void SbaTableQueryBrowser::implAddDatasource(const String& _rDbName, Image& _rDb
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::initializeTreeModel()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::initializeTreeModel" );
     if (m_xDatabaseContext.is())
     {
         Image aDBImage, aQueriesImage, aTablesImage;
@@ -2030,7 +1984,6 @@ sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xName
                                             SvLBoxEntry* _pParent,
                                             EntryType _eEntryType)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::populateTree" );
     DBTreeListUserData* pData = static_cast<DBTreeListUserData*>(_pParent->GetUserData());
     if(pData) // don't ask if the nameaccess is already set see OnExpandEntry views and tables
         pData->xContainer = _xNameAccess;
@@ -2061,7 +2014,6 @@ sal_Bool SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xName
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::implAppendEntry( SvLBoxEntry* _pParent, const String& _rName, void* _pUserData, EntryType _eEntryType )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implAppendEntry" );
     ::std::auto_ptr< ImageProvider > pImageProvider( getImageProviderFor( _pParent ) );
 
     Image aImage, aImageHC;
@@ -2180,7 +2132,6 @@ IMPL_LINK(SbaTableQueryBrowser, OnExpandEntry, SvLBoxEntry*, _pParent)
 //------------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::ensureEntryObject( SvLBoxEntry* _pEntry )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::ensureEntryObject" );
     DBG_ASSERT(_pEntry, "SbaTableQueryBrowser::ensureEntryObject: invalid argument!");
     if (!_pEntry)
         return sal_False;
@@ -2240,7 +2191,6 @@ sal_Bool SbaTableQueryBrowser::ensureEntryObject( SvLBoxEntry* _pEntry )
 //------------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::implSelect(const ::svx::ODataAccessDescriptor& _rDescriptor,sal_Bool _bSelectDirect)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implSelect" );
     // extract the props
     ::rtl::OUString sDataSource;
     ::rtl::OUString sCommand;
@@ -2256,7 +2206,6 @@ sal_Bool SbaTableQueryBrowser::implSelect(const ::svx::ODataAccessDescriptor& _r
 sal_Bool SbaTableQueryBrowser::implLoadAnything(const ::rtl::OUString& _rDataSourceName, const ::rtl::OUString& _rCommand,
     const sal_Int32 _nCommandType, const sal_Bool _bEscapeProcessing, const SharedConnection& _rxConnection)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implLoadAnything" );
     Reference<XPropertySet> xProp(getRowSet(),UNO_QUERY);
     if(xProp.is())
     {
@@ -2338,7 +2287,6 @@ sal_Bool SbaTableQueryBrowser::implSelect(const ::rtl::OUString& _rDataSourceNam
                                       const SharedConnection& _rxConnection
                                       ,sal_Bool _bSelectDirect)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implSelect" );
     if (_rDataSourceName.getLength() && _rCommand.getLength() && (-1 != _nCommandType))
     {
         SvLBoxEntry* pDataSource = NULL;
@@ -2384,7 +2332,6 @@ IMPL_LINK(SbaTableQueryBrowser, OnSelectionChange, void*, /*NOINTERESTEDIN*/)
 //------------------------------------------------------------------------------
 bool SbaTableQueryBrowser::implSelect( SvLBoxEntry* _pEntry )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implSelect" );
     if ( !_pEntry )
         return false;
 
@@ -2578,7 +2525,6 @@ bool SbaTableQueryBrowser::implSelect( SvLBoxEntry* _pEntry )
 // -----------------------------------------------------------------------------
 SvLBoxEntry* SbaTableQueryBrowser::getEntryFromContainer(const Reference<XNameAccess>& _rxNameAccess)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getEntryFromContainer" );
     DBTreeListBox& rListBox = m_pTreeView->getListBox();
     SvLBoxEntry* pContainer = NULL;
     SvLBoxEntry* pDSLoop = rListBox.FirstChild(NULL);
@@ -2603,7 +2549,6 @@ SvLBoxEntry* SbaTableQueryBrowser::getEntryFromContainer(const Reference<XNameAc
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEvent ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::elementInserted" );
     vos::OGuard aSolarGuard( Application::GetSolarMutex() );
 
     Reference< XNameAccess > xNames(_rEvent.Source, UNO_QUERY);
@@ -2652,7 +2597,6 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
 // -------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::isCurrentlyDisplayedChanged(const String& _sName,SvLBoxEntry* _pContainer)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::isCurrentlyDisplayedChanged" );
     return m_pCurrentlyDisplayed
             &&	getEntryType(m_pCurrentlyDisplayed) == getChildType(_pContainer)
             &&	m_pTreeView->getListBox().GetParent(m_pCurrentlyDisplayed) == _pContainer
@@ -2661,7 +2605,6 @@ sal_Bool SbaTableQueryBrowser::isCurrentlyDisplayedChanged(const String& _sName,
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::elementRemoved( const ContainerEvent& _rEvent ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::elementRemoved" );
     ::vos::OGuard aSolarGuard(Application::GetSolarMutex());
 
     Reference< XNameAccess > xNames(_rEvent.Source, UNO_QUERY);
@@ -2771,7 +2714,6 @@ void SAL_CALL SbaTableQueryBrowser::elementRemoved( const ContainerEvent& _rEven
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::elementReplaced( const ContainerEvent& _rEvent ) throw(RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::elementReplaced" );
     ::vos::OGuard aSolarGuard(Application::GetSolarMutex());
 
     Reference< XNameAccess > xNames(_rEvent.Source, UNO_QUERY);
@@ -2844,7 +2786,6 @@ void SAL_CALL SbaTableQueryBrowser::elementReplaced( const ContainerEvent& _rEve
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::impl_releaseConnection( SharedConnection& _rxConnection )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::impl_releaseConnection" );
     // remove as event listener
     Reference< XComponent > xComponent( _rxConnection, UNO_QUERY );
     if ( xComponent.is() )
@@ -2873,7 +2814,6 @@ void SbaTableQueryBrowser::impl_releaseConnection( SharedConnection& _rxConnecti
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::disposeConnection( SvLBoxEntry* _pDSEntry )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::disposeConnection" );
     DBG_ASSERT( _pDSEntry, "SbaTableQueryBrowser::disposeConnection: invalid entry (NULL)!" );
     DBG_ASSERT( impl_isDataSourceEntry( _pDSEntry ), "SbaTableQueryBrowser::disposeConnection: invalid entry (not top-level)!" );
 
@@ -2888,7 +2828,6 @@ void SbaTableQueryBrowser::disposeConnection( SvLBoxEntry* _pDSEntry )
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::closeConnection(SvLBoxEntry* _pDSEntry,sal_Bool _bDisposeConnection)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::closeConnection" );
     DBG_ASSERT(_pDSEntry, "SbaTableQueryBrowser::closeConnection: invalid entry (NULL)!");
     DBG_ASSERT( impl_isDataSourceEntry( _pDSEntry ), "SbaTableQueryBrowser::closeConnection: invalid entry (not top-level)!");
 
@@ -2925,7 +2864,6 @@ void SbaTableQueryBrowser::closeConnection(SvLBoxEntry* _pDSEntry,sal_Bool _bDis
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::unloadAndCleanup( sal_Bool _bDisposeConnection )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::unloadAndCleanup" );
     if (!m_pCurrentlyDisplayed)
         // nothing to do
         return;
@@ -3013,7 +2951,6 @@ namespace
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::impl_initialize()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::impl_initialize" );
     ::vos::OGuard aGuard(Application::GetSolarMutex());
         // doin' a lot of VCL stuff here -> lock the SolarMutex
 
@@ -3193,14 +3130,12 @@ void SbaTableQueryBrowser::impl_initialize()
 // -------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::haveExplorer() const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::haveExplorer" );
     return m_pTreeView && m_pTreeView->IsVisible();
 }
 
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::hideExplorer()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::hideExplorer" );
     if (!haveExplorer())
         return;
     if (!getBrowserView())
@@ -3216,7 +3151,6 @@ void SbaTableQueryBrowser::hideExplorer()
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::showExplorer()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::showExplorer" );
     if (haveExplorer())
         return;
 
@@ -3233,7 +3167,6 @@ void SbaTableQueryBrowser::showExplorer()
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::ensureConnection(SvLBoxEntry* _pAnyEntry, SharedConnection& _rConnection)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::ensureConnection" );
     SvLBoxEntry* pDSEntry = m_pTreeView->getListBox().GetRootLevelParent(_pAnyEntry);
     DBTreeListUserData* pDSData =
                 pDSEntry
@@ -3246,7 +3179,6 @@ sal_Bool SbaTableQueryBrowser::ensureConnection(SvLBoxEntry* _pAnyEntry, SharedC
 // -----------------------------------------------------------------------------
 ::std::auto_ptr< ImageProvider > SbaTableQueryBrowser::getImageProviderFor( SvLBoxEntry* _pAnyEntry )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getImageProviderFor" );
     ::std::auto_ptr< ImageProvider > pImageProvider( new ImageProvider );
     SharedConnection xConnection;
     if ( getExistentConnectionFor( _pAnyEntry, xConnection ) )
@@ -3257,7 +3189,6 @@ sal_Bool SbaTableQueryBrowser::ensureConnection(SvLBoxEntry* _pAnyEntry, SharedC
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::getExistentConnectionFor( SvLBoxEntry* _pAnyEntry, SharedConnection& _rConnection )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getExistentConnectionFor" );
     SvLBoxEntry* pDSEntry = m_pTreeView->getListBox().GetRootLevelParent( _pAnyEntry );
     DBTreeListUserData* pDSData =
                 pDSEntry
@@ -3272,7 +3203,6 @@ sal_Bool SbaTableQueryBrowser::getExistentConnectionFor( SvLBoxEntry* _pAnyEntry
 // -----------------------------------------------------------------------------
 bool SbaTableQueryBrowser::impl_isDataSourceEntry( SvLBoxEntry* _pEntry ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::impl_isDataSourceEntry" );
     return m_pTreeModel->GetRootLevelParent( _pEntry ) == _pEntry;
 }
 #endif
@@ -3280,7 +3210,6 @@ bool SbaTableQueryBrowser::impl_isDataSourceEntry( SvLBoxEntry* _pEntry ) const
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::ensureConnection( SvLBoxEntry* _pDSEntry, void* pDSData, SharedConnection& _rConnection )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::ensureConnection" );
     DBG_ASSERT( impl_isDataSourceEntry( _pDSEntry ), "SbaTableQueryBrowser::ensureConnection: this entry does not denote a data source!" );
     if(_pDSEntry)
     {
@@ -3383,7 +3312,6 @@ IMPL_LINK( SbaTableQueryBrowser, OnTreeEntryCompare, const SvSortData*, _pSortDa
 // -----------------------------------------------------------------------------
 void SbaTableQueryBrowser::implAdministrate( SvLBoxEntry* _pApplyTo )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implAdministrate" );
     OSL_PRECOND( _pApplyTo, "SbaTableQueryBrowser::implAdministrate: illegal entry!" );
     if ( !_pApplyTo )
         return;
@@ -3441,7 +3369,6 @@ void SbaTableQueryBrowser::implAdministrate( SvLBoxEntry* _pApplyTo )
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::requestQuickHelp( const SvLBoxEntry* _pEntry, String& _rText ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::requestQuickHelp" );
     const DBTreeListUserData* pData = static_cast< const DBTreeListUserData* >( _pEntry->GetUserData() );
     if ( ( pData->eType == etDatasource ) && pData->sAccessor.Len() )
     {
@@ -3454,7 +3381,6 @@ sal_Bool SbaTableQueryBrowser::requestQuickHelp( const SvLBoxEntry* _pEntry, Str
 // -----------------------------------------------------------------------------
 PopupMenu* SbaTableQueryBrowser::getContextMenu( Control& _rControl ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getContextMenu" );
     OSL_PRECOND( &m_pTreeView->getListBox() == &_rControl,
         "SbaTableQueryBrowser::getContextMenu: where does this come from?" );
     if ( &m_pTreeView->getListBox() != &_rControl )
@@ -3466,21 +3392,18 @@ PopupMenu* SbaTableQueryBrowser::getContextMenu( Control& _rControl ) const
 // -----------------------------------------------------------------------------
 IController& SbaTableQueryBrowser::getCommandController()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getCommandController" );
     return *this;
 }
 
 // -----------------------------------------------------------------------------
 ::cppu::OInterfaceContainerHelper* SbaTableQueryBrowser::getContextMenuInterceptors()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getContextMenuInterceptors" );
     return &m_aContextMenuInterceptors;
 }
 
 // -----------------------------------------------------------------------------
 Any SbaTableQueryBrowser::getCurrentSelection( Control& _rControl ) const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getCurrentSelection" );
     OSL_PRECOND( &m_pTreeView->getListBox() == &_rControl,
         "SbaTableQueryBrowser::getCurrentSelection: where does this come from?" );
 
@@ -3522,7 +3445,6 @@ Any SbaTableQueryBrowser::getCurrentSelection( Control& _rControl ) const
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::implGetQuerySignature( ::rtl::OUString& _rCommand, sal_Bool& _bEscapeProcessing )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::implGetQuerySignature" );
     _rCommand = ::rtl::OUString();
     _bEscapeProcessing = sal_False;
 
@@ -3571,7 +3493,6 @@ sal_Bool SbaTableQueryBrowser::implGetQuerySignature( ::rtl::OUString& _rCommand
 //------------------------------------------------------------------------------
 void SbaTableQueryBrowser::frameAction(const ::com::sun::star::frame::FrameActionEvent& aEvent) throw( RuntimeException )
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::frameAction" );
     if (aEvent.Frame == m_xCurrentFrameParent)
     {
         if(aEvent.Action == FrameAction_COMPONENT_DETACHING)
@@ -3586,7 +3507,6 @@ void SbaTableQueryBrowser::frameAction(const ::com::sun::star::frame::FrameActio
 // -----------------------------------------------------------------------------
 void SbaTableQueryBrowser::clearGridColumns(const Reference< XNameContainer >& _xColContainer)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::clearGridColumns" );
     // first we have to clear the grid
     Sequence< ::rtl::OUString > aNames = _xColContainer->getElementNames();
     const ::rtl::OUString* pIter	= aNames.getConstArray();
@@ -3602,7 +3522,6 @@ void SbaTableQueryBrowser::clearGridColumns(const Reference< XNameContainer >& _
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::isHiContrast() const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::isHiContrast" );
     sal_Bool bRet = sal_False;
     if ( m_pTreeView )
         bRet = m_pTreeView->getListBox().GetBackground().GetColor().IsDark();
@@ -3611,7 +3530,6 @@ sal_Bool SbaTableQueryBrowser::isHiContrast() const
 // -----------------------------------------------------------------------------
 void SbaTableQueryBrowser::loadMenu(const Reference< XFrame >& _xFrame)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::loadMenu" );
     if ( m_bShowMenu )
     {
         OGenericUnoController::loadMenu(_xFrame);
@@ -3633,7 +3551,6 @@ void SbaTableQueryBrowser::loadMenu(const Reference< XFrame >& _xFrame)
 // -----------------------------------------------------------------------------
 ::rtl::OUString SbaTableQueryBrowser::getPrivateTitle() const
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getPrivateTitle" );
     ::rtl::OUString sTitle;
     if ( m_pCurrentlyDisplayed )
     {
@@ -3658,7 +3575,6 @@ void SbaTableQueryBrowser::loadMenu(const Reference< XFrame >& _xFrame)
 // -----------------------------------------------------------------------------
 sal_Bool SbaTableQueryBrowser::preReloadForm()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::preReloadForm" );
     sal_Bool bIni = sal_False;
     if ( !m_pCurrentlyDisplayed )
     {
@@ -3687,7 +3603,6 @@ sal_Bool SbaTableQueryBrowser::preReloadForm()
 // -----------------------------------------------------------------------------
 void SbaTableQueryBrowser::postReloadForm()
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::postReloadForm" );
     InitializeGridModel(getFormComponent());
     LoadFinished(sal_True);
     //updateTitle();
@@ -3696,7 +3611,6 @@ void SbaTableQueryBrowser::postReloadForm()
 //------------------------------------------------------------------------------
 Reference< XEmbeddedScripts > SAL_CALL SbaTableQueryBrowser::getScriptContainer() throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::getScriptContainer" );
     Reference< XEmbeddedScripts > xScripts( m_xCurrentDatabaseDocument, UNO_QUERY );
     OSL_ENSURE( xScripts.is() || !m_xCurrentDatabaseDocument.is(),
         "SbaTableQueryBrowser::getScriptContainer: invalid database document!" );
@@ -3706,7 +3620,6 @@ Reference< XEmbeddedScripts > SAL_CALL SbaTableQueryBrowser::getScriptContainer(
 //------------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::registerContextMenuInterceptor( const Reference< XContextMenuInterceptor >& _Interceptor ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::registerContextMenuInterceptor" );
     if ( _Interceptor.is() )
         m_aContextMenuInterceptors.addInterface( _Interceptor );
 }
@@ -3714,7 +3627,6 @@ void SAL_CALL SbaTableQueryBrowser::registerContextMenuInterceptor( const Refere
 //------------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::releaseContextMenuInterceptor( const Reference< XContextMenuInterceptor >& _Interceptor ) throw (RuntimeException)
 {
-    RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::releaseContextMenuInterceptor" );
     m_aContextMenuInterceptors.removeInterface( _Interceptor );
 }
 
