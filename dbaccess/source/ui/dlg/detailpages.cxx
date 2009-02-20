@@ -693,7 +693,7 @@ namespace dbaui
     //= MySQLNativePage
     //========================================================================
     MySQLNativePage::MySQLNativePage( Window* pParent, const SfxItemSet& _rCoreAttrs )
-        :OCommonBehaviourTabPage(pParent, PAGE_MYSQL_NATIVE, _rCoreAttrs, CBTP_USE_CHARSET, false )
+        :OCommonBehaviourTabPage(pParent, PAGE_MYSQL_NATIVE, _rCoreAttrs, 0, false )
         ,m_aSeparator1          ( this, ModuleRes( FL_SEPARATOR1) )
         ,m_aDatabaseNameLabel   ( this, ModuleRes( FT_AUTODATABASENAME ) )
         ,m_aDatabaseName        ( this, ModuleRes( ET_AUTODATABASENAME ) )
@@ -714,13 +714,57 @@ namespace dbaui
         m_aEDSocket.SetModifyHdl(getControlModifiedLink());
         m_aUserName.SetModifyHdl(getControlModifiedLink());
 
+        // ........................................................................................
+        // to prevent string changes that late before a release, load some strings from other resources
+        // where they already exist
+        // This is not to appear in the DEV300 branch, it's strictly for OOO310 only.
+        {
+            LocalResourceAccess aResourceAccess( PAGE_CONNECTION, RSC_TABPAGE );
+            {
+                FixedLine aDummy( this, ModuleRes( FL_SEPARATOR2 ) );
+                m_aSeparator2.SetText( aDummy.GetText() );
+            }
+            {
+                FixedText aDummy( this, ModuleRes( FT_USERNAME ) );
+                m_aUserNameLabel.SetText( aDummy.GetText() );
+            }
+            {
+                CheckBox aDummy( this, ModuleRes( CB_PASSWORD_REQUIRED ) );
+                m_aPasswordRequired.SetText( aDummy.GetText() );
+            }
+        }
+        // ........................................................................................
+        // also, for the same reason, we have to re-use the AUTO_SPECIAL_JDBC define in the resources, and now need some
+        // manual re-arrangement: In the resource, the ordering is "host", "port", "database name", but we want
+        // "database name" to precede the other two.
+        // Again, this is not to appear in the DEV300 branch, it's strictly for OOO310 only.
+        long nFirstRow = m_aEDHostname.GetPosPixel().Y();
+        long nSecondRow = m_aNFPortNumber.GetPosPixel().Y();
+        long nMoveDown = nSecondRow - nFirstRow;
+        Window* aMoveDownWindows[] = { &m_aFTHostname, &m_aEDHostname, &m_aPortNumber, &m_aNFPortNumber };
+        for ( size_t j=0; j < sizeof( aMoveDownWindows ) / sizeof( aMoveDownWindows[0] ); ++j )
+        {
+            Point aPos( aMoveDownWindows[j]->GetPosPixel() );
+            aPos.Y() += nMoveDown;
+            aMoveDownWindows[j]->SetPosPixel( aPos );
+        }
+        long nThirdRow = m_aDatabaseName.GetPosPixel().Y();
+        long nMoveUp = nThirdRow - nFirstRow;
+        Window* aMoveUpWindows[] = { &m_aDatabaseNameLabel, &m_aDatabaseName };
+        for ( size_t k=0; k < sizeof( aMoveUpWindows ) / sizeof( aMoveUpWindows[0] ); ++k )
+        {
+            Point aPos( aMoveUpWindows[k]->GetPosPixel() );
+            aPos.Y() -= nMoveUp;
+            aMoveUpWindows[k]->SetPosPixel( aPos );
+        }
+        // ........................................................................................
+
         // #98982# OJ
         m_aNFPortNumber.SetUseThousandSep(sal_False);
 
         Window* pWindows[] = {  &m_aDatabaseNameLabel, &m_aDatabaseName, &m_aFTHostname, &m_aEDHostname,
                                 &m_aPortNumber,&m_aNFPortNumber,&m_aFTSocket,&m_aEDSocket,
-                                &m_aSeparator2, &m_aUserNameLabel, &m_aUserName, &m_aPasswordRequired,
-                                m_pCharsetLabel, m_pCharset};
+                                &m_aSeparator2, &m_aUserNameLabel, &m_aUserName, &m_aPasswordRequired };
 
         sal_Int32 nCount = sizeof(pWindows) / sizeof(pWindows[0]);
         for (sal_Int32 i=1; i < nCount; ++i)
