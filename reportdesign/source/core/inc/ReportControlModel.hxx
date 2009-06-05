@@ -54,7 +54,7 @@ namespace reportdesign
 
     struct OFormatProperties
     {
-        ::sal_Int16											nAlign;
+        ::sal_Int16			                                nAlign;
         ::com::sun::star::awt::FontDescriptor				aFontDescriptor;
         ::com::sun::star::awt::FontDescriptor				aAsianFontDescriptor;
         ::com::sun::star::awt::FontDescriptor				aComplexFontDescriptor;
@@ -74,7 +74,7 @@ namespace reportdesign
         ::rtl::OUString                                     sHyperLinkName;
         ::rtl::OUString                                     sVisitedCharStyleName;
         ::rtl::OUString                                     sUnvisitedCharStyleName;
-        short			                                    aVerticalAlignment;
+        com::sun::star::style::VerticalAlignment            aVerticalAlignment;
         ::sal_Int16											nCharEscapement;
         ::sal_Int16											nCharCaseMap;
         ::sal_Int16											nCharKerning;
