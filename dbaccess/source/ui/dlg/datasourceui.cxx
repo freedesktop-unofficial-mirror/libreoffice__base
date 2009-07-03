@@ -52,12 +52,6 @@ namespace dbaui
     //= DataSourceUI
     //====================================================================
     //--------------------------------------------------------------------
-    DataSourceUI::DataSourceUI( ::dbaccess::DATASOURCE_TYPE _eType )
-        :m_aDSMeta( DataSourceMetaData( _eType ) )
-    {
-    }
-
-    //--------------------------------------------------------------------
     DataSourceUI::DataSourceUI( const DataSourceMetaData& _rDSMeta )
         :m_aDSMeta( _rDSMeta )
     {
@@ -65,7 +59,7 @@ namespace dbaui
 
     //--------------------------------------------------------------------
     DataSourceUI::~DataSourceUI()
-    {
+    { 
     }
 
     //--------------------------------------------------------------------
