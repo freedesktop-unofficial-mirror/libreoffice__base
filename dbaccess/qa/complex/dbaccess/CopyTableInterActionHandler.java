@@ -1,12 +1,12 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: Navigator.hxx,v $
+ * $RCSfile: RowSetEventListener.java,v $
  * $Revision: 1.4 $
  *
  * This file is part of OpenOffice.org.
@@ -27,32 +27,27 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef INCLUDED_RPTUI_NAVIGATOR_HXX
-#define INCLUDED_RPTUI_NAVIGATOR_HXX
+package complex.dbaccess;
 
-#include <vcl/floatwin.hxx>
-#include "ModuleHelper.hxx"
-#include <memory>
-namespace rptui
+import com.sun.star.lib.uno.helper.WeakBase;
+import com.sun.star.task.XInteractionHandler;
+import com.sun.star.task.XInteractionRequest;
+
+/**
+ *
+ * @author oj93728
+ */
+class CopyTableInterActionHandler extends WeakBase
+        implements XInteractionHandler
 {
-    class OReportController;
-    class ONavigatorImpl;
-    class ONavigator :  public FloatingWindow
+    private final CopyTableWizard test;
+    public CopyTableInterActionHandler(CopyTableWizard testCase)
     {
-        OModuleClient	    m_aModuleClient;
-        ::std::auto_ptr<ONavigatorImpl> m_pImpl;
-        ONavigator(const ONavigator&);
-        void operator =(const ONavigator&);
-    public:
-           ONavigator( Window* pParent
-                    ,OReportController& _rController);
-        virtual ~ONavigator();
+        test = testCase;
+    }
 
-        // window
-        virtual void	Resize();
-        virtual void GetFocus();
-    };
-// =============================================================================
-} // namespace rptui
-// =============================================================================
-#endif // INCLUDED_RPTUI_NAVIGATOR_HXX
+    public void handle(XInteractionRequest xRequest)
+    {
+        test.assure(xRequest.toString());
+    }
+}
