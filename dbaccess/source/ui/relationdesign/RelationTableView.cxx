@@ -165,7 +165,7 @@ void ORelationTableView::ReSync()
     // Verbindungen einfuegen
     TTableConnectionData* pTabConnDataList = m_pView->getController().getTableConnectionData();
     TTableConnectionData::reverse_iterator aConIter = pTabConnDataList->rbegin();
-    
+
     for(;aConIter != pTabConnDataList->rend();++aConIter)
     {
         ORelationTableConnectionData* pTabConnData = static_cast<ORelationTableConnectionData*>(aConIter->get());
@@ -182,8 +182,8 @@ void ORelationTableView::ReSync()
                 pTabConnDataList->erase( ::std::remove(pTabConnDataList->begin(),pTabConnDataList->end(),*aConIter),pTabConnDataList->end() );
                 continue;
             }
-        }
-
+        } // if ( !arrInvalidTables.empty() )
+        
         addConnection( new ORelationTableConnection(this, *aConIter), sal_False ); // don't add the data again
     }
 
