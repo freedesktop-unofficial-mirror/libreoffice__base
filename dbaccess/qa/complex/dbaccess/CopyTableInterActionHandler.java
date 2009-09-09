@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: AdabasStatDlg.src,v $
- * $Revision: 1.5 $
+ * $RCSfile: RowSetEventListener.java,v $
+ * $Revision: 1.4 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -27,38 +27,27 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
+package complex.dbaccess;
 
-#ifndef _DBA_DBACCESS_HELPID_HRC_
-#include "dbaccess_helpid.hrc"
-#endif
-#ifndef DBAUI_ADABASSTATDLG_HRC
-#include "AdabasStatDlg.hrc"
-#endif
-#ifndef _DBU_DLG_HRC_
-#include "dbu_dlg.hrc"
-#endif
+import com.sun.star.lib.uno.helper.WeakBase;
+import com.sun.star.task.XInteractionHandler;
+import com.sun.star.task.XInteractionRequest;
 
-
-TabDialog DLG_DATABASE_ADABASADMIN
-{																			
-    OutputSize = TRUE ;
-    SVLook = TRUE ;
-    Moveable = TRUE ;
-    Closeable = TRUE ;
-    Hide = TRUE;
-    HelpId = HID_DSADMIN_ADABASADMIN;
-    
-    TabControl 1
+/**
+ *
+ * @author oj93728
+ */
+class CopyTableInterActionHandler extends WeakBase
+        implements XInteractionHandler
+{
+    private final CopyTableWizard test;
+    public CopyTableInterActionHandler(CopyTableWizard testCase)
     {
-        OutputSize = TRUE ;
-        HelpId = HID_DSADMIN_TABCONTROL;
-        SingleLine=TRUE;
-    };
-    String STR_PAGETITLE_ADABAS_STATISTIC
-    {
-        Text [ en-US ] = "Adabas D Statistics";
-    };
-    
-    Text [ en-US ] = "Advanced Properties" ;
-};
+        test = testCase;
+    }
 
+    public void handle(XInteractionRequest xRequest)
+    {
+        test.assure(xRequest.toString());
+    }
+}

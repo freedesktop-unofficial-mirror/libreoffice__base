@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -219,11 +219,11 @@ void FormulaDialog::ToggleCollapsed( RefEdit* _pEdit, RefButton* _pButton)
 
         }
 
-        m_pAddField->Update();        
+        m_pAddField->Update();
     } // if ( !m_pAddField )
     RefInputStartAfter( aPair.second, aPair.first );
     m_pAddField->Show();
-    
+
 }
 // -----------------------------------------------------------------------------
 IMPL_LINK( FormulaDialog, OnClickHdl, OAddFieldWindow* ,_pAddFieldDlg)
@@ -258,6 +258,11 @@ uno::Reference< sheet::XFormulaParser> FormulaDialog::getFormulaParser() const
 uno::Reference< sheet::XFormulaOpCodeMapper> FormulaDialog::getFormulaOpCodeMapper() const
 {
     return m_xOpCodeMapper;
+}
+// -----------------------------------------------------------------------------
+table::CellAddress FormulaDialog::getReferencePosition() const
+{
+    return table::CellAddress();
 }
 // -----------------------------------------------------------------------------
 ::std::auto_ptr<formula::FormulaTokenArray> FormulaDialog::convertToTokenArray(const uno::Sequence< sheet::FormulaToken >& _aTokenList)
