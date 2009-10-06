@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -45,16 +45,16 @@
 #ifndef _DBAUI_DBADMINSETUP_HRC_
 #include "dbadminsetup.hrc"
 #endif
-#ifndef _SFXITEMSET_HXX 
+#ifndef _SFXITEMSET_HXX
 #include <svtools/itemset.hxx>
 #endif
-#ifndef _SFXSTRITEM_HXX 
+#ifndef _SFXSTRITEM_HXX
 #include <svtools/stritem.hxx>
 #endif
-#ifndef _SFXENUMITEM_HXX 
+#ifndef _SFXENUMITEM_HXX
 #include <svtools/eitem.hxx>
 #endif
-#ifndef _SFXINTITEM_HXX 
+#ifndef _SFXINTITEM_HXX
 #include <svtools/intitem.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCEITEMS_HXX_
@@ -109,7 +109,7 @@
 #include "finteraction.hxx"
 #include <connectivity/CommonTools.hxx>
 #include "dbaccess_helpid.hrc"
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #include <svtools/roadmapwizard.hxx>
 #include "TextConnectionHelper.hxx"
 
@@ -155,12 +155,12 @@ DBG_NAME(OTextConnectionPageSetup)
     OTextConnectionPageSetup::~OTextConnectionPageSetup()
     {
         DELETEZ(m_pTextConnectionHelper);
-    
+
         DBG_DTOR(OTextConnectionPageSetup,NULL);
-    }   
+    }
 
     IMPL_LINK(OTextConnectionPageSetup, ImplGetExtensionHdl, OTextConnectionHelper*, /*_pTextConnectionHelper*/)
-    {                            
+    {
         SetRoadmapStateValue((m_pTextConnectionHelper->GetExtension().Len() > 0) && OConnectionTabPageSetup::checkTestConnection());
         callModifiedHdl();
         return sal_True;
@@ -205,7 +205,7 @@ DBG_NAME(OTextConnectionPageSetup)
         return bChangedSomething;
     }
 
-    
+
     sal_Bool OTextConnectionPageSetup::prepareLeave(){
         return m_pTextConnectionHelper->prepareLeave();
     }
@@ -296,12 +296,12 @@ DBG_NAME(OTextConnectionPageSetup)
         SFX_ITEMSET_GET(_rSet, pBaseDN, SfxStringItem, DSID_CONN_LDAP_BASEDN, sal_True);
         SFX_ITEMSET_GET(_rSet, pPortNumber, SfxInt32Item, DSID_CONN_LDAP_PORTNUMBER, sal_True);
 
-        if ( bValid ) 
+        if ( bValid )
         {
             m_aETBaseDN.SetText(pBaseDN->GetValue());
             m_aNFPortNumber.SetValue(pPortNumber->GetValue());
         }
-           OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);	
+           OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);
         callModifiedHdl();
     }
 
@@ -350,7 +350,7 @@ DBG_NAME(OMySQLIntroPageSetup)
     // -----------------------------------------------------------------------
     OMySQLIntroPageSetup::~OMySQLIntroPageSetup()
     {
-    
+
         DBG_DTOR(OMySQLIntroPageSetup,NULL);
     }
 
@@ -497,7 +497,7 @@ DBG_NAME(OMySQLIntroPageSetup)
         String sHelpText = String(ModuleRes(_nHelpTextResId));
         m_aFTHelpText.SetText(sHelpText);
         //TODO this code snippet is redundant
-        SetHeaderText(FT_AUTOWIZARDHEADER, _nHeaderTextResId); 
+        SetHeaderText(FT_AUTOWIZARDHEADER, _nHeaderTextResId);
 
         m_aETDatabasename.SetModifyHdl(getControlModifiedLink());
         m_aETHostname.SetModifyHdl(getControlModifiedLink());
@@ -505,7 +505,7 @@ DBG_NAME(OMySQLIntroPageSetup)
 
         m_aETDriverClass.SetModifyHdl(LINK(this, OGeneralSpecialJDBCConnectionPageSetup, OnEditModified));
         m_aPBTestJavaDriver.SetClickHdl(LINK(this,OGeneralSpecialJDBCConnectionPageSetup,OnTestJavaClickHdl));
-        
+
         SFX_ITEMSET_GET(_rCoreAttrs, pUrlItem, SfxStringItem, DSID_CONNECTURL, sal_True);
         SFX_ITEMSET_GET(_rCoreAttrs, pTypesItem, DbuTypeCollectionItem, DSID_TYPECOLLECTION, sal_True);
         ::dbaccess::ODsnTypeCollection* pTypeCollection = pTypesItem ? pTypesItem->getCollection() : NULL;
@@ -522,12 +522,12 @@ DBG_NAME(OMySQLIntroPageSetup)
     // -----------------------------------------------------------------------
     OGenericAdministrationPage*	OGeneralSpecialJDBCConnectionPageSetup::CreateMySQLJDBCTabPage( Window* pParent, const SfxItemSet& _rAttrSet )
     {
-        return ( new OGeneralSpecialJDBCConnectionPageSetup( pParent, 
-                                                         PAGE_DBWIZARD_MYSQL_JDBC, 
+        return ( new OGeneralSpecialJDBCConnectionPageSetup( pParent,
+                                                         PAGE_DBWIZARD_MYSQL_JDBC,
                                                          _rAttrSet,
                                                          DSID_MYSQL_PORTNUMBER ,
                                                          STR_MYSQL_DEFAULT,
-                                                         STR_MYSQLJDBC_HELPTEXT, 
+                                                         STR_MYSQLJDBC_HELPTEXT,
                                                          STR_MYSQLJDBC_HEADERTEXT,
                                                          STR_MYSQL_DRIVERCLASSTEXT) );
     }
@@ -535,12 +535,12 @@ DBG_NAME(OMySQLIntroPageSetup)
     // -----------------------------------------------------------------------
     OGenericAdministrationPage*	OGeneralSpecialJDBCConnectionPageSetup::CreateOracleJDBCTabPage( Window* pParent, const SfxItemSet& _rAttrSet )
     {
-        return ( new OGeneralSpecialJDBCConnectionPageSetup( pParent, 
-                                                          PAGE_DBWIZARD_ORACLE, 
-                                                          _rAttrSet, 
+        return ( new OGeneralSpecialJDBCConnectionPageSetup( pParent,
+                                                          PAGE_DBWIZARD_ORACLE,
+                                                          _rAttrSet,
                                                           DSID_ORACLE_PORTNUMBER,
-                                                          STR_ORACLE_DEFAULT, 
-                                                          STR_ORACLE_HELPTEXT, 
+                                                          STR_ORACLE_DEFAULT,
+                                                          STR_ORACLE_HELPTEXT,
                                                           STR_ORACLE_HEADERTEXT,
                                                           STR_ORACLE_DRIVERCLASSTEXT) );
     }
@@ -639,7 +639,7 @@ DBG_NAME(OMySQLIntroPageSetup)
         aMsg.Execute();
         return 0L;
     }
-    
+
     // -----------------------------------------------------------------------
     IMPL_LINK(OGeneralSpecialJDBCConnectionPageSetup, OnEditModified, Edit*, _pEdit)
     {
@@ -793,7 +793,7 @@ DBG_NAME(OSpreadSheetConnectionPageSetup)
     // -----------------------------------------------------------------------
     OSpreadSheetConnectionPageSetup::~OSpreadSheetConnectionPageSetup()
     {
-    
+
         DBG_DTOR(OSpreadSheetConnectionPageSetup,NULL);
     }
 
@@ -853,7 +853,7 @@ DBG_NAME(OAuthentificationPageSetup)
     // -----------------------------------------------------------------------
     OAuthentificationPageSetup::~OAuthentificationPageSetup()
     {
-    
+
         DBG_DTOR(OAuthentificationPageSetup,NULL);
     }
 
@@ -919,7 +919,7 @@ DBG_NAME(OFinalDBPageSetup)
     , m_aFTAdditionalSettings       (this, ModuleRes(FT_ADDITIONALSETTINGS))
     , m_aCBOpenAfterwards           (this, ModuleRes(CB_OPENAFTERWARDS))
     , m_aCBStartTableWizard         (this, ModuleRes(CB_STARTTABLEWIZARD))
-    , m_aFTFinalText                (this, ModuleRes(FT_FINALTEXT))        
+    , m_aFTFinalText                (this, ModuleRes(FT_FINALTEXT))
     {
         DBG_CTOR(OFinalDBPageSetup,NULL);
 
@@ -933,7 +933,7 @@ DBG_NAME(OFinalDBPageSetup)
         sal_Int32 nUnrelatedHeight  = LogicToPixel( Size( 0, UNRELATED_CONTROLS ), MAP_APPFONT ).Height();
         sal_Int32 nRelatedHeight    = LogicToPixel( Size( 0, RELATED_CONTROLS ), MAP_APPFONT ).Height();
 
-        ::std::pair<Window*,sal_Int32> pWindows[] = { 	
+        ::std::pair<Window*,sal_Int32> pWindows[] = {
             ::std::pair<Window*,sal_Int32>(&m_aFTFinalHelpText,nRelatedHeight)
             ,::std::pair<Window*,sal_Int32>(&m_aRBRegisterDataSource,nRelatedHeight)
             ,::std::pair<Window*,sal_Int32>(&m_aRBDontregisterDataSource,nUnrelatedHeight)
@@ -969,17 +969,17 @@ DBG_NAME(OFinalDBPageSetup)
     // -----------------------------------------------------------------------
     OFinalDBPageSetup::~OFinalDBPageSetup()
     {
-    
+
         DBG_DTOR(OFinalDBPageSetup,NULL);
     }
 
     sal_Bool OFinalDBPageSetup::IsDatabaseDocumentToBeRegistered()
-    {   
+    {
         return m_aRBRegisterDataSource.IsChecked() && m_aRBRegisterDataSource.IsEnabled();
     }
 
     sal_Bool OFinalDBPageSetup::IsDatabaseDocumentToBeOpened()
-    {          
+    {
         return m_aCBOpenAfterwards.IsChecked() && m_aCBOpenAfterwards.IsEnabled();
     }
 

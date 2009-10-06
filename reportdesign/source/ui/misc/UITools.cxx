@@ -85,7 +85,7 @@
 #include <svx/svxdlg.hxx>
 #include <svx/unoprov.hxx>
 
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #include <svtools/ctrltool.hxx>
 #include <svtools/itempool.hxx>
 #include <svtools/itemset.hxx>
@@ -788,7 +788,7 @@ bool openAreaDialog( const uno::Reference<report::XShape >& _xShape,const uno::R
                 lcl_fillItemsToShape(_xShape,*pDialog->GetOutputItemSet());
             }
         }
-    
+
     }
     catch(uno::Exception&)
     {

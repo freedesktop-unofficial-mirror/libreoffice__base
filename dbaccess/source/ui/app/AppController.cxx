@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -135,10 +135,10 @@
 #include <vcl/menu.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_INTERNALOPTIONS_HXX
-#include <svtools/internaloptions.hxx>
+#include <unotools/internaloptions.hxx>
 #endif
 #ifndef _COMPHELPER_UNO3_HXX_
 #include <comphelper/uno3.hxx>
@@ -178,7 +178,7 @@
 #include <sfx2/mailmodelapi.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #endif
 #ifndef _SVTREEBOX_HXX
 #include <svtools/svtreebx.hxx>
@@ -219,7 +219,7 @@
 #include <sfx2/QuerySaveDocument.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_HISTORYOPTIONS_HXX
-#include <svtools/historyoptions.hxx>
+#include <unotools/historyoptions.hxx>
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX_
 #include <svtools/filenotation.hxx>
@@ -1621,7 +1621,7 @@ void OApplicationController::describeSupportedFeatures()
     implDescribeSupportedFeature( ".uno:OpenUrl",            SID_OPENURL,               CommandGroup::APPLICATION );
 
     // this one should not appear under Tools->Customize->Keyboard
-    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",		 
+    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",
                                                              SID_APP_NEW_REPORT_PRE_SEL,CommandGroup::INTERNAL );
     implDescribeSupportedFeature( ".uno:DBDSImport",		SID_DB_APP_DSIMPORT, CommandGroup::INTERNAL);
     implDescribeSupportedFeature( ".uno:DBDSExport",		SID_DB_APP_DSEXPORT, CommandGroup::INTERNAL);

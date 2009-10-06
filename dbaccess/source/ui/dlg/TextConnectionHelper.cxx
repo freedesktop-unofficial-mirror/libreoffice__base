@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -50,16 +50,16 @@
 #include "AutoControls.hrc"
 #endif
 
-#ifndef _SFXITEMSET_HXX 
+#ifndef _SFXITEMSET_HXX
 #include <svtools/itemset.hxx>
 #endif
-#ifndef _SFXSTRITEM_HXX 
+#ifndef _SFXSTRITEM_HXX
 #include <svtools/stritem.hxx>
 #endif
-#ifndef _SFXENUMITEM_HXX 
+#ifndef _SFXENUMITEM_HXX
 #include <svtools/eitem.hxx>
 #endif
-#ifndef _SFXINTITEM_HXX 
+#ifndef _SFXINTITEM_HXX
 #include <svtools/intitem.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCEITEMS_HXX_
@@ -141,7 +141,7 @@
 #endif
 
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 
 #ifndef SVTOOLS_INC_ROADMAPWIZARD_HXX
@@ -194,7 +194,7 @@ DBG_NAME(OTextConnectionHelper)
         nCnt = m_aTextSeparatorList.GetTokenCount( '\t' );
         for( i=0 ; i<nCnt ; i+=2 )
             m_aTextSeparator.InsertEntry( m_aTextSeparatorList.GetToken( i, '\t' ) );
-        m_aTextSeparator.InsertEntry(m_aTextNone); 
+        m_aTextSeparator.InsertEntry(m_aTextNone);
 
         // set the modify handlers
         m_aFieldSeparator.SetUpdateDataHdl(getControlModifiedLink());
@@ -306,7 +306,7 @@ DBG_NAME(OTextConnectionHelper)
     // -----------------------------------------------------------------------
     OTextConnectionHelper::~OTextConnectionHelper()
     {
-    
+
         DBG_DTOR(OTextConnectionHelper,NULL);
     }
 
@@ -357,7 +357,7 @@ DBG_NAME(OTextConnectionHelper)
         _rControlList.push_back(new ODisableWrapper<FixedText>(&m_aCharSetLabel));
         _rControlList.push_back(new ODisableWrapper<ListBox>(&m_aCharSet));
     }
-    
+
     // -----------------------------------------------------------------------
     void OTextConnectionHelper::implInitControls(const SfxItemSet& _rSet, sal_Bool _bValid)
     {
@@ -491,9 +491,9 @@ DBG_NAME(OTextConnectionHelper)
             {
                 rSet.Put( SfxStringItem( DSID_TEXTFILEEXTENSION, sExtension ) );
                 bChangedSomething = sal_True;
-            }       
+            }
         }
-        
+
         if ( ( m_nAvailableSections & TC_HEADER ) != 0 )
         {
             if( (m_aRowHeader.GetState() != m_aRowHeader.GetSavedValue()) )

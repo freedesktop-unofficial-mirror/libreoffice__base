@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -204,7 +204,7 @@
 #include <sfx2/filedlghelper.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _SFX_DOCFILT_HACK_HXX
 #include <sfx2/docfilt.hxx>
@@ -835,7 +835,7 @@ sal_Bool OApplicationController::paste( ElementType _eType,const ::svx::ODataAcc
                             if ( xSrcNameAccess.is() && xDstNameAccess.is() && xSrcNameAccess->hasElements() && xAppend.is() )
                             {
                                 Reference<XPropertySet> xDstProp(xFac->createDataDescriptor());
-                                
+
                                 Sequence< ::rtl::OUString> aSeq = xSrcNameAccess->getElementNames();
                                 const ::rtl::OUString* pIter = aSeq.getConstArray();
                                 const ::rtl::OUString* pEnd	  = pIter + aSeq.getLength();

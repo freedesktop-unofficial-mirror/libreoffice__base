@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -70,7 +70,7 @@
 #include <cppuhelper/typeprovider.hxx>
 #include <cppuhelper/exc_hlp.hxx>
 #include <svtools/filenotation.hxx>
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #include <tools/debug.hxx>
 #include <tools/diagnose_ex.h>
 #include <tools/fsys.hxx>
@@ -150,8 +150,8 @@ namespace dbaccess
         public:
             DatabaseDocumentLoader( const comphelper::ComponentContext& _aContext);
 
-            inline void append(const ODatabaseModelImpl& _rModelImpl ) 
-            { 
+            inline void append(const ODatabaseModelImpl& _rModelImpl )
+            {
                 m_aDatabaseDocuments.push_back(&_rModelImpl);
             }
             inline void remove(const ODatabaseModelImpl& _rModelImpl) { m_aDatabaseDocuments.remove(&_rModelImpl); }
@@ -204,7 +204,7 @@ namespace dbaccess
             ::std::list< const ODatabaseModelImpl* > aCopy(m_aDatabaseDocuments);
             ::std::for_each(aCopy.begin(),aCopy.end(),TerminateFunctor());
         }
-        
+
         // .............................................................................
         void SAL_CALL DatabaseDocumentLoader::notifyTermination( const lang::EventObject& /*Event*/ ) throw (RuntimeException)
         {

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -116,7 +116,7 @@
 #include <sot/storage.hxx>
 #include <svtools/filenotation.hxx>
 #include <svtools/intitem.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #include <svtools/svlbitm.hxx>
 #include <svtools/svtreebx.hxx>
 #include <svx/algitem.hxx>
@@ -1410,7 +1410,7 @@ void SbaTableQueryBrowser::attachFrame(const Reference< ::com::sun::star::frame:
         m_xCurrentFrameParent = xCurrentFrame->findFrame(::rtl::OUString::createFromAscii("_parent"),FrameSearchFlag::PARENT);
         if ( m_xCurrentFrameParent.is() )
             m_xCurrentFrameParent->addFrameActionListener((::com::sun::star::frame::XFrameActionListener*)this);
-  
+
         // obtain our toolbox
         try
         {
@@ -1744,7 +1744,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
                         aReturn.bEnabled = m_aCurrentFrame.isActive();
                         break;
                     } // if ( getBrowserView()->getVclControl()->GetSelectRowCount() )
-                    else					
+                    else
                         aReturn.bEnabled = pControl->canCopyCellText(pControl->GetCurRow(), pControl->GetCurColumnId());
                     break;
                 }

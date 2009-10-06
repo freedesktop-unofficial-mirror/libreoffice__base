@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -75,7 +75,7 @@
 #include <cppuhelper/implbase2.hxx>
 #include <osl/file.hxx>
 #include <sfx2/docfile.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #include <toolkit/awt/vclxwindow.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <tools/diagnose_ex.h>
@@ -439,7 +439,7 @@ void SAL_CALL DBContentLoader::load(const Reference< XFrame > & rFrame, const ::
 
     sal_Bool bSuccess = sal_True;
 
-    // If there's no interaction handler in the media descriptor, put one. 
+    // If there's no interaction handler in the media descriptor, put one.
     // By definition, loading via loadComponentFromURL (and thus via the content loader here)
     // is allowed to raise UI. To not burden every place inside the document with creating
     // a default handler, we simply ensure there is one.
@@ -490,7 +490,7 @@ void SAL_CALL DBContentLoader::load(const Reference< XFrame > & rFrame, const ::
         if ( bCreateNew && xModel.is() )
         {
             if ( bNewAndInteractive )
-            {   
+            {
                 bSuccess = impl_executeNewDatabaseWizard( xModel, bStartTableWizard );
             }
             else

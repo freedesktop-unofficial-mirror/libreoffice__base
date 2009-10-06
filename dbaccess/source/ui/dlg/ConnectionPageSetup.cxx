@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -47,7 +47,7 @@
 #include <svtools/itemset.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _SFXSTRITEM_HXX
 #include <svtools/stritem.hxx>
@@ -229,7 +229,7 @@ namespace dbaui
         else
             m_aFT_HelpText.Hide();
 
-        
+
         if ( USHRT_MAX != _nHeaderResId )
             SetHeaderText(FT_AUTOWIZARDHEADER, _nHeaderResId);
 
@@ -256,7 +256,7 @@ namespace dbaui
             m_aFT_Connection.Hide();
 
         m_aConnectionURL.SetModifyHdl(LINK(this, OConnectionTabPageSetup, OnEditModified));
-        
+
         SetRoadmapStateValue(sal_False);
     }
 
@@ -270,7 +270,7 @@ namespace dbaui
     void OConnectionTabPageSetup::implInitControls(const SfxItemSet& _rSet, sal_Bool _bSaveValue)
     {
         m_eType = m_pAdminDialog->getDatasourceType(_rSet);
-        // special handling for oracle, this can only happen 
+        // special handling for oracle, this can only happen
         // if the user enters the same url as used for Oracle and we are on the JDBC path
         //! TODO
         //if (  ::dbaccess::DST_ORACLE_JDBC == m_eType )
@@ -288,7 +288,7 @@ namespace dbaui
         //		ppTextControls[i]->SetText(sDisplayName);
         //	}
         //}
-        
+
         callModifiedHdl();
     }
     // -----------------------------------------------------------------------
