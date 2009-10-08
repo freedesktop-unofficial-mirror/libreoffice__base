@@ -162,6 +162,7 @@ ODocumentContainer::ODocumentContainer(const Reference< XMultiServiceFactory >& 
 ODocumentContainer::~ODocumentContainer()
 {
     DBG_DTOR(ODocumentContainer, NULL);
+
     if ( !OContentHelper::rBHelper.bInDispose && !OContentHelper::rBHelper.bDisposed )
     {
         acquire();
@@ -262,6 +263,10 @@ Reference< XInterface > SAL_CALL ODocumentContainer::createInstanceWithArguments
             {
                 aValue.Value >>= bAsTemplate;
             }
+            else
+            {
+                // DBG_ASSERT("unknown property exception");
+            }            
         }
 
         const ODefinitionContainer_Impl& rDefinitions( getDefinitions() );
