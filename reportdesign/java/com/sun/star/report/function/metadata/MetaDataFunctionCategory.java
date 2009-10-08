@@ -43,6 +43,6 @@ public class MetaDataFunctionCategory extends AbstractFunctionCategory
 
     private MetaDataFunctionCategory()
     {
-        super("com.sun.star.report.functions.metadata.category");
+        super("com.sun.star.report.function.metadata.category");
     }
 }

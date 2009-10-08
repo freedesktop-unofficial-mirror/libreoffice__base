@@ -54,6 +54,9 @@ import com.sun.star.report.pentaho.output.chart.ChartRawReportProcessor;
 import com.sun.star.report.pentaho.output.text.TextRawReportProcessor;
 import com.sun.star.report.pentaho.output.spreadsheet.SpreadsheetRawReportProcessor;
 import java.util.List;
+import org.jfree.formula.DefaultFormulaContext;
+import org.jfree.formula.function.FunctionCategory;
+import org.jfree.formula.function.FunctionRegistry;
 import org.jfree.formula.lvalues.ContextLookup;
 import org.jfree.formula.lvalues.FormulaFunction;
 import org.jfree.formula.lvalues.LValue;
@@ -345,7 +348,7 @@ public class PentahoReportJob implements ReportJob
             
             final String filter = (String) officeReport.getAttribute(OfficeNamespaces.OOREPORT_NS, "filter");
             parameters.put(SDBCReportDataFactory.UNO_FILTER, filter);
-
+            
             final long startTime = System.currentTimeMillis();
             final ReportProcessor rp = getProcessorForContentType(contentType);
             rp.processReport(job);

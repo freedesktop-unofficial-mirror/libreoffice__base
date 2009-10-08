@@ -152,7 +152,7 @@ public class VariablesDeclarationLayoutController
         formula = "" + value;
     if (value instanceof Date)
     {
-        Date date = (Date)value;
+        final Date date = (Date)value;
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy;MM;dd");
         formula = "Date(" + dateFormat.format(date) + ")";
     }
