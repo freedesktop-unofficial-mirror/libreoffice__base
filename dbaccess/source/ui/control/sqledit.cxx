@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,7 +40,7 @@
 #include "undosqledit.hxx"
 #include "QueryDesignView.hxx"
 
-#include <svtools/smplhint.hxx>
+#include <svl/smplhint.hxx>
 
 //////////////////////////////////////////////////////////////////////////
 // OSqlEdit
@@ -67,8 +67,8 @@ OSqlEdit::OSqlEdit( OQueryTextView* pParent,  WinBits nWinStyle ) :
 
     ImplSetFont();
     // listen for change of Font and Color Settings
-    StartListening(m_SourceViewConfig);
-    StartListening(m_ColorConfig);
+    m_SourceViewConfig.AddListener( this );
+    m_ColorConfig.AddListener(this);
 
     //#i97044#
     EnableFocusSelectionHide( FALSE );
@@ -79,9 +79,9 @@ OSqlEdit::~OSqlEdit()
 {
     DBG_DTOR(OSqlEdit,NULL);
     if (m_timerUndoActionCreation.IsActive())
-        m_timerUndoActionCreation.Stop();	
-    EndListening(m_SourceViewConfig);
-    EndListening(m_ColorConfig);
+        m_timerUndoActionCreation.Stop();
+    m_SourceViewConfig.RemoveListener(this);
+    m_ColorConfig.RemoveListener(this);
 }
 //------------------------------------------------------------------------------
 void OSqlEdit::KeyInput( const KeyEvent& rKEvt )
@@ -163,7 +163,7 @@ IMPL_LINK(OSqlEdit, ModifyHdl, void*, /*EMPTYTAG*/)
     m_pView->getContainerWindow()->getDesignView()->getController().InvalidateFeature(SID_SBA_QRY_EXECUTE);
     m_pView->getContainerWindow()->getDesignView()->getController().InvalidateFeature(SID_CUT);
     m_pView->getContainerWindow()->getDesignView()->getController().InvalidateFeature(SID_COPY);
-    
+
     m_lnkTextModifyHdl.Call(NULL);
     return 0;
 }
@@ -180,13 +180,13 @@ void OSqlEdit::SetText(const String& rNewText)
 
     MultiLineEditSyntaxHighlight::SetText(rNewText);
     m_strOrigText  =rNewText;
-}	
+}
 // -----------------------------------------------------------------------------
 void OSqlEdit::stopTimer()
 {
     m_bStopTimer = sal_True;
     if (m_timerInvalidate.IsActive())
-        m_timerInvalidate.Stop();	
+        m_timerInvalidate.Stop();
 }
 // -----------------------------------------------------------------------------
 void OSqlEdit::startTimer()
@@ -196,11 +196,11 @@ void OSqlEdit::startTimer()
         m_timerInvalidate.Start();
 }
 
-void OSqlEdit::Notify( SfxBroadcaster& rBC, const SfxHint& /*rHint*/ )
+void OSqlEdit::ConfigurationChanged( utl::ConfigurationBroadcaster* pOption, sal_uInt32 )
 {
-    if (&rBC == &m_SourceViewConfig)
-        ImplSetFont();        
-    else if (&rBC == &m_ColorConfig)
+    if ( pOption == &m_SourceViewConfig )
+        ImplSetFont();
+    else if ( pOption == &m_ColorConfig )
         MultiLineEditSyntaxHighlight::UpdateData();
 }
 
