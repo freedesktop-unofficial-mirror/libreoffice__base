@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -570,7 +570,7 @@ void OAppDetailPageHelper::selectElements(const Sequence< ::rtl::OUString>& _aNa
     SvLBoxEntry* pEntry = _pEntry;
     if ( !pEntry )
         pEntry = rTree.FirstSelected();
-    
+
     if ( !pEntry )
         return sComposedName;
 
@@ -830,7 +830,7 @@ namespace
 
     static sal_Int32 lcl_getFolderIndicatorForType( const ElementType _eType )
     {
-        const sal_Int32 nFolderIndicator = 
+        const sal_Int32 nFolderIndicator =
                 ( _eType == E_FORM ) ? DatabaseObjectContainer::FORMS_FOLDER
             :   ( _eType == E_REPORT ) ? DatabaseObjectContainer::REPORTS_FOLDER : -1;
         return nFolderIndicator;
@@ -1265,7 +1265,7 @@ void OAppDetailPageHelper::showPreview(	const ::rtl::OUString& _sDataSourceName,
             {
                 m_xFrame = Reference < XFrame > ( getBorderWin().getView()->getORB()->createInstance( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.frame.Frame")) ), UNO_QUERY );
                 m_xFrame->initialize( m_xWindow );
-            
+
                 // work-around for #150518#: no layout manager (and thus no toolbars) in the preview
                 // Must be called after initialize ... but before any other call to this frame.
                 // Otherwhise frame throws "life time exceptions" as e.g. NON_INITIALIZED
@@ -1386,7 +1386,7 @@ void OAppDetailPageHelper::DataChanged( const DataChangedEvent& rDCEvt )
 {
     Window::DataChanged( rDCEvt );
 
-       if ( (rDCEvt.GetType() == DATACHANGED_FONTS) ||
+        if ( (rDCEvt.GetType() == DATACHANGED_FONTS) ||
         (rDCEvt.GetType() == DATACHANGED_DISPLAY) ||
         (rDCEvt.GetType() == DATACHANGED_FONTSUBSTITUTION) ||
         ((rDCEvt.GetType() == DATACHANGED_SETTINGS) &&
@@ -1437,7 +1437,7 @@ void OAppDetailPageHelper::ImplInitSettings()
     } // if( true )
 }
 // -----------------------------------------------------------------------------
-OPreviewWindow::OPreviewWindow(Window* _pParent) 
+OPreviewWindow::OPreviewWindow(Window* _pParent)
 : Window(_pParent)
 {
     ImplInitSettings( sal_True, sal_True, sal_True );
