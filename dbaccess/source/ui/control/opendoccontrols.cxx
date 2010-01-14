@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -72,7 +72,7 @@
 #include <vcl/help.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_HISTORYOPTIONS_HXX
-#include <svtools/historyoptions.hxx>
+#include <unotools/historyoptions.hxx>
 #endif
 #ifndef _COMPHELPER_SEQUENCEASHASHMAP_HXX_
 #include <comphelper/sequenceashashmap.hxx>
@@ -81,7 +81,7 @@
 #include <tools/urlobj.hxx>
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX
-#include <svtools/filenotation.hxx>
+#include <svl/filenotation.hxx>
 #endif
 
 //........................................................................
@@ -190,7 +190,7 @@ namespace dbaui
                     Sequence<Reference< XGraphic> > xIconList( xImageManager->getImages( 0, aCommandList ) );
                     if ( !xIconList.hasElements() )
                         break;
-                     
+
                     aIcon = Graphic( xIconList[0] ).GetBitmapEx();
                 }
                 while ( false );
