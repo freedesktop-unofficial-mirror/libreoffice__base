@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -114,9 +114,9 @@
 #include <sfx2/app.hxx>
 #include <sfx2/dispatch.hxx>
 #include <sot/storage.hxx>
-#include <svtools/filenotation.hxx>
-#include <svtools/intitem.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <svl/filenotation.hxx>
+#include <svl/intitem.hxx>
+#include <unotools/moduleoptions.hxx>
 #include <svtools/svlbitm.hxx>
 #include <svtools/svtreebx.hxx>
 #include <svx/algitem.hxx>
@@ -1410,7 +1410,7 @@ void SbaTableQueryBrowser::attachFrame(const Reference< ::com::sun::star::frame:
         m_xCurrentFrameParent = xCurrentFrame->findFrame(::rtl::OUString::createFromAscii("_parent"),FrameSearchFlag::PARENT);
         if ( m_xCurrentFrameParent.is() )
             m_xCurrentFrameParent->addFrameActionListener((::com::sun::star::frame::XFrameActionListener*)this);
-  
+
         // obtain our toolbox
         try
         {
@@ -1744,7 +1744,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
                         aReturn.bEnabled = m_aCurrentFrame.isActive();
                         break;
                     } // if ( getBrowserView()->getVclControl()->GetSelectRowCount() )
-                    else					
+                    else
                         aReturn.bEnabled = pControl->canCopyCellText(pControl->GetCurRow(), pControl->GetCurColumnId());
                     break;
                 }
@@ -3608,7 +3608,7 @@ sal_Bool SbaTableQueryBrowser::isHiContrast() const
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaui", "Ocke.Janssen@sun.com", "SbaTableQueryBrowser::isHiContrast" );
     sal_Bool bRet = sal_False;
     if ( m_pTreeView )
-        bRet = m_pTreeView->getListBox().GetBackground().GetColor().IsDark();
+        bRet = m_pTreeView->getListBox().GetSettings().GetStyleSettings().GetHighContrastMode();
     return bRet;
 }
 // -----------------------------------------------------------------------------
