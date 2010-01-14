@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -44,26 +44,26 @@
 #ifndef _DBU_MISC_HRC_
 #include "dbu_misc.hrc"
 #endif
-#ifndef _SFXITEMSET_HXX 
-#include <svtools/itemset.hxx>
+#ifndef _SFXITEMSET_HXX
+#include <svl/itemset.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #endif
 #ifndef _SFX_FCONTNR_HXX
 #include <sfx2/fcontnr.hxx>
 #endif
-#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX 
-#include <svtools/pathoptions.hxx>
+#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
+#include <unotools/pathoptions.hxx>
 #endif
-#ifndef _SFXSTRITEM_HXX 
-#include <svtools/stritem.hxx>
+#ifndef _SFXSTRITEM_HXX
+#include <svl/stritem.hxx>
 #endif
-#ifndef _SFXENUMITEM_HXX 
-#include <svtools/eitem.hxx>
+#ifndef _SFXENUMITEM_HXX
+#include <svl/eitem.hxx>
 #endif
-#ifndef _SFXINTITEM_HXX 
-#include <svtools/intitem.hxx>
+#ifndef _SFXINTITEM_HXX
+#include <svl/intitem.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCEITEMS_HXX_
 #include "dsitems.hxx"
@@ -74,13 +74,13 @@
 #ifndef _DBAUI_LOCALRESACCESS_HXX_
 #include "localresaccess.hxx"
 #endif
-#ifndef _OSL_PROCESS_H_ 
+#ifndef _OSL_PROCESS_H_
 #include <osl/process.h>
 #endif
 #ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
-#ifndef _FILEDLGHELPER_HXX 
+#ifndef _FILEDLGHELPER_HXX
 #include <sfx2/filedlghelper.hxx>
 #endif
 #ifndef _DBAUI_DBADMIN_HXX_
@@ -89,7 +89,7 @@
 #ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
-#ifndef _VCL_STDTEXT_HXX 
+#ifndef _VCL_STDTEXT_HXX
 #include <vcl/stdtext.hxx>
 #endif
 #ifndef _DBAUI_SQLMESSAGE_HXX_
@@ -102,12 +102,12 @@
 #include "dsselect.hxx"
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX_
-#include <svtools/filenotation.hxx>
+#include <svl/filenotation.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
 #include "dbustrings.hrc"
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XFOLDERPICKER_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XFOLDERPICKER_HPP_
 #include <com/sun/star/ui/dialogs/XFolderPicker.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBC_XROW_HPP_
@@ -126,10 +126,10 @@
 #ifndef DBAUI_TOOLS_HXX
 #include "UITools.hxx"
 #endif
-#ifndef _UNOTOOLS_LOCALFILEHELPER_HXX 
+#ifndef _UNOTOOLS_LOCALFILEHELPER_HXX
 #include <unotools/localfilehelper.hxx>
 #endif
-#ifndef _UNOTOOLS_UCBHELPER_HXX 
+#ifndef _UNOTOOLS_UCBHELPER_HXX
 #include <unotools/ucbhelper.hxx>
 #endif
 #ifndef _UCBHELPER_COMMANDENVIRONMENT_HXX
@@ -141,7 +141,7 @@
 #ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
 #include <connectivity/CommonTools.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
 #ifndef TOOLS_DIAGNOSE_EX_H
@@ -155,7 +155,7 @@
 #endif
 
 #ifdef _ADO_DATALINK_BROWSE_
-#if defined( WNT ) 
+#if defined( WNT )
     #include <tools/prewin.h>
     #include <windows.h>
     #include <tools/postwin.h>
@@ -213,7 +213,7 @@ DBG_NAME(OConnectionHelper)
 
     OConnectionHelper::~OConnectionHelper()
     {
-    
+
         DBG_DTOR(OConnectionHelper,NULL);
     }
 
@@ -244,7 +244,7 @@ DBG_NAME(OConnectionHelper)
             m_aConnectionURL.ClearModifyFlag();
         }
 
-        OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);	
+        OGenericAdministrationPage::implInitControls(_rSet, _bSaveValue);
     }
 
     // -----------------------------------------------------------------------
@@ -331,7 +331,7 @@ DBG_NAME(OConnectionHelper)
             {
                 const ::rtl::OUString sExt(RTL_CONSTASCII_USTRINGPARAM("*.mdb"));
                 String sFilterName(ModuleRes (STR_MSACCESS_FILTERNAME));
-                ::sfx2::FileDialogHelper aFileDlg(WB_3DLOOK | WB_STDMODAL | WB_OPEN);		
+                ::sfx2::FileDialogHelper aFileDlg(WB_3DLOOK | WB_STDMODAL | WB_OPEN);
                 aFileDlg.AddFilter(sFilterName,sExt);
                 aFileDlg.SetCurrentFilter(sFilterName);
                 askForFileName(aFileDlg);
@@ -341,7 +341,7 @@ DBG_NAME(OConnectionHelper)
             {
                 const ::rtl::OUString sAccdb(RTL_CONSTASCII_USTRINGPARAM("*.accdb"));
                 String sFilterName2(ModuleRes (STR_MSACCESS_2007_FILTERNAME));
-                ::sfx2::FileDialogHelper aFileDlg(WB_3DLOOK | WB_STDMODAL | WB_OPEN);		
+                ::sfx2::FileDialogHelper aFileDlg(WB_3DLOOK | WB_STDMODAL | WB_OPEN);
                 aFileDlg.AddFilter(sFilterName2,sAccdb);
                 aFileDlg.SetCurrentFilter(sFilterName2);
                 askForFileName(aFileDlg);
@@ -367,7 +367,7 @@ DBG_NAME(OConnectionHelper)
                     rtl_uString_release(pDbVar);
                     pDbVar = NULL;
                 }
-                
+
                 sEnvVarName = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("DBCONFIG"));
                 if(osl_getEnvironment(sEnvVarName.pData,&pDbVar) == osl_Process_E_None && pDbVar)
                 {
@@ -389,7 +389,7 @@ DBG_NAME(OConnectionHelper)
                     rtl_uString_release(pDbVar);
                     pDbVar = NULL;
                 }
-                
+
                 sal_Bool bOldFashion = sAdabasConfigDir.getLength() && sAdabasWorkDir.getLength();
 
                 if(!bOldFashion) // we have a normal adabas installation
@@ -400,7 +400,7 @@ DBG_NAME(OConnectionHelper)
 
                 if(sAdabasConfigDir.getLength() && sAdabasWorkDir.getLength() && sRootDir.getLength())
                 {
-                    
+
                     aInstalledDBs	= getInstalledAdabasDBs(sAdabasConfigDir,sAdabasWorkDir);
 
                     if(!aInstalledDBs.size() && bOldFashion)
@@ -471,12 +471,12 @@ DBG_NAME(OConnectionHelper)
 
                 Reference<XMultiServiceFactory> xFactory = ::comphelper::getProcessServiceFactory();
                 OSL_ENSURE( xFactory.is(), "can't get service factory" );
- 
+
                 Reference<XInterface> xInstance = xFactory->createInstance(::rtl::OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.mozilla.MozillaBootstrap")) );
                 OSL_ENSURE( xInstance.is(), "failed to create instance" );
                 Reference<XMozillaBootstrap> xMozillaBootstrap =  Reference<XMozillaBootstrap>(xInstance,UNO_QUERY);
                 OSL_ENSURE( xMozillaBootstrap.is(), "failed to create instance" );
-                
+
                 if (xMozillaBootstrap.is())
                 {
                     // collect all Mozilla Profiles
@@ -484,7 +484,7 @@ DBG_NAME(OConnectionHelper)
 
                     xMozillaBootstrap->getProfileList( profileType, list );
                     const ::rtl::OUString * pArray = list.getConstArray();
- 
+
                     sal_Int32 count = list.getLength();
 
                     StringBag aProfiles;
@@ -552,7 +552,7 @@ DBG_NAME(OConnectionHelper)
                 if ( sFileURLEncoded.Len() )
                 {
                     OFileNotation aFileNotation(sFileURLEncoded);
-                    // set this decoded URL as text					
+                    // set this decoded URL as text
                     sURL += String(aFileNotation.get(OFileNotation::N_SYSTEM));
                 }
             }
@@ -801,7 +801,7 @@ DBG_NAME(OConnectionHelper)
             bExists = bIsFile? aCheckExistence.isDocument(): aCheckExistence.isFolder();
             eExists = bExists? PATH_EXIST: PATH_NOT_EXIST;
         }
-        catch(const Exception&) 
+        catch(const Exception&)
         {
             eExists = ( pHandler && pHandler->isDoesNotExist() ) ? PATH_NOT_EXIST: (bIsFile ? PATH_NOT_EXIST : PATH_NOT_KNOWN);
            }
@@ -975,7 +975,7 @@ DBG_NAME(OConnectionHelper)
         setURLNoPrefix(sURL);
         m_aConnectionURL.SaveValueNoPrefix();
         return sal_True;
-    }    
+    }
     //-------------------------------------------------------------------------
     void OConnectionHelper::askForFileName(::sfx2::FileDialogHelper& _aFileOpen)
     {
