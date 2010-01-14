@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -83,16 +83,16 @@
 #include <tools/diagnose_ex.h>
 #include <tools/string.hxx>
 
-#include <svtools/urihelper.hxx>
-#include <svtools/pathoptions.hxx>
-#include <svtools/internaloptions.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <svl/urihelper.hxx>
+#include <unotools/pathoptions.hxx>
+#include <unotools/internaloptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #include <svtools/svtreebx.hxx>
 #include <svtools/transfer.hxx>
 #include <svtools/cliplistener.hxx>
 #include <svtools/svlbitm.hxx>
-#include <svtools/historyoptions.hxx>
-#include <svtools/filenotation.hxx>
+#include <unotools/historyoptions.hxx>
+#include <svl/filenotation.hxx>
 #include <svtools/insdlg.hxx>
 
 #include <unotools/tempfile.hxx>
@@ -130,15 +130,20 @@
 #include "dbu_reghelper.hxx"
 #include "dbu_app.hrc"
 #include "defaultobjectnamecheck.hxx"
+#include <unotools/pathoptions.hxx>
+#include <unotools/internaloptions.hxx>
 #include "databaseobjectview.hxx"
 #include "listviewitems.hxx"
 #include "AppDetailView.hxx"
 #include "linkeddocuments.hxx"
 #include "sqlmessage.hxx"
+#include <unotools/moduleoptions.hxx>
 #include "UITools.hxx"
 #include "dsntypes.hxx"
 #include "dbaccess_helpid.hrc"
 #include "dlgsave.hxx"
+#include <unotools/historyoptions.hxx>
+#include <svl/filenotation.hxx>
 #include <vos/mutex.hxx>
 #include "dbaccess_slotid.hrc"
 
@@ -1529,7 +1534,7 @@ void OApplicationController::describeSupportedFeatures()
     implDescribeSupportedFeature( ".uno:OpenUrl",            SID_OPENURL,               CommandGroup::APPLICATION );
 
     // this one should not appear under Tools->Customize->Keyboard
-    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",		 
+    implDescribeSupportedFeature( ".uno:DBNewReportWithPreSelection",
                                                              SID_APP_NEW_REPORT_PRE_SEL,CommandGroup::INTERNAL );
     implDescribeSupportedFeature( ".uno:DBDSImport",		SID_DB_APP_DSIMPORT, CommandGroup::INTERNAL);
     implDescribeSupportedFeature( ".uno:DBDSExport",		SID_DB_APP_DSEXPORT, CommandGroup::INTERNAL);
