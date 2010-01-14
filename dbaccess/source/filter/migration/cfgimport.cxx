@@ -1,7 +1,7 @@
  /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -79,7 +79,7 @@
 #include <tools/urlobj.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_XCOMPONENTLOADER_HPP_
 #include <com/sun/star/frame/XComponentLoader.hpp>
@@ -603,7 +603,7 @@ void OCfgImport::createDataSource(const ::rtl::OUString& _sName)
         Reference<XOfficeDatabaseDocument> xOfficeDoc(m_xModel,UNO_QUERY);
         if ( xOfficeDoc.is() )
             m_xCurrentDS.set(xOfficeDoc->getDataSource(),UNO_QUERY);
-        
+
 
         INetURLObject aURL(rsWorkPath,INetURLObject::WAS_ENCODED);
         aURL.insertName(_sName,false,INetURLObject::LAST_SEGMENT,true,INetURLObject::ENCODE_ALL);
@@ -1237,22 +1237,22 @@ void SAL_CALL  OCfgImport::endProperty()
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::addProperty( 	 
+void SAL_CALL  OCfgImport::addProperty(
         const rtl::OUString& /*aName*/,
         sal_Int16 /*aAttributes*/,
         const Type& /*aType*/ )
-    throw(	 
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {
 }
 // -----------------------------------------------------------------------------
 
-void SAL_CALL  OCfgImport::addPropertyWithValue( 	 
+void SAL_CALL  OCfgImport::addPropertyWithValue(
         const rtl::OUString& /*aName*/,
         sal_Int16 /*aAttributes*/,
-        const Any& /*aValue*/ ) 
-    throw(	 
+        const Any& /*aValue*/ )
+    throw(
         MalformedDataException,
         WrappedTargetException )
 {

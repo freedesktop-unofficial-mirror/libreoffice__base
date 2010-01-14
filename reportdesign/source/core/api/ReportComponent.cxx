@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -44,8 +44,8 @@
 #include <com/sun/star/style/ParagraphAdjust.hpp>
 #include <com/sun/star/i18n/ScriptType.hpp>
 #include <svx/unolingu.hxx>
-#include <svtools/syslocale.hxx>
-#include <svtools/lingucfg.hxx>
+#include <unotools/syslocale.hxx>
+#include <unotools/lingucfg.hxx>
 #include <i18npool/mslangid.hxx>
 
 // =============================================================================
@@ -128,7 +128,7 @@ void OReportComponentProperties::setShape(uno::Reference< drawing::XShape >& _xS
     {
         m_xProxy.set(_xShape,uno::UNO_QUERY);
         ::comphelper::query_aggregation(m_xProxy,m_xShape);
-        ::comphelper::query_aggregation(m_xProxy,m_xProperty);        
+        ::comphelper::query_aggregation(m_xProxy,m_xProperty);
         _xShape.clear();
         m_xTypeProvider.set(m_xShape,uno::UNO_QUERY);
         m_xUnoTunnel.set(m_xShape,uno::UNO_QUERY);
