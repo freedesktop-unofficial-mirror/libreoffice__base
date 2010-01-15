@@ -330,6 +330,8 @@ namespace
 
         return eErrorCode;
     }
+                case DataType::CLOB:
+                case DataType::BLOB:				
     // -----------------------------------------------------------------------------
 
     /** FillDragInfo fills the field description out of the table
@@ -1307,7 +1309,7 @@ namespace
             GetInnerJoinCriteria(_pView,pNodeTmp);
             // now simplify again, join are checked in ComparisonPredicate
             ::connectivity::OSQLParseNode::absorptions(pNodeTmp);
-            pNodeTmp = pNode->getChild(1);
+            pNodeTmp = pNode->getChild(1);			
 
             // it could happen that pCondition is not more valid
             eErrorCode = GetORCriteria(_pView,_pSelectionBrw,pNodeTmp, rLevel);
