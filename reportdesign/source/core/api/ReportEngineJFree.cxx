@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -51,7 +51,7 @@
 
 #include <tools/debug.hxx>
 #include <tools/urlobj.hxx>
-#include <svtools/useroptions.hxx>
+#include <unotools/useroptions.hxx>
 #include <unotools/tempfile.hxx>
 #include <unotools/sharedunocomponent.hxx>
 
@@ -81,8 +81,8 @@ OReportEngineJFree::OReportEngineJFree( const uno::Reference< uno::XComponentCon
     DBG_CTOR( rpt_OReportEngineJFree,NULL);
 }
 // -----------------------------------------------------------------------------
-// TODO: VirtualFunctionFinder: This is virtual function! 
-// 
+// TODO: VirtualFunctionFinder: This is virtual function!
+//
 OReportEngineJFree::~OReportEngineJFree()
 {
     DBG_DTOR( rpt_OReportEngineJFree,NULL);
@@ -90,10 +90,10 @@ OReportEngineJFree::~OReportEngineJFree()
 //--------------------------------------------------------------------------
 IMPLEMENT_FORWARD_XINTERFACE2(OReportEngineJFree,ReportEngineBase,ReportEnginePropertySet)
 // -----------------------------------------------------------------------------
-void SAL_CALL OReportEngineJFree::dispose() throw(uno::RuntimeException) 
+void SAL_CALL OReportEngineJFree::dispose() throw(uno::RuntimeException)
 {
     ReportEnginePropertySet::dispose();
-    cppu::WeakComponentImplHelperBase::dispose(); 
+    cppu::WeakComponentImplHelperBase::dispose();
     m_xActiveConnection.clear();
 }
 // -----------------------------------------------------------------------------
@@ -112,7 +112,7 @@ uno::Sequence< ::rtl::OUString > OReportEngineJFree::getSupportedServiceNames_St
 {
     uno::Sequence< ::rtl::OUString > aServices(1);
     aServices.getArray()[0] = SERVICE_REPORTENGINE;
-    
+
     return aServices;
 }
 //------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ uno::Reference< report::XReportDefinition > SAL_CALL OReportEngineJFree::getRepo
 // -----------------------------------------------------------------------------
 void SAL_CALL OReportEngineJFree::setReportDefinition( const uno::Reference< report::XReportDefinition >& _report ) throw (lang::IllegalArgumentException, uno::RuntimeException)
 {
-    if ( !_report.is() ) 
+    if ( !_report.is() )
         throw lang::IllegalArgumentException();
     BoundListeners l;
     {
@@ -223,7 +223,7 @@ void SAL_CALL OReportEngineJFree::setStatusIndicator( const uno::Reference< task
                 else
                     sFileURL = aTestFile.GetURL();
             }
-            
+
             uno::Reference< embed::XStorage > xOut = OStorageHelper::GetStorageFromURL(sFileURL,embed::ElementModes::WRITE | embed::ElementModes::TRUNCATE,uno::Reference< lang::XMultiServiceFactory >(m_xContext->getServiceManager(),uno::UNO_QUERY));
             utl::DisposableComponent aOut(xOut);
             xStorageProp.set(xOut,uno::UNO_QUERY);
@@ -231,7 +231,7 @@ void SAL_CALL OReportEngineJFree::setStatusIndicator( const uno::Reference< task
             {
                 xStorageProp->setPropertyValue( s_sMediaType, uno::makeAny(sMimeType));
             }
-            
+
             aConvertedProperties[nPos++].Value <<= xOut;
 
             aConvertedProperties[nPos].Name = PROPERTY_REPORTDEFINITION;
@@ -300,7 +300,7 @@ uno::Reference< frame::XModel > SAL_CALL OReportEngineJFree::createDocumentAlive
 {
     uno::Reference< frame::XModel > xModel;
     ::rtl::OUString sOutputName = getNewOutputName(); // starts implicite the report generator
-    if ( sOutputName.getLength() ) 
+    if ( sOutputName.getLength() )
     {
         ::osl::MutexGuard aGuard(m_aMutex);
         ::connectivity::checkDisposed(ReportEngineBase::rBHelper.bDisposed);
@@ -309,7 +309,7 @@ uno::Reference< frame::XModel > SAL_CALL OReportEngineJFree::createDocumentAlive
         {
             // if there is no frame given, find the right
             xFrameLoad.set( m_xContext->getServiceManager()->createInstanceWithContext(
-                                                    ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.frame.Desktop")) 
+                                                    ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.frame.Desktop"))
                                                     ,m_xContext)
                                                     ,uno::UNO_QUERY);
             ::rtl::OUString sTarget(RTL_CONSTASCII_USTRINGPARAM("_blank"));
@@ -317,7 +317,7 @@ uno::Reference< frame::XModel > SAL_CALL OReportEngineJFree::createDocumentAlive
             uno::Reference< frame::XFrame> xFrame = uno::Reference< frame::XFrame>(xFrameLoad,uno::UNO_QUERY)->findFrame(sTarget,nFrameSearchFlag);
             xFrameLoad.set( xFrame,uno::UNO_QUERY);
         }
-        
+
         if ( xFrameLoad.is() )
         {
             uno::Sequence < beans::PropertyValue > aArgs( _bHidden ? 3 : 2 );
@@ -409,7 +409,7 @@ uno::Reference< sdbc::XConnection > SAL_CALL OReportEngineJFree::getActiveConnec
 // -----------------------------------------------------------------------------
 void SAL_CALL OReportEngineJFree::setActiveConnection( const uno::Reference< sdbc::XConnection >& _activeconnection ) throw (lang::IllegalArgumentException, uno::RuntimeException)
 {
-    if ( !_activeconnection.is() ) 
+    if ( !_activeconnection.is() )
         throw lang::IllegalArgumentException();
     set(PROPERTY_ACTIVECONNECTION,_activeconnection,m_xActiveConnection);
 }

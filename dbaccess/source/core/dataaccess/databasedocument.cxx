@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -79,11 +79,11 @@
 
 #include <connectivity/dbtools.hxx>
 
-#include <svtools/saveopt.hxx>
+#include <unotools/saveopt.hxx>
 
 #include <cppuhelper/exc_hlp.hxx>
 #include <framework/titlehelper.hxx>
-#include <svtools/saveopt.hxx>
+#include <unotools/saveopt.hxx>
 #include <tools/debug.hxx>
 #include <tools/diagnose_ex.h>
 #include <tools/errcode.hxx>
@@ -446,7 +446,7 @@ void ODatabaseDocument::impl_import_nolck_throw( const ::comphelper::ComponentCo
      uno::Reference< beans::XPropertySet > xInfoSet( comphelper::GenericPropertySet_CreateInstance( new comphelper::PropertySetInfo( aExportInfoMap ) ) );
     xInfoSet->setPropertyValue(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("BaseURI")), uno::makeAny(_rResource.getOrDefault("URL",::rtl::OUString())));
     xInfoSet->setPropertyValue(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("StreamName")), uno::makeAny(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("content.xml"))));
-        
+
     const sal_Int32 nCount = aFilterArgs.getLength();
     aFilterArgs.realloc(nCount + 1);
     aFilterArgs[nCount] <<= xInfoSet;
@@ -1184,7 +1184,7 @@ void ODatabaseDocument::impl_closeControllerFrames_nolck_throw( sal_Bool _bDeliv
 {
     Controllers aCopy = m_aControllers;
 
-    Controllers::iterator aEnd = aCopy.end(); 
+    Controllers::iterator aEnd = aCopy.end();
     for ( Controllers::iterator aIter = aCopy.begin(); aIter != aEnd ; ++aIter )
     {
         if ( !aIter->is() )
@@ -1819,13 +1819,13 @@ Reference< XTitle > ODatabaseDocument::impl_getTitleHelper_throw()
             m_pImpl->m_aContext.createComponent( "com.sun.star.frame.Desktop" ),
             UNO_QUERY_THROW );
         uno::Reference< frame::XModel > xThis   (getThis(), uno::UNO_QUERY_THROW);
-    
+
         ::framework::TitleHelper* pHelper = new ::framework::TitleHelper(m_pImpl->m_aContext.getLegacyServiceFactory());
         m_xTitleHelper.set(static_cast< ::cppu::OWeakObject* >(pHelper), uno::UNO_QUERY_THROW);
         pHelper->setOwner                   (xThis   );
         pHelper->connectWithUntitledNumbers (xDesktop);
     }
-    
+
     return m_xTitleHelper;
 }
 
@@ -1852,7 +1852,7 @@ uno::Reference< frame::XUntitledNumbers > ODatabaseDocument::impl_getUntitledHel
         uno::Reference< frame::XModel > xThis(static_cast< frame::XModel* >(this), uno::UNO_QUERY_THROW);
         ::comphelper::NumberedCollection* pHelper = new ::comphelper::NumberedCollection();
         xNumberedControllers.set(static_cast< ::cppu::OWeakObject* >(pHelper), uno::UNO_QUERY_THROW);
-    
+
         pHelper->setOwner          (xThis);
         //pHelper->setUntitledPrefix (::rtl::OUString::createFromAscii(" : "));
 
@@ -1860,7 +1860,7 @@ uno::Reference< frame::XUntitledNumbers > ODatabaseDocument::impl_getUntitledHel
     }
     else
         xNumberedControllers = aFind->second;
-    
+
     return xNumberedControllers;
 }
 
@@ -1897,7 +1897,7 @@ void SAL_CALL ODatabaseDocument::addTitleChangeListener( const uno::Reference< f
     uno::Reference< frame::XTitleChangeBroadcaster > xBroadcaster( impl_getTitleHelper_throw(), uno::UNO_QUERY_THROW );
     xBroadcaster->addTitleChangeListener( xListener );
 }
-    
+
 //=============================================================================
 // css.frame.XTitleChangeBroadcaster
 void SAL_CALL ODatabaseDocument::removeTitleChangeListener( const uno::Reference< frame::XTitleChangeListener >& xListener )
@@ -1919,7 +1919,7 @@ void SAL_CALL ODatabaseDocument::removeTitleChangeListener( const uno::Reference
     DocumentGuard aGuard( *this );
     return impl_getUntitledHelper_throw(xComponent)->leaseNumber (xComponent);
 }
-               
+
 //=============================================================================
 // css.frame.XUntitledNumbers
 void SAL_CALL ODatabaseDocument::releaseNumber( ::sal_Int32 nNumber )
@@ -1929,7 +1929,7 @@ void SAL_CALL ODatabaseDocument::releaseNumber( ::sal_Int32 nNumber )
     DocumentGuard aGuard( *this );
     impl_getUntitledHelper_throw()->releaseNumber (nNumber);
 }
-               
+
 //=============================================================================
 // css.frame.XUntitledNumbers
 void SAL_CALL ODatabaseDocument::releaseNumberForComponent( const uno::Reference< uno::XInterface >& xComponent )
