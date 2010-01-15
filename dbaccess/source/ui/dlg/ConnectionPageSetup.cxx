@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -44,19 +44,19 @@
 #include "dbu_dlg.hrc"
 #endif
 #ifndef _SFXITEMSET_HXX
-#include <svtools/itemset.hxx>
+#include <svl/itemset.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _SFXSTRITEM_HXX
-#include <svtools/stritem.hxx>
+#include <svl/stritem.hxx>
 #endif
 #ifndef _SFXENUMITEM_HXX
-#include <svtools/eitem.hxx>
+#include <svl/eitem.hxx>
 #endif
 #ifndef _SFXINTITEM_HXX
-#include <svtools/intitem.hxx>
+#include <svl/intitem.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCEITEMS_HXX_
 #include "dsitems.hxx"
@@ -98,7 +98,7 @@
 #include "dsselect.hxx"
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX_
-#include <svtools/filenotation.hxx>
+#include <svl/filenotation.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
 #include "dbustrings.hrc"
@@ -229,7 +229,7 @@ namespace dbaui
         else
             m_aFT_HelpText.Hide();
 
-        
+
         if ( USHRT_MAX != _nHeaderResId )
             SetHeaderText(FT_AUTOWIZARDHEADER, _nHeaderResId);
 
@@ -256,7 +256,7 @@ namespace dbaui
             m_aFT_Connection.Hide();
 
         m_aConnectionURL.SetModifyHdl(LINK(this, OConnectionTabPageSetup, OnEditModified));
-        
+
         SetRoadmapStateValue(sal_False);
     }
 
@@ -270,7 +270,7 @@ namespace dbaui
     void OConnectionTabPageSetup::implInitControls(const SfxItemSet& _rSet, sal_Bool _bSaveValue)
     {
         m_eType = m_pAdminDialog->getDatasourceType(_rSet);
-        // special handling for oracle, this can only happen 
+        // special handling for oracle, this can only happen
         // if the user enters the same url as used for Oracle and we are on the JDBC path
         //! TODO
         //if (  ::dbaccess::DST_ORACLE_JDBC == m_eType )
@@ -288,7 +288,7 @@ namespace dbaui
         //		ppTextControls[i]->SetText(sDisplayName);
         //	}
         //}
-        
+
         callModifiedHdl();
     }
     // -----------------------------------------------------------------------
