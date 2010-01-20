@@ -1450,18 +1450,25 @@ namespace dbaccess
     void getColumnPositions(const Reference<XNameAccess>& _rxQueryColumns,
                             const Reference<XNameAccess>& _rxColumns,
                             const ::rtl::OUString& _rsUpdateTableName,
-                            SelectColumnsMetaData& _rColumnNames)
+                            SelectColumnsMetaData& _rColumnAssignments)
+    {
+        getColumnPositions( _rxQueryColumns, _rxColumns->getElementNames(), _rsUpdateTableName, _rColumnAssignments );
+    }
+
+    void getColumnPositions(const Reference<XNameAccess>& _rxQueryColumns,
+                            const ::com::sun::star::uno::Sequence< ::rtl::OUString >& _rColumnNames,
+                            const ::rtl::OUString& _rsUpdateTableName,
+                            SelectColumnsMetaData& _rColumnAssignments)
     {
         // get the real name of the columns
         Sequence< ::rtl::OUString> aSelNames(_rxQueryColumns->getElementNames());
         const ::rtl::OUString* pSelBegin	= aSelNames.getConstArray();
         const ::rtl::OUString* pSelEnd		= pSelBegin + aSelNames.getLength();
 
-        Sequence< ::rtl::OUString> aColumnNames(_rxColumns->getElementNames());
-        const ::rtl::OUString* pColumnIter	= aColumnNames.getConstArray();
-        const ::rtl::OUString* pColumnEnd	= pColumnIter + aColumnNames.getLength();
+        const ::rtl::OUString* pColumnIter	= _rColumnNames.getConstArray();
+        const ::rtl::OUString* pColumnEnd	= pColumnIter + _rColumnNames.getLength();
 
-        ::comphelper::UStringMixLess aTmp(_rColumnNames.key_comp());
+        ::comphelper::UStringMixLess aTmp(_rColumnAssignments.key_comp());
         ::comphelper::UStringMixEqual bCase(static_cast< ::comphelper::UStringMixLess*>(&aTmp)->isCaseSensitive());
 
         for(sal_Int32 nPos = 1;pSelBegin != pSelEnd;++pSelBegin,++nPos)
@@ -1475,7 +1482,7 @@ namespace dbaccess
 
             for(;pColumnIter != pColumnEnd;++pColumnIter)
             {
-                if(bCase(sRealName,*pColumnIter) && bCase(_rsUpdateTableName,sTableName) && _rColumnNames.find(*pColumnIter) == _rColumnNames.end())
+                if(bCase(sRealName,*pColumnIter) && bCase(_rsUpdateTableName,sTableName) && _rColumnAssignments.find(*pColumnIter) == _rColumnAssignments.end())
                 {
                     sal_Int32 nType = 0;
                     xColumnProp->getPropertyValue(PROPERTY_TYPE)	>>= nType;
@@ -1489,11 +1496,11 @@ namespace dbaccess
                     xColumnProp->getPropertyValue(PROPERTY_ISNULLABLE)	>>= bNullable;
                     
 
-                    _rColumnNames[sRealName] = SelectColumnDescription( nPos, nType,nScale,bNullable != sdbc::ColumnValue::NO_NULLS, sColumnDefault );
+                    _rColumnAssignments[sRealName] = SelectColumnDescription( nPos, nType,nScale,bNullable != sdbc::ColumnValue::NO_NULLS, sColumnDefault );
                     break;
                 }
             }
-            pColumnIter	= aColumnNames.getConstArray();
+            pColumnIter	= _rColumnNames.getConstArray();
         }
     }
 }
