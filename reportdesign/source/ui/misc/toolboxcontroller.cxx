@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -43,7 +43,7 @@
 #include <vcl/svapp.hxx>
 #include <vcl/toolbox.hxx>
 #include <svtools/miscopt.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #include <svtools/menuoptions.hxx>
 #include <vos/mutex.hxx>
 #include <svx/svxids.hrc>
@@ -111,7 +111,7 @@ OToolboxController::OToolboxController(const Reference< XMultiServiceFactory >& 
     ,m_nToolBoxId(1)
     ,m_nSlotId(0)
 {
-    DBG_CTOR(rpt_OToolboxController,NULL);    
+    DBG_CTOR(rpt_OToolboxController,NULL);
     osl_incrementInterlockedCount(&m_refCount);
     m_xServiceManager = _rxORB;
     osl_decrementInterlockedCount(&m_refCount);
@@ -120,7 +120,7 @@ OToolboxController::OToolboxController(const Reference< XMultiServiceFactory >& 
 // -----------------------------------------------------------------------------
 OToolboxController::~OToolboxController()
 {
-    DBG_DTOR(rpt_OToolboxController,NULL);    
+    DBG_DTOR(rpt_OToolboxController,NULL);
 }
 // -----------------------------------------------------------------------------
 // XInterface
@@ -221,7 +221,7 @@ void SAL_CALL OToolboxController::initialize( const Sequence< Any >& _rArguments
 // -----------------------------------------------------------------------------
 void SAL_CALL OToolboxController::statusChanged( const FeatureStateEvent& Event ) throw ( RuntimeException )
 {
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
     TCommandState::iterator aFind = m_aStates.find( Event.FeatureURL.Complete );
     if ( aFind != m_aStates.end() )
     {
@@ -260,7 +260,7 @@ void SAL_CALL OToolboxController::statusChanged( const FeatureStateEvent& Event 
                     }
                 }
             }
-            
+
             switch(m_nSlotId)
             {
                 case SID_ATTR_CHAR_COLOR2:
@@ -292,12 +292,12 @@ Reference< awt::XWindow > SAL_CALL OToolboxController::createPopupWindow() throw
 {
     // execute the menu
     vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
 
     Reference< awt::XWindow > xRet;
     if ( m_pToolbarController.is() )
         xRet = m_pToolbarController.getRef()->createPopupWindow();
-    
+
     return xRet;
 }
 // -----------------------------------------------------------------------------
@@ -309,7 +309,7 @@ Reference< awt::XWindow > SAL_CALL OToolboxController::createPopupWindow() throw
 ::rtl::OUString SAL_CALL OToolboxController::getSubToolbarName() throw (uno::RuntimeException)
 {
     vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
+    ::osl::MutexGuard aGuard(m_aMutex);
     uno::Reference< frame::XSubToolbarController> xSub(m_pToolbarController.getRef(),uno::UNO_QUERY);
     if ( xSub.is() )
         return xSub->getSubToolbarName();
@@ -319,8 +319,8 @@ Reference< awt::XWindow > SAL_CALL OToolboxController::createPopupWindow() throw
 void SAL_CALL OToolboxController::functionSelected( const ::rtl::OUString& rCommand ) throw (uno::RuntimeException)
 {
     vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
-    
+    ::osl::MutexGuard aGuard(m_aMutex);
+
     uno::Reference< frame::XSubToolbarController> xSub(m_pToolbarController.getRef(),uno::UNO_QUERY);
     if ( xSub.is() )
     {
@@ -331,14 +331,14 @@ void SAL_CALL OToolboxController::functionSelected( const ::rtl::OUString& rComm
 void SAL_CALL OToolboxController::updateImage(  ) throw (uno::RuntimeException)
 {
     vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard(m_aMutex);	
-    
+    ::osl::MutexGuard aGuard(m_aMutex);
+
     uno::Reference< frame::XSubToolbarController> xSub(m_pToolbarController.getRef(),uno::UNO_QUERY);
     if ( xSub.is() )
         xSub->updateImage();
 }
 // -----------------------------------------------------------------------------
-uno::Reference< awt::XWindow > SAL_CALL OToolboxController::createItemWindow( const uno::Reference< awt::XWindow >& _xParent) 
+uno::Reference< awt::XWindow > SAL_CALL OToolboxController::createItemWindow( const uno::Reference< awt::XWindow >& _xParent)
 throw (uno::RuntimeException)
 {
     uno::Reference< awt::XWindow > xWindow;

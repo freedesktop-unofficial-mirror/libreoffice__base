@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,7 +40,7 @@
 #include "xmlControlProperty.hxx"
 #include "xmlHelper.hxx"
 #include <tools/debug.hxx>
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 
 #include <comphelper/componentcontext.hxx>
 #include <com/sun/star/awt/ImageScaleMode.hpp>
@@ -57,7 +57,7 @@ DBG_NAME( rpt_OXMLImage )
 OXMLImage::OXMLImage( ORptFilter& rImport,
                 sal_uInt16 nPrfx, const ::rtl::OUString& rLName,
                 const Reference< XAttributeList > & _xAttrList
-                ,const Reference< XImageControl > & _xComponent 
+                ,const Reference< XImageControl > & _xComponent
                 ,OXMLTable* _pContainer) :
     OXMLReportElementBase( rImport, nPrfx, rLName,_xComponent.get(),_pContainer)
 {
@@ -86,7 +86,7 @@ OXMLImage::OXMLImage( ORptFilter& rImport,
                         sValue = aPathOptions.SubstituteVariable(sValue);
                         _xComponent->setImageURL(rImport.GetAbsoluteReference( sValue ));
                     }
-                    
+
                     break;
                 case XML_TOK_PRESERVE_IRI:
                     _xComponent->setPreserveIRI(s_sTRUE == sValue);
@@ -106,7 +106,7 @@ OXMLImage::OXMLImage( ORptFilter& rImport,
                         _xComponent->setScaleMode( nRet );
                     }
                     break;
-                case XML_TOK_DATA_FORMULA: 
+                case XML_TOK_DATA_FORMULA:
                     _xComponent->setDataField(ORptFilter::convertFormula(sValue));
                     break;
                 default:
