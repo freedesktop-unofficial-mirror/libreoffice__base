@@ -1,7 +1,7 @@
  /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -41,10 +41,10 @@
 #include <com/sun/star/sdb/XOfficeDatabaseDocument.hpp>
 #endif
 #ifndef DBA_XMLFILTER_HXX
-#include "xmlfilter.hxx" 
+#include "xmlfilter.hxx"
 #endif
 #ifndef _FLT_REGHELPER_HXX_
-#include "flt_reghelper.hxx" 
+#include "flt_reghelper.hxx"
 #endif
 #ifndef _SV_SVAPP_HXX
 #include <vcl/svapp.hxx>
@@ -124,7 +124,7 @@
 #include <vos/mutex.hxx>
 #endif
 #include <svtools/sfxecode.hxx>
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #ifndef _TOOLKIT_HELPER_VCLUNOHELPER_HXX_
 #include <toolkit/helper/vclunohelper.hxx>
 #endif
@@ -140,7 +140,7 @@
 
 using namespace ::com::sun::star;
 
-extern "C" void SAL_CALL createRegistryInfo_ODBFilter( ) 
+extern "C" void SAL_CALL createRegistryInfo_ODBFilter( )
 {
     static ::dbaxml::OMultiInstanceAutoRegistration< ::dbaxml::ODBFilter > aAutoRegistration;
 }
@@ -153,7 +153,7 @@ namespace dbaxml
         {
         public:
             typedef enum { E_JAVA, E_CALC } StartType;
-            FastLoader(uno::Reference< lang::XMultiServiceFactory > const & _xFactory,StartType _eType) 
+            FastLoader(uno::Reference< lang::XMultiServiceFactory > const & _xFactory,StartType _eType)
                 :m_xFactory(_xFactory)
                 ,m_eWhat(_eType)
             {}
@@ -203,7 +203,7 @@ namespace dbaxml
                         sal_Int32 nFrameSearchFlag = frame::FrameSearchFlag::TASKS | frame::FrameSearchFlag::CREATE;
                         uno::Reference< frame::XFrame> xFrame = uno::Reference< frame::XFrame>(xFrameLoad,uno::UNO_QUERY_THROW)->findFrame(sTarget,nFrameSearchFlag);
                         xFrameLoad.set( xFrame,uno::UNO_QUERY);
-                        
+
                         if ( xFrameLoad.is() )
                         {
                             uno::Sequence < beans::PropertyValue > aArgs( 3);
@@ -380,7 +380,7 @@ sal_Int32 ReadThroughComponent(
     {
         uno::Reference< io::XStream > xDocStream;
         sal_Bool bEncrypted = sal_False;
-        
+
         try
         {
             // open stream (and set parser input)
@@ -389,7 +389,7 @@ sal_Int32 ReadThroughComponent(
             {
                 // stream name not found! Then try the compatibility name.
                 // if no stream can be opened, return immediatly with OK signal
-        
+
                 // do we even have an alternative name?
                 if ( NULL == pCompatibilityStreamName )
                     return 0;
@@ -439,7 +439,7 @@ sal_Int32 ReadThroughComponent(
 // -------------
 DBG_NAME(ODBFilter)
 
-ODBFilter::ODBFilter( const uno::Reference< XMultiServiceFactory >& _rxMSF ) 
+ODBFilter::ODBFilter( const uno::Reference< XMultiServiceFactory >& _rxMSF )
     :SvXMLImport(_rxMSF)
     ,m_bNewFormat(false)
 {
@@ -466,7 +466,7 @@ ODBFilter::~ODBFilter() throw()
 // -----------------------------------------------------------------------------
 IMPLEMENT_SERVICE_INFO1_STATIC( ODBFilter, "com.sun.star.comp.sdb.DBFilter", "com.sun.star.document.ImportFilter")
 // -----------------------------------------------------------------------------
-sal_Bool SAL_CALL ODBFilter::filter( const Sequence< PropertyValue >& rDescriptor ) 
+sal_Bool SAL_CALL ODBFilter::filter( const Sequence< PropertyValue >& rDescriptor )
     throw (RuntimeException)
 {
     uno::Reference< ::com::sun::star::awt::XWindow > xWindow;
@@ -489,7 +489,7 @@ sal_Bool SAL_CALL ODBFilter::filter( const Sequence< PropertyValue >& rDescripto
         if ( pFocusWindow )
             pFocusWindow->LeaveWait();
     }
-    
+
 
     return bRet;
 }
@@ -507,7 +507,7 @@ sal_Bool ODBFilter::implImport( const Sequence< PropertyValue >& rDescriptor )
     OSL_ENSURE( sFileName.getLength(), "ODBFilter::implImport: no URL given!" );
     sal_Bool bRet = ( sFileName.getLength() != 0 );
 
-    if ( bRet ) 
+    if ( bRet )
     {
         uno::Reference<XComponent> xCom(GetModel(),UNO_QUERY);
 
@@ -556,7 +556,7 @@ sal_Bool ODBFilter::implImport( const Sequence< PropertyValue >& rDescriptor )
 
             bRet = nRet == 0;
 
-            if ( bRet ) 
+            if ( bRet )
             {
                 uno::Reference< XModifiable > xModi(GetModel(),UNO_QUERY);
                 if ( xModi.is() )
@@ -670,12 +670,12 @@ void ODBFilter::fillPropertyMap(const Any& _rValue,TPropertyNameMap& _rMap)
         pIter->Value >>= aValue;
         _rMap.insert(TPropertyNameMap::value_type(pIter->Name,aValue));
     }
-    
+
 }
 // -----------------------------------------------------------------------------
 const SvXMLTokenMap& ODBFilter::GetDocElemTokenMap() const
 {
-    if ( !m_pDocElemTokenMap.get() ) 
+    if ( !m_pDocElemTokenMap.get() )
     {
         static __FAR_DATA SvXMLTokenMapEntry aElemTokenMap[]=
         {
@@ -697,7 +697,7 @@ const SvXMLTokenMap& ODBFilter::GetDocElemTokenMap() const
 // -----------------------------------------------------------------------------
 const SvXMLTokenMap& ODBFilter::GetDatabaseElemTokenMap() const
 {
-    if ( !m_pDatabaseElemTokenMap.get() ) 
+    if ( !m_pDatabaseElemTokenMap.get() )
     {
         static __FAR_DATA SvXMLTokenMapEntry aElemTokenMap[]=
         {
@@ -721,21 +721,21 @@ const SvXMLTokenMap& ODBFilter::GetDataSourceElemTokenMap() const
     {
         static __FAR_DATA SvXMLTokenMapEntry aElemTokenMap[]=
         {
-            { XML_NAMESPACE_DB,	    XML_CONNECTION_RESOURCE,			XML_TOK_CONNECTION_RESOURCE},			
-            { XML_NAMESPACE_DB,	    XML_SUPPRESS_VERSION_COLUMNS,		XML_TOK_SUPPRESS_VERSION_COLUMNS},		
-            { XML_NAMESPACE_DB,	    XML_JAVA_DRIVER_CLASS,				XML_TOK_JAVA_DRIVER_CLASS},				
-            { XML_NAMESPACE_DB,	    XML_EXTENSION,						XML_TOK_EXTENSION},						
-            { XML_NAMESPACE_DB,	    XML_IS_FIRST_ROW_HEADER_LINE,		XML_TOK_IS_FIRST_ROW_HEADER_LINE},		
-            { XML_NAMESPACE_DB,	    XML_SHOW_DELETED,					XML_TOK_SHOW_DELETED},					
-            { XML_NAMESPACE_DB,	    XML_IS_TABLE_NAME_LENGTH_LIMITED,	XML_TOK_IS_TABLE_NAME_LENGTH_LIMITED},	
-            { XML_NAMESPACE_DB,	    XML_SYSTEM_DRIVER_SETTINGS,			XML_TOK_SYSTEM_DRIVER_SETTINGS},			
-            { XML_NAMESPACE_DB,	    XML_ENABLE_SQL92_CHECK,				XML_TOK_ENABLE_SQL92_CHECK},				
-            { XML_NAMESPACE_DB,	    XML_APPEND_TABLE_ALIAS_NAME,		XML_TOK_APPEND_TABLE_ALIAS_NAME},		
-            { XML_NAMESPACE_DB,	    XML_PARAMETER_NAME_SUBSTITUTION,	XML_TOK_PARAMETER_NAME_SUBSTITUTION},	
-            { XML_NAMESPACE_DB,	    XML_IGNORE_DRIVER_PRIVILEGES,		XML_TOK_IGNORE_DRIVER_PRIVILEGES},		
-            { XML_NAMESPACE_DB,	    XML_BOOLEAN_COMPARISON_MODE,		XML_TOK_BOOLEAN_COMPARISON_MODE},		
-            { XML_NAMESPACE_DB,	    XML_USE_CATALOG,					XML_TOK_USE_CATALOG},					
-            { XML_NAMESPACE_DB,	    XML_BASE_DN,						XML_TOK_BASE_DN},						
+            { XML_NAMESPACE_DB,	    XML_CONNECTION_RESOURCE,			XML_TOK_CONNECTION_RESOURCE},
+            { XML_NAMESPACE_DB,	    XML_SUPPRESS_VERSION_COLUMNS,		XML_TOK_SUPPRESS_VERSION_COLUMNS},
+            { XML_NAMESPACE_DB,	    XML_JAVA_DRIVER_CLASS,				XML_TOK_JAVA_DRIVER_CLASS},
+            { XML_NAMESPACE_DB,	    XML_EXTENSION,						XML_TOK_EXTENSION},
+            { XML_NAMESPACE_DB,	    XML_IS_FIRST_ROW_HEADER_LINE,		XML_TOK_IS_FIRST_ROW_HEADER_LINE},
+            { XML_NAMESPACE_DB,	    XML_SHOW_DELETED,					XML_TOK_SHOW_DELETED},
+            { XML_NAMESPACE_DB,	    XML_IS_TABLE_NAME_LENGTH_LIMITED,	XML_TOK_IS_TABLE_NAME_LENGTH_LIMITED},
+            { XML_NAMESPACE_DB,	    XML_SYSTEM_DRIVER_SETTINGS,			XML_TOK_SYSTEM_DRIVER_SETTINGS},
+            { XML_NAMESPACE_DB,	    XML_ENABLE_SQL92_CHECK,				XML_TOK_ENABLE_SQL92_CHECK},
+            { XML_NAMESPACE_DB,	    XML_APPEND_TABLE_ALIAS_NAME,		XML_TOK_APPEND_TABLE_ALIAS_NAME},
+            { XML_NAMESPACE_DB,	    XML_PARAMETER_NAME_SUBSTITUTION,	XML_TOK_PARAMETER_NAME_SUBSTITUTION},
+            { XML_NAMESPACE_DB,	    XML_IGNORE_DRIVER_PRIVILEGES,		XML_TOK_IGNORE_DRIVER_PRIVILEGES},
+            { XML_NAMESPACE_DB,	    XML_BOOLEAN_COMPARISON_MODE,		XML_TOK_BOOLEAN_COMPARISON_MODE},
+            { XML_NAMESPACE_DB,	    XML_USE_CATALOG,					XML_TOK_USE_CATALOG},
+            { XML_NAMESPACE_DB,	    XML_BASE_DN,						XML_TOK_BASE_DN},
             { XML_NAMESPACE_DB,	    XML_MAX_ROW_COUNT,					XML_TOK_MAX_ROW_COUNT},
             { XML_NAMESPACE_DB,	    XML_LOGIN,							XML_TOK_LOGIN},
             { XML_NAMESPACE_DB,	    XML_TABLE_FILTER,					XML_TOK_TABLE_FILTER},
@@ -758,7 +758,7 @@ const SvXMLTokenMap& ODBFilter::GetDataSourceElemTokenMap() const
             { XML_NAMESPACE_DB,	    XML_DRIVER_SETTINGS,			    XML_TOK_DRIVER_SETTINGS},
             { XML_NAMESPACE_DB,	    XML_JAVA_CLASSPATH,			        XML_TOK_JAVA_CLASSPATH},
             { XML_NAMESPACE_DB,	    XML_CHARACTER_SET,			        XML_TOK_CHARACTER_SET},
-            { XML_NAMESPACE_DB,	    XML_APPLICATION_CONNECTION_SETTINGS,XML_TOK_APPLICATION_CONNECTION_SETTINGS},            
+            { XML_NAMESPACE_DB,	    XML_APPLICATION_CONNECTION_SETTINGS,XML_TOK_APPLICATION_CONNECTION_SETTINGS},
             XML_TOKEN_MAP_END
         };
         m_pDataSourceElemTokenMap.reset(new SvXMLTokenMap( aElemTokenMap ));
@@ -816,7 +816,7 @@ const SvXMLTokenMap& ODBFilter::GetDataSourceInfoElemTokenMap() const
             { XML_NAMESPACE_DB,	XML_DATA_SOURCE_SETTING_TYPE,	XML_TOK_DATA_SOURCE_SETTING_TYPE},
             { XML_NAMESPACE_DB,	XML_DATA_SOURCE_SETTING_NAME,	XML_TOK_DATA_SOURCE_SETTING_NAME},
             { XML_NAMESPACE_DB,	XML_FONT_CHARSET,				XML_TOK_FONT_CHARSET},
-            { XML_NAMESPACE_DB,	XML_ENCODING,					XML_TOK_ENCODING},			
+            { XML_NAMESPACE_DB,	XML_ENCODING,					XML_TOK_ENCODING},
             XML_TOKEN_MAP_END
         };
         m_pDataSourceInfoElemTokenMap.reset(new SvXMLTokenMap( aElemTokenMap ));
@@ -879,7 +879,7 @@ const SvXMLTokenMap& ODBFilter::GetQueryElemTokenMap() const
             { XML_NAMESPACE_DB,	XML_STYLE_NAME,			XML_TOK_STYLE_NAME},
             { XML_NAMESPACE_DB,	XML_APPLY_FILTER,		XML_TOK_APPLY_FILTER},
             { XML_NAMESPACE_DB,	XML_APPLY_ORDER,		XML_TOK_APPLY_ORDER},
-            { XML_NAMESPACE_DB,	XML_COLUMNS,			XML_TOK_COLUMNS},			
+            { XML_NAMESPACE_DB,	XML_COLUMNS,			XML_TOK_COLUMNS},
             XML_TOKEN_MAP_END
         };
         m_pQueryElemTokenMap.reset(new SvXMLTokenMap( aElemTokenMap ));
@@ -943,7 +943,7 @@ UniReference < XMLPropertySetMapper > ODBFilter::GetColumnStylesPropertySetMappe
 {
     if ( !m_xColumnStylesPropertySetMapper.is() )
     {
-        m_xColumnStylesPropertySetMapper = OXMLHelper::GetColumnStylesPropertySetMapper();		
+        m_xColumnStylesPropertySetMapper = OXMLHelper::GetColumnStylesPropertySetMapper();
     }
     return m_xColumnStylesPropertySetMapper;
 }
@@ -952,7 +952,7 @@ UniReference < XMLPropertySetMapper > ODBFilter::GetCellStylesPropertySetMapper(
 {
     if ( !m_xCellStylesPropertySetMapper.is() )
     {
-        m_xCellStylesPropertySetMapper = OXMLHelper::GetCellStylesPropertySetMapper();		
+        m_xCellStylesPropertySetMapper = OXMLHelper::GetCellStylesPropertySetMapper();
     }
     return m_xCellStylesPropertySetMapper;
 }
