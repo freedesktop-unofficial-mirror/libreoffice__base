@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -138,12 +138,12 @@
 #include "dlgpage.hxx"
 #include "RptResId.hrc"
 
-#include <svtools/itempool.hxx>
-#include <svtools/itemset.hxx>
-#include <svtools/aeitem.hxx> //CHINA001
+#include <svl/itempool.hxx>
+#include <svl/itemset.hxx>
+#include <svl/aeitem.hxx> //CHINA001
 #include <svtools/cliplistener.hxx>
-#include <svtools/syslocale.hxx>
-#include <svtools/viewoptions.hxx>
+#include <unotools/syslocale.hxx>
+#include <unotools/viewoptions.hxx>
 
 #include <vos/mutex.hxx>
 #include "PropertyForward.hxx"
@@ -256,7 +256,7 @@ void lcl_getReportControlFormat(const Sequence< PropertyValue >& aArgs,
     } // if ( !xReportControlFormat.is() )
     else
         _rControlsFormats.push_back(xReportControlFormat);
-    
+
     if ( !_xWindow.is() )
         _xWindow = VCLUnoHelper::GetInterface(_pView);
 }
@@ -480,7 +480,7 @@ FeatureState OReportController::GetState(sal_uInt16 _nId) const
             break;
         case SID_ARRANGEMENU:
         case SID_FRAME_DOWN:
-        case SID_FRAME_UP:        
+        case SID_FRAME_UP:
         case SID_FRAME_TO_TOP:
         case SID_FRAME_TO_BOTTOM:
         case SID_OBJECT_HEAVEN:
@@ -509,7 +509,7 @@ FeatureState OReportController::GetState(sal_uInt16 _nId) const
                 if ( xSection.is() )
                 {
                     nCount = xSection->getCount();
-                }            
+                }
                 aReturn.bEnabled = isEditable() && nCount > 0;
             }
             break;
@@ -858,7 +858,7 @@ FeatureState OReportController::GetState(sal_uInt16 _nId) const
             {
                 frame::status::FontHeight aFontHeight;
                 aReturn.aValue >>= aFontHeight.Height;
-                aReturn.aValue <<= aFontHeight; // another type is needed here, so 
+                aReturn.aValue <<= aFontHeight; // another type is needed here, so
             }
             break;
         case SID_ATTR_PARA_ADJUST_LEFT:
@@ -1132,7 +1132,7 @@ void OReportController::Execute(sal_uInt16 _nId, const Sequence< PropertyValue >
                 shrinkSection(RID_STR_UNDO_SHRINK, xSection, _nId);
             }
             break;
-        
+
         case SID_SELECTALL:
             m_pMyOwnView->SelectAll(OBJ_NONE);
             break;
@@ -1903,7 +1903,7 @@ void OReportController::describeSupportedFeatures()
     implDescribeSupportedFeature( ".uno:CenterPara",				SID_ATTR_PARA_ADJUST_CENTER,	CommandGroup::FORMAT );
     implDescribeSupportedFeature( ".uno:RightPara",				    SID_ATTR_PARA_ADJUST_RIGHT,		CommandGroup::FORMAT );
     implDescribeSupportedFeature( ".uno:JustifyPara",				SID_ATTR_PARA_ADJUST_BLOCK,		CommandGroup::FORMAT );
-    
+
     implDescribeSupportedFeature( ".uno:FontHeight",				SID_ATTR_CHAR_FONTHEIGHT,		CommandGroup::FORMAT );
     implDescribeSupportedFeature( ".uno:CharFontName",				SID_ATTR_CHAR_FONT,		        CommandGroup::FORMAT );
 
@@ -2660,7 +2660,7 @@ void OReportController::shrinkSectionBottom(uno::Reference<report::XSection> _xS
     // sal_Int32 nMinPositionY = nSectionHeight;
     sal_Int32 nMaxPositionY = 0;
     uno::Reference< report::XReportComponent> xReportComponent;
-    
+
     // for every component get it's Y-position and compare it to the current Y-position
     for (int i=0;i<nElements;i++)
     {
@@ -2672,7 +2672,7 @@ void OReportController::shrinkSectionBottom(uno::Reference<report::XSection> _xS
         nMaxPositionY = std::max(nReportComponentPositionYAndHeight, nMaxPositionY);
     }
     // now we know the minimal Y-Position and maximal Y-Position
-    
+
     if (nMaxPositionY > (nSectionHeight - 7) ) // Magic Number, we use a little bit less heights for right positioning
     {
         // the lowest position is already 0
@@ -2690,11 +2690,11 @@ void OReportController::shrinkSectionTop(uno::Reference<report::XSection> _xSect
         return;
     }
 
-    const sal_Int32 nSectionHeight = _xSection->getHeight();    
+    const sal_Int32 nSectionHeight = _xSection->getHeight();
     sal_Int32 nMinPositionY = nSectionHeight;
     // sal_Int32 nMaxPositionY = 0;
     uno::Reference< report::XReportComponent> xReportComponent;
-    
+
     // for every component get it's Y-position and compare it to the current Y-position
     for (int i=0;i<nElements;i++)
     {
@@ -2741,9 +2741,9 @@ void OReportController::shrinkSection(USHORT _nUndoStrId, uno::Reference<report:
         else if (_nSid == SID_SECTION_SHRINK_BOTTOM)
         {
             shrinkSectionBottom(_xSection);
-        }        
+        }
     }
-    
+
     InvalidateFeature( SID_SAVEDOC );
     InvalidateFeature( SID_UNDO );
 }
@@ -3195,7 +3195,7 @@ void OReportController::createControl(const Sequence< PropertyValue >& _aArgs,co
     else if ( _nObjectId == OBJ_OLE2 || OBJ_DLG_SUBREPORT == _nObjectId  )
     {
         pNewControl = SdrObjFactory::MakeNewObject( ReportInventor, _nObjectId, pSectionWindow->getReportSection().getPage(),m_aReportModel.get() );
-        
+
         pNewControl->SetLogicRect(Rectangle(3000,500,8000,5500)); // switch height and width
         xShapeProp.set(pNewControl->getUnoShape(),uno::UNO_QUERY_THROW);
         OOle2Obj* pObj = dynamic_cast<OOle2Obj*>(pNewControl);
@@ -3219,7 +3219,7 @@ void OReportController::createControl(const Sequence< PropertyValue >& _aArgs,co
         OUnoObject* pObj = dynamic_cast<OUnoObject*>(pControl);
         uno::Reference<beans::XPropertySet> xUnoProp(pObj->GetUnoControlModel(),uno::UNO_QUERY);
         xShapeProp.set(pObj->getUnoShape(),uno::UNO_QUERY);
-        uno::Reference<beans::XPropertySetInfo> xShapeInfo = xShapeProp->getPropertySetInfo(); 
+        uno::Reference<beans::XPropertySetInfo> xShapeInfo = xShapeProp->getPropertySetInfo();
         uno::Reference<beans::XPropertySetInfo> xInfo = xUnoProp->getPropertySetInfo();
 
         const ::rtl::OUString sProps[] = {   PROPERTY_NAME
@@ -3239,8 +3239,8 @@ void OReportController::createControl(const Sequence< PropertyValue >& _aArgs,co
 
         if ( xInfo->hasPropertyByName(PROPERTY_BORDER) && xShapeInfo->hasPropertyByName(PROPERTY_CONTROLBORDER) )
             xUnoProp->setPropertyValue(PROPERTY_BORDER,xShapeProp->getPropertyValue(PROPERTY_CONTROLBORDER));
-        
-        
+
+
         if ( xInfo->hasPropertyByName(PROPERTY_DATAFIELD) && _sFunction.getLength() )
         {
             ReportFormula aFunctionFormula( ReportFormula::Expression, _sFunction );
@@ -3526,7 +3526,7 @@ void OReportController::addPairControls(const Sequence< PropertyValue >& aArgs)
                         uno::Reference< report::XReportComponent> xShapeProp(pObjs[i]->getUnoShape(),uno::UNO_QUERY_THROW);
                         xUnoProp->setPropertyValue(PROPERTY_NAME,xShapeProp->getPropertyValue(PROPERTY_NAME));
 
-                        uno::Reference<beans::XPropertySetInfo> xShapeInfo = xShapeProp->getPropertySetInfo(); 
+                        uno::Reference<beans::XPropertySetInfo> xShapeInfo = xShapeProp->getPropertySetInfo();
                         uno::Reference<beans::XPropertySetInfo> xInfo = xUnoProp->getPropertySetInfo();
                         const ::rtl::OUString sProps[] = {   PROPERTY_FONTDESCRIPTOR
                                                             ,PROPERTY_FONTDESCRIPTORASIAN
@@ -3599,7 +3599,7 @@ void OReportController::addPairControls(const Sequence< PropertyValue >& aArgs)
                     {
                         correctOverlapping(pControl[i],pSectionWindow[1-i]->getReportSection());
                     }
-                    
+
                     if (!bLabelAboveTextField )
                     {
                         if ( pSectionViews[0] == pSectionViews[1] )
@@ -3625,7 +3625,7 @@ void OReportController::addPairControls(const Sequence< PropertyValue >& aArgs)
                                     bHasToMove = true;
                                 }
                             }
-                            
+
                             if (bHasToMove)
                             {
                                 // There was a move down, we need to move the Label and the Textfield down
@@ -3689,7 +3689,7 @@ void OReportController::changeZOrder(sal_Int32 _nId)
             case SID_FRAME_UP:
                 pSectionView->MovMarkedToTop();
                 break;
-            
+
             case SID_OBJECT_HEAVEN:
                 pSectionView->SetMarkedToLayer( RPT_LAYER_FRONT );
                 break;
@@ -4021,7 +4021,7 @@ void OReportController::createDefaultControl(const uno::Sequence< beans::Propert
         const beans::PropertyValue* pEnd  = pIter + _aArgs.getLength();
         const beans::PropertyValue* pKeyModifier = ::std::find_if(pIter,pEnd,::std::bind2nd(PropertyValueCompare(),boost::cref(sKeyModifier)));
         sal_Int16 nKeyModifier = 0;
-        if ( pKeyModifier == pEnd || ((pKeyModifier->Value >>= nKeyModifier) && nKeyModifier == KEY_MOD1) ) 
+        if ( pKeyModifier == pEnd || ((pKeyModifier->Value >>= nKeyModifier) && nKeyModifier == KEY_MOD1) )
         {
             Sequence< PropertyValue > aCreateArgs;
             m_pMyOwnView->unmarkAllObjects(NULL);
@@ -4068,7 +4068,7 @@ void OReportController::checkChartEnabled()
     ::osl::MutexGuard aGuard( getMutex() );
 
     uno::Reference< frame::XTitle> xTitle(m_xReportDefinition,uno::UNO_QUERY_THROW);
-    
+
     return xTitle->getTitle ();
 }
 // -----------------------------------------------------------------------------
@@ -4152,7 +4152,7 @@ void OReportController::impl_fillState_nothrow(const ::rtl::OUString& _sProperty
                 uno::Reference< beans::XPropertySet> xProp(*aIter,uno::UNO_QUERY);
                 try
                 {
-                    uno::Any aTemp2 = xProp->getPropertyValue(_sProperty); 
+                    uno::Any aTemp2 = xProp->getPropertyValue(_sProperty);
                     if ( aIter == aSelection.begin() )
                     {
                         aTemp = aTemp2;
@@ -4262,7 +4262,7 @@ void OReportController::openZoomDialog()
     if ( pFact )
     {
         static SfxItemInfo aItemInfos[] =
-        {			
+        {
             { SID_ATTR_ZOOM, SFX_ITEM_POOLABLE }
         };
         SfxPoolItem* pDefaults[] =
@@ -4285,7 +4285,7 @@ void OReportController::openZoomDialog()
             aZoomItem.SetValueSet(SVX_ZOOM_ENABLE_100|SVX_ZOOM_ENABLE_WHOLEPAGE|SVX_ZOOM_ENABLE_PAGEWIDTH);
             pDescriptor->Put(aZoomItem);
 
-            ::std::auto_ptr<AbstractSvxZoomDialog> pDlg( pFact->CreateSvxZoomDialog(NULL, *pDescriptor.get(), RID_SVXDLG_ZOOM) );
+            ::std::auto_ptr<AbstractSvxZoomDialog> pDlg( pFact->CreateSvxZoomDialog(NULL, *pDescriptor.get()) );
             pDlg->SetLimits( 20, 400 );
             bool bCancel = ( RET_CANCEL == pDlg->Execute() );
 
@@ -4296,7 +4296,7 @@ void OReportController::openZoomDialog()
                 m_nZoomValue = rZoomItem.GetValue();
                 if ( m_eZoomType != SVX_ZOOM_PERCENT )
                     m_nZoomValue = m_pMyOwnView->getZoomFactor( m_eZoomType );
-                
+
                 impl_zoom_nothrow();
             } // if ( !bCancel )
         }
