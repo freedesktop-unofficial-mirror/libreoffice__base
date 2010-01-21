@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,16 +40,16 @@
 #include "dsnItem.hxx"
 
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _SFXSTRITEM_HXX
-#include <svtools/stritem.hxx>
+#include <svl/stritem.hxx>
 #endif
 #ifndef _SFXENUMITEM_HXX
-#include <svtools/eitem.hxx>
+#include <svl/eitem.hxx>
 #endif
 #ifndef _SFXINTITEM_HXX
-#include <svtools/intitem.hxx>
+#include <svl/intitem.hxx>
 #endif
 #ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
@@ -156,7 +156,7 @@
 #ifndef _COM_SUN_STAR_FRAME_XDESKTOP_HPP_
 #include <com/sun/star/frame/XDesktop.hpp>
 #endif
-#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_ 
+#ifndef _COM_SUN_STAR_SDBC_XDRIVERACCESS_HPP_
 #include <com/sun/star/sdbc/XDriverAccess.hpp>
 #endif
 #ifndef _COM_SUN_STAR_DOCUMENT_MACROEXECMODE_HPP_
@@ -169,7 +169,7 @@
 
 /** === end UNO includes === **/
 
-#include <svtools/filenotation.hxx>
+#include <svl/filenotation.hxx>
 #include <comphelper/interaction.hxx>
 #include <comphelper/namedvaluecollection.hxx>
 #include <comphelper/sequenceashashmap.hxx>
@@ -313,7 +313,7 @@ ODbTypeWizDialogSetup::ODbTypeWizDialogSetup(Window* _pParent
         m_pCollection->fillPageIds(sURLPrefix,aPath);
         aPath.push_back(PAGE_DBSETUPWIZARD_AUTHENTIFICATION);
         aPath.push_back(PAGE_DBSETUPWIZARD_FINAL);
-        
+
         declareAuthDepPath(sURLPrefix,i,aPath);
     }
 
@@ -587,7 +587,7 @@ Reference< XDriver > ODbTypeWizDialogSetup::getDriver()
     {
         if (m_pMySQLIntroPage != NULL)
         {
-            switch( m_pMySQLIntroPage->getMySQLMode() )	
+            switch( m_pMySQLIntroPage->getMySQLMode() )
             {
                 case OMySQLIntroPageSetup::VIA_JDBC:
                     return  ::dbaccess::DST_MYSQL_JDBC;
@@ -609,7 +609,7 @@ Reference< XDriver > ODbTypeWizDialogSetup::getDriver()
     ::rtl::OUString sRet = m_pImpl->getDatasourceType(_rSet);
     if (m_pMySQLIntroPage != NULL && m_pMySQLIntroPage->IsVisible() )
     {
-        switch( m_pMySQLIntroPage->getMySQLMode() )	
+        switch( m_pMySQLIntroPage->getMySQLMode() )
         {
             case OMySQLIntroPageSetup::VIA_JDBC:
                 sRet = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("sdbc:mysql:jdbc:"));
@@ -859,7 +859,7 @@ namespace
         Reference < XInteractionRequest > xRequest( pRequest );
         OInteractionAbort* pAbort = new OInteractionAbort;
         pRequest->addContinuation( pAbort );
-        
+
         return _rxHandler->handleInteractionRequest( xRequest );
     }
 }
@@ -945,7 +945,7 @@ sal_Bool ODbTypeWizDialogSetup::SaveDatabaseDocument()
     {
         ::rtl::OUString sEmbeddedURL = m_pCollection->getEmbeddedDatabase();
         ::connectivity::DriversConfig aDriverConfig(getORB());
-        if ( !aDriverConfig.getDriverFactoryName(sEmbeddedURL).getLength() )
+        if ( !aDriverConfig.getDriverFactoryName(sEmbeddedURL).getLength() || m_pImpl->getDriver(sEmbeddedURL).is() )
             sEmbeddedURL = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("sdbc:dbase:"));
 
         return sEmbeddedURL;
@@ -1190,7 +1190,7 @@ sal_Bool ODbTypeWizDialogSetup::SaveDatabaseDocument()
         {
             throw TerminationVetoException();
         }
-        
+
         // .............................................................................
         void SAL_CALL AsyncLoader::notifyTermination( const EventObject& /*Event*/ ) throw (RuntimeException)
         {

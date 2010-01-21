@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -56,7 +56,7 @@
 #include <svx/tbxcolorupdate.hxx>
 #include <toolkit/helper/vclunohelper.hxx>
 #include <svtools/imgdef.hxx>
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #include <vcl/svapp.hxx>
 #include <vcl/bmpacc.hxx>
 #include <tools/diagnose_ex.h>
