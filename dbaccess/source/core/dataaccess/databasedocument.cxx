@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,18 +40,10 @@
 #include "documenteventexecutor.hxx"
 #include "databasecontext.hxx"
 #include "documentcontainer.hxx"
-
-#include <comphelper/documentconstants.hxx>
-#include <comphelper/namedvaluecollection.hxx>
-#include <comphelper/enumhelper.hxx>
-#include <comphelper/numberedcollection.hxx>
-#include <comphelper/genericpropertyset.hxx>
-#include <comphelper/property.hxx>
-#include <svtools/saveopt.hxx>
-
-#include <framework/titlehelper.hxx>
+#include "sdbcoretools.hxx"
 
 /** === begin UNO includes === **/
+#include <com/sun/star/beans/Optional.hpp>
 #include <com/sun/star/document/XExporter.hpp>
 #include <com/sun/star/document/XFilter.hpp>
 #include <com/sun/star/document/XImporter.hpp>
@@ -61,24 +53,30 @@
 #include <com/sun/star/embed/XTransactionBroadcaster.hpp>
 #include <com/sun/star/io/XActiveDataSource.hpp>
 #include <com/sun/star/io/XSeekable.hpp>
+#include <com/sun/star/io/XOutputStream.hpp>
+#include <com/sun/star/io/XTruncate.hpp>
 #include <com/sun/star/script/provider/XScriptProviderFactory.hpp>
 #include <com/sun/star/task/ErrorCodeIOException.hpp>
 #include <com/sun/star/task/XStatusIndicator.hpp>
 #include <com/sun/star/task/XStatusIndicatorFactory.hpp>
+#include <com/sun/star/ucb/XSimpleFileAccess.hpp>
 #include <com/sun/star/ui/XUIConfigurationStorage.hpp>
 #include <com/sun/star/view/XSelectionSupplier.hpp>
 #include <com/sun/star/xml/sax/XDocumentHandler.hpp>
 /** === end UNO includes === **/
 
 #include <comphelper/documentconstants.hxx>
-#include <comphelper/interaction.hxx>
 #include <comphelper/enumhelper.hxx>
+#include <comphelper/genericpropertyset.hxx>
+#include <comphelper/interaction.hxx>
 #include <comphelper/mediadescriptor.hxx>
 #include <comphelper/namedvaluecollection.hxx>
 #include <comphelper/numberedcollection.hxx>
+#include <comphelper/property.hxx>
 #include <comphelper/storagehelper.hxx>
 #include <cppuhelper/exc_hlp.hxx>
 #include <framework/titlehelper.hxx>
+#include <unotools/saveopt.hxx>
 #include <tools/debug.hxx>
 #include <tools/diagnose_ex.h>
 #include <tools/errcode.hxx>
@@ -175,6 +173,7 @@ ODatabaseDocument::ODatabaseDocument(const ::rtl::Reference<ODatabaseModelImpl>&
             ,m_bAllowDocumentScripting( false )
 {
     DBG_CTOR(ODatabaseDocument,NULL);
+    OSL_TRACE( "DD: ctor: %p: %p", this, m_pImpl.get() );
 
     osl_incrementInterlockedCount( &m_refCount );
     {
@@ -201,6 +200,7 @@ ODatabaseDocument::ODatabaseDocument(const ::rtl::Reference<ODatabaseModelImpl>&
         {
             // if the previous incarnation of the DatabaseDocument already had an URL, then creating this incarnation
             // here is effectively loading the document.
+            // #i105505# / 2009-10-01 / frank.schoenheit@sun.com
             m_aViewMonitor.onLoadedDocument();
         }
     }
@@ -209,6 +209,7 @@ ODatabaseDocument::ODatabaseDocument(const ::rtl::Reference<ODatabaseModelImpl>&
 //--------------------------------------------------------------------------
 ODatabaseDocument::~ODatabaseDocument()
 {
+    OSL_TRACE( "DD: dtor: %p: %p", this, m_pImpl.get() );
     DBG_DTOR(ODatabaseDocument,NULL);
     if ( !ODatabaseDocument_OfficeDocument::rBHelper.bInDispose && !ODatabaseDocument_OfficeDocument::rBHelper.bDisposed )
     {
@@ -438,7 +439,7 @@ void ODatabaseDocument::impl_import_nolck_throw( const ::comphelper::ComponentCo
      uno::Reference< beans::XPropertySet > xInfoSet( comphelper::GenericPropertySet_CreateInstance( new comphelper::PropertySetInfo( aExportInfoMap ) ) );
     xInfoSet->setPropertyValue(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("BaseURI")), uno::makeAny(_rResource.getOrDefault("URL",::rtl::OUString())));
     xInfoSet->setPropertyValue(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("StreamName")), uno::makeAny(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("content.xml"))));
-        
+
     const sal_Int32 nCount = aFilterArgs.getLength();
     aFilterArgs.realloc(nCount + 1);
     aFilterArgs[nCount] <<= xInfoSet;
@@ -815,13 +816,11 @@ void ODatabaseDocument::impl_storeAs_throw( const ::rtl::OUString& _rURL, const 
             throw;
         }
 
-        Exception aExcept;
-        aError >>= aExcept;
-
-        ::rtl::OUString sErrorMessage = ResourceManager::loadString(
+        ::rtl::OUString sErrorMessage = extractExceptionMessage( m_pImpl->m_aContext, aError );
+        sErrorMessage = ResourceManager::loadString(
             RID_STR_ERROR_WHILE_SAVING,
-            "$except$", aError.getValueTypeName(),
-            "$message$", aExcept.Message
+            "$location$", _rURL,
+            "$message$", sErrorMessage
         );
         throw IOException( sErrorMessage, *this );
     }
@@ -842,8 +841,16 @@ void ODatabaseDocument::impl_storeAs_throw( const ::rtl::OUString& _rURL, const 
 // -----------------------------------------------------------------------------
 Reference< XStorage > ODatabaseDocument::impl_createStorageFor_throw( const ::rtl::OUString& _rURL ) const
 {
+    Reference < ::com::sun::star::ucb::XSimpleFileAccess > xTempAccess;
+    m_pImpl->m_aContext.createComponent( ::rtl::OUString::createFromAscii( "com.sun.star.ucb.SimpleFileAccess" ) ,xTempAccess);
+    Reference< io::XStream > xStream = xTempAccess->openFileReadWrite( _rURL );
+    Reference< io::XTruncate > xTruncate(xStream,UNO_QUERY);
+    if ( xTruncate.is() )
+    {
+        xTruncate->truncate();
+    }
     Sequence<Any> aParam(2);
-    aParam[0] <<= _rURL;
+    aParam[0] <<= xStream;
     aParam[1] <<= ElementModes::READWRITE | ElementModes::TRUNCATE;
 
     Reference< XSingleServiceFactory > xStorageFactory( m_pImpl->createStorageFactory(), UNO_SET_THROW );
@@ -979,10 +986,11 @@ void SAL_CALL ODatabaseDocument::storeToURL( const ::rtl::OUString& _rURL, const
         Exception aExcept;
         aError >>= aExcept;
 
-        ::rtl::OUString sErrorMessage = ResourceManager::loadString(
+        ::rtl::OUString sErrorMessage = extractExceptionMessage( m_pImpl->m_aContext, aError );
+        sErrorMessage = ResourceManager::loadString(
             RID_STR_ERROR_WHILE_SAVING,
-            "$except$", aError.getValueTypeName(),
-            "$message$", aExcept.Message
+            "$location$", _rURL,
+            "$message$", sErrorMessage
         );
         throw IOException( sErrorMessage, *this );
     }
@@ -1152,7 +1160,7 @@ void ODatabaseDocument::impl_closeControllerFrames_nolck_throw( sal_Bool _bDeliv
 {
     Controllers aCopy = m_aControllers;
 
-    Controllers::iterator aEnd = aCopy.end(); 
+    Controllers::iterator aEnd = aCopy.end();
     for ( Controllers::iterator aIter = aCopy.begin(); aIter != aEnd ; ++aIter )
     {
         if ( !aIter->is() )
@@ -1462,6 +1470,7 @@ void ODatabaseDocument::impl_notifyStorageChange_nolck_nothrow( const Reference<
 //------------------------------------------------------------------------------
 void ODatabaseDocument::disposing()
 {
+    OSL_TRACE( "DD: disp: %p: %p", this, m_pImpl.get() );
     if ( !m_pImpl.is() )
     {
         // this means that we're already disposed
@@ -1787,13 +1796,13 @@ Reference< XTitle > ODatabaseDocument::impl_getTitleHelper_throw()
             m_pImpl->m_aContext.createComponent( "com.sun.star.frame.Desktop" ),
             UNO_QUERY_THROW );
         uno::Reference< frame::XModel > xThis   (getThis(), uno::UNO_QUERY_THROW);
-    
+
         ::framework::TitleHelper* pHelper = new ::framework::TitleHelper(m_pImpl->m_aContext.getLegacyServiceFactory());
         m_xTitleHelper.set(static_cast< ::cppu::OWeakObject* >(pHelper), uno::UNO_QUERY_THROW);
         pHelper->setOwner                   (xThis   );
         pHelper->connectWithUntitledNumbers (xDesktop);
     }
-    
+
     return m_xTitleHelper;
 }
 
@@ -1820,7 +1829,7 @@ uno::Reference< frame::XUntitledNumbers > ODatabaseDocument::impl_getUntitledHel
         uno::Reference< frame::XModel > xThis(static_cast< frame::XModel* >(this), uno::UNO_QUERY_THROW);
         ::comphelper::NumberedCollection* pHelper = new ::comphelper::NumberedCollection();
         xNumberedControllers.set(static_cast< ::cppu::OWeakObject* >(pHelper), uno::UNO_QUERY_THROW);
-    
+
         pHelper->setOwner          (xThis);
         //pHelper->setUntitledPrefix (::rtl::OUString::createFromAscii(" : "));
 
@@ -1828,7 +1837,7 @@ uno::Reference< frame::XUntitledNumbers > ODatabaseDocument::impl_getUntitledHel
     }
     else
         xNumberedControllers = aFind->second;
-    
+
     return xNumberedControllers;
 }
 
@@ -1865,7 +1874,7 @@ void SAL_CALL ODatabaseDocument::addTitleChangeListener( const uno::Reference< f
     uno::Reference< frame::XTitleChangeBroadcaster > xBroadcaster( impl_getTitleHelper_throw(), uno::UNO_QUERY_THROW );
     xBroadcaster->addTitleChangeListener( xListener );
 }
-    
+
 //=============================================================================
 // css.frame.XTitleChangeBroadcaster
 void SAL_CALL ODatabaseDocument::removeTitleChangeListener( const uno::Reference< frame::XTitleChangeListener >& xListener )
@@ -1887,7 +1896,7 @@ void SAL_CALL ODatabaseDocument::removeTitleChangeListener( const uno::Reference
     DocumentGuard aGuard( *this );
     return impl_getUntitledHelper_throw(xComponent)->leaseNumber (xComponent);
 }
-               
+
 //=============================================================================
 // css.frame.XUntitledNumbers
 void SAL_CALL ODatabaseDocument::releaseNumber( ::sal_Int32 nNumber )
@@ -1897,7 +1906,7 @@ void SAL_CALL ODatabaseDocument::releaseNumber( ::sal_Int32 nNumber )
     DocumentGuard aGuard( *this );
     impl_getUntitledHelper_throw()->releaseNumber (nNumber);
 }
-               
+
 //=============================================================================
 // css.frame.XUntitledNumbers
 void SAL_CALL ODatabaseDocument::releaseNumberForComponent( const uno::Reference< uno::XInterface >& xComponent )

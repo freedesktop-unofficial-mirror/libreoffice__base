@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -55,7 +55,7 @@
 #include "cppuhelper/basemutex.hxx"
 #include "comphelper/SelectionMultiplex.hxx"
 #include <svtools/svtreebx.hxx>
-#include <svtools/solar.hrc>
+#include <svl/solar.hrc>
 #include "ReportVisitor.hxx"
 #include "ModuleHelper.hxx"
 #include <rtl/ref.hxx>
@@ -73,7 +73,7 @@
 namespace rptui
 {
 using namespace ::com::sun::star;
-using namespace svt;
+using namespace utl;
 using namespace ::comphelper;
 
 USHORT lcl_getImageId(const uno::Reference< report::XReportComponent>& _xElement)
