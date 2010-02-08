@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -92,9 +92,6 @@
 #endif
 #ifndef _TOOLKIT_HELPER_VCLUNOHELPER_HXX_
 #include <toolkit/helper/vclunohelper.hxx>
-#endif
-#ifndef _COM_SUN_STAR_UCB_XCONTENTCREATOR_HPP_
-#include <com/sun/star/ucb/XContentCreator.hpp>
 #endif
 #ifndef _COM_SUN_STAR_UCB_XCOMMANDENVIRONMENT_HPP_
 #include <com/sun/star/ucb/XCommandEnvironment.hpp>
@@ -256,7 +253,7 @@ namespace
         EnableInput(FALSE);
         return 0L;
     }
-    //	-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     void OTablePreviewWindow::DataChanged( const DataChangedEvent& rDCEvt )
     {
         Window::DataChanged( rDCEvt );
@@ -268,7 +265,7 @@ namespace
             Invalidate();
         }
     }
-    //	-----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     void OTablePreviewWindow::ImplInitSettings( sal_Bool bFont, sal_Bool bForeground, sal_Bool bBackground )
     {
         const StyleSettings& rStyleSettings = GetSettings().GetStyleSettings();
@@ -546,7 +543,7 @@ void OAppDetailPageHelper::selectElements(const Sequence< ::rtl::OUString>& _aNa
         DBTreeListBox& rTree = *m_pLists[nPos];
         rTree.SelectAll(FALSE);
         const ::rtl::OUString* pIter = _aNames.getConstArray();
-        const ::rtl::OUString* pEnd	 = pIter + _aNames.getLength();
+        const ::rtl::OUString* pEnd  = pIter + _aNames.getLength();
         for(;pIter != pEnd;++pIter)
         {
             SvLBoxEntry* pEntry = rTree.GetEntryPosByName(*pIter);
@@ -570,7 +567,7 @@ void OAppDetailPageHelper::selectElements(const Sequence< ::rtl::OUString>& _aNa
     SvLBoxEntry* pEntry = _pEntry;
     if ( !pEntry )
         pEntry = rTree.FirstSelected();
-    
+
     if ( !pEntry )
         return sComposedName;
 
@@ -634,13 +631,13 @@ sal_Bool OAppDetailPageHelper::isCutAllowed()
 // -----------------------------------------------------------------------------
 sal_Bool OAppDetailPageHelper::isCopyAllowed()
 {
-    //	int nPos = getVisibleControlIndex();
+    //int nPos = getVisibleControlIndex();
     return sal_True;
 }
 // -----------------------------------------------------------------------------
 sal_Bool OAppDetailPageHelper::isPasteAllowed()
 {
-    //	int nPos = getVisibleControlIndex();
+    //int nPos = getVisibleControlIndex();
     return sal_True;
 }
 // -----------------------------------------------------------------------------
@@ -658,6 +655,8 @@ void OAppDetailPageHelper::paste()
 // -----------------------------------------------------------------------------
 bool OAppDetailPageHelper::isLeaf(SvLBoxEntry* _pEntry) const
 {
+    if ( !_pEntry )
+        return false;
     sal_Int32 nEntryType = reinterpret_cast< sal_IntPtr >( _pEntry->GetUserData() );
     if  (   ( nEntryType == DatabaseObjectContainer::TABLES )
         ||  ( nEntryType == DatabaseObjectContainer::CATALOG )
@@ -830,7 +829,7 @@ namespace
 
     static sal_Int32 lcl_getFolderIndicatorForType( const ElementType _eType )
     {
-        const sal_Int32 nFolderIndicator = 
+        const sal_Int32 nFolderIndicator =
                 ( _eType == E_FORM ) ? DatabaseObjectContainer::FORMS_FOLDER
             :   ( _eType == E_REPORT ) ? DatabaseObjectContainer::REPORTS_FOLDER : -1;
         return nFolderIndicator;
@@ -855,7 +854,7 @@ void OAppDetailPageHelper::fillNames( const Reference< XNameAccess >& _xContaine
 
         Sequence< ::rtl::OUString> aSeq = _xContainer->getElementNames();
         const ::rtl::OUString* pIter = aSeq.getConstArray();
-        const ::rtl::OUString* pEnd	 = pIter + aSeq.getLength();
+        const ::rtl::OUString* pEnd  = pIter + aSeq.getLength();
         for(;pIter != pEnd;++pIter)
         {
             SvLBoxEntry* pEntry = NULL;
@@ -1099,8 +1098,8 @@ void OAppDetailPageHelper::Resize()
     //////////////////////////////////////////////////////////////////////
     // Abmessungen parent window
     Size aOutputSize( GetOutputSize() );
-    long nOutputWidth	= aOutputSize.Width();
-    long nOutputHeight	= aOutputSize.Height();
+    long nOutputWidth  = aOutputSize.Width();
+    long nOutputHeight = aOutputSize.Height();
 
     Window* pWindow = getCurrentView();
     if ( pWindow )
@@ -1115,12 +1114,12 @@ void OAppDetailPageHelper::Resize()
 
         String sText = m_aTBPreview.GetItemText(SID_DB_APP_DISABLE_PREVIEW);
         Size aTBSize = m_aTBPreview.CalcWindowSizePixel();
-        m_aTBPreview.SetPosSizePixel(	Point(nOutputWidth - aTBSize.getWidth(), 0 ),
-                                        aTBSize );
+        m_aTBPreview.SetPosSizePixel(Point(nOutputWidth - aTBSize.getWidth(), 0 ),
+                                     aTBSize );
 
-        m_aBorder.SetPosSizePixel(		Point(nHalfOutputWidth + aFLSize.Width() + n6PPT, aTBSize.getHeight() + n6PPT ),
-                                        Size(nHalfOutputWidth - aFLSize.Width() - n6PPT, nOutputHeight - 2*n6PPT - aTBSize.getHeight()) );
-        m_aPreview.SetPosSizePixel(		Point(0,0),m_aBorder.GetSizePixel() );
+        m_aBorder.SetPosSizePixel(Point(nHalfOutputWidth + aFLSize.Width() + n6PPT, aTBSize.getHeight() + n6PPT ),
+                                  Size(nHalfOutputWidth - aFLSize.Width() - n6PPT, nOutputHeight - 2*n6PPT - aTBSize.getHeight()) );
+        m_aPreview.SetPosSizePixel(Point(0,0),m_aBorder.GetSizePixel() );
         m_aDocumentInfo.SetPosSizePixel(Point(0,0),m_aBorder.GetSizePixel() );
         m_pTablePreview->SetPosSizePixel(Point(0,0),m_aBorder.GetSizePixel() );
     }
@@ -1237,9 +1236,9 @@ void OAppDetailPageHelper::showPreview(const Reference< XContent >& _xContent)
 
                 // Why the below code? It might have side effects, as the tree view needs to know
                 // its current selection for other purposes than the preview, too.
-//				DBTreeListBox* pTreeView = getCurrentView();
-//				if ( pTreeView )
-//					pTreeView->clearCurrentSelection();
+//                DBTreeListBox* pTreeView = getCurrentView();
+//                if ( pTreeView )
+//                    pTreeView->clearCurrentSelection();
             }
         }
         catch( const Exception& )
@@ -1249,7 +1248,7 @@ void OAppDetailPageHelper::showPreview(const Reference< XContent >& _xContent)
     }
 }
 // -----------------------------------------------------------------------------
-void OAppDetailPageHelper::showPreview(	const ::rtl::OUString& _sDataSourceName,
+void OAppDetailPageHelper::showPreview( const ::rtl::OUString& _sDataSourceName,
                                         const ::rtl::OUString& _sName,
                                         sal_Bool _bTable)
 {
@@ -1265,7 +1264,7 @@ void OAppDetailPageHelper::showPreview(	const ::rtl::OUString& _sDataSourceName,
             {
                 m_xFrame = Reference < XFrame > ( getBorderWin().getView()->getORB()->createInstance( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.frame.Frame")) ), UNO_QUERY );
                 m_xFrame->initialize( m_xWindow );
-            
+
                 // work-around for #150518#: no layout manager (and thus no toolbars) in the preview
                 // Must be called after initialize ... but before any other call to this frame.
                 // Otherwhise frame throws "life time exceptions" as e.g. NON_INITIALIZED
@@ -1371,7 +1370,7 @@ void OAppDetailPageHelper::KeyInput( const KeyEvent& rKEvt )
     OSL_PRECOND( pCurrentView, "OAppDetailPageHelper::KeyInput: how this?" );
 
     KeyFuncType eFunc = rKEvt.GetKeyCode().GetFunction(); (void)eFunc;
-    USHORT		nCode = rKEvt.GetKeyCode().GetCode();
+    USHORT      nCode = rKEvt.GetKeyCode().GetCode();
 
     if ( ( KEY_RETURN == nCode ) && pCurrentView )
     {
@@ -1386,7 +1385,7 @@ void OAppDetailPageHelper::DataChanged( const DataChangedEvent& rDCEvt )
 {
     Window::DataChanged( rDCEvt );
 
-       if ( (rDCEvt.GetType() == DATACHANGED_FONTS) ||
+        if ( (rDCEvt.GetType() == DATACHANGED_FONTS) ||
         (rDCEvt.GetType() == DATACHANGED_DISPLAY) ||
         (rDCEvt.GetType() == DATACHANGED_FONTSUBSTITUTION) ||
         ((rDCEvt.GetType() == DATACHANGED_SETTINGS) &&
@@ -1437,7 +1436,7 @@ void OAppDetailPageHelper::ImplInitSettings()
     } // if( true )
 }
 // -----------------------------------------------------------------------------
-OPreviewWindow::OPreviewWindow(Window* _pParent) 
+OPreviewWindow::OPreviewWindow(Window* _pParent)
 : Window(_pParent)
 {
     ImplInitSettings( sal_True, sal_True, sal_True );
@@ -1445,9 +1444,9 @@ OPreviewWindow::OPreviewWindow(Window* _pParent)
 // -----------------------------------------------------------------------------
 BOOL OPreviewWindow::ImplGetGraphicCenterRect( const Graphic& rGraphic, Rectangle& rResultRect ) const
 {
-    const Size	aWinSize( GetOutputSizePixel() );
-    Size		aNewSize( LogicToPixel( rGraphic.GetPrefSize(), rGraphic.GetPrefMapMode() ) );
-    BOOL		bRet = FALSE;
+    const Size aWinSize( GetOutputSizePixel() );
+    Size       aNewSize( LogicToPixel( rGraphic.GetPrefSize(), rGraphic.GetPrefMapMode() ) );
+    BOOL       bRet = FALSE;
 
     if( aNewSize.Width() && aNewSize.Height() )
     {
@@ -1485,7 +1484,7 @@ void OPreviewWindow::Paint( const Rectangle& rRect )
     if( ImplGetGraphicCenterRect( m_aGraphicObj.GetGraphic(), m_aPreviewRect ) )
     {
         const Point aPos( m_aPreviewRect.TopLeft() );
-        const Size	aSize( m_aPreviewRect.GetSize() );
+        const Size  aSize( m_aPreviewRect.GetSize() );
 
         if( m_aGraphicObj.IsAnimated() )
             m_aGraphicObj.StartAnimation( this, aPos, aSize );
@@ -1505,7 +1504,7 @@ void OPreviewWindow::DataChanged( const DataChangedEvent& rDCEvt )
         Invalidate();
     }
 }
-//	-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 void OPreviewWindow::ImplInitSettings( sal_Bool bFont, sal_Bool bForeground, sal_Bool bBackground )
 {
     const StyleSettings& rStyleSettings = GetSettings().GetStyleSettings();
