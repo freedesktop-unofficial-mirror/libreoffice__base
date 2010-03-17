@@ -220,10 +220,35 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
     {
         Reference<XPropertySet> xPara(xQueryParameters->getByIndex(i),UNO_QUERY_THROW);
         xPara->getPropertyValue(PROPERTY_REALNAME) >>= aParameterColumns[i];
+    }    
+
+    ::rtl::OUString sCatalog,sSchema,sTable;
+
+    Reference<XPropertySet> xTableProp(m_xTable,UNO_QUERY);
+    Any aCatalog = xTableProp->getPropertyValue(PROPERTY_CATALOGNAME);
+    aCatalog >>= sCatalog;
+    xTableProp->getPropertyValue(PROPERTY_SCHEMANAME)	>>= sSchema;
+    xTableProp->getPropertyValue(PROPERTY_NAME)			>>= sTable;
+
+    ::std::vector< ::rtl::OUString> aBestRowColumnNames;
+    Reference<XResultSet> xBestRes(xMeta->getBestRowIdentifier(aCatalog,sSchema,sTable,0,sal_False));
+    Reference<XRow> xBestRow(xBestRes,uno::UNO_QUERY);
+    while ( xBestRes->next() )
+    {
+        aBestRowColumnNames.push_back(xBestRow->getString(2));
     }
 
-    ::dbaccess::getColumnPositions(xSup->getColumns(),xKeyColumns,m_sUpdateTableName,(*m_pKeyColumnNames));
-    ::dbaccess::getColumnPositions(xSup->getColumns(),xSourceColumns,m_sUpdateTableName,(*m_pColumnNames));
+    Sequence< ::rtl::OUString> aBestColumnNames;
+    if ( aBestRowColumnNames.empty() )
+    {
+        if ( xKeyColumns.is() )
+            aBestColumnNames = xKeyColumns->getElementNames();
+    }
+    else
+        aBestColumnNames = Sequence< ::rtl::OUString>(&aBestRowColumnNames[0],aBestRowColumnNames.size());
+
+    ::dbaccess::getColumnPositions(xSup->getColumns(),aBestColumnNames,m_sUpdateTableName,(*m_pKeyColumnNames));
+    ::dbaccess::getColumnPositions(xSup->getColumns(),xSourceColumns->getElementNames(),m_sUpdateTableName,(*m_pColumnNames));
     ::dbaccess::getColumnPositions(xSup->getColumns(),aParameterColumns,m_sUpdateTableName,(*m_pParameterNames));
 
     SelectColumnsMetaData::const_iterator aPosIter = (*m_pKeyColumnNames).begin();
@@ -250,12 +275,6 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
     ::rtl::OUString aQuote	= getIdentifierQuoteString();
 
     ::rtl::OUStringBuffer aFilter;
-    ::rtl::OUString sCatalog,sSchema,sTable;
-
-    Reference<XPropertySet> xTableProp(m_xTable,UNO_QUERY);
-    xTableProp->getPropertyValue(PROPERTY_CATALOGNAME)	>>= sCatalog;
-    xTableProp->getPropertyValue(PROPERTY_SCHEMANAME)	>>= sSchema;
-    xTableProp->getPropertyValue(PROPERTY_NAME)			>>= sTable;
 
     m_aSelectComposedTableName = getComposedTableName(sCatalog,sSchema,sTable);
 
@@ -279,9 +298,10 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
             aFilter.append(aAnd);
     }
 
+    Reference< XSingleSelectQueryComposer> xSourceComposer(m_xComposer,UNO_QUERY);
     Reference< XMultiServiceFactory >  xFactory(m_xConnection, UNO_QUERY_THROW);
     Reference<XSingleSelectQueryComposer> xAnalyzer(xFactory->createInstance(SERVICE_NAME_SINGLESELECTQUERYCOMPOSER),UNO_QUERY);
-    xAnalyzer->setElementaryQuery(m_xComposer->getQuery());
+    xAnalyzer->setElementaryQuery(xSourceComposer->getElementaryQuery());
     Reference<XTablesSupplier> xTabSup(xAnalyzer,uno::UNO_QUERY);
     Reference<XNameAccess> xSelectTables(xTabSup->getTables(),uno::UNO_QUERY);
     const Sequence< ::rtl::OUString> aSeq = xSelectTables->getElementNames();
