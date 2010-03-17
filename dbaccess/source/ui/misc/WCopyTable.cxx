@@ -1159,6 +1159,8 @@ void OCopyTableWizard::clearDestColumns()
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "misc", "Ocke.Janssen@sun.com", "OCopyTableWizard::clearDestColumns" );
     clearColumns(m_vDestColumns,m_aDestVec);
+    m_bAddPKFirstTime = sal_True;
+    m_mNameMapping.clear();
 }
 
 // -----------------------------------------------------------------------------
