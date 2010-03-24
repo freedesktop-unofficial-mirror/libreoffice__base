@@ -148,6 +148,134 @@ namespace
             }
         }
     }
+    class OPrivateRow : public ::cppu::WeakImplHelper1<XRow>
+    {
+        ORowSetValueVector::Vector m_aRow;
+        sal_Int32 m_nPos;
+    public:
+        OPrivateRow(const ORowSetValueVector::Vector& i_aRow) : m_aRow(i_aRow),m_nPos(0)
+        {
+        }
+        virtual ::sal_Bool SAL_CALL wasNull(  ) throw (SQLException, RuntimeException);
+        virtual ::rtl::OUString SAL_CALL getString( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::sal_Bool SAL_CALL getBoolean( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::sal_Int8 SAL_CALL getByte( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::sal_Int16 SAL_CALL getShort( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::sal_Int32 SAL_CALL getInt( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::sal_Int64 SAL_CALL getLong( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual float SAL_CALL getFloat( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual double SAL_CALL getDouble( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Sequence< ::sal_Int8 > SAL_CALL getBytes( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::com::sun::star::util::Date SAL_CALL getDate( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::com::sun::star::util::Time SAL_CALL getTime( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual ::com::sun::star::util::DateTime SAL_CALL getTimestamp( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Reference< ::com::sun::star::io::XInputStream > SAL_CALL getBinaryStream( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Reference< ::com::sun::star::io::XInputStream > SAL_CALL getCharacterStream( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Any SAL_CALL getObject( ::sal_Int32 columnIndex, const Reference< ::com::sun::star::container::XNameAccess >& typeMap ) throw (SQLException, RuntimeException);
+        virtual Reference< XRef > SAL_CALL getRef( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Reference< XBlob > SAL_CALL getBlob( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Reference< XClob > SAL_CALL getClob( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+        virtual Reference< XArray > SAL_CALL getArray( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException);
+    };
+    ::sal_Bool SAL_CALL OPrivateRow::wasNull(  ) throw (SQLException, RuntimeException)
+    {
+        return m_aRow[m_nPos].isNull();
+    }
+    ::rtl::OUString SAL_CALL OPrivateRow::getString( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::sal_Bool SAL_CALL OPrivateRow::getBoolean( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::sal_Int8 SAL_CALL OPrivateRow::getByte( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::sal_Int16 SAL_CALL OPrivateRow::getShort( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::sal_Int32 SAL_CALL OPrivateRow::getInt( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::sal_Int64 SAL_CALL OPrivateRow::getLong( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    float SAL_CALL OPrivateRow::getFloat( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    double SAL_CALL OPrivateRow::getDouble( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    Sequence< ::sal_Int8 > SAL_CALL OPrivateRow::getBytes( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::com::sun::star::util::Date SAL_CALL OPrivateRow::getDate( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::com::sun::star::util::Time SAL_CALL OPrivateRow::getTime( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    ::com::sun::star::util::DateTime SAL_CALL OPrivateRow::getTimestamp( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos];
+    }
+    Reference< ::com::sun::star::io::XInputStream > SAL_CALL OPrivateRow::getBinaryStream( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< ::com::sun::star::io::XInputStream >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
+    Reference< ::com::sun::star::io::XInputStream > SAL_CALL OPrivateRow::getCharacterStream( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< ::com::sun::star::io::XInputStream >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
+    Any SAL_CALL OPrivateRow::getObject( ::sal_Int32 columnIndex, const Reference< ::com::sun::star::container::XNameAccess >&  ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return m_aRow[m_nPos].makeAny();
+    }
+    Reference< XRef > SAL_CALL OPrivateRow::getRef( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< XRef >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
+    Reference< XBlob > SAL_CALL OPrivateRow::getBlob( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< XBlob >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
+    Reference< XClob > SAL_CALL OPrivateRow::getClob( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< XClob >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
+    Reference< XArray > SAL_CALL OPrivateRow::getArray( ::sal_Int32 columnIndex ) throw (SQLException, RuntimeException)
+    {
+        m_nPos = columnIndex;
+        return Reference< XArray >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
+    }
 }
 DBG_NAME(OKeySet)
 // -------------------------------------------------------------------------
@@ -266,7 +394,7 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
 
     // the first row is empty because it's now easier for us to distinguish	when we are beforefirst or first
     // without extra varaible to be set
-    m_aKeyMap.insert(OKeySetMatrix::value_type(0,OKeySetValue(NULL,0)));
+    m_aKeyMap.insert(OKeySetMatrix::value_type(0,OKeySetValue(NULL,::std::pair<sal_Int32,Reference<XRow> >(0,NULL))));
 
     m_aKeyIter = m_aKeyMap.begin();
 
@@ -339,7 +467,8 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
             }
         }
     } // if ( aSeq.getLength() > 1 ) // special handling for join
-    if ( i_sRowSetFilter.getLength() )
+    bool bFilterSet = i_sRowSetFilter.getLength() != 0;
+    if ( bFilterSet )
     {
         FilterCreator aFilterCreator;
         aFilterCreator.append( i_sRowSetFilter );
@@ -347,6 +476,25 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
         aFilter = aFilterCreator.getComposedAndClear();
     }
     xAnalyzer->setFilter(aFilter.makeStringAndClear());
+    if ( bFilterSet )
+    {
+        Sequence< Sequence< PropertyValue > > aFilter = xAnalyzer->getStructuredFilter();
+        const Sequence< PropertyValue >* pOr = aFilter.getConstArray();
+        const Sequence< PropertyValue >* pOrEnd = pOr + aFilter.getLength();
+        for(;pOr != pOrEnd;++pOr)
+        {
+            const PropertyValue* pAnd = pOr->getConstArray();
+            const PropertyValue* pAndEnd = pAnd + pOr->getLength();
+            for(;pAnd != pAndEnd;++pAnd)
+            {
+                ::rtl::OUString sValue;
+                if ( !(pAnd->Value >>= sValue) || !(sValue.equalsAscii("?") || sValue.matchAsciiL(":",1,0)) )
+                { // we have a criteria which has to be taken into account for updates
+                    m_aFilterColumns.push_back(pAnd->Name);
+                }
+            }
+        }
+    }
     m_xStatement = m_xConnection->prepareStatement(xAnalyzer->getQueryWithSubstitution());
     ::comphelper::disposeComponent(xAnalyzer);
 }
@@ -605,12 +753,22 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     i = 1;
     // first the set values
     aIter = m_pColumnNames->begin();
+    bool bRefetch = true;
     sal_uInt16 j = 0;
+    Reference<XRow> xRow;
     for(;aIter != aEnd;++aIter,++j)
     {
         sal_Int32 nPos = aIter->second.nPosition;
         if((_rInsertRow->get())[nPos].isModified())
         {
+            if ( bRefetch )
+            {
+                bRefetch = ::std::find(m_aFilterColumns.begin(),m_aFilterColumns.end(),aIter->first) == m_aFilterColumns.end();
+                if ( !bRefetch )
+                {
+                    xRow =  new OPrivateRow(_rInsertRow->get());
+                }
+            }
             (_rInsertRow->get())[nPos].setSigned((_rOrginalRow->get())[nPos].isSigned());
             setParameter(i++,xParameter,(_rInsertRow->get())[nPos],aIter->second.nType,aIter->second.nScale);
         }
@@ -640,7 +798,8 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
     {
         const sal_Int32 nBookmark = ::comphelper::getINT32((_rInsertRow->get())[0].getAny());
         m_aKeyIter = m_aKeyMap.find(nBookmark);
-        m_aKeyIter->second.second = 2;
+        m_aKeyIter->second.second.first = 2;
+        m_aKeyIter->second.second.second = xRow;
         copyRowValue(_rInsertRow,m_aKeyIter->second.first,nBookmark);
     }
 }
@@ -664,10 +823,16 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
     SelectColumnsMetaData::const_iterator aEnd = m_pColumnNames->end();
     sal_Int32 j = 1;
     sal_Bool bModified = sal_False;
+    bool bRefetch = true;
+    Reference <XRow> xRow;
     for(;aIter != aEnd;++aIter,++j)
     {
         if((_rInsertRow->get())[aIter->second.nPosition].isModified())
         {
+            if ( bRefetch )
+            {
+                bRefetch = ::std::find(m_aFilterColumns.begin(),m_aFilterColumns.end(),aIter->first) == m_aFilterColumns.end();
+            }
             aSql.append(::dbtools::quoteName( aQuote,aIter->first));
             aSql.append(aComma);
             aValues.append(aPara);
@@ -806,7 +971,13 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
         ORowSetRow aKeyRow = new connectivity::ORowVector< ORowSetValue >((*m_pKeyColumnNames).size());
         copyRowValue(_rInsertRow,aKeyRow,aKeyIter->first + 1);
         
-        m_aKeyIter = m_aKeyMap.insert(OKeySetMatrix::value_type(aKeyIter->first + 1,OKeySetValue(aKeyRow,1))).first;
+        m_aKeyIter = m_aKeyMap.insert(OKeySetMatrix::value_type(aKeyIter->first + 1,OKeySetValue(aKeyRow,::std::pair<sal_Int32,Reference<XRow> >(1,NULL)))).first;
+        if ( !bRefetch )
+        {
+            xRow =  new OPrivateRow(_rInsertRow->get());
+            m_aKeyIter->second.second.second = xRow;
+        }
+        
         // now we set the bookmark for this row
         (_rInsertRow->get())[0] = makeAny((sal_Int32)m_aKeyIter->first);
     }
@@ -1069,8 +1240,8 @@ void SAL_CALL OKeySet::beforeFirst(  ) throw(SQLException, RuntimeException)
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OKeySet::beforeFirst" );
     m_bInserted = m_bUpdated = m_bDeleted = sal_False;
     m_aKeyIter = m_aKeyMap.begin();
-    m_xSet = NULL;
-    ::comphelper::disposeComponent(m_xRow);
+    m_xRow = NULL;
+    ::comphelper::disposeComponent(m_xSet);
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OKeySet::afterLast(  ) throw(SQLException, RuntimeException)
@@ -1079,8 +1250,8 @@ void SAL_CALL OKeySet::afterLast(  ) throw(SQLException, RuntimeException)
     m_bInserted = m_bUpdated = m_bDeleted = sal_False;
     fillAllRows();
     m_aKeyIter = m_aKeyMap.end();
-    m_xSet = NULL;
-    ::comphelper::disposeComponent(m_xRow);
+    m_xRow = NULL;
+    ::comphelper::disposeComponent(m_xSet);
 }
 // -----------------------------------------------------------------------------
 sal_Bool SAL_CALL OKeySet::first(  ) throw(SQLException, RuntimeException)
@@ -1181,11 +1352,18 @@ sal_Bool SAL_CALL OKeySet::previous(  ) throw(SQLException, RuntimeException)
 void SAL_CALL OKeySet::refreshRow() throw(SQLException, RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OKeySet::refreshRow" );
-    if(isBeforeFirst() || isAfterLast() || !m_xStatement.is())
+    if(isBeforeFirst() || isAfterLast() || !m_xStatement.is() )
         return;
 
-    m_xSet = NULL;
-    ::comphelper::disposeComponent(m_xRow);
+    m_xRow = NULL;
+    ::comphelper::disposeComponent(m_xSet);
+
+    if ( m_aKeyIter->second.second.second.is() )
+    {
+        m_xRow = m_aKeyIter->second.second.second;
+        return;
+    }
+    
     // we just areassign the base members
     Reference< XParameters > xParameter(m_xStatement,UNO_QUERY);
     OSL_ENSURE(xParameter.is(),"No Parameter interface!");
@@ -1256,7 +1434,7 @@ sal_Bool OKeySet::fetchRow()
             const SelectColumnDescription& rColDesc = aPosIter->second;
             aIter->fill(rColDesc.nPosition,rColDesc.nType,rColDesc.bNullable,m_xDriverRow);
         }
-        m_aKeyIter = m_aKeyMap.insert(OKeySetMatrix::value_type(m_aKeyMap.rbegin()->first+1,OKeySetValue(aKeyRow,0))).first;
+        m_aKeyIter = m_aKeyMap.insert(OKeySetMatrix::value_type(m_aKeyMap.rbegin()->first+1,OKeySetValue(aKeyRow,::std::pair<sal_Int32,Reference<XRow> >(0,NULL)))).first;
     }
     else
         m_bRowCountFinal = sal_True;
@@ -1415,13 +1593,13 @@ Reference< XArray > SAL_CALL OKeySet::getArray( sal_Int32 columnIndex ) throw(SQ
 sal_Bool SAL_CALL OKeySet::rowUpdated(  ) throw(SQLException, RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OKeySet::rowUpdated" );
-    return m_aKeyIter != m_aKeyMap.begin() && m_aKeyIter != m_aKeyMap.end() && m_aKeyIter->second.second == 2;
+    return m_aKeyIter != m_aKeyMap.begin() && m_aKeyIter != m_aKeyMap.end() && m_aKeyIter->second.second.first == 2;
 }
 // -------------------------------------------------------------------------
 sal_Bool SAL_CALL OKeySet::rowInserted(  ) throw(SQLException, RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OKeySet::rowInserted" );
-    return m_aKeyIter != m_aKeyMap.begin() && m_aKeyIter != m_aKeyMap.end() && m_aKeyIter->second.second == 1;
+    return m_aKeyIter != m_aKeyMap.begin() && m_aKeyIter != m_aKeyMap.end() && m_aKeyIter->second.second.first == 1;
 }
 // -------------------------------------------------------------------------
 sal_Bool SAL_CALL OKeySet::rowDeleted(  ) throw(SQLException, RuntimeException)
@@ -1476,7 +1654,7 @@ namespace dbaccess
     }
 
     void getColumnPositions(const Reference<XNameAccess>& _rxQueryColumns,
-                            const ::com::sun::star::uno::Sequence< ::rtl::OUString >& _rColumnNames,
+                            const Sequence< ::rtl::OUString >& _rColumnNames,
                             const ::rtl::OUString& _rsUpdateTableName,
                             SelectColumnsMetaData& _rColumnAssignments)
     {
