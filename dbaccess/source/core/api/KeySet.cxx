@@ -478,9 +478,9 @@ void OKeySet::construct(const Reference< XResultSet>& _xDriverSet,const ::rtl::O
     xAnalyzer->setFilter(aFilter.makeStringAndClear());
     if ( bFilterSet )
     {
-        Sequence< Sequence< PropertyValue > > aFilter = xAnalyzer->getStructuredFilter();
-        const Sequence< PropertyValue >* pOr = aFilter.getConstArray();
-        const Sequence< PropertyValue >* pOrEnd = pOr + aFilter.getLength();
+        Sequence< Sequence< PropertyValue > > aFilter2 = xAnalyzer->getStructuredFilter();
+        const Sequence< PropertyValue >* pOr = aFilter2.getConstArray();
+        const Sequence< PropertyValue >* pOrEnd = pOr + aFilter2.getLength();
         for(;pOr != pOrEnd;++pOr)
         {
             const PropertyValue* pAnd = pOr->getConstArray();
@@ -824,7 +824,6 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
     sal_Int32 j = 1;
     sal_Bool bModified = sal_False;
     bool bRefetch = true;
-    Reference <XRow> xRow;
     for(;aIter != aEnd;++aIter,++j)
     {
         if((_rInsertRow->get())[aIter->second.nPosition].isModified())
@@ -974,8 +973,7 @@ void SAL_CALL OKeySet::insertRow( const ORowSetRow& _rInsertRow,const connectivi
         m_aKeyIter = m_aKeyMap.insert(OKeySetMatrix::value_type(aKeyIter->first + 1,OKeySetValue(aKeyRow,::std::pair<sal_Int32,Reference<XRow> >(1,NULL)))).first;
         if ( !bRefetch )
         {
-            xRow =  new OPrivateRow(_rInsertRow->get());
-            m_aKeyIter->second.second.second = xRow;
+            m_aKeyIter->second.second.second = new OPrivateRow(_rInsertRow->get());
         }
         
         // now we set the bookmark for this row
