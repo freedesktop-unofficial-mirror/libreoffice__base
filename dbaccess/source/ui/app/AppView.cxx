@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: AppView.cxx,v $
- * $Revision: 1.22.6.3 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -44,8 +41,8 @@
 #endif
 #ifndef _DBA_DBACCESS_HELPID_HRC_
 #include "dbaccess_helpid.hrc"
-#endif				  
-#ifndef _SV_TOOLBOX_HXX 
+#endif
+#ifndef _SV_TOOLBOX_HXX
 #include <vcl/toolbox.hxx>
 #endif
 #ifndef _UTL_CONFIGMGR_HXX_
@@ -70,7 +67,7 @@
 #include <com/sun/star/sdb/XQueriesSupplier.hpp>
 #endif
 #ifndef INCLUDED_SVTOOLS_SYSLOCALE_HXX
-#include <svtools/syslocale.hxx>
+#include <unotools/syslocale.hxx>
 #endif
 #ifndef DBAUI_TOOLS_HXX
 #include "UITools.hxx"
@@ -105,8 +102,8 @@
 #ifndef DBACCESS_UI_BROWSER_ID_HXX
 #include "browserids.hxx"
 #endif
-#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX 
-#include <svtools/pathoptions.hxx>
+#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
+#include <unotools/pathoptions.hxx>
 #endif
 #include "IApplicationController.hxx"
 
@@ -145,8 +142,8 @@ OAppBorderWindow::OAppBorderWindow(OApplicationView* _pParent,PreviewMode _ePrev
 
     m_pPanel->setChildWindow(pSwap);
     m_pPanel->SetUniqueId(UID_APP_DATABASE_VIEW);
-    m_pPanel->Show();	
-    
+    m_pPanel->Show();
+
     m_pDetailView = new OApplicationDetailView(*this,_ePreviewMode);
     m_pDetailView->Show();
 
@@ -200,7 +197,7 @@ void OAppBorderWindow::Resize()
         nX = ::std::max(m_pPanel->GetWidthPixel() ,nX);
         m_pPanel->SetPosSizePixel(Point(0,0),Size(nX,nOutputHeight));
     }
-    
+
     if ( m_pDetailView )
         m_pDetailView->SetPosSizePixel(Point(nX + aFLSize.Width(),0),Size(nOutputWidth - nX - aFLSize.Width(),nOutputHeight));
 }
@@ -239,7 +236,7 @@ void OAppBorderWindow::ImplInitSettings()
 
     if( true )
         SetBackground( rStyleSettings.GetDialogColor() );
-    
+
     /*SetBackground( Wallpaper( Application::GetSettings().GetStyleSettings().GetDialogColor() ) );
     SetFillColor( Application::GetSettings().GetStyleSettings().GetDialogColor() );
     SetTextFillColor( Application::GetSettings().GetStyleSettings().GetDialogColor() );*/
@@ -288,7 +285,7 @@ OApplicationView::OApplicationView( Window* pParent
 
     m_pWin = new OAppBorderWindow(this,_ePreviewMode);
     m_pWin->SetUniqueId(UID_APP_VIEW_BORDER_WIN);
-    m_pWin->Show();		
+    m_pWin->Show();
 
     ImplInitSettings();
 }
@@ -330,7 +327,7 @@ void OApplicationView::DataChanged( const DataChangedEvent& rDCEvt )
         ((rDCEvt.GetType() == DATACHANGED_SETTINGS) &&
         (rDCEvt.GetFlags() & SETTINGS_STYLE)) )
     {
-        ImplInitSettings();		
+        ImplInitSettings();
         Invalidate();
     }
 }
@@ -377,7 +374,7 @@ long OApplicationView::PreNotify( NotifyEvent& rNEvt )
         }
         break;
     }
-    
+
     return ODataView::PreNotify(rNEvt);
 }
 // -----------------------------------------------------------------------------
@@ -410,21 +407,21 @@ sal_Bool OApplicationView::isPasteAllowed()
 void OApplicationView::copy()
 {
     IClipboardTest* pTest = getActiveChild();
-    if ( pTest ) 
+    if ( pTest )
         pTest->copy();
 }
 // -----------------------------------------------------------------------------
 void OApplicationView::cut()
 {
     IClipboardTest* pTest = getActiveChild();
-    if ( pTest ) 
+    if ( pTest )
         pTest->cut();
 }
 // -----------------------------------------------------------------------------
 void OApplicationView::paste()
 {
     IClipboardTest* pTest = getActiveChild();
-    if ( pTest ) 
+    if ( pTest )
         pTest->paste();
 }
 // -----------------------------------------------------------------------------
@@ -597,7 +594,7 @@ void OApplicationView::showPreview(	const ::rtl::OUString& _sDataSourceName,
         try
         {
             Reference<XNameAccess> xNameAccess;
-            if ( _bTable ) 
+            if ( _bTable )
             {
                 Reference<XTablesSupplier> xSup(_xConnection,UNO_QUERY);
                 if ( xSup.is() )

@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: ConnectionPage.cxx,v $
- * $Revision: 1.25.26.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -43,23 +40,23 @@
 #ifndef DBACCESS_DSMETA_HXX
 #include "dsmeta.hxx"
 #endif
-#ifndef _SFXITEMSET_HXX 
-#include <svtools/itemset.hxx>
+#ifndef _SFXITEMSET_HXX
+#include <svl/itemset.hxx>
 #endif
-#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX 
-#include <svtools/pathoptions.hxx>
+#ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
+#include <unotools/pathoptions.hxx>
 #endif
-#ifndef _SFXSTRITEM_HXX 
-#include <svtools/stritem.hxx>
+#ifndef _SFXSTRITEM_HXX
+#include <svl/stritem.hxx>
 #endif
-#ifndef _SFXENUMITEM_HXX 
-#include <svtools/eitem.hxx>
+#ifndef _SFXENUMITEM_HXX
+#include <svl/eitem.hxx>
 #endif
-#ifndef _SFXINTITEM_HXX 
-#include <svtools/intitem.hxx>
+#ifndef _SFXINTITEM_HXX
+#include <svl/intitem.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCEITEMS_HXX_
 #include "dsitems.hxx"
@@ -70,13 +67,13 @@
 #ifndef _DBAUI_LOCALRESACCESS_HXX_
 #include "localresaccess.hxx"
 #endif
-#ifndef _OSL_PROCESS_H_ 
+#ifndef _OSL_PROCESS_H_
 #include <osl/process.h>
 #endif
 #ifndef _SV_MSGBOX_HXX
 #include <vcl/msgbox.hxx>
 #endif
-#ifndef _FILEDLGHELPER_HXX 
+#ifndef _FILEDLGHELPER_HXX
 #include <sfx2/filedlghelper.hxx>
 #endif
 #ifndef _DBAUI_DBADMIN_HXX_
@@ -85,7 +82,7 @@
 #ifndef _COMPHELPER_TYPES_HXX_
 #include <comphelper/types.hxx>
 #endif
-#ifndef _VCL_STDTEXT_HXX 
+#ifndef _VCL_STDTEXT_HXX
 #include <vcl/stdtext.hxx>
 #endif
 #ifndef _DBAUI_SQLMESSAGE_HXX_
@@ -98,12 +95,12 @@
 #include "dsselect.hxx"
 #endif
 #ifndef SVTOOLS_FILENOTATION_HXX_
-#include <svtools/filenotation.hxx>
+#include <svl/filenotation.hxx>
 #endif
 #ifndef DBACCESS_SHARED_DBUSTRINGS_HRC
 #include "dbustrings.hrc"
 #endif
-#ifndef _COM_SUN_STAR_UI_DIALOGS_XFOLDERPICKER_HPP_ 
+#ifndef _COM_SUN_STAR_UI_DIALOGS_XFOLDERPICKER_HPP_
 #include <com/sun/star/ui/dialogs/XFolderPicker.hpp>
 #endif
 #ifndef _COM_SUN_STAR_SDBC_XROW_HPP_
@@ -134,10 +131,10 @@
 #ifndef DBAUI_TOOLS_HXX
 #include "UITools.hxx"
 #endif
-#ifndef _UNOTOOLS_LOCALFILEHELPER_HXX 
+#ifndef _UNOTOOLS_LOCALFILEHELPER_HXX
 #include <unotools/localfilehelper.hxx>
 #endif
-#ifndef _UNOTOOLS_UCBHELPER_HXX 
+#ifndef _UNOTOOLS_UCBHELPER_HXX
 #include <unotools/ucbhelper.hxx>
 #endif
 #ifndef _UCBHELPER_COMMANDENVIRONMENT_HXX
@@ -149,7 +146,7 @@
 #ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
 #include <connectivity/CommonTools.hxx>
 #endif
-#ifndef _URLOBJ_HXX 
+#ifndef _URLOBJ_HXX
 #include <tools/urlobj.hxx>
 #endif
 #ifndef _SFX_DOCFILT_HACK_HXX
@@ -161,9 +158,11 @@
 #endif
 
 #ifdef _ADO_DATALINK_BROWSE_
-typedef void*				HWND;
-typedef void*				HMENU;
-typedef void*				HDC;
+#if defined( WNT )
+    #include <tools/prewin.h>
+    #include <windows.h>
+    #include <tools/postwin.h>
+#endif
 #ifndef _SV_SYSDATA_HXX
 #include <vcl/sysdata.hxx>
 #endif
@@ -195,10 +194,9 @@ namespace dbaui
     //========================================================================
     //= OConnectionTabPage
     //========================================================================
-    DBG_NAME(OConnectionTabPage)	
+    DBG_NAME(OConnectionTabPage)
     OConnectionTabPage::OConnectionTabPage(Window* pParent, const SfxItemSet& _rCoreAttrs)
         :OConnectionHelper(pParent, ModuleRes(PAGE_CONNECTION), _rCoreAttrs)
-        ,m_pCollection(NULL)
         ,m_bUserGrabFocus(sal_True)
         ,m_aFL1(this, ModuleRes(FL_SEPARATOR1))
         ,m_aFL2(this, ModuleRes(FL_SEPARATOR2))
@@ -211,7 +209,7 @@ namespace dbaui
         ,m_aTestJavaDriver(this, ModuleRes(PB_TESTDRIVERCLASS))
         ,m_aTestConnection(this, ModuleRes(PB_TESTCONNECTION))
     {
-        DBG_CTOR(OConnectionTabPage,NULL);		
+        DBG_CTOR(OConnectionTabPage,NULL);
         m_aConnectionURL.SetModifyHdl(LINK(this, OConnectionTabPage, OnEditModified));
         m_aJavaDriver.SetModifyHdl(getControlModifiedLink());
         m_aJavaDriver.SetModifyHdl(LINK(this, OConnectionTabPage, OnEditModified));
@@ -221,19 +219,13 @@ namespace dbaui
         m_aTestConnection.SetClickHdl(LINK(this,OGenericAdministrationPage,OnTestConnectionClickHdl));
         m_aTestJavaDriver.SetClickHdl(LINK(this,OConnectionTabPage,OnTestJavaClickHdl));
 
-        // extract the datasource type collection from the item set
-        DbuTypeCollectionItem* pCollectionItem = PTR_CAST(DbuTypeCollectionItem, _rCoreAttrs.GetItem(DSID_TYPECOLLECTION));
-        if (pCollectionItem)
-            m_pCollection = pCollectionItem->getCollection();
-        DBG_ASSERT(m_pCollection, "OConnectionTabPage::OConnectionTabPage : really need a DSN type collection !");
-
         FreeResource();
     }
 
     // -----------------------------------------------------------------------
     OConnectionTabPage::~OConnectionTabPage()
     {
-        DBG_DTOR(OConnectionTabPage,NULL);		
+        DBG_DTOR(OConnectionTabPage,NULL);
     }
 
     // -----------------------------------------------------------------------
@@ -247,7 +239,8 @@ namespace dbaui
         OConnectionHelper::implInitControls( _rSet, _bSaveValue);
 
         LocalResourceAccess aLocRes( PAGE_CONNECTION, RSC_TABPAGE );
-        switch( m_eType )
+        ::dbaccess::DATASOURCE_TYPE eType = m_pCollection->determineType(m_eType);
+        switch( eType )
         {
             case  ::dbaccess::DST_DBASE:
                 m_aFT_Connection.SetText(String(ModuleRes(STR_DBASE_PATH_OR_FILE)));
@@ -285,7 +278,7 @@ namespace dbaui
             case  ::dbaccess::DST_MYSQL_ODBC:
             case  ::dbaccess::DST_ODBC:
                 m_aFT_Connection.SetText(String(ModuleRes(STR_NAME_OF_ODBC_DATASOURCE)));
-                m_aConnectionURL.SetHelpId( m_eType ==  ::dbaccess::DST_MYSQL_ODBC ? HID_DSADMIN_MYSQL_ODBC_DATASOURCE : HID_DSADMIN_ODBC_DATASOURCE);
+                m_aConnectionURL.SetHelpId( eType ==  ::dbaccess::DST_MYSQL_ODBC ? HID_DSADMIN_MYSQL_ODBC_DATASOURCE : HID_DSADMIN_ODBC_DATASOURCE);
                 break;
             case  ::dbaccess::DST_LDAP:
                 m_aFT_Connection.SetText(String(ModuleRes(STR_HOSTNAME)));
@@ -302,6 +295,8 @@ namespace dbaui
             case  ::dbaccess::DST_OUTLOOK:
             case  ::dbaccess::DST_OUTLOOKEXP:
             case  ::dbaccess::DST_EVOLUTION:
+            case  ::dbaccess::DST_EVOLUTION_GROUPWISE:
+            case  ::dbaccess::DST_EVOLUTION_LDAP:
             case  ::dbaccess::DST_KAB:
             case  ::dbaccess::DST_MACAB:
                 m_aFT_Connection.SetText(String(ModuleRes(STR_NO_ADDITIONAL_SETTINGS)));
@@ -315,8 +310,6 @@ namespace dbaui
                 m_aConnectionURL.Hide();
                 break;
             case  ::dbaccess::DST_JDBC:
-                m_aFT_Connection.SetText(String(ModuleRes(STR_COMMONURL)));
-                // run through
             default:
                 m_aFT_Connection.SetText(String(ModuleRes(STR_COMMONURL)));
                 break;
@@ -351,8 +344,18 @@ namespace dbaui
             String sUrl = pUrlItem->GetValue();
             setURL( sUrl );
 
-            BOOL bEnableJDBC = m_eType ==  ::dbaccess::DST_JDBC;
-            m_aJavaDriver.SetText(pJdbcDrvItem->GetValue());
+            const BOOL bEnableJDBC = m_pCollection->determineType(m_eType) == ::dbaccess::DST_JDBC;
+            if ( !pJdbcDrvItem->GetValue().Len() )
+            {
+                String sDefaultJdbcDriverName = m_pCollection->getJavaDriverClass(m_eType);
+                if ( sDefaultJdbcDriverName.Len() )
+                {
+                    m_aJavaDriver.SetText(sDefaultJdbcDriverName);
+                    m_aJavaDriver.SetModifyFlag();
+                }
+            } // if ( !pJdbcDrvItem->GetValue().Len() )
+            else
+                m_aJavaDriver.SetText(pJdbcDrvItem->GetValue());
 
             m_aJavaDriverLabel.Show(bEnableJDBC);
             m_aJavaDriver.Show(bEnableJDBC);
@@ -371,7 +374,7 @@ namespace dbaui
     void OConnectionTabPage::fillWindows(::std::vector< ISaveValueWrapper* >& _rControlList)
     {
         _rControlList.push_back(new ODisableWrapper<FixedLine>(&m_aFL1));
-        
+
         _rControlList.push_back(new ODisableWrapper<FixedLine>(&m_aFL2));
         _rControlList.push_back(new ODisableWrapper<FixedText>(&m_aJavaDriverLabel));
         _rControlList.push_back(new ODisableWrapper<PushButton>(&m_aTestJavaDriver));
@@ -405,7 +408,7 @@ namespace dbaui
 
         fillBool(_rSet,&m_aPasswordRequired,DSID_PASSWORDREQUIRED,bChangedSomething);
 
-        if ( m_eType ==  ::dbaccess::DST_JDBC )
+        if ( m_pCollection->determineType(m_eType) ==  ::dbaccess::DST_JDBC )
         {
             fillString(_rSet,&m_aJavaDriver, DSID_JDBCDRIVERCLASS, bChangedSomething);
         }
@@ -441,7 +444,7 @@ namespace dbaui
     {
         OSL_ENSURE(m_pAdminDialog,"No Admin dialog set! ->GPF");
         BOOL bEnableTestConnection = !m_aConnectionURL.IsVisible() || (m_aConnectionURL.GetTextNoPrefix().Len() != 0);
-        if ( m_eType ==  ::dbaccess::DST_JDBC )
+        if ( m_pCollection->determineType(m_eType) ==  ::dbaccess::DST_JDBC )
             bEnableTestConnection = bEnableTestConnection && (m_aJavaDriver.GetText().Len() != 0);
         m_aTestConnection.Enable(bEnableTestConnection);
         return true;

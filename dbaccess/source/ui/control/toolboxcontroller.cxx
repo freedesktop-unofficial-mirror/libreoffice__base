@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: toolboxcontroller.cxx,v $
- * $Revision: 1.13.98.2 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -73,7 +70,7 @@
 #include <svtools/miscopt.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #endif
 #ifndef TOOLS_DIAGNOSE_EX_H
 #include <tools/diagnose_ex.h>
@@ -175,7 +172,8 @@ namespace dbaui
         }
 
         TCommandState::iterator aIter = m_aStates.begin();
-        for (; aIter != m_aStates.end(); ++aIter)
+        TCommandState::iterator aEnd = m_aStates.end();
+        for (; aIter != aEnd; ++aIter)
             addStatusListener(aIter->first);
 
         ToolBox*    pToolBox = static_cast<ToolBox*>(VCLUnoHelper::GetWindow(getParent()));
@@ -191,7 +189,7 @@ namespace dbaui
                     break;
                 }
             }
-            
+
             // check if paste special is allowed, when not don't add DROPDOWN
             pToolBox->SetItemBits(m_nToolBoxId,pToolBox->GetItemBits(m_nToolBoxId) | TIB_DROPDOWN);
         }
@@ -200,7 +198,7 @@ namespace dbaui
     void SAL_CALL OToolboxController::statusChanged( const FeatureStateEvent& Event ) throw ( RuntimeException )
     {
         vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-        ::osl::MutexGuard aGuard(m_aMutex);	
+        ::osl::MutexGuard aGuard(m_aMutex);
         TCommandState::iterator aFind = m_aStates.find( Event.FeatureURL.Complete );
         if ( aFind != m_aStates.end() )
         {
@@ -241,7 +239,7 @@ namespace dbaui
                 Reference<XUIConfigurationManager> xUIConfigMgr = xModuleCfgMgrSupplier->getUIConfigurationManager(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.sdb.OfficeDatabaseDocument")));
                 Reference<XImageManager> xImageMgr(xUIConfigMgr->getImageManager(),UNO_QUERY);
 
-                
+
                 short nImageType = hasBigImages() ? ImageType::SIZE_LARGE : ImageType::SIZE_DEFAULT;
                 if ( bHighContrast )
                     nImageType |= ImageType::COLOR_HIGHCONTRAST;
@@ -256,7 +254,7 @@ namespace dbaui
                     USHORT nItemId = pMenu->GetItemId(nPos);
                     aSeq[0] = pMenu->GetItemCommand(nItemId);
                     Sequence< Reference<XGraphic> > aImages = xImageMgr->getImages(nImageType,aSeq);
-                    
+
                     Image aImage(aImages[0]);
                     pMenu->SetItemImage(nItemId,aImage);
                     TCommandState::iterator aFind = m_aStates.find( aSeq[0] );
@@ -282,7 +280,7 @@ namespace dbaui
     {
         // execute the menu
         vos::OGuard aSolarMutexGuard( Application::GetSolarMutex() );
-        ::osl::MutexGuard aGuard(m_aMutex);	
+        ::osl::MutexGuard aGuard(m_aMutex);
 
         ToolBox* pToolBox = static_cast<ToolBox*>(VCLUnoHelper::GetWindow(getParent()));
         ::std::auto_ptr<PopupMenu> pMenu = getMenu();
@@ -301,7 +299,7 @@ namespace dbaui
 
             Reference<XDispatch> xDispatch = m_aListenerMap.find(m_aCommandURL)->second;
             if ( xDispatch.is() )
-            {   
+            {
                 URL aUrl;
                 Sequence < PropertyValue > aArgs;
                 aUrl.Complete = m_aCommandURL;
@@ -309,7 +307,7 @@ namespace dbaui
                 if ( getURLTransformer().is() )
                     getURLTransformer()->parseStrict(aUrl);
                 xDispatch->dispatch(aUrl,aArgs);
-                
+
             }
         }
         return Reference< ::com::sun::star::awt::XWindow >();

@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: CollectionView.cxx,v $
- * $Revision: 1.11.50.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -106,9 +103,9 @@
 #include <com/sun/star/awt/XWindow.hpp>
 #endif
 #ifndef INCLUDED_SVTOOLS_VIEWOPTIONS_HXX
-#include <svtools/viewoptions.hxx>
+#include <unotools/viewoptions.hxx>
 #endif
-#ifndef _OSL_THREAD_H_ 
+#ifndef _OSL_THREAD_H_
 #include <osl/thread.h>
 #endif
 #ifndef _DBHELPER_DBEXCEPTION_HXX_
@@ -135,7 +132,7 @@ DBG_NAME(OCollectionView)
 OCollectionView::OCollectionView( Window * pParent
                                  ,const Reference< XContent>& _xContent
                                  ,const ::rtl::OUString& _sDefaultName
-                                 ,const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _xORB) 
+                                 ,const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _xORB)
     : ModalDialog( pParent, ModuleRes(DLG_COLLECTION_VIEW))
     , m_aFTCurrentPath(	this, ModuleRes( FT_EXPLORERFILE_CURRENTPATH ) )
     , m_aNewFolder(		this, ModuleRes( BTN_EXPLORERFILE_NEWFOLDER ) )
@@ -152,7 +149,7 @@ OCollectionView::OCollectionView( Window * pParent
     , m_xORB(_xORB)
     , m_bCreateForm(sal_True)
 {
-    DBG_CTOR(OCollectionView,NULL);	
+    DBG_CTOR(OCollectionView,NULL);
     FreeResource();
 
     OSL_ENSURE(m_xContent.is(),"No valid content!");
@@ -178,7 +175,7 @@ OCollectionView::OCollectionView( Window * pParent
 // -----------------------------------------------------------------------------
 OCollectionView::~OCollectionView( )
 {
-    DBG_DTOR(OCollectionView,NULL);	
+    DBG_DTOR(OCollectionView,NULL);
 }
 // -----------------------------------------------------------------------------
 Reference< XContent> OCollectionView::getSelectedFolder() const
@@ -205,7 +202,7 @@ IMPL_LINK( OCollectionView, Save_Click, PushButton*, EMPTYARG )
                 {
                     xNameAccess.set(xChild->getParent(),UNO_QUERY);
                     if ( xNameAccess.is() )
-                    {							
+                    {
                         m_xContent.set(xNameAccess,UNO_QUERY);
                         xChild.set(m_xContent,UNO_QUERY);
                     }
@@ -239,8 +236,8 @@ IMPL_LINK( OCollectionView, Save_Click, PushButton*, EMPTYARG )
                     ::com::sun::star::ucb::IOErrorCode eError = IOErrorCode_NOT_EXISTING_PATH;
                     ::rtl::OUString sTemp;
                     InteractiveAugmentedIOException aException(sTemp,Reference<XInterface>(),eClass,eError,aValues);
-                    
-                    
+
+
                     Reference<XInitialization> xIni(m_xORB->createInstance(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.task.InteractionHandler"))),UNO_QUERY);
                     if ( xIni.is() )
                     {
@@ -255,10 +252,10 @@ IMPL_LINK( OCollectionView, Save_Click, PushButton*, EMPTYARG )
                         OInteractionApprove* pApprove = new OInteractionApprove;
                         pRequest->addContinuation(pApprove);
 
-                        Reference< XInteractionHandler > xHandler(xIni,UNO_QUERY);						
+                        Reference< XInteractionHandler > xHandler(xIni,UNO_QUERY);
                         xHandler->handle(xRequest);
                     }
-                    return 0; 
+                    return 0;
                 }
             }
         }
@@ -375,7 +372,7 @@ void OCollectionView::initCurrentPath()
                 sPath = sCID.copy(s_sFormsCID.getLength());
             else if ( !m_bCreateForm && sCID.getLength() != s_sReportsCID.getLength() )
                 sPath = sCID.copy(s_sReportsCID.getLength());
-            
+
             m_aFTCurrentPath.SetText(sPath);
             Reference<XChild> xChild(m_xContent,UNO_QUERY);
             bEnable = xChild.is() && Reference<XNameAccess>(xChild->getParent(),UNO_QUERY).is();

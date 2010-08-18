@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: genericcontroller.cxx,v $
- * $Revision: 1.94.24.2 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -105,13 +102,13 @@
 #include <tools/urlobj.hxx>
 #endif
 #ifndef SVTOOLS_URIHELPER_HXX
-#include <svtools/urihelper.hxx>
+#include <svl/urihelper.hxx>
 #endif
 #ifndef _DBAUI_DATASOURCECONNECTOR_HXX_
 #include "datasourceconnector.hxx"
 #endif
 #ifndef INCLUDED_SVTOOLS_MODULEOPTIONS_HXX
-#include <svtools/moduleoptions.hxx>
+#include <unotools/moduleoptions.hxx>
 #endif
 #ifndef _COM_SUN_STAR_FRAME_FRAMESEARCHFLAG_HPP_
 #include <com/sun/star/frame/FrameSearchFlag.hpp>
@@ -251,6 +248,7 @@ DBG_NAME(OGenericUnoController)
 // -------------------------------------------------------------------------
 OGenericUnoController::OGenericUnoController(const Reference< XMultiServiceFactory >& _rM)
     :OGenericUnoController_Base( getMutex() )
+    ,m_pView(NULL)
 #ifdef DBG_UTIL
     ,m_bDescribingSupportedFeatures( false )
 #endif
@@ -258,7 +256,6 @@ OGenericUnoController::OGenericUnoController(const Reference< XMultiServiceFacto
     ,m_aAsyncCloseTask(LINK(this, OGenericUnoController, OnAsyncCloseTask))
     ,m_xServiceFactory(_rM)
     ,m_aCurrentFrame( *this )
-    ,m_pView(NULL)
     ,m_bPreview(sal_False)
     ,m_bReadOnly(sal_False)
     ,m_bCurrentlyModified(sal_False)
@@ -282,16 +279,17 @@ OGenericUnoController::OGenericUnoController(const Reference< XMultiServiceFacto
     }
 }
 
+#ifdef WNT
 // -----------------------------------------------------------------------------
 OGenericUnoController::OGenericUnoController()
     :OGenericUnoController_Base( getMutex() )
+    ,m_pView(NULL)
 #ifdef DBG_UTIL
     ,m_bDescribingSupportedFeatures( false )
 #endif
     ,m_aAsyncInvalidateAll(LINK(this, OGenericUnoController, OnAsyncInvalidateAll))
     ,m_aAsyncCloseTask(LINK(this, OGenericUnoController, OnAsyncCloseTask))
     ,m_aCurrentFrame( *this )
-    ,m_pView(NULL)
     ,m_bPreview(sal_False)
     ,m_bReadOnly(sal_False)
     ,m_bCurrentlyModified(sal_False)
@@ -302,6 +300,7 @@ OGenericUnoController::OGenericUnoController()
     // we simply abort here.
     abort();
 }
+#endif
 
 // -----------------------------------------------------------------------------
 OGenericUnoController::~OGenericUnoController()
@@ -413,7 +412,7 @@ void SAL_CALL OGenericUnoController::initialize( const Sequence< Any >& aArgumen
         // no one clears my view if I won't
         ::std::auto_ptr<Window> aTemp(m_pView);
         m_pView = NULL;
-        throw e;
+        throw;
     }
 }
 
@@ -453,7 +452,7 @@ void OGenericUnoController::disposing(const EventObject& Source) throw( RuntimeE
 //------------------------------------------------------------------------
 void OGenericUnoController::modified(const EventObject& aEvent) throw( RuntimeException )
 {
-    ::osl::MutexGuard aGuard( getMutex() );	
+    ::osl::MutexGuard aGuard( getMutex() );
     if ( !isDataSourceReadOnly() )
     {
         Reference<XModifiable> xModi(aEvent.Source,UNO_QUERY);
@@ -478,10 +477,18 @@ Reference< XWindow > SAL_CALL OGenericUnoController::getComponentWindow() throw 
 }
 
 // -----------------------------------------------------------------------
+Sequence< PropertyValue > SAL_CALL OGenericUnoController::getCreationArguments() throw (RuntimeException)
+{
+    // currently we do not support any creation args, so anything passed to XModel2::createViewController would be
+    // lost, so we can equally return an empty sequence here
+    return Sequence< PropertyValue >();
+}
+
+// -----------------------------------------------------------------------
 void OGenericUnoController::attachFrame( const Reference< XFrame >& _rxFrame ) throw( RuntimeException )
 {
     vos::OGuard aSolarGuard( Application::GetSolarMutex() );
-    ::osl::MutexGuard aGuard( getMutex() );	
+    ::osl::MutexGuard aGuard( getMutex() );
 
     stopFrameListening( m_aCurrentFrame.getFrame() );
     Reference< XFrame > xFrame = m_aCurrentFrame.attachFrame( _rxFrame );
@@ -730,7 +737,7 @@ void OGenericUnoController::InvalidateAll_Impl()
 {
     // ---------------------------------
     // invalidate all aupported features
-    
+
     for (   SupportedFeatures::const_iterator aIter = m_aSupportedFeatures.begin();
             aIter != m_aSupportedFeatures.end();
             ++aIter
@@ -923,7 +930,7 @@ void OGenericUnoController::disposing()
         Dispatch aStatusListener = m_arrStatusListener;
         Dispatch::iterator aEnd = aStatusListener.end();
         for (Dispatch::iterator aIter = aStatusListener.begin(); aIter != aEnd; ++aIter)
-        {		
+        {
             aIter->xListener->disposing(aDisposeEvent);
         }
         m_arrStatusListener.clear();
@@ -1376,7 +1383,7 @@ void OGenericUnoController::openHelpAgent(rtl::OUString const& _suHelpStringURL 
     }
     URL aURL;
     aURL.Complete = suURL;
-    
+
     openHelpAgent( aURL );
 }
 
@@ -1439,10 +1446,10 @@ Reference< XTitle > OGenericUnoController::impl_getTitleHelper_throw()
     {
         Reference< XUntitledNumbers > xUntitledProvider(getPrivateModel(), UNO_QUERY      );
         Reference< XController >      xThis(static_cast< XController* >(this), UNO_QUERY_THROW);
-    
+
         ::framework::TitleHelper* pHelper = new ::framework::TitleHelper(m_xServiceFactory);
         m_xTitleHelper.set( static_cast< ::cppu::OWeakObject* >(pHelper), UNO_QUERY_THROW);
-    
+
         pHelper->setOwner                   (xThis            );
         pHelper->connectWithUntitledNumbers (xUntitledProvider);
     }
@@ -1471,7 +1478,7 @@ void SAL_CALL OGenericUnoController::setTitle(const ::rtl::OUString& sTitle)
     m_bExternalTitle = sal_True;
     impl_getTitleHelper_throw()->setTitle (sTitle);
 }
-    
+
 //=============================================================================
 // XTitleChangeBroadcaster
 void SAL_CALL OGenericUnoController::addTitleChangeListener(const Reference< XTitleChangeListener >& xListener)
@@ -1589,14 +1596,14 @@ bool OGenericUnoController::interceptUserInput( const NotifyEvent& _rEvent )
 sal_Bool OGenericUnoController::isCommandChecked(sal_uInt16 _nCommandId) const
 {
     FeatureState aState = GetState( _nCommandId );
-    
+
     return aState.bChecked && (sal_Bool)*aState.bChecked;
 }
 // -----------------------------------------------------------------------------
 sal_Bool OGenericUnoController::isCommandEnabled( const ::rtl::OUString& _rCompleteCommandURL ) const
 {
     OSL_ENSURE( _rCompleteCommandURL.getLength(), "OGenericUnoController::isCommandEnabled: Empty command url!" );
-    
+
     sal_Bool bIsEnabled = sal_False;
     SupportedFeatures::const_iterator aIter = m_aSupportedFeatures.find( _rCompleteCommandURL );
     if ( aIter != m_aSupportedFeatures.end() )

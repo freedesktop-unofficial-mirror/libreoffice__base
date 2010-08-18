@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: AdabasNewDb.cxx,v $
- * $Revision: 1.5 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -75,7 +72,7 @@
 #include <vcl/waitobj.hxx>
 #endif
 #ifndef INCLUDED_SVTOOLS_PATHOPTIONS_HXX
-#include <svtools/pathoptions.hxx>
+#include <unotools/pathoptions.hxx>
 #endif
 #ifndef _TOOLKIT_HELPER_VCLUNOHELPER_HXX_
 #include <toolkit/unohlp.hxx>
@@ -136,7 +133,7 @@ namespace adabasui
         ODatabaseCreator(const Reference<XCreateCatalog>& _rxCreateCatalog
                         ,Window* _pErrorWindow
                         ,const Reference< XMultiServiceFactory >& _xORB
-                        ,const Sequence< PropertyValue>& _rValues) 
+                        ,const Sequence< PropertyValue>& _rValues)
             : m_aValues(_rValues)
             , m_xCreateCatalog(_rxCreateCatalog)
             , m_xORB(_xORB)
@@ -144,7 +141,7 @@ namespace adabasui
         {}
 
         void setTerminateHandler(const Link& _aTerminateHandler) { m_aTerminateHandler = _aTerminateHandler; }
-        
+
     protected:
 
         /// Working method which should be overridden.
@@ -330,7 +327,7 @@ OAdabasNewDbDlg::OAdabasNewDbDlg( Window* pParent,
     sal_Bool bError = fillEnvironmentVariable(s_sWork,m_sDbWork);
     if ( bError || !m_sDbWork.Len() )
         bError = fillEnvironmentVariable(s_sRoot,m_sDbWork);
-    
+
     bError = fillEnvironmentVariable(s_sConfig,m_sDbConfig);
     if ( bError || !m_sDbConfig.Len() )
         bError = fillEnvironmentVariable(s_sRoot,m_sDbConfig);
@@ -514,7 +511,7 @@ IMPL_LINK( OAdabasNewDbDlg, ImplOKHdl, OKButton*, /*EMPTYARG*/ )
     else
         bOk = TRUE;
 
-    
+
     if (!bOk)
     {
         ErrorBox(this, WB_OK, aErrorMessage).Execute();
@@ -561,7 +558,7 @@ IMPL_LINK( OAdabasNewDbDlg, ImplOKHdl, OKButton*, /*EMPTYARG*/ )
     m_aCreatorWait = ::std::auto_ptr<WaitObject>(new WaitObject(this));
     m_aCreatorThread = ::std::auto_ptr<ODatabaseCreator>(new ODatabaseCreator(m_xCreateCatalog,this,m_xORB,aCreateArgs));
     m_aCreatorThread->setTerminateHandler(LINK(this,OAdabasNewDbDlg,TerminateHdl));
-    m_aCreatorThread->create();	
+    m_aCreatorThread->create();
 
     return TRUE;
 }
@@ -636,7 +633,7 @@ IMPL_LINK( OAdabasNewDbDlg, ButtonClickHdl, Button *, pButton )
 {
     WinBits	nBits(WB_3DLOOK|WB_STDMODAL|WB_SAVEAS);
     ::sfx2::FileDialogHelper aFileDlg( static_cast<sal_uInt32>(nBits) ); //	new FileDialog( this, nBits );
-    
+
     String aPath;
     if(pButton == &m_PB_SYSDEVSPACE)
         aPath = m_SYSDEV_File;
@@ -794,7 +791,7 @@ sal_Bool OAdabasNewDbDlg::fillEnvironmentVariable(const ::rtl::OUString& _sVaria
         _rsValue = sTemp;
         rtl_uString_release(pDbVar);
         pDbVar = NULL;
-                
+
         // ensure dir exists
         osl::FileBase::RC rc = osl::Directory::createPath(_rsValue);
         if(rc != osl::FileBase::E_None && rc != osl::FileBase::E_EXIST)
