@@ -41,13 +41,13 @@ TYPEINIT1( OReportPage, SdrPage );
 DBG_NAME( rpt_OReportPage )
 OReportPage::OReportPage( OReportModel& _rModel
                          ,const uno::Reference< report::XSection >& _xSection
-                         ,FASTBOOL bMasterPage )
+                         ,bool bMasterPage )
     :SdrPage( _rModel, bMasterPage )
     ,rModel(_rModel)
     ,m_xSection(_xSection)
      ,m_bSpecialInsertMode(false)
 {
-    DBG_CTOR( rpt_OReportPage,NULL);	
+    DBG_CTOR( rpt_OReportPage,NULL);
 }
 
 //----------------------------------------------------------------------------
