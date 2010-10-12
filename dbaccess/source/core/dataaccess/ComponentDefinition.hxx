@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -99,14 +99,14 @@ class OComponentDefinition	:public OContentHelper
                             ,public ::comphelper::OPropertyArrayUsageHelper< OComponentDefinition >
 {
     OComponentDefinition();
-    
+
 protected:
     ::std::auto_ptr< OColumns >     m_pColumns;
-    ::comphelper::ImplementationReference< OColumnPropertyListener,::com::sun::star::beans::XPropertyChangeListener>   
+    ::comphelper::ImplementationReference< OColumnPropertyListener,::com::sun::star::beans::XPropertyChangeListener>
                                     m_xColumnPropertyListener;
     sal_Bool	                    m_bTable;
 
-    virtual ~OComponentDefinition(); 
+    virtual ~OComponentDefinition();
     virtual void SAL_CALL disposing();
 
 

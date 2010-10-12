@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -148,7 +148,7 @@ public:
     VosMutexFacade( ::osl::Mutex& _rMutex );
 
     // IMutex
-    virtual void SAL_CALL acquire();	
+    virtual void SAL_CALL acquire();
     virtual sal_Bool SAL_CALL tryToAcquire();
     virtual void SAL_CALL release();
 
@@ -479,7 +479,7 @@ public:
             if any of the invoked operations does so
     */
     ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStorage >
-            switchToStorage( 
+            switchToStorage(
                 const ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStorage >& _rxNewRootStorage
             );
 

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -39,10 +39,8 @@
 #include <comphelper/proparrhlp.hxx>
 #include "apitools.hxx"
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 typedef ::cppu::ImplHelper5 <	::com::sun::star::frame::XComponentLoader
                             ,	::com::sun::star::lang::XMultiServiceFactory
                             ,	::com::sun::star::container::XHierarchicalNameContainer
@@ -140,9 +138,6 @@ protected:
     virtual ::cppu::IPropertyArrayHelper* createArrayHelper( ) const;
 };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 
 #endif // _DBA_COREDATAACCESS_DOCUMENTCONTAINER_HXX_
-

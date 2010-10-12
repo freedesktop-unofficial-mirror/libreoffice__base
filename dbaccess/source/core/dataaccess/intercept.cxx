@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -183,7 +183,7 @@ void SAL_CALL OInterceptor::dispatch( const URL& _URL,const Sequence<PropertyVal
         return;
     }
 
-    if  (   _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEDOC ] 
+    if  (   _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEDOC ]
         ||  _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEWIN ]
         ||  _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEFRAME ]
         )
@@ -237,7 +237,7 @@ void SAL_CALL OInterceptor::addStatusListener(
 
     if ( m_pContentHolder && _URL.Complete == m_aInterceptedURL[DISPATCH_SAVEAS] )
     {   // SaveAs
-        
+
         if ( !m_pContentHolder->isNewReport() )
         {
             FeatureStateEvent aStateEvent;
@@ -247,7 +247,7 @@ void SAL_CALL OInterceptor::addStatusListener(
             aStateEvent.Requery = sal_False;
             aStateEvent.State <<= (rtl::OUString( RTL_CONSTASCII_USTRINGPARAM("($3)")));
             Control->statusChanged(aStateEvent);
-        }		
+        }
 
         {
             osl::MutexGuard aGuard(m_aMutex);
@@ -417,7 +417,7 @@ void SAL_CALL OInterceptor::setMasterDispatchProvider(
     osl::MutexGuard aGuard(m_aMutex);
     m_xMasterDispatchProvider = NewSupplier;
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OInterceptor::notifyEvent( const ::com::sun::star::document::EventObject& Event ) throw (::com::sun::star::uno::RuntimeException)
 {
     osl::ResettableMutexGuard _rGuard(m_aMutex);
@@ -437,13 +437,10 @@ void SAL_CALL OInterceptor::notifyEvent( const ::com::sun::star::document::Event
         }
     }
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OInterceptor::disposing( const ::com::sun::star::lang::EventObject& /*Source*/ ) throw (::com::sun::star::uno::RuntimeException)
 {
 }
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
-
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
