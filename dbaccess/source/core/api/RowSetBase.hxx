@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -54,7 +54,7 @@
 #include <functional>
 
 
-namespace com { namespace sun { namespace star { 
+namespace com { namespace sun { namespace star {
     namespace sdb { struct RowChangeEvent; }
     namespace lang { struct Locale; }
 } } }
@@ -189,7 +189,7 @@ namespace dbaccess
         const connectivity::ORowSetValue& getValue(sal_Int32 columnIndex);
         // the cache has to be checked before calling this method
         const connectivity::ORowSetValue& impl_getValue(sal_Int32 columnIndex);
-        // sets the current and the bookmark 
+        // sets the current and the bookmark
         void setCurrentRow( sal_Bool _bMoved, sal_Bool _bDoNotify, const ORowSetRow& _rOldValues, ::osl::ResettableMutexGuard& _rGuard);
         void checkPositioningAllowed() throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
         // checks  if the cache is null
@@ -373,7 +373,7 @@ namespace dbaccess
             // a method of ORowSetBase (or derivees)
         sal_Bool		m_bWasNew;
         sal_Bool		m_bWasModified;
-        
+
 #ifdef DBG_UTIL
         sal_Bool		m_bNotifyCalled;
 #endif
@@ -415,10 +415,9 @@ namespace dbaccess
         */
         ::std::vector<sal_Int32>& getChangedColumns() const;
         ::std::vector<com::sun::star::uno::Any>& getChangedBookmarks() const;
-        
+
     };
 
 } // end of namespace
 
 #endif // DBACCESS_CORE_API_ROWSETBASE_HXX
-

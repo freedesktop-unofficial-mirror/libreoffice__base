@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -39,7 +39,7 @@ namespace dbaccess
         ::com::sun::star::uno::Any	aBookmark;
         ORowSetBase*				pRowSet;
     } ORowSetCacheIterator_Helper;
-    
+
     DECLARE_STL_STDKEY_MAP(sal_Int32,ORowSetCacheIterator_Helper,ORowSetCacheMap);
 
     class ORowSetCache;
@@ -50,7 +50,7 @@ namespace dbaccess
         ORowSetCache*				m_pCache;
         ORowSetBase*				m_pRowSet;
     protected:
-        ORowSetCacheIterator(const ORowSetCacheMap::iterator& _rIter,ORowSetCache* _pCache,ORowSetBase* _pRowSet) 
+        ORowSetCacheIterator(const ORowSetCacheMap::iterator& _rIter,ORowSetCache* _pCache,ORowSetBase* _pRowSet)
             : m_aIter(_rIter)
             ,m_pCache(_pCache)
             ,m_pRowSet(_pRowSet)
@@ -67,7 +67,7 @@ namespace dbaccess
 
         ORowSetRow& operator *();
         const ORowSetRow& operator *() const;
-        
+
         ORowSetMatrix::iterator& operator ->();
         const ORowSetMatrix::iterator& operator ->() const;
 
@@ -84,5 +84,3 @@ namespace dbaccess
     };
 }
 #endif // DBACCESS_ROWSETCACHEITERATOR_HXX
-
-
