@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -260,7 +260,7 @@ private:
     ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface> 		            m_xParent;
     ::com::sun::star::uno::Sequence< ::rtl::OUString >                                      m_MasterFields;
     ::com::sun::star::uno::Sequence< ::rtl::OUString >                                      m_DetailFields;
-    
+
     ::rtl::OUString     m_Command;
     ::rtl::OUString     m_DataSourceName;
     ::sal_Int32         m_CommandType;

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -126,7 +126,7 @@ namespace dbaccess
 
         // helper
         virtual void SAL_CALL disposing();
-        
+
         virtual void notifyDataSourceModified();
 
         /**
@@ -193,13 +193,12 @@ namespace dbaccess
 
         const ::comphelper::ComponentContext& getContext() const { return m_aContext; }
 
-        inline TContentPtr getImpl() const { return m_pImpl; } 
+        inline TContentPtr getImpl() const { return m_pImpl; }
 
     protected:
         virtual ::rtl::OUString determineContentType() const = 0;
     };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
+
 #endif // DBA_CONTENTHELPER_HXX

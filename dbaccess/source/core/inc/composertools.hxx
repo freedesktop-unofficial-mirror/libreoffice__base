@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -35,10 +35,8 @@
 
 #include <functional>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     //====================================================================
     //= TokenComposer
@@ -132,9 +130,6 @@ namespace dbaccess
         }
     };
 
-//........................................................................
 } // namespace dbaccess
-//........................................................................
 
 #endif // DBACCESS_SOURCE_CORE_INC_COMPOSERTOOLS_HXX
-

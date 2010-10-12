@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -73,7 +73,6 @@ namespace dbaccess
                                                 ::com::sun::star::container::XNamed
                                             >   OColumnBase;
 
-    //------------------------------------------------------------
     class OColumn	:public comphelper::OBaseMutex
                     ,public OColumnBase
                     ,public ::comphelper::OPropertyContainer
@@ -163,7 +162,7 @@ namespace dbaccess
     class OContainerMediator;
     typedef ::cppu::ImplHelper1< ::com::sun::star::container::XChild > TXChild;
     typedef connectivity::OColumnsHelper OColumns_BASE;
-    //------------------------------------------------------------
+
     class OColumns : public OColumns_BASE
                     ,public TXChild
     {
@@ -218,7 +217,7 @@ namespace dbaccess
 
         OColumns(
             ::cppu::OWeakObject& _rParent,
-            ::osl::Mutex& _rMutex, 
+            ::osl::Mutex& _rMutex,
             const ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >& _rxDrvColumns,
             sal_Bool _bCaseSensitive,
             const ::std::vector< ::rtl::OUString> &_rVector,
@@ -255,4 +254,3 @@ namespace dbaccess
     };
 }
 #endif // _DBA_COREAPI_COLUMN_HXX_
-

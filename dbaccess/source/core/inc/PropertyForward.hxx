@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -36,10 +36,8 @@
 
 #include <vector>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     // ===================================================================
     // = OPropertyForward
@@ -77,8 +75,6 @@ namespace dbaccess
         inline ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet > getDefinition() const { return m_xDest; }
     };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
-#endif // DBA_PROPERTYSETFORWARD_HXX
 
+#endif // DBA_PROPERTYSETFORWARD_HXX

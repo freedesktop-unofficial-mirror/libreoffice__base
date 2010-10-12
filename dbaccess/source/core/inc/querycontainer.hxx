@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -60,10 +60,8 @@ namespace dbtools
     class IWarningsContainer;
 }
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     typedef ::cppu::ImplHelper5 <   ::com::sun::star::container::XContainerListener
                                 ,   ::com::sun::star::container::XContainerApproveListener
@@ -93,7 +91,6 @@ namespace dbaccess
 
         OContainerListener*     m_pCommandsListener;
 
-        // ------------------------------------------------------------------------
         /** a class which automatically resets m_eDoingCurrently in it's destructor
         */
         class OAutoActionReset;	// just for the following friend declaration
@@ -119,7 +116,7 @@ namespace dbaccess
 
             @param _pWarnings
                 specifies a warnings container (May be <NULL/>)
-                
+
                 Any errors which occur during the lifetime of the query container,
                 which cannot be reported as exceptionts (for instance in methods where throwing an SQLException is
                 not allowed) will be appended to this container.</p>
@@ -131,7 +128,7 @@ namespace dbaccess
             const ::com::sun::star::uno::Reference< ::com::sun::star::lang::XMultiServiceFactory >& _rxORB,
             ::dbtools::IWarningsContainer* _pWarnings
             );
-        
+
         DECLARE_XINTERFACE( )
         DECLARE_XTYPEPROVIDER( )
         DECLARE_SERVICE_INFO();
@@ -181,10 +178,6 @@ namespace dbaccess
         ::com::sun::star::uno::Reference< ::com::sun::star::ucb::XContent > implCreateWrapper(const ::com::sun::star::uno::Reference< ::com::sun::star::ucb::XContent >& _rxCommandDesc);
 
     };
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 
 #endif // _DBA_CORE_QUERYCONTAINER_HXX_
-
-

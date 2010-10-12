@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -47,10 +47,9 @@
 #include <comphelper/uno3.hxx>
 #include <rtl/ref.hxx>
 #include "apitools.hxx"
-//........................................................................
+
 namespace dbaccess
 {
-//........................................................................
 
 class ODefinitionContainer_Impl : public OContentHelper_Impl
 {
@@ -329,9 +328,6 @@ private:
     }
 };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 
 #endif // _DBA_CORE_DEFINITIONCONTAINER_HXX_
-

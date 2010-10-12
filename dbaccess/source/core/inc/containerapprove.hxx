@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -34,10 +34,8 @@
 
 #include <boost/shared_ptr.hpp>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     //====================================================================
     //= IContainerApprove
@@ -70,9 +68,6 @@ namespace dbaccess
 
     typedef ::boost::shared_ptr< IContainerApprove >    PContainerApprove;
 
-//........................................................................
 } // namespace dbaccess
-//........................................................................
 
 #endif // DBACCESS_CONTAINERAPPROVE_HXX
-
