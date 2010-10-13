@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -42,10 +42,8 @@
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/lang/DisposedException.hpp>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
 //==========================================================================
 //= OBookmarkContainer -	base class of collections of database definition
@@ -68,7 +66,7 @@ protected:
     DECLARE_STL_VECTOR(MapString2StringIterator, MapIteratorVector);
 
     MapString2String		m_aBookmarks;			// the bookmarks itself
-    MapIteratorVector		m_aBookmarksIndexed;	// for index access to the 
+    MapIteratorVector		m_aBookmarksIndexed;	// for index access to the
 
 protected:
     ::cppu::OWeakObject&	m_rParent;		// for the ref counting
@@ -168,15 +166,11 @@ protected:
 
 };
 
-//--------------------------------------------------------------------------
 inline	sal_Bool OBookmarkContainer::checkExistence(const ::rtl::OUString& _rName)
 {
     return m_aBookmarks.find(_rName) != m_aBookmarks.end();
 }
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 
 #endif // _DBA_CORE_BOOKMARKCONTAINER_HXX_
-

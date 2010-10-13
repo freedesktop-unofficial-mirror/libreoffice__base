@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -47,14 +47,10 @@ namespace dbaccess
         ORowSetOldRowHelper(const ORowSetOldRowHelper& _rRh);
     public:
         ORowSetOldRowHelper() : m_refCount(0){}
-        ORowSetOldRowHelper(const ORowSetRow& _rRow) 
+        ORowSetOldRowHelper(const ORowSetRow& _rRow)
             : m_refCount(0)
             , m_aRow(_rRow)
         {}
-//		ORowSetOldRowHelper(const ORowSetOldRowHelper& _rRh)
-//			: m_refCount(0)
-//			, m_aRow(_rRh.m_aRow)
-//		{}
 
         void acquire()
         {
@@ -97,4 +93,3 @@ namespace dbaccess
     };
 }
 #endif // DBACCESS_CORE_API_ROWSETROW_HXX
-

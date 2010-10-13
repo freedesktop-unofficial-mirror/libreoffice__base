@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,11 +40,9 @@
 
 #include <map>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
-    
+
     class OPropertyForward;
 
     class OContainerMediator :	 public ::comphelper::OBaseMutex
@@ -98,8 +96,7 @@ namespace dbaccess
                     const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _rxDestination
                 );
     };
-//........................................................................
+
 }	// namespace dbaccess
-//........................................................................
 
 #endif // DBA_CONTAINERMEDIATOR_HXX

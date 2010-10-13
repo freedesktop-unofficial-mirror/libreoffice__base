@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -91,7 +91,6 @@ private:
     /** loads the given object from the given URL
     @throws WrappedTargetException
         if an error occurs accessing the URL via the UCB
-            
     */
     ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > loadObjectFromURL(const ::rtl::OUString& _rName,const ::rtl::OUString& _sURL);
     ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > getObject( const ::rtl::OUString& _rURL );

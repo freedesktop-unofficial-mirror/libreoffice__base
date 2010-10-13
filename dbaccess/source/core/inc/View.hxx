@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -41,10 +41,8 @@
 #include <comphelper/uno3.hxx>
 #include <cppuhelper/implbase1.hxx>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     //====================================================================
     //= View
@@ -84,8 +82,6 @@ namespace dbaccess
         using View_Base::getFastPropertyValue;
     };
 
-//........................................................................
 } // namespace dbaccess
-//........................................................................
 
 #endif // DBACCESS_VIEW_HXX

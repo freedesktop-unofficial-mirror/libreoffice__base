@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -55,14 +55,14 @@ namespace dbaccess
     class OTable;
     class OTableContainer;
     class OContainerMediator;
-    
+
     class OTableContainer :  public OFilteredContainer,
                              public OTableContainer_Base
     {
         ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameContainer >	m_xTableDefinitions;
         ::rtl::Reference< OContainerMediator >                                          m_pTableMediator;
         sal_Bool				m_bInDrop;					// set when we are in the drop method
-        
+
 
         // OFilteredContainer
         virtual void addMasterContainerListener();

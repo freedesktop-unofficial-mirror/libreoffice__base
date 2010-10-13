@@ -1,7 +1,7 @@
 /* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -44,10 +44,8 @@
 #include <vcl/svapp.hxx>
 #include <vos/mutex.hxx>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     /** === begin UNO using === **/
     using ::com::sun::star::uno::Reference;
@@ -90,7 +88,6 @@ namespace dbaccess
         }
     };
 
-    //--------------------------------------------------------------------
     namespace
     {
         static void lcl_dispatchScriptURL_throw( DocumentEventExecutor_Data& _rDocExecData,
@@ -135,7 +132,6 @@ namespace dbaccess
     //====================================================================
     //= DocumentEventExecutor
     //====================================================================
-    //--------------------------------------------------------------------
     DocumentEventExecutor::DocumentEventExecutor( const ::comphelper::ComponentContext& _rContext,
             const Reference< XEventsSupplier >& _rxDocument )
         :m_pData( new DocumentEventExecutor_Data( _rxDocument ) )
@@ -158,12 +154,10 @@ namespace dbaccess
         }
     }
 
-    //--------------------------------------------------------------------
     DocumentEventExecutor::~DocumentEventExecutor()
     {
     }
 
-    //--------------------------------------------------------------------
     void SAL_CALL DocumentEventExecutor::documentEventOccured( const DocumentEvent& _Event ) throw (RuntimeException)
     {
         Reference< XEventsSupplier > xEventsSupplier( m_pData->xDocument.get(), UNO_QUERY );
@@ -188,7 +182,6 @@ namespace dbaccess
 
             const ::comphelper::NamedValueCollection aScriptDescriptor( xDocEvents->getByName( _Event.EventName ) );
 
-            
             ::rtl::OUString sEventType;
             bool bScriptAssigned = aScriptDescriptor.get_ensureType( "EventType", sEventType );
 
@@ -219,16 +212,11 @@ namespace dbaccess
             DBG_UNHANDLED_EXCEPTION();
         }
     }
-    
-    //--------------------------------------------------------------------
+
     void SAL_CALL DocumentEventExecutor::disposing( const lang::EventObject& /*_Source*/ ) throw (RuntimeException)
     {
         // not interested in
     }
 
-
-//........................................................................
 } // namespace dbaccess
-//........................................................................
-
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

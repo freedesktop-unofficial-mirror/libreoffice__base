@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -34,10 +34,8 @@
 
 #include <cppuhelper/implbase1.hxx>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 //==========================================================================
 //= OCommandContainer
 //==========================================================================
@@ -78,10 +76,7 @@ protected:
     virtual ::rtl::OUString determineContentType() const;
 };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
+
 
 #endif // _DBA_COREDATAACCESS_COMMANDCONTAINER_HXX_
-
-

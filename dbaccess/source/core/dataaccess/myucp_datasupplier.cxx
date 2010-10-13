@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -126,11 +126,9 @@ DataSupplier_Impl::~DataSupplier_Impl()
 }
 
 //=========================================================================
-//=========================================================================
 //
 // DataSupplier Implementation.
 //
-//=========================================================================
 //=========================================================================
 DBG_NAME(DataSupplier)
 
@@ -143,16 +141,12 @@ DataSupplier::DataSupplier( const Reference< XMultiServiceFactory >& rxSMgr,
 
 }
 
-//=========================================================================
-// virtual
 DataSupplier::~DataSupplier()
 {
 
     DBG_DTOR(DataSupplier,NULL);
 }
 
-//=========================================================================
-// virtual
 rtl::OUString DataSupplier::queryContentIdentifierString( sal_uInt32 nIndex )
 {
     osl::Guard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -183,9 +177,7 @@ rtl::OUString DataSupplier::queryContentIdentifierString( sal_uInt32 nIndex )
     return rtl::OUString();
 }
 
-//=========================================================================
-// virtual
-Reference< XContentIdentifier > 
+Reference< XContentIdentifier >
 DataSupplier::queryContentIdentifier( sal_uInt32 nIndex )
 {
     osl::Guard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -210,9 +202,7 @@ DataSupplier::queryContentIdentifier( sal_uInt32 nIndex )
     return Reference< XContentIdentifier >();
 }
 
-//=========================================================================
-// virtual
-Reference< XContent > 
+Reference< XContent >
 DataSupplier::queryContent( sal_uInt32 _nIndex )
 {
     osl::Guard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -238,7 +228,7 @@ DataSupplier::queryContent( sal_uInt32 _nIndex )
             sName = sName.getToken(0,'/',nIndex);
 
             m_pImpl->m_aResults[ _nIndex ]->xContent = m_pImpl->m_xContent->getContent(sName);
-            
+
             xContent = m_pImpl->m_aResults[ _nIndex ]->xContent.get();
             return xContent;
 
@@ -250,8 +240,6 @@ DataSupplier::queryContent( sal_uInt32 _nIndex )
     return Reference< XContent >();
 }
 
-//=========================================================================
-// virtual
 sal_Bool DataSupplier::getResult( sal_uInt32 nIndex )
 {
     osl::ClearableGuard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -313,8 +301,6 @@ sal_Bool DataSupplier::getResult( sal_uInt32 nIndex )
     return bFound;
 }
 
-//=========================================================================
-// virtual
 sal_uInt32 DataSupplier::totalCount()
 {
     osl::ClearableGuard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -350,23 +336,17 @@ sal_uInt32 DataSupplier::totalCount()
     return m_pImpl->m_aResults.size();
 }
 
-//=========================================================================
-// virtual
 sal_uInt32 DataSupplier::currentCount()
 {
     return m_pImpl->m_aResults.size();
 }
 
-//=========================================================================
-// virtual
 sal_Bool DataSupplier::isCountFinal()
 {
     return m_pImpl->m_bCountFinal;
 }
 
-//=========================================================================
-// virtual
-Reference< XRow > 
+Reference< XRow >
 DataSupplier::queryPropertyValues( sal_uInt32 nIndex  )
 {
     osl::Guard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -394,8 +374,6 @@ DataSupplier::queryPropertyValues( sal_uInt32 nIndex  )
     return Reference< XRow >();
 }
 
-//=========================================================================
-// virtual
 void DataSupplier::releasePropertyValues( sal_uInt32 nIndex )
 {
     osl::Guard< osl::Mutex > aGuard( m_pImpl->m_aMutex );
@@ -404,17 +382,12 @@ void DataSupplier::releasePropertyValues( sal_uInt32 nIndex )
         m_pImpl->m_aResults[ nIndex ]->xRow = Reference< XRow >();
 }
 
-//=========================================================================
-// virtual
 void DataSupplier::close()
 {
 }
 
-//=========================================================================
-// virtual
 void DataSupplier::validate()
     throw( ResultSetException )
 {
 }
-
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,10 +31,8 @@
 #include <com/sun/star/uno/Sequence.hxx>
 #include <com/sun/star/beans/PropertyValue.hpp>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
 //==========================================================================
 //= OCommandBase - a base class (in fact just a container for some members)
@@ -44,7 +42,7 @@ class OCommandBase
 {
 public: // need public access
 // <properties>
-    ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>	
+    ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue>
                                                 m_aLayoutInformation;
     ::rtl::OUString								m_sCommand;
     sal_Bool									m_bEscapeProcessing;		// no BitField ! so it can be used with a OPropertyStateContainer
@@ -58,10 +56,6 @@ protected:
 
 };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 
 #endif // _DBA_CORE_COMMANDBASE_HXX_
-
-

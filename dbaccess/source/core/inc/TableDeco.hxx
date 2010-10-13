@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -110,7 +110,7 @@ namespace dbaccess
                                 sal_Int32 nHandle,
                                 const ::com::sun::star::uno::Any& rValue
                                                  )
-        
+
                                          throw (::com::sun::star::uno::Exception);
 
         virtual ~ODBTableDecorator();
@@ -129,7 +129,7 @@ namespace dbaccess
             const ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >& _rxColumnDefinitions
         )	throw(::com::sun::star::sdbc::SQLException);
 
-        
+
 
         // ODescriptor
         virtual void construct();
@@ -156,7 +156,7 @@ namespace dbaccess
         virtual void SAL_CALL alterColumnByName( const ::rtl::OUString& _rName, const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _rxDescriptor ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::container::NoSuchElementException, ::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL alterColumnByIndex( sal_Int32 _nIndex, const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _rxDescriptor ) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::lang::IndexOutOfBoundsException, ::com::sun::star::uno::RuntimeException);
 
-        // XNamed 
+        // XNamed
         virtual ::rtl::OUString SAL_CALL getName() throw(::com::sun::star::uno::RuntimeException);
         virtual void SAL_CALL setName( const ::rtl::OUString& aName ) throw (::com::sun::star::uno::RuntimeException);
         // com::sun::star::lang::XUnoTunnel

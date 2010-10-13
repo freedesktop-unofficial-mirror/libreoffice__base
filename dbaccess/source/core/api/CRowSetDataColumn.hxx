@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -63,7 +63,7 @@ namespace dbaccess
                           const ::rtl::OUString& i_sLabel,
                           const ORowSetCacheIterator& _rColumnValue);
 
-        
+
         // com::sun::star::lang::XTypeProvider
         virtual ::com::sun::star::uno::Sequence< sal_Int8 > SAL_CALL getImplementationId() throw (::com::sun::star::uno::RuntimeException);
         // comphelper::OPropertyArrayUsageHelper
@@ -83,9 +83,6 @@ namespace dbaccess
     protected:
         using ODataColumn::getFastPropertyValue;
     };
-    // -------------------------------------------------------------------------
-//	typedef connectivity::ORefVector< ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet> >
-//			ORowSetDataColumns_COLLECTION;
 
     typedef connectivity::sdbcx::OCollection ORowSetDataColumns_BASE;
     class ORowSetDataColumns : public ORowSetDataColumns_BASE
@@ -110,4 +107,3 @@ namespace dbaccess
 }
 
 #endif
-

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -49,11 +49,10 @@ namespace dbaccess
     {
         ::connectivity::OSQLParser				                m_aSqlParser;
         ::connectivity::OSQLParseTreeIterator	                m_aSqlIterator;
-        
+
         ::std::map<sal_Int32,sal_Int32>                         m_aJoinedColumns;
-        ::std::map<sal_Int32,sal_Int32>                         m_aJoinedKeyColumns;        
-        
-        
+        ::std::map<sal_Int32,sal_Int32>                         m_aJoinedKeyColumns;
+
         mutable bool m_bResultSetChanged;
 
         /**
@@ -67,9 +66,9 @@ namespace dbaccess
         ::rtl::OUString getComposedTableName( const ::rtl::OUString& _sCatalog,
                                               const ::rtl::OUString& _sSchema,
                                               const ::rtl::OUString& _sTable);
-    
+
         void impl_convertValue_throw(const ORowSetRow& _rInsertRow,const SelectColumnDescription& i_aMetaData);
-        
+
         void executeDelete(const ORowSetRow& _rDeleteRow,const ::rtl::OUString& i_sSQL,const ::rtl::OUString& i_sTableName);
         void fillJoinedColumns_throw(const ::std::vector< ::connectivity::TNodePair>& i_aJoinColumns);
         void fillJoinedColumns_throw(const ::rtl::OUString& i_sLeftColumn,const ::rtl::OUString& i_sRightColumn);
@@ -80,11 +79,10 @@ namespace dbaccess
                       const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XConnection>& i_xConnection,
                       const ::com::sun::star::uno::Reference< ::com::sun::star::sdb::XSingleSelectQueryAnalyzer >& _xComposer,
                       const ORowSetValueVector& _aParameterValueForCache);
-        
+
         // late ctor which can throw exceptions
         virtual void construct(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet>& _xDriverSet,const ::rtl::OUString& i_sRowSetFilter);
 
-        // -------------------------------------------------------------------------
         // ::com::sun::star::sdbcx::XDeleteRows
         virtual ::com::sun::star::uno::Sequence< sal_Int32 > SAL_CALL deleteRows( const ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Any >& rows ,const connectivity::OSQLTable& _xTable) throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
         // ::com::sun::star::sdbc::XResultSetUpdate
@@ -106,4 +104,3 @@ namespace dbaccess
     };
 }
 #endif // DBACCESS_CORE_API_OPTIMISTICSET_HXX
-
