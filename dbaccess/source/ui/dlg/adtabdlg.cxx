@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -81,7 +81,7 @@ class TableListFacade : public ::cppu::BaseMutex
 {
     OTableTreeListBox&          m_rTableList;
     Reference< XConnection >    m_xConnection;
-    ::rtl::Reference< comphelper::OContainerListenerAdapter>                    
+    ::rtl::Reference< comphelper::OContainerListenerAdapter>
                                 m_pContainerListener;
     bool                        m_bAllowViews;
 
@@ -94,7 +94,7 @@ public:
     {
     }
     virtual ~TableListFacade();
-    
+
 
 private:
     virtual void    updateTableObjectList( bool _bAllowViews );
@@ -133,8 +133,8 @@ String TableListFacade::getSelectedName( String& _out_rAliasName ) const
     try
     {
         Reference< XDatabaseMetaData > xMeta( m_xConnection->getMetaData(), UNO_QUERY_THROW );
-        if (  !aCatalog.getLength() 
-            && aSchema.getLength() 
+        if (  !aCatalog.getLength()
+            && aSchema.getLength()
             && xMeta->supportsCatalogsInDataManipulation()
             && !xMeta->supportsSchemasInDataManipulation() )
         {
@@ -175,7 +175,7 @@ void TableListFacade::updateTableObjectList( bool _bAllowViews )
     try
     {
         Reference< XTablesSupplier > xTableSupp( m_xConnection, UNO_QUERY_THROW );
-        
+
         Reference< XViewsSupplier > xViewSupp;
         Reference< XNameAccess > xTables, xViews;
         Sequence< ::rtl::OUString > sTables, sViews;
@@ -249,7 +249,7 @@ class QueryListFacade : public ::cppu::BaseMutex
 {
     SvTreeListBox&              m_rQueryList;
     Reference< XConnection >    m_xConnection;
-    ::rtl::Reference< comphelper::OContainerListenerAdapter>                    
+    ::rtl::Reference< comphelper::OContainerListenerAdapter>
                                 m_pContainerListener;
 
 public:
@@ -299,12 +299,9 @@ void QueryListFacade::updateTableObjectList( bool /*_bAllowViews*/ )
     {
         ImageProvider aImageProvider( m_xConnection );
         Image aQueryImage( aImageProvider.getDefaultImage( DatabaseObject::QUERY, false ) );
-        Image aQueryImageHC( aImageProvider.getDefaultImage( DatabaseObject::QUERY, true ) );
 
-        m_rQueryList.SetDefaultExpandedEntryBmp( aQueryImage, BMP_COLOR_NORMAL );
-        m_rQueryList.SetDefaultCollapsedEntryBmp( aQueryImage, BMP_COLOR_NORMAL );
-        m_rQueryList.SetDefaultExpandedEntryBmp( aQueryImageHC, BMP_COLOR_HIGHCONTRAST );
-        m_rQueryList.SetDefaultCollapsedEntryBmp( aQueryImageHC, BMP_COLOR_HIGHCONTRAST );
+        m_rQueryList.SetDefaultExpandedEntryBmp( aQueryImage );
+        m_rQueryList.SetDefaultCollapsedEntryBmp( aQueryImage );
 
         Reference< XQueriesSupplier > xSuppQueries( m_xConnection, UNO_QUERY_THROW );
         Reference< XNameAccess > xQueries( xSuppQueries->getQueries(), UNO_QUERY_THROW );

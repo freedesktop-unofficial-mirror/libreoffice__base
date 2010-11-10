@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -688,7 +688,7 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
                 aDescription >>= sTemp;
                 if ( !sTemp.getLength() )
                     xColumn->getPropertyValue( PROPERTY_DESCRIPTION ) >>= sTemp;
-                
+
                 aDescription <<= sTemp;
                 aInitialValues.push_back( NamedValue( PROPERTY_HELPTEXT, aDescription ) );
 
@@ -2082,10 +2082,8 @@ SvLBoxEntry* SbaTableQueryBrowser::implAppendEntry( SvLBoxEntry* _pParent, const
 
     SvLBoxEntry* pNewEntry = m_pTreeView->getListBox().InsertEntry( _rName, _pParent, _eEntryType == etQueryContainer , LIST_APPEND, _pUserData );
 
-    m_pTreeView->getListBox().SetExpandedEntryBmp( pNewEntry, aImage, BMP_COLOR_NORMAL );
-    m_pTreeView->getListBox().SetCollapsedEntryBmp( pNewEntry, aImage, BMP_COLOR_NORMAL );
-    m_pTreeView->getListBox().SetExpandedEntryBmp( pNewEntry, aImageHC, BMP_COLOR_HIGHCONTRAST );
-    m_pTreeView->getListBox().SetCollapsedEntryBmp( pNewEntry, aImageHC, BMP_COLOR_HIGHCONTRAST );
+    m_pTreeView->getListBox().SetExpandedEntryBmp(  pNewEntry, aImage );
+    m_pTreeView->getListBox().SetCollapsedEntryBmp( pNewEntry, aImage );
 
     return pNewEntry;
 }
@@ -2236,7 +2234,7 @@ sal_Bool SbaTableQueryBrowser::ensureEntryObject( SvLBoxEntry* _pEntry )
                     {
                         DBG_UNHANDLED_EXCEPTION();
                     }
-                    
+
                     bSuccess = pEntryData->xContainer.is();
                 }
                 else
@@ -2469,7 +2467,7 @@ bool SbaTableQueryBrowser::implSelect( SvLBoxEntry* _pEntry )
     sal_Int32 nOldType = 0;
     xRowSetProps->getPropertyValue(PROPERTY_COMMAND_TYPE) >>= nOldType;
     Reference<XConnection> xOldConnection(xRowSetProps->getPropertyValue(PROPERTY_ACTIVE_CONNECTION),UNO_QUERY);
-    
+
     // the name of the table or query
     SvLBoxString* pString = (SvLBoxString*)_pEntry->GetFirstItem(SV_ITEM_ID_BOLDLBSTRING);
     OSL_ENSURE(pString,"There must be a string item!");
