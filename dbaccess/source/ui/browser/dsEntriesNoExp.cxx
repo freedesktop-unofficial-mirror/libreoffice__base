@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -48,7 +48,7 @@ namespace dbaui
 {
 // .........................................................................
 // -----------------------------------------------------------------------------
-SbaTableQueryBrowser::EntryType SbaTableQueryBrowser::getChildType( SvLBoxEntry* _pEntry ) const 
+SbaTableQueryBrowser::EntryType SbaTableQueryBrowser::getChildType( SvLBoxEntry* _pEntry ) const
 {
     DBG_ASSERT(isContainer(_pEntry), "SbaTableQueryBrowser::getChildType: invalid entry!");
     switch (getEntryType(_pEntry))
@@ -256,10 +256,8 @@ void SbaTableQueryBrowser::notifyHiContrastChanged()
 
                 SvLBoxContextBmp* pContextBitmapItem = static_cast< SvLBoxContextBmp* >( pItem );
 
-                pContextBitmapItem->SetBitmap1( aImage, BMP_COLOR_NORMAL );
-                pContextBitmapItem->SetBitmap2( aImage, BMP_COLOR_NORMAL );
-                pContextBitmapItem->SetBitmap1( aImageHC, BMP_COLOR_HIGHCONTRAST );
-                pContextBitmapItem->SetBitmap2( aImageHC, BMP_COLOR_HIGHCONTRAST );
+                pContextBitmapItem->SetBitmap1( aImage );
+                pContextBitmapItem->SetBitmap2( aImage );
                 break;
             }
 
