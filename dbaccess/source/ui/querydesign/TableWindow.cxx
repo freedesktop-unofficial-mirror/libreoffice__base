@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -124,7 +124,7 @@ OTableWindow::~OTableWindow()
     } // if (m_pListBox)
     if ( m_pContainerListener.is() )
         m_pContainerListener->dispose();
-    
+
     m_pAccessible = NULL;
 }
 // -----------------------------------------------------------------------------
@@ -282,8 +282,7 @@ void OTableWindow::impl_updateImage()
         return;
     }
 
-    m_aTypeImage.SetModeImage( aImage, BMP_COLOR_NORMAL );
-    m_aTypeImage.SetModeImage( aImageHC, BMP_COLOR_HIGHCONTRAST );
+    m_aTypeImage.SetModeImage( aImage );
     m_aTypeImage.Show();
 }
 

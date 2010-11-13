@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -94,12 +94,6 @@ ODbaseIndexDialog::ODbaseIndexDialog( Window * pParent, String aDataSrcName )
     Init();
     SetCtrls();
     FreeResource();
-
-    // set Hi contrast bitmaps
-    aIB_Add.SetModeImage(		ModuleRes(IMG_ONE_LEFT_H),BMP_COLOR_HIGHCONTRAST);
-    aIB_AddAll.SetModeImage(	ModuleRes(IMG_ALL_LEFT_H),BMP_COLOR_HIGHCONTRAST);
-    aIB_Remove.SetModeImage(	ModuleRes(IMG_ONE_RIGHT_H),BMP_COLOR_HIGHCONTRAST);
-    aIB_RemoveAll.SetModeImage(	ModuleRes(IMG_ALL_RIGHT_H),BMP_COLOR_HIGHCONTRAST);
 }
 
 //-------------------------------------------------------------------------

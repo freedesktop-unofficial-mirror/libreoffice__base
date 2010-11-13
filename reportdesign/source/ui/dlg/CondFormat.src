@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -189,16 +189,6 @@ Control WIN_CONDITION
         Pos = MAP_APPFONT( CONDITION_WIDTH - 2*UNRELATED_CONTROLS - 2*IMAGE_BUTTON_WIDTH - RELATED_CONTROLS, ROW_3_POS );
         Size = MAP_APPFONT( IMAGE_BUTTON_WIDTH, IMAGE_BUTTON_HEIGHT );
         Text = "-";
-    };
-
-    Image IMG_MOVE_UP_HC
-    {
-        ImageBitmap = Bitmap { File = "arrow_move_up_hc" ; };
-    };
-
-    Image IMG_MOVE_DOWN_HC
-    {
-        ImageBitmap = Bitmap { File = "arrow_move_down_hc" ; };
     };
 };
 
@@ -434,7 +424,7 @@ FixedLine ADDFIELD_FL_HELP_SEPARATOR
     Size = MAP_APPFONT ( RELATED_CONTROLS , RELATED_CONTROLS ) ;
     Text [ en-US ] = "Help";
 };
-    
+
 FixedText ADDFIELD_HELP_FIELD
 {
     SVLook = TRUE ;

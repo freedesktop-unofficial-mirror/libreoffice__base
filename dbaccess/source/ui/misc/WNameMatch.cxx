@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -81,12 +81,6 @@ OWizNameMatching::OWizNameMatching( Window* pParent)
     m_sDestText		= m_FT_TABLE_RIGHT.GetText();
     m_sDestText.AppendAscii("\n");
 
-    // set hiContrast
-    m_ibColumn_up.SetModeImage(ModuleRes(IMG_SORTUP_H),BMP_COLOR_HIGHCONTRAST);
-    m_ibColumn_down.SetModeImage(ModuleRes(IMG_SORTDOWN_H),BMP_COLOR_HIGHCONTRAST);
-    m_ibColumn_up_right.SetModeImage(ModuleRes(IMG_SORTUP_H),BMP_COLOR_HIGHCONTRAST);
-    m_ibColumn_down_right.SetModeImage(ModuleRes(IMG_SORTDOWN_H),BMP_COLOR_HIGHCONTRAST);
-
     FreeResource();
 }
 // -----------------------------------------------------------------------
@@ -107,10 +101,10 @@ void OWizNameMatching::Reset()
         m_CTRL_RIGHT.SetEntryHeight(m_CTRL_LEFT.GetEntryHeight());
         m_CTRL_RIGHT.SetIndent(m_CTRL_LEFT.GetIndent());
         m_CTRL_RIGHT.SetSpaceBetweenEntries(m_CTRL_LEFT.GetSpaceBetweenEntries());
-        
+
         m_bFirstTime = sal_False;
     }
-    
+
 }
 // -----------------------------------------------------------------------
 void OWizNameMatching::ActivatePage( )
@@ -120,7 +114,7 @@ void OWizNameMatching::ActivatePage( )
     // set source table name
     String aName = m_sSourceText;
     aName += String(m_pParent->m_sSourceName);
-    
+
     m_FT_TABLE_LEFT.SetText(aName);
 
     // set dest table name
@@ -128,7 +122,7 @@ void OWizNameMatching::ActivatePage( )
     aName += String(m_pParent->m_sName);
     m_FT_TABLE_RIGHT.SetText(aName);
 
-    
+
     m_CTRL_LEFT.FillListBox(*m_pParent->getSrcVector());
     m_CTRL_RIGHT.FillListBox(*m_pParent->getDestVector());
 
@@ -137,7 +131,7 @@ void OWizNameMatching::ActivatePage( )
 
     m_ibColumn_up_right.Enable( m_CTRL_RIGHT.GetEntryCount() > 1 );
     m_ibColumn_down_right.Enable( m_CTRL_RIGHT.GetEntryCount() > 1 );
-        
+
 
     m_pParent->EnableButton(OCopyTableWizard::WIZARD_NEXT,sal_False);
     m_CTRL_LEFT.GrabFocus();
@@ -148,13 +142,13 @@ sal_Bool OWizNameMatching::LeavePage()
     DBG_CHKTHIS(OWizNameMatching,NULL);
 
     const ODatabaseExport::TColumnVector* pSrcColumns = m_pParent->getSrcVector();
-    
+
     m_pParent->m_vColumnPos.clear();
     m_pParent->m_vColumnTypes.clear();
     m_pParent->m_vColumnPos.resize( pSrcColumns->size(), ODatabaseExport::TPositions::value_type( COLUMN_POSITION_NOT_FOUND, COLUMN_POSITION_NOT_FOUND ) );
     m_pParent->m_vColumnTypes.resize( pSrcColumns->size(), COLUMN_POSITION_NOT_FOUND );
 
-    
+
     sal_Int32 nParamPos = 0;
     SvLBoxEntry* pLeftEntry = m_CTRL_LEFT.GetModel()->First();
     SvLBoxEntry* pRightEntry = m_CTRL_RIGHT.GetModel()->First();

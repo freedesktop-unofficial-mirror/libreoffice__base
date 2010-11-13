@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -107,9 +107,7 @@ OCollectionView::OCollectionView( Window * pParent
 
     m_aNewFolder.SetStyle( m_aNewFolder.GetStyle() | WB_NOPOINTERFOCUS );
     m_aUp.SetModeImage(ModuleRes(IMG_NAVIGATION_BTN_UP_SC));
-    m_aUp.SetModeImage(ModuleRes(IMG_NAVIGATION_BTN_UP_SCH),BMP_COLOR_HIGHCONTRAST);
     m_aNewFolder.SetModeImage(ModuleRes(IMG_NAVIGATION_CREATEFOLDER_SC));
-    m_aNewFolder.SetModeImage(ModuleRes(IMG_NAVIGATION_CREATEFOLDER_SCH),BMP_COLOR_HIGHCONTRAST);
 
     m_aView.SetDoubleClickHdl( LINK( this, OCollectionView, Dbl_Click_FileView ) );
     m_aView.EnableAutoResize();

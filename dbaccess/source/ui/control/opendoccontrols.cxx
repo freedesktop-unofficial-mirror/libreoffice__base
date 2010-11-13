@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -195,7 +195,7 @@ namespace dbaui
         SetText( sLabel );
 
         // Place icon left of text and both centered in the button.
-        SetModeImage( GetCommandIcon( ".uno:Open", m_sModule ), BMP_COLOR_NORMAL );
+        SetModeImage( GetCommandIcon( ".uno:Open", m_sModule ) );
         EnableImageDisplay( TRUE );
         EnableTextDisplay( TRUE );
         SetImageAlign( IMAGEALIGN_LEFT );
