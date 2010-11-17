@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -92,7 +92,7 @@ DBTreeListBox::DBTreeListBox( Window* pParent, const Reference< XMultiServiceFac
     ,m_xORB(_rxORB)
 {
     DBG_CTOR(DBTreeListBox,NULL);
-    init();	
+    init();
 }
 // -----------------------------------------------------------------------------
 void DBTreeListBox::init()
@@ -407,7 +407,7 @@ void DBTreeListBox::KeyInput( const KeyEvent& rKEvt )
         // 2002-12-02 - 105831 - fs@openoffice.org
     }
 
-    if ( !bHandled ) 
+    if ( !bHandled )
         SvTreeListBox::KeyInput(rKEvt);
 }
 // -----------------------------------------------------------------------------
@@ -427,7 +427,7 @@ BOOL DBTreeListBox::EditedEntry( SvLBoxEntry* pEntry, const XubString& rNewText 
         m_aSelectedEntries.erase( pEntry );
     }
     SetEntryText(pEntry,aEntry.aNewText);
-    
+
     return FALSE;  // we never want that the base change our text
 }
 
@@ -590,20 +590,20 @@ namespace
         throw IllegalArgumentException();
         // API bug: this should be a NoSupportException
     }
-    
+
     //--------------------------------------------------------------------
     Any SAL_CALL SelectionSupplier::getSelection(  ) throw (RuntimeException)
     {
         return m_aSelection;
     }
-    
+
     //--------------------------------------------------------------------
     void SAL_CALL SelectionSupplier::addSelectionChangeListener( const Reference< XSelectionChangeListener >& /*_Listener*/ ) throw (RuntimeException)
     {
         OSL_ENSURE( false, "SelectionSupplier::removeSelectionChangeListener: no support!" );
         // API bug: this should be a NoSupportException
     }
-    
+
     //--------------------------------------------------------------------
     void SAL_CALL SelectionSupplier::removeSelectionChangeListener( const Reference< XSelectionChangeListener >& /*_Listener*/ ) throw (RuntimeException)
     {
@@ -709,7 +709,7 @@ IMPL_LINK(DBTreeListBox, OnTimeOut, void*, /*EMPTY_ARG*/)
 {
     implStopSelectionTimer();
 
-    m_aSelChangeHdl.Call( NULL );	
+    m_aSelChangeHdl.Call( NULL );
     return 0L;
 }
 // -----------------------------------------------------------------------------
