@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -112,13 +112,13 @@ String RID_STR_PROPTITLE_GROUP
 
 Image RID_IMG_TREENODE_COLLAPSED
 {
-    ImageBitmap = Bitmap { File = "plus.bmp"; } ;
+    ImageBitmap = Bitmap { File = "plus.png"; } ;
     MaskColor = Color { Red = 0xFF00; Green = 0x0000; Blue = 0xFF00; };
 };
 
 Image RID_IMG_TREENODE_EXPANDED
 {
-    ImageBitmap = Bitmap { File = "minus.bmp"; } ;
+    ImageBitmap = Bitmap { File = "minus.png"; } ;
     MaskColor = Color { Red = 0xFF00; Green = 0x0000; Blue = 0xFF00; };
 };
 
@@ -341,13 +341,13 @@ Menu RID_MENU_REPORT
         };
         MenuItem
         {
-            Identifier = SID_ARRANGEMENU ; 
-            HelpID = SID_ARRANGEMENU ; 
-            Command = ".uno:ArrangeMenu" ; 
-            Text [ en-US ] = "~Arrange" ; 
+            Identifier = SID_ARRANGEMENU ;
+            HelpID = SID_ARRANGEMENU ;
+            Command = ".uno:ArrangeMenu" ;
+            Text [ en-US ] = "~Arrange" ;
             SubMenu = Menu
             {
-                ItemList = 
+                ItemList =
                 {
                     MenuItem
                     {
@@ -355,13 +355,13 @@ Menu RID_MENU_REPORT
                     };
                     MenuItem
                     {
-                        Identifier = SID_FRAME_UP ; 
-                        HelpID = SID_FRAME_UP ; 
+                        Identifier = SID_FRAME_UP ;
+                        HelpID = SID_FRAME_UP ;
                         Text [ en-US ] = "Bring ~Forward" ;
                     };
                     MenuItem
                     {
-                        Identifier = SID_FRAME_DOWN ; 
+                        Identifier = SID_FRAME_DOWN ;
                         HelpID = SID_FRAME_DOWN ;
                         Text [ en-US ] = "Send Back~ward" ;
                     };
@@ -389,7 +389,7 @@ Menu RID_MENU_REPORT
             ITEM_FORMAT_OBJECT_ALIGN
             SubMenu = Menu
             {
-                ItemList = 
+                ItemList =
                 {
                     MenuItem
                     {
@@ -429,14 +429,14 @@ Menu RID_MENU_REPORT
 
         MenuItem
         {
-            Identifier = SID_OBJECT_RESIZING ; 
-            Command = ".uno:ObjectResize" ; 
-            HelpID = SID_OBJECT_RESIZING ; 
+            Identifier = SID_OBJECT_RESIZING ;
+            Command = ".uno:ObjectResize" ;
+            HelpID = SID_OBJECT_RESIZING ;
             Text [ en-US ] = "~Object Resizing" ;
-            Text [ x-comment ] = " ";	
+            Text [ x-comment ] = " ";
             SubMenu = Menu
             {
-                ItemList = 
+                ItemList =
                 {
                     MenuItem
                     {
@@ -484,14 +484,14 @@ Menu RID_MENU_REPORT
         };
         MenuItem
         {
-            Identifier = SID_SECTION_SHRINK_MENU ; 
-            Command = ".uno:SectionShrinkMenu" ; 
-            HelpID = SID_SECTION_SHRINK_MENU ; 
+            Identifier = SID_SECTION_SHRINK_MENU ;
+            Command = ".uno:SectionShrinkMenu" ;
+            HelpID = SID_SECTION_SHRINK_MENU ;
             Text [ en-US ] = "Section" ;
-            Text [ x-comment ] = " ";	
+            Text [ x-comment ] = " ";
             SubMenu = Menu
             {
-                ItemList = 
+                ItemList =
                 {
                     MenuItem
                     {

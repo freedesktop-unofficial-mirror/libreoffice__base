@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -64,19 +64,16 @@ class OReportController;
 |*
 \************************************************************************/
 
-class OGroupsSortingDialog :	public FloatingWindow
-                            ,	public ::cppu::BaseMutex
-                                ,	public ::comphelper::OPropertyChangeListener
-                           ,public dbaui::OToolBoxHelper
-                           ,public vcl::IImageListProvider
+class OGroupsSortingDialog :    public FloatingWindow
+                           ,    public ::cppu::BaseMutex
+                           ,    public ::comphelper::OPropertyChangeListener
+                           ,    public dbaui::OToolBoxHelper
+                           ,    public vcl::IImageListProvider
 {
     friend class OFieldExpressionControl;
 
     FixedLine								m_aFL2;
     FixedText								m_aMove;
-//BTN 	ImageButton								m_aPB_Up;
-//BTN 	ImageButton								m_aPB_Down;
-//BTN 	ImageButton								m_aPB_Delete;
     ToolBox                                 m_aToolBox;
 
     FixedLine								m_aFL3;
@@ -91,7 +88,7 @@ class OGroupsSortingDialog :	public FloatingWindow
     FixedText								m_aGroupInterval;
     NumericField							m_aGroupIntervalEd;
     FixedText								m_aKeepTogether;
-    ListBox									m_aKeepTogetherLst;	
+    ListBox									m_aKeepTogetherLst;
     FixedLine								m_aFL;
     FixedText								m_aHelpWindow;
 
@@ -106,7 +103,6 @@ private:
     DECL_LINK( OnControlFocusLost, Control* );
     DECL_LINK( OnControlFocusGot, Control* );
     DECL_LINK( LBChangeHdl, ListBox* );
-//BTN	DECL_LINK( ClickHdl, ImageButton* );
     DECL_LINK( OnFormatAction,      ToolBox* );
 
     /** returns the groups
@@ -114,8 +110,8 @@ private:
     */
     ::com::sun::star::uno::Reference< ::com::sun::star::report::XGroups>& getGroups() { return m_xGroups; }
 
-    ::com::sun::star::uno::Reference< ::com::sun::star::report::XGroup> getGroup(sal_Int32 _nPos) 
-    { 
+    ::com::sun::star::uno::Reference< ::com::sun::star::report::XGroup> getGroup(sal_Int32 _nPos)
+    {
         OSL_ENSURE(_nPos >= 0 && _nPos < m_xGroups->getCount(),"Invalid count!");
         return ::com::sun::star::uno::Reference< ::com::sun::star::report::XGroup>(m_xGroups->getByIndex(_nPos),::com::sun::star::uno::UNO_QUERY);
     }
@@ -153,7 +149,7 @@ private:
     */
     void checkButtons(sal_Int32 _nRow);
 
-    /** clears the m_xColumns member and reset the fields 
+    /** clears the m_xColumns member and reset the fields
     *
     */
     void fillColumns();
