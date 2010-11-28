@@ -111,7 +111,7 @@ void SAL_CALL OFunctions::removeByIndex( ::sal_Int32 Index ) throw (lang::IndexO
 {
     uno::Reference< report::XFunction > xFunction;
     {
-        ::osl::MutexGuard aGuard(m_aMutex);	
+        ::osl::MutexGuard aGuard(m_aMutex);
         checkIndex(Index);
         TFunctions::iterator aPos = m_aFunctions.begin();
         ::std::advance(aPos,Index);
