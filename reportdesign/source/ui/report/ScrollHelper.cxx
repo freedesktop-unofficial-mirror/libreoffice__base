@@ -370,7 +370,7 @@ void OScrollWindowHelper::DataChanged( const DataChangedEvent& rDCEvt )
     if ( (rDCEvt.GetType() == DATACHANGED_SETTINGS) &&
          (rDCEvt.GetFlags() & SETTINGS_STYLE) )
     {
-        ImplInitSettings();		
+        ImplInitSettings();
         Invalidate();
     }
 }
