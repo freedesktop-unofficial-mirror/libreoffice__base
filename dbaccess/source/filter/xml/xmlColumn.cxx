@@ -101,6 +101,7 @@ OXMLColumn::OXMLColumn( ODBFilter& rImport
             case XML_TOK_COLUMN_DEFAULT_VALUE:
                 if ( sValue.getLength() && sType.getLength() )
                     m_aDefaultValue <<= sValue;
+                //    SvXMLUnitConverter::convertAny(m_aDefaultValue,sType,sValue);
                 break;
             case XML_TOK_COLUMN_VISIBLE:
                 m_bHidden = sValue.equalsAsciiL(RTL_CONSTASCII_STRINGPARAM("false"));

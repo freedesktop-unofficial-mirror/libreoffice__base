@@ -86,7 +86,7 @@ namespace dbaui
 
         // IMnemonicEntryList
         virtual void        SelectSearchEntry( const void* _pEntry );
-        virtual void        ExecuteSearchEntry( const void* _pEntry );
+        virtual void        ExecuteSearchEntry( const void* _pEntry ) const;
 
     private:
         void    onSelected( SvLBoxEntry* _pEntry ) const;

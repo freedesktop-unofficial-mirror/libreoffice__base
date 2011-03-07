@@ -1413,6 +1413,5 @@ Reference< XInterface > ODatabaseSource::getThis() const
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dataaccess", "Ocke.Janssen@sun.com", "ODatabaseSource::getThis" );
     return *const_cast< ODatabaseSource* >( this );
 }
-
 }	// namespace dbaccess
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -49,6 +49,7 @@
 #include <com/sun/star/i18n/XLocaleData.hpp>
 #include <unotools/syslocale.hxx>
 #include <com/sun/star/container/XChild.hpp>
+#include <com/sun/star/sdb/SQLFilterOperator.hpp>
 #include <com/sun/star/sdb/SQLFilterOperator.hpp>
 #include "querycomposer.hxx"
 #include "HelperCollections.hxx"

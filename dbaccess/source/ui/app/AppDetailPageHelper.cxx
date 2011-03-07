@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -664,21 +664,22 @@ void OAppDetailPageHelper::createPage(ElementType _eType,const Reference< XNameA
 {
     OSL_ENSURE(E_TABLE != _eType,"E_TABLE isn't allowed.");
 
-    USHORT nHelpId = 0, nImageId = 0;
+    USHORT nImageId = 0;
+    rtl::OString sHelpId;
     ImageProvider aImageProvider;
     Image aFolderImage;
     switch( _eType )
     {
         case E_FORM:
-            nHelpId = HID_APP_FORM_TREE;
+            sHelpId = HID_APP_FORM_TREE;
             aFolderImage = aImageProvider.getFolderImage( DatabaseObject::FORM );
             break;
         case E_REPORT:
-            nHelpId = HID_APP_REPORT_TREE;
+            sHelpId = HID_APP_REPORT_TREE;
             aFolderImage = aImageProvider.getFolderImage( DatabaseObject::REPORT );
             break;
         case E_QUERY:
-            nHelpId = HID_APP_QUERY_TREE;
+            sHelpId = HID_APP_QUERY_TREE;
             aFolderImage = aImageProvider.getFolderImage( DatabaseObject::QUERY );
             break;
         default:
@@ -688,7 +689,7 @@ void OAppDetailPageHelper::createPage(ElementType _eType,const Reference< XNameA
 
     if ( !m_pLists[_eType] )
     {
-        m_pLists[_eType] = createSimpleTree( nHelpId, aFolderImage );
+        m_pLists[_eType] = createSimpleTree( sHelpId, aFolderImage );
     }
 
     if ( m_pLists[_eType] )
@@ -782,10 +783,10 @@ void OAppDetailPageHelper::fillNames( const Reference< XNameAccess >& _xContaine
     }
 }
 // -----------------------------------------------------------------------------
-DBTreeListBox* OAppDetailPageHelper::createSimpleTree( ULONG _nHelpId, const Image& _rImage )
+DBTreeListBox* OAppDetailPageHelper::createSimpleTree( const rtl::OString& _sHelpId, const Image& _rImage)
 {
     DBTreeListBox* pTreeView = new DBTreeListBox(this,getBorderWin().getView()->getORB(),WB_HASLINES | WB_SORT | WB_HASBUTTONS | WB_HSCROLL |WB_HASBUTTONSATROOT | WB_TABSTOP);
-    pTreeView->SetHelpId(_nHelpId);
+    pTreeView->SetHelpId( _sHelpId );
     return createTree( pTreeView, _rImage );
 }
 
@@ -794,7 +795,7 @@ DBTreeListBox* OAppDetailPageHelper::createTree( DBTreeListBox* _pTreeView, cons
 {
     WaitObject aWaitCursor(this);
 
-    _pTreeView->SetWindowBits(WB_HASLINES | WB_SORT | WB_HASBUTTONS | WB_HSCROLL |WB_HASBUTTONSATROOT | WB_TABSTOP);
+    _pTreeView->SetStyle(_pTreeView->GetStyle() | WB_HASLINES | WB_SORT | WB_HASBUTTONS | WB_HSCROLL |WB_HASBUTTONSATROOT | WB_TABSTOP);
     _pTreeView->GetModel()->SetSortMode(SortAscending);
     _pTreeView->EnableCheckButton( NULL ); // do not show any buttons
     _pTreeView->SetSelectionMode(MULTIPLE_SELECTION);

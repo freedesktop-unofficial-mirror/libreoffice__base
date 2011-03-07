@@ -154,6 +154,11 @@ OXMLGroup::OXMLGroup( ORptFilter& _rImport
                                 {
                                     nGroupOn = report::GroupOn::QUARTAL;
                                 }
+                                else if ( sCompleteFormula.matchIgnoreAsciiCase(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("rpt:INT((MONTH")),0) 
+                                       && sCompleteFormula.endsWithIgnoreAsciiCaseAsciiL("-1)/3)+1",8) )
+                                {
+                                    nGroupOn = report::GroupOn::QUARTAL;
+                                }
                                 else if ( sFormula ==::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("rpt:WEEK")))
                                     nGroupOn = report::GroupOn::WEEK;
                                 else if ( sFormula ==::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("rpt:DAY")))

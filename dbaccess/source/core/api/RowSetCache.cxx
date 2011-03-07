@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -42,6 +42,7 @@
 #include "core_resource.hxx"
 #include "dbastrings.hrc"
 
+/** === begin UNO includes === **/
 #include <com/sun/star/sdbc/ColumnValue.hpp>
 #include <com/sun/star/sdbc/ResultSetConcurrency.hpp>
 #include <com/sun/star/sdbcx/CompareBookmark.hpp>
@@ -50,6 +51,7 @@
 #include <com/sun/star/sdbcx/XColumnsSupplier.hpp>
 #include <com/sun/star/sdbcx/XKeysSupplier.hpp>
 #include <com/sun/star/sdbcx/XTablesSupplier.hpp>
+/** === end UNO includes === **/
 
 #include <comphelper/extract.hxx>
 #include <comphelper/property.hxx>
@@ -1267,7 +1269,7 @@ void ORowSetCache::updateRow( ORowSetMatrix::iterator& _rUpdateRow,::std::vector
     m_pCacheSet->updateRow(*_rUpdateRow,*m_aMatrixIter,m_aUpdateTable);
     // refetch the whole row
     (*m_aMatrixIter) = NULL;
-
+    
     if ( moveToBookmark(aBookmark) )
     {
         // update the cached values
@@ -1611,12 +1613,11 @@ sal_Bool ORowSetCache::fill(ORowSetMatrix::iterator& _aIter,const ORowSetMatrix:
     }
     return _bCheck;
 }
-
 bool ORowSetCache::isResultSetChanged() const
 {
     return m_pCacheSet->isResultSetChanged();
 }
-
+// -----------------------------------------------------------------------------
 void ORowSetCache::reset(const Reference< XResultSet>& _xDriverSet)
 {
     m_xMetaData.set(Reference< XResultSetMetaDataSupplier >(_xDriverSet,UNO_QUERY)->getMetaData());
@@ -1626,7 +1627,7 @@ void ORowSetCache::reset(const Reference< XResultSet>& _xDriverSet)
     m_nRowCount = 0;
     reFillMatrix(m_nStartPos+1,m_nEndPos+1);
 }
-
+// -----------------------------------------------------------------------------
 void ORowSetCache::impl_updateRowFromCache_throw(ORowSetValueVector::Vector& io_aRow
                                            ,::std::vector<sal_Int32>& o_ChangedColumns)
 {
@@ -1640,7 +1641,7 @@ void ORowSetCache::impl_updateRowFromCache_throw(ORowSetValueVector::Vector& io_
                 break;
             }
         }
-
+        
         if ( aIter == m_pMatrix->end() )
         {
             m_pCacheSet->fillMissingValues(io_aRow);

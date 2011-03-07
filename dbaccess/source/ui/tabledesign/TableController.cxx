@@ -1594,6 +1594,14 @@ sal_Int32 OTableController::getFirstEmptyRowPosition()
         nRet = m_vRowList.size();
         m_vRowList.push_back( pTabEdRow);        
     }
+    if ( nRet == -1 )
+    {
+        bool bReadRow = !isAddAllowed();
+        ::boost::shared_ptr<OTableRow> pTabEdRow(new OTableRow());
+        pTabEdRow->SetReadOnly(bReadRow);
+        nRet = m_vRowList.size();
+        m_vRowList.push_back( pTabEdRow);        
+    }
     return nRet;
 }
 // -----------------------------------------------------------------------------

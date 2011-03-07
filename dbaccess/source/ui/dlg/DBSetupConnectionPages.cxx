@@ -791,6 +791,8 @@ DBG_NAME(OAuthentificationPageSetup)
         m_aCBPasswordRequired.SetClickHdl(getControlModifiedLink());
            m_aPBTestConnection.SetClickHdl(LINK(this,OGenericAdministrationPage,OnTestConnectionClickHdl));
         FreeResource();
+
+        LayoutHelper::fitSizeRightAligned( m_aPBTestConnection );
     }
 
 

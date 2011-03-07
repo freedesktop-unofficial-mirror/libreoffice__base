@@ -111,17 +111,14 @@ String STR_TAB_FIELD_LENGTH
 {
     Text [ en-US ] = "Field length" ;
 };
-
 String STR_TAB_HELP_TEXT
 {
     Text [ en-US ] = "Description" ;
 };
-
 String STR_COLUMN_DESCRIPTION
 {
     Text [ en-US ] = "Column Description" ;
 };
-
 String STR_TAB_FIELD_NULLABLE
 {
     Text [ en-US ] = "Input required" ;
@@ -171,38 +168,38 @@ Menu RID_TABLEDESIGNROWPOPUPMENU
 {
     ItemList =
     {
-        MenuItem
-        {
-            ITEM_EDIT_CUT
+    MenuItem
+    {
+        ITEM_EDIT_CUT
+    };
+    MenuItem
+    {
+        ITEM_EDIT_COPY
+    };
+    MenuItem
+    {
+        ITEM_EDIT_PASTE
+    };
+    MenuItem
+    {
+        ITEM_EDIT_DELETE
+    };
+    MenuItem
+    {
+        Identifier = SID_TABLEDESIGN_INSERTROWS ;
+        HelpID = HID_TABLEDESIGN_INSERTROWS ;
+        Text [ en-US ] = "Insert Rows" ;
         };
-        MenuItem
-        {
-            ITEM_EDIT_COPY
-        };
-        MenuItem
-        {
-            ITEM_EDIT_PASTE
-        };
-        MenuItem
-        {
-            ITEM_EDIT_DELETE
-        };
-        MenuItem
-        {
-            Identifier = SID_TABLEDESIGN_INSERTROWS ;
-            HelpID = SID_TABLEDESIGN_INSERTROWS ;
-            Text [ en-US ] = "Insert Rows" ;
-        };
-        MenuItem
-        {
-            Separator = TRUE ;
-        };
-        MenuItem
-        {
-            Identifier = SID_TABLEDESIGN_TABED_PRIMARYKEY ;
-            HelpID = SID_TABLEDESIGN_TABED_PRIMARYKEY ;
-            Checkable = TRUE ;
-            Text [ en-US ] = "Primary Key" ;
+    MenuItem
+    {
+        Separator = TRUE ;
+    };
+    MenuItem
+    {
+        Identifier = SID_TABLEDESIGN_TABED_PRIMARYKEY ;
+        HelpID = HID_TABLEDESIGN_TABED_PRIMARYKEY ;
+        Checkable = TRUE ;
+        Text [ en-US ] = "Primary Key" ;
         };
     };
 };

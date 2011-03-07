@@ -158,6 +158,8 @@ namespace rptui
         */
         void alignMarkedObjects(sal_Int32 _nControlModification, bool _bAlignAtSection, bool bBoundRects = false);
 
+#if 0
+#endif
         /** All objects will be marked.
         */
         void            SelectAll(const sal_uInt16 _nObjectType);

@@ -55,7 +55,10 @@ ORowSetColumn::ORowSetColumn(	const Reference < XResultSetMetaData >& _xMetaData
 
 ::cppu::IPropertyArrayHelper* ORowSetColumn::createArrayHelper( ) const
 {
-    BEGIN_PROPERTY_SEQUENCE(21)
+    const sal_Int32 nDerivedProperties = 21;
+    Sequence< Property> aDerivedProperties( nDerivedProperties );
+    Property* pDesc = aDerivedProperties.getArray();
+    sal_Int32 nPos = 0;
 
     DECL_PROP1( CATALOGNAME,                ::rtl::OUString,    READONLY );
     DECL_PROP1( DISPLAYSIZE,                sal_Int32,          READONLY );
@@ -78,13 +81,12 @@ ORowSetColumn::ORowSetColumn(	const Reference < XResultSetMetaData >& _xMetaData
     DECL_PROP1( TYPE,                       sal_Int32,          READONLY );
     DECL_PROP1( TYPENAME,                   ::rtl::OUString,    READONLY );
     DECL_PROP2( VALUE,                      Any,                READONLY, BOUND );
-
-    END_PROPERTY_SEQUENCE()
+    OSL_ENSURE( nPos == nDerivedProperties, "ORowSetColumn::createArrayHelper: inconsistency!" );
 
     Sequence< Property > aRegisteredProperties;
     describeProperties( aRegisteredProperties );
 
-    return new ::cppu::OPropertyArrayHelper( ::comphelper::concatSequences( aDescriptor, aRegisteredProperties ), sal_False );
+    return new ::cppu::OPropertyArrayHelper( ::comphelper::concatSequences( aDerivedProperties, aRegisteredProperties ), sal_False );
 }
 
 ::cppu::IPropertyArrayHelper& ORowSetColumn::getInfoHelper()
@@ -98,6 +100,6 @@ void SAL_CALL ORowSetColumn::setFastPropertyValue_NoBroadcast(sal_Int32 nHandle,
     if ( nHandle != PROPERTY_ID_VALUE )
         ORowSetDataColumn::setFastPropertyValue_NoBroadcast( nHandle, rValue );
 }
-
 }   // namespace dbaccess
+
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

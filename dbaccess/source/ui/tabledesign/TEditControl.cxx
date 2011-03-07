@@ -55,6 +55,9 @@
 #include "FieldDescControl.hxx"
 #include "TableFieldControl.hxx"
 #include "dsntypes.hxx"
+#include "dsntypes.hxx"
+
+#include "dbaccess_slotid.hrc"
 
 using namespace ::dbaui;
 using namespace ::comphelper;
@@ -1527,7 +1530,7 @@ sal_Bool OTableEditorCtrl::IsPrimaryKeyAllowed( long /*nRow*/ )
     Reference<XPropertySet> xTable = rController.getTable();
     //////////////////////////////////////////////////////////////
     // Key darf nicht veraendert werden
-    // Dies gilt jedoch nur, wenn die Tabelle nicht neu ist und keine ::com::sun::star::sdbcx::View. Ansonsten wird kein DROP ausgeführt
+    // Dies gilt jedoch nur, wenn die Tabelle nicht neu ist und keine ::com::sun::star::sdbcx::View. Ansonsten wird kein DROP ausgefï¿½hrt
 
     if(xTable.is() && ::comphelper::getString(xTable->getPropertyValue(PROPERTY_TYPE)) == ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("VIEW")))
         return sal_False;
@@ -1549,7 +1552,7 @@ sal_Bool OTableEditorCtrl::IsPrimaryKeyAllowed( long /*nRow*/ )
         {
             //////////////////////////////////////////////////////////////
             // Wenn Feldtyp Memo oder Image, kein PrimKey
-            // oder wenn Spalten nicht gedroped werden können und das Required Flag ist nicht gesetzt
+            // oder wenn Spalten nicht gedroped werden kï¿½nnen und das Required Flag ist nicht gesetzt
             // oder wenn eine ::com::sun::star::sdbcx::View vorhanden ist und das Required Flag nicht gesetzt ist
             TOTypeInfoSP pTypeInfo = pFieldDescr->getTypeInfo();
             if(     pTypeInfo->nSearchType == ColumnSearch::NONE

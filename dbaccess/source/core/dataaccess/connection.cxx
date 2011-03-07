@@ -576,6 +576,7 @@ void OConnection::impl_fillTableFilter()
     }
 }
 
+// -----------------------------------------------------------------------------
 void OConnection::refresh(const Reference< XNameAccess >& _rToBeRefreshed)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dataaccess", "Ocke.Janssen@sun.com", "OConnection::refresh" );

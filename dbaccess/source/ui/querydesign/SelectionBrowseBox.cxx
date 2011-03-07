@@ -217,7 +217,7 @@ void OSelectionBrowseBox::initialize()
         m_aFunctionStrings += String(RTL_CONSTASCII_USTRINGPARAM(";"));
         m_aFunctionStrings += sGroup;
         
-        // Diese Funktionen stehen nur unter CORE zur Verfügung
+        // Diese Funktionen stehen nur unter CORE zur Verfï¿½gung
         if ( lcl_SupportsCoreSQLGrammar(xConnection) )
         {
             xub_StrLen nCount	= m_aFunctionStrings.GetTokenCount();
@@ -1068,7 +1068,7 @@ sal_Bool OSelectionBrowseBox::SaveModified()
                 {
                     strOldCellContents = pEntry->GetFunction();
                     sal_uInt16 nPos = m_pFunctionCell->GetSelectEntryPos();
-                    // Diese Funktionen stehen nur unter CORE zur Verfügung
+                    // Diese Funktionen stehen nur unter CORE zur Verfï¿½gung
                     String sFunctionName		= m_pFunctionCell->GetEntry(nPos);
                     String sGroupFunctionName	= m_aFunctionStrings.GetToken(m_aFunctionStrings.GetTokenCount()-1);
                     sal_Bool bGroupBy = sal_False;
@@ -1352,7 +1352,7 @@ void OSelectionBrowseBox::RemoveField(sal_uInt16 nColumnId )
 //------------------------------------------------------------------------------
 void OSelectionBrowseBox::adjustSelectionMode( sal_Bool _bClickedOntoHeader, sal_Bool _bClickedOntoHandleCol )
 {
-    // wenn ein Header selectiert wird, muß die selection angezeigt werden, sonst nicht)
+    // wenn ein Header selectiert wird, muï¿½ die selection angezeigt werden, sonst nicht)
     if ( _bClickedOntoHeader )
     {
         if (0 == GetSelectColumnCount() )
@@ -2648,7 +2648,7 @@ void OSelectionBrowseBox::enableControl(const OTableFieldDescRef& _rEntry,Window
     _pControl->EnableInput(bEnable);
 }
 // -----------------------------------------------------------------------------
-void OSelectionBrowseBox::setTextCellContext(const OTableFieldDescRef& _rEntry,const String& _sText,ULONG _nHelpId)
+void OSelectionBrowseBox::setTextCellContext(const OTableFieldDescRef& _rEntry,const String& _sText,const rtl::OString& _sHelpId)
 {
     m_pTextCell->SetText(_sText);
     m_pTextCell->ClearModifyFlag();
@@ -2657,10 +2657,10 @@ void OSelectionBrowseBox::setTextCellContext(const OTableFieldDescRef& _rEntry,c
     
     enableControl(_rEntry,m_pTextCell);
 
-    if (m_pTextCell->GetHelpId() != _nHelpId)
+    if (m_pTextCell->GetHelpId() != _sHelpId)
         // da TextCell in verschiedenen Kontexten verwendet wird, muss ich den gecachten HelpText loeschen
         m_pTextCell->SetHelpText(String());
-    m_pTextCell->SetHelpId(_nHelpId);
+    m_pTextCell->SetHelpId(_sHelpId);
 }
 // -----------------------------------------------------------------------------
 void OSelectionBrowseBox::invalidateUndoRedo()
@@ -2754,7 +2754,7 @@ void OSelectionBrowseBox::setFunctionCell(OTableFieldDescRef& _pEntry)
     Reference< XConnection> xConnection = static_cast<OQueryController&>(getDesignView()->getController()).getConnection();
     if ( xConnection.is() )
     {
-        // Diese Funktionen stehen nur unter CORE zur Verfügung
+        // Diese Funktionen stehen nur unter CORE zur Verfï¿½gung
         if ( lcl_SupportsCoreSQLGrammar(xConnection) )
         {
             // if we have an asterix, no other function than count is allowed

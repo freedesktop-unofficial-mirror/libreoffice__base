@@ -72,7 +72,7 @@
 #include <tools/urlobj.hxx>
 #include <sfx2/docfilt.hxx>
 #include "dsnItem.hxx"
-#if defined(WIN) || defined(WNT)
+#if defined(WNT)
 #define _ADO_DATALINK_BROWSE_
 #endif
 
@@ -135,6 +135,8 @@ namespace dbaui
         m_aTestJavaDriver.SetClickHdl(LINK(this,OConnectionTabPage,OnTestJavaClickHdl));
 
         FreeResource();
+
+        LayoutHelper::fitSizeRightAligned( m_aTestConnection );
     }
 
     // -----------------------------------------------------------------------

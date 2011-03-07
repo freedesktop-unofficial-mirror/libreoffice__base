@@ -38,7 +38,7 @@ namespace dbaccess
     class ORowSetColumn;
     class ORowSetColumn :public ORowSetDataColumn
                         ,public ::comphelper::OPropertyArrayUsageHelper< ORowSetColumn >
-
+                            
     {
     public:
         ORowSetColumn(	const ::com::sun::star::uno::Reference < ::com::sun::star::sdbc::XResultSetMetaData >& _xMetaData,
@@ -57,5 +57,4 @@ namespace dbaccess
 }
 
 #endif // DBACCESS_CORE_API_CROWSETCOLUMN_HXX
-
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

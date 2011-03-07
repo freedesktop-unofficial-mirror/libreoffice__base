@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -368,7 +368,7 @@ sal_Bool SbaTableQueryBrowser::Construct(Window* pParent)
         xDatabaseRegistrations->addDatabaseRegistrationsListener( this );
 
         // the collator for the string compares
-        m_xCollator = Reference< XCollator >( getORB()->createInstance(::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.i18n.Collator")) ), UNO_QUERY_THROW );
+        m_xCollator = Reference< XCollator >( getORB()->createInstance(::rtl::OUString::createFromAscii( "com.sun.star.i18n.Collator" ) ), UNO_QUERY_THROW );
         m_xCollator->loadDefaultCollator( Application::GetSettings().GetLocale(), 0 );
     }
     catch(Exception&)
@@ -2083,6 +2083,8 @@ SvLBoxEntry* SbaTableQueryBrowser::implAppendEntry( SvLBoxEntry* _pParent, const
     m_pTreeView->getListBox().SetCollapsedEntryBmp( pNewEntry, aImage );
 
     return pNewEntry;
+
+    return pNewEntry;
 }
 
 //------------------------------------------------------------------------------
@@ -3762,7 +3764,6 @@ void SAL_CALL SbaTableQueryBrowser::changedDatabaseLocation( const DatabaseRegis
     impl_cleanupDataSourceEntry( _Event.Name );
     implAddDatasource( _Event.Name, SharedConnection() );
 }
-
 
 // .........................................................................
 }	// namespace dbaui

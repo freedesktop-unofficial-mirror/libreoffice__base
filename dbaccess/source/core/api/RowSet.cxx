@@ -136,7 +136,6 @@ extern "C" void SAL_CALL createRegistryInfo_ORowSet()
 
 namespace dbaccess
 {
-
 Reference< XInterface > ORowSet_CreateInstance(const Reference< XMultiServiceFactory >& _rxFactory)
 {
     return *(new ORowSet(_rxFactory));
@@ -909,7 +908,7 @@ void SAL_CALL ORowSet::insertRow(  ) throw(SQLException, RuntimeException)
 
         // - rowChanged
         notifyAllListenersRowChanged(aGuard,aEvt);
-
+        
         if ( !aBookmarks.empty() )
         {
             RowsChangeEvent aUpEvt(*this,RowChangeAction::UPDATE,aBookmarks.size(),Sequence<Any>(&(*aBookmarks.begin()),aBookmarks.size()));
@@ -961,7 +960,7 @@ void SAL_CALL ORowSet::updateRow(  ) throw(SQLException, RuntimeException)
         ::std::vector< Any > aBookmarks;
         m_pCache->updateRow(m_aCurrentRow.operator ->(),aBookmarks);
         if ( !aBookmarks.empty() )
-            aEvt.Bookmarks = Sequence<Any>(&(*aBookmarks.begin()),aBookmarks.size());
+            aEvt.Bookmarks = Sequence<Any>(&(*aBookmarks.begin()),aBookmarks.size()); 
         aEvt.Rows += aBookmarks.size();
         m_aBookmark		= m_pCache->getBookmark();
         m_aCurrentRow	= m_pCache->m_aMatrixIter;
@@ -1925,6 +1924,8 @@ void ORowSet::execute_NoApprove_NoNewConn(ResettableMutexGuard& _rClearForNotifi
                     if(!xColumn.is())
                     {
                         // no column found so we could look at the position i
+                        //bReFetchName = sal_True;
+                        //sColumnLabel = ::rtl::OUString();
                         Reference<XIndexAccess> xIndexAccess(m_xColumns,UNO_QUERY);
                         if(xIndexAccess.is() && i <= xIndexAccess->getCount())
                         {
@@ -2633,7 +2634,6 @@ void SAL_CALL ORowSet::clearWarnings(  ) throw (SQLException, RuntimeException)
 {
     m_aWarnings.clearWarnings();
 }
-
 void ORowSet::doCancelModification( )
 {
     if ( isModification() )

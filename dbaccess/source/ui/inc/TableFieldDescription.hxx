@@ -44,6 +44,11 @@ namespace comphelper
     class NamedValueCollection;
 }
 
+namespace comphelper
+{
+    class NamedValueCollection;
+}
+
 class Window;
 namespace dbaui
 {

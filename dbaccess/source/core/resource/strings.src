@@ -272,7 +272,6 @@ String RID_NO_SUCH_DATA_SOURCE
 {
     Text [ en-US ] = "Error accessing data source '$name$':\n$error$";
 };
-
 String RID_STR_NO_SUB_FOLDER
 {
     Text [ en-US ] = "There exists no folder named \"$folder$\".";

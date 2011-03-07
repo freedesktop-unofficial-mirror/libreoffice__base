@@ -33,6 +33,7 @@
 
 #include <cppuhelper/implbase1.hxx>
 #include <memory>
+#include <memory>
 #include <map>
 
 #include <com/sun/star/lang/XUnoTunnel.hpp>

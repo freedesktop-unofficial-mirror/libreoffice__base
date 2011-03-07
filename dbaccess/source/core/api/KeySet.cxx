@@ -219,7 +219,7 @@ void OKeySet::findTableColumnsMatching_throw(   const Any& i_aTable,
 }
 ::rtl::OUStringBuffer OKeySet::createKeyFilter()
 {
-    static ::rtl::OUString aAnd(RTL_CONSTASCII_USTRINGPARAM(" AND "));
+    static ::rtl::OUString aAnd		= ::rtl::OUString::createFromAscii(" AND ");
     const ::rtl::OUString aQuote	= getIdentifierQuoteString();
     ::rtl::OUStringBuffer aFilter;
     static ::rtl::OUString s_sDot(RTL_CONSTASCII_USTRINGPARAM("."));
@@ -582,10 +582,11 @@ void SAL_CALL OKeySet::updateRow(const ORowSetRow& _rInsertRow ,const ORowSetRow
         ::dbtools::throwSQLException( DBACORE_RESSTRING( RID_STR_NO_CONDITION_FOR_PK ), SQL_GENERAL_ERROR, m_xConnection );
 
     // now create end execute the prepared statement
+    
     ::rtl::OUString sEmpty;
     executeUpdate(_rInsertRow ,_rOrginalRow,aSql.makeStringAndClear(),sEmpty,aIndexColumnPositions);
 }
-
+// -----------------------------------------------------------------------------
 void OKeySet::executeUpdate(const ORowSetRow& _rInsertRow ,const ORowSetRow& _rOrginalRow,const ::rtl::OUString& i_sSQL,const ::rtl::OUString& i_sTableName,const ::std::vector<sal_Int32>& _aIndexColumnPositions)
 {
     // now create end execute the prepared statement
@@ -856,7 +857,7 @@ void OKeySet::tryRefetch(const ORowSetRow& _rInsertRow,bool bRefetch)
             connectivity::ORowVector< ORowSetValue >::Vector::const_iterator aParaEnd;
             OUpdatedParameter::iterator aUpdateFind = m_aUpdatedParameter.find(m_aKeyIter->first);
             if ( aUpdateFind == m_aUpdatedParameter.end() )
-            {
+            {	
                 aParaIter = m_aParameterValueForCache.get().begin();
                 aParaEnd = m_aParameterValueForCache.get().end();
             }
@@ -865,7 +866,7 @@ void OKeySet::tryRefetch(const ORowSetRow& _rInsertRow,bool bRefetch)
                 aParaIter = aUpdateFind->second.get().begin();
                 aParaEnd = aUpdateFind->second.get().end();
             }
-
+            
             for(++aParaIter;aParaIter != aParaEnd;++aParaIter,++nPos)
             {
                 ::dbtools::setObjectWithInfo( xParameter, nPos, aParaIter->makeAny(), aParaIter->getTypeKind() );
@@ -1612,11 +1613,11 @@ void getColumnPositions(const Reference<XNameAccess>& _rxQueryColumns,
                         SelectColumnDescription aColDesc( nPos, nType,nScale,nNullable != sdbc::ColumnValue::NO_NULLS, sColumnDefault );
                         aColDesc.sRealName = sRealName;
                         aColDesc.sTableName = sTableName;
-                        o_rColumnNames[sName.makeStringAndClear()] = aColDesc;
+                        o_rColumnNames[sName.makeStringAndClear()] = aColDesc;                        
                     }
                     else
                         o_rColumnNames[sRealName] = SelectColumnDescription( nPos, nType,nScale,nNullable != sdbc::ColumnValue::NO_NULLS, sColumnDefault );
-
+                    
                     break;
                 }
             }
@@ -1645,4 +1646,6 @@ void OKeySet::impl_convertValue_throw(const ORowSetRow& _rInsertRow,const Select
             break;
     }
 }
+
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
+

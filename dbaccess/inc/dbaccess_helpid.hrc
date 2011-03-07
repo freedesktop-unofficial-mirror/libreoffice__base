@@ -29,7 +29,6 @@
 #define _DBA_DBACCESS_HELPID_HRC_
 
 #define HID_DSADMIN_CHARSET                               "DBACCESS_HID_DSADMIN_CHARSET"
-
 #define HID_DLG_FILTERCRIT                                "DBACCESS_HID_DLG_FILTERCRIT"
 #define HID_DLG_ORDERCRIT                                 "DBACCESS_HID_DLG_ORDERCRIT"
 
@@ -461,5 +460,6 @@
 #define HID_DLG_ADABAS_DOMAIN_PWD                         "DBACCESS_HID_DLG_ADABAS_DOMAIN_PWD"
 
 #define HID_DLG_JOIN_TABADD                               "DBACCESS_HID_DLG_JOIN_TABADD"
+
 
 #endif // _DBA_DBACCESS_HELPID_HRC_

@@ -549,7 +549,7 @@ namespace
         else if (SQL_ISRULEOR2(pNode,search_condition,boolean_term)	&&			// AND/OR-Verknuepfung:
                  pNode->count() == 3)
         {
-            // nur AND Verknüpfung zulassen
+            // nur AND Verknï¿½pfung zulassen
             if (!SQL_ISTOKEN(pNode->getChild(1),AND))
                 eErrorCode = eIllegalJoinCondition;
             else if ( eOk == (eErrorCode = InsertJoinConnection(_pView,pNode->getChild(0), _eJoinType,pLeftTable,pRightTable)) )
@@ -840,7 +840,7 @@ namespace
                             }
                         }
                     }
-                    // nur einmal für jedes Feld
+                    // nur einmal fï¿½r jedes Feld
                     else if ( !i && pEntryField->isCondition() )
                     {
                         if (!aWhereStr.getLength())			// noch keine Kriterien
@@ -1864,7 +1864,7 @@ namespace
         if ( !checkJoinConditions(_pView,pNode->getChild(0)) || !checkJoinConditions(_pView,pRightTableRef))
             return sal_False;
 
-        // named column join wird später vieleicht noch implementiert
+        // named column join wird spï¿½ter vieleicht noch implementiert
         // SQL_ISRULE(pNode->getChild(4),named_columns_join)
         EJoinType eJoinType = INNER_JOIN;
         bool bNatural = false;
@@ -2136,7 +2136,7 @@ namespace
             return eNoSelectStatement;
 
         ::connectivity::OSQLParseNode* pParseTree = pNode->getChild(2); // selection
-        sal_Bool bFirstField = sal_True;	// bei der Initialisierung muß auf alle Faelle das erste Feld neu aktiviert werden
+        sal_Bool bFirstField = sal_True;	// bei der Initialisierung muï¿½ auf alle Faelle das erste Feld neu aktiviert werden
 
         SqlParseError eErrorCode = eOk;
 
@@ -2194,6 +2194,11 @@ namespace
                                                             _pView->getLocale(),
                                                             static_cast<sal_Char>(_pView->getDecimalSeparator().toChar()),
                                                             &rController.getParser().getContext());
+                        //pColumnRef->parseNodeToStr(	aColumns,
+                        //							xConnection,
+                        //							&rController.getParser().getContext(),
+                        //							sal_True,
+                        //							sal_True); // quote is to true because we need quoted elements inside the function
 
                         sal_Int32 nFunctionType = FKT_NONE;
                         ::connectivity::OSQLParseNode* pParamRef = NULL;
@@ -3211,6 +3216,7 @@ void OQueryDesignView::fillFunctionInfo(  const ::connectivity::OSQLParseNode* p
     aInfo->SetField(sFieldName);
     aInfo->SetTabWindow(NULL);
 }
+
 // -----------------------------------------------------------------------------
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

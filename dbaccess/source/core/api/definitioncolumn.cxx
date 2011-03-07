@@ -90,6 +90,7 @@ void OTableColumnDescriptor::impl_registerProperties()
     OColumnSettings::registerProperties( *this );
 }
 
+//--------------------------------------------------------------------------
 IMPLEMENT_GET_IMPLEMENTATION_ID( OTableColumnDescriptor )
 
 // ::com::sun::star::lang::XServiceInfo
@@ -142,6 +143,7 @@ void SAL_CALL OTableColumnDescriptor::setParent( const Reference< XInterface >& 
 //============================================================
 DBG_NAME(OTableColumn);
 
+// -------------------------------------------------------------------------
 OTableColumn::OTableColumn( const ::rtl::OUString& _rName )
     :OTableColumnDescriptor( false /* do not act as descriptor */ )
 {
@@ -156,16 +158,19 @@ OTableColumn::~OTableColumn()
 
 IMPLEMENT_GET_IMPLEMENTATION_ID( OTableColumn )
 
+//------------------------------------------------------------------------------
 rtl::OUString OTableColumn::getImplementationName(  ) throw (RuntimeException)
 {
     return rtl::OUString(RTL_CONSTASCII_USTRINGPARAM( "com.sun.star.sdb.OTableColumn"));
 }
 
+//------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper& SAL_CALL OTableColumn::getInfoHelper()
 {
     return *OTableColumn_PBase::getArrayHelper();
 }
 
+//------------------------------------------------------------------------------
 ::cppu::IPropertyArrayHelper* OTableColumn::createArrayHelper( ) const
 {
     return OTableColumnDescriptor::createArrayHelper();
@@ -176,6 +181,7 @@ rtl::OUString OTableColumn::getImplementationName(  ) throw (RuntimeException)
 // =========================================================================
 DBG_NAME( OQueryColumn );
 
+// -------------------------------------------------------------------------
 OQueryColumn::OQueryColumn( const Reference< XPropertySet >& _rxParserColumn, const Reference< XConnection >& _rxConnection,const ::rtl::OUString i_sLabel )
     :OTableColumnDescriptor( false /* do not act as descriptor */ )
     ,m_sLabel(i_sLabel)
@@ -282,6 +288,7 @@ Reference< XPropertySet > OQueryColumn::impl_determineOriginalTableColumn( const
 
 IMPLEMENT_GET_IMPLEMENTATION_ID( OQueryColumn )
 
+//--------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL OQueryColumn::getImplementationName(  ) throw(RuntimeException)
 {
     return ::rtl::OUString( RTL_CONSTASCII_USTRINGPARAM( "org.openoffice.comp.dbaccess.OQueryColumn" ) );
@@ -297,6 +304,7 @@ IMPLEMENT_GET_IMPLEMENTATION_ID( OQueryColumn )
     return OTableColumnDescriptor::createArrayHelper();
 }
 
+//--------------------------------------------------------------------------
 void SAL_CALL OQueryColumn::getFastPropertyValue( Any& _rValue, sal_Int32 _nHandle ) const
 {
     OTableColumnDescriptor::getFastPropertyValue( _rValue, _nHandle );
@@ -369,6 +377,7 @@ OColumnWrapper::~OColumnWrapper()
     return sPropName;
 }
 
+//------------------------------------------------------------------------------
 void OColumnWrapper::getFastPropertyValue( Any& rValue, sal_Int32 nHandle ) const
 {
     // derived classes are free to either use the OPropertyContainer(Helper) mechanisms for properties,
@@ -437,6 +446,7 @@ OTableColumnDescriptorWrapper::OTableColumnDescriptorWrapper( const Reference< X
 }
 
 // com::sun::star::lang::XTypeProvider
+//--------------------------------------------------------------------------
 IMPLEMENT_GET_IMPLEMENTATION_ID( OTableColumnDescriptorWrapper )
 
 // ::com::sun::star::lang::XServiceInfo

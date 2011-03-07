@@ -77,7 +77,10 @@ ORowSetDataColumn::~ORowSetDataColumn()
 // comphelper::OPropertyArrayUsageHelper
 ::cppu::IPropertyArrayHelper* ORowSetDataColumn::createArrayHelper( ) const
 {
-    BEGIN_PROPERTY_SEQUENCE(21)
+    const sal_Int32 nDerivedProperties = 21;
+    Sequence< Property> aDerivedProperties( nDerivedProperties );
+    Property* pDesc = aDerivedProperties.getArray();
+    sal_Int32 nPos = 0;
 
     DECL_PROP1( CATALOGNAME,                ::rtl::OUString,    READONLY );
     DECL_PROP1( DISPLAYSIZE,                sal_Int32,          READONLY );
@@ -100,13 +103,12 @@ ORowSetDataColumn::~ORowSetDataColumn()
     DECL_PROP1( TYPE,                       sal_Int32,          READONLY );
     DECL_PROP1( TYPENAME,                   ::rtl::OUString,    READONLY );
     DECL_PROP1( VALUE,                      Any,                BOUND );
-
-    END_PROPERTY_SEQUENCE()
+    OSL_ENSURE( nPos == nDerivedProperties, "ORowSetDataColumn::createArrayHelper: inconsistency!" );
 
     Sequence< Property > aRegisteredProperties;
     describeProperties( aRegisteredProperties );
 
-    return new ::cppu::OPropertyArrayHelper( ::comphelper::concatSequences( aDescriptor, aRegisteredProperties ), sal_False );
+    return new ::cppu::OPropertyArrayHelper( ::comphelper::concatSequences( aDerivedProperties, aRegisteredProperties ), sal_False );
 }
 
 // cppu::OPropertySetHelper

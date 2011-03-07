@@ -1290,7 +1290,7 @@ void ORowSetBase::firePropertyChange(const ORowSetRow& _rOldRow)
     }
     DBG_TRACE2("DBACCESS ORowSetBase::firePropertyChange() Clone = %i ID = %i\n",m_bClone,osl_getThreadIdentifier(NULL));
 }
-
+// -------------------------------------------------------------------------
 void ORowSetBase::firePropertyChange(sal_Int32 _nPos,const ::connectivity::ORowSetValue& _rOldValue)
 {
     OSL_ENSURE(_nPos < (sal_Int32)m_aDataColumns.size(),"nPos is invalid!");
@@ -1502,7 +1502,7 @@ ORowSetNotifier::ORowSetNotifier( ORowSetBase* _pRowSet )
     if ( m_pRowSet->isModification( ORowSetBase::GrantNotifierAccess() ) )
         m_pRowSet->doCancelModification( ORowSetBase::GrantNotifierAccess() );
 }
-
+// -----------------------------------------------------------------------------
 ORowSetNotifier::ORowSetNotifier( ORowSetBase* _pRowSet,const ORowSetValueVector::Vector& i_aRow )
     :m_pImpl(new ORowSetNotifierImpl)
     ,m_pRowSet( _pRowSet )

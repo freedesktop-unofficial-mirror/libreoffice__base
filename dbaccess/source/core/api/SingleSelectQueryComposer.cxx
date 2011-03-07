@@ -1591,6 +1591,7 @@ void OSingleSelectQueryComposer::setConditionByColumn( const Reference< XPropert
         aSQL.append( ::dbtools::quoteName( aQuote, aName ) );
     }
 
+    
     if ( aValue.hasValue() )
     {
         if(  !m_xTypeConverter.is() )

@@ -160,7 +160,7 @@ namespace dbaui
             @return
                 The new tree.
         */
-        DBTreeListBox* createSimpleTree( ULONG _nHelpId, const Image& _rImage );
+        DBTreeListBox* createSimpleTree( const rtl::OString& _sHelpId, const Image& _rImage);
 
         DECL_LINK( OnEntryDoubleClick,			SvTreeListBox* );
         DECL_LINK( OnEntrySelChange,			void* );

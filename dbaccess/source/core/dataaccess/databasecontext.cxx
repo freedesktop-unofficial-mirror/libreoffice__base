@@ -2,7 +2,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -109,7 +109,6 @@ extern "C" void SAL_CALL createRegistryInfo_ODatabaseContext()
 
 namespace dbaccess
 {
-
         typedef ::cppu::WeakImplHelper1 <   XTerminateListener
                                         >   DatabaseDocumentLoader_Base;
         class DatabaseDocumentLoader : public DatabaseDocumentLoader_Base
@@ -544,46 +543,55 @@ void ODatabaseContext::revokeObject(const rtl::OUString& _rName) throw( Exceptio
     m_aContainerListeners.notifyEach( &XContainerListener::elementRemoved, aEvent );
 }
 
+//------------------------------------------------------------------------------
 ::sal_Bool SAL_CALL ODatabaseContext::hasRegisteredDatabase( const ::rtl::OUString& _Name ) throw (IllegalArgumentException, RuntimeException)
 {
     return m_xDatabaseRegistrations->hasRegisteredDatabase( _Name );
 }
 
+//------------------------------------------------------------------------------
 Sequence< ::rtl::OUString > SAL_CALL ODatabaseContext::getRegistrationNames() throw (RuntimeException)
 {
     return m_xDatabaseRegistrations->getRegistrationNames();
 }
 
+//------------------------------------------------------------------------------
 ::rtl::OUString SAL_CALL ODatabaseContext::getDatabaseLocation( const ::rtl::OUString& _Name ) throw (IllegalArgumentException, NoSuchElementException, RuntimeException)
 {
     return m_xDatabaseRegistrations->getDatabaseLocation( _Name );
 }
 
+//------------------------------------------------------------------------------
 void SAL_CALL ODatabaseContext::registerDatabaseLocation( const ::rtl::OUString& _Name, const ::rtl::OUString& _Location ) throw (IllegalArgumentException, ElementExistException, RuntimeException)
 {
     m_xDatabaseRegistrations->registerDatabaseLocation( _Name, _Location );
 }
 
+//------------------------------------------------------------------------------
 void SAL_CALL ODatabaseContext::revokeDatabaseLocation( const ::rtl::OUString& _Name ) throw (IllegalArgumentException, NoSuchElementException, IllegalAccessException, RuntimeException)
 {
     m_xDatabaseRegistrations->revokeDatabaseLocation( _Name );
 }
 
+//------------------------------------------------------------------------------
 void SAL_CALL ODatabaseContext::changeDatabaseLocation( const ::rtl::OUString& _Name, const ::rtl::OUString& _NewLocation ) throw (IllegalArgumentException, NoSuchElementException, IllegalAccessException, RuntimeException)
 {
     m_xDatabaseRegistrations->changeDatabaseLocation( _Name, _NewLocation );
 }
 
+//------------------------------------------------------------------------------
 ::sal_Bool SAL_CALL ODatabaseContext::isDatabaseRegistrationReadOnly( const ::rtl::OUString& _Name ) throw (IllegalArgumentException, NoSuchElementException, RuntimeException)
 {
     return m_xDatabaseRegistrations->isDatabaseRegistrationReadOnly( _Name );
 }
 
+//------------------------------------------------------------------------------
 void SAL_CALL ODatabaseContext::addDatabaseRegistrationsListener( const Reference< XDatabaseRegistrationsListener >& _Listener ) throw (RuntimeException)
 {
     m_xDatabaseRegistrations->addDatabaseRegistrationsListener( _Listener );
 }
 
+//------------------------------------------------------------------------------
 void SAL_CALL ODatabaseContext::removeDatabaseRegistrationsListener( const Reference< XDatabaseRegistrationsListener >& _Listener ) throw (RuntimeException)
 {
     m_xDatabaseRegistrations->removeDatabaseRegistrationsListener( _Listener );

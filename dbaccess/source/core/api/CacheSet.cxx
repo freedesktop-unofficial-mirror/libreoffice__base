@@ -89,7 +89,7 @@ OCacheSet::OCacheSet()
     return sQuote;
 }
 
-void OCacheSet::construct(	const Reference< XResultSet>& _xDriverSet,const ::rtl::OUString& /*i_sRowSetFilter*/)
+void OCacheSet::construct(	const Reference< XResultSet>& _xDriverSet,const ::rtl::OUString& /*i_sRowSetFilter*/) 
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "dbaccess", "Ocke.Janssen@sun.com", "OCacheSet::construct" );
     OSL_ENSURE(_xDriverSet.is(),"Invalid resultSet");
@@ -211,7 +211,7 @@ void SAL_CALL OCacheSet::insertRow( const ORowSetRow& _rInsertRow,const connecti
 }
 
 void OCacheSet::fillParameters( const ORowSetRow& _rRow
-                                        ,const connectivity::OSQLTable& _xTable
+                                        ,const connectivity::OSQLTable& _xTable 
                                         ,::rtl::OUStringBuffer& _sCondition
                                         ,::rtl::OUStringBuffer& _sParameter
                                         ,::std::list< sal_Int32>& _rOrgValues)
@@ -698,3 +698,4 @@ void OCacheSet::fillMissingValues(ORowSetValueVector::Vector& /*io_aRow*/) const
 {
 }
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
+

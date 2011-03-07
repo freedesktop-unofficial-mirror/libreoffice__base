@@ -329,7 +329,7 @@ void OViewsWindow::removeSection(USHORT _nPosition)
         TSectionsMap::iterator aNew = getIteratorAtPos(_nPosition == 0 ? _nPosition+1: _nPosition - 1);
 
         m_pParent->getReportView()->UpdatePropertyBrowserDelayed((*aNew)->getReportSection().getSectionView());
-        
+
         m_aSections.erase(aPos);
         Resize();
     }
