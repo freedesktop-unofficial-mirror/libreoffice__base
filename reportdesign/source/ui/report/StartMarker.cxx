@@ -70,6 +70,7 @@ OStartMarker::OStartMarker(OSectionWindow* _pParent,const ::rtl::OUString& _sCol
     initDefaultNodeImages();
     ImplInitSettings();
     m_aText.SetHelpId(HID_RPT_START_TITLE);
+    m_aText.SetPaintTransparent(sal_True);
     m_aImage.SetHelpId(HID_RPT_START_IMAGE);
     m_aText.Show();
     m_aImage.Show();
@@ -82,7 +83,9 @@ OStartMarker::OStartMarker(OSectionWindow* _pParent,const ::rtl::OUString& _sCol
     m_aVRuler.SetMargin2();
     const MeasurementSystem eSystem = SvtSysLocale().GetLocaleData().getMeasurementSystemEnum();
     m_aVRuler.SetUnit(MEASURE_METRIC == eSystem ? FUNIT_CM : FUNIT_INCH);
-    SetPaintTransparent(sal_True);
+    EnableChildTransparentMode( sal_True );
+    SetParentClipMode( PARENTCLIPMODE_NOCLIP );
+    SetPaintTransparent( sal_True );
 }
 // -----------------------------------------------------------------------------
 OStartMarker::~OStartMarker()
@@ -104,20 +107,22 @@ sal_Int32 OStartMarker::getMinHeight() const
 // -----------------------------------------------------------------------------
 void OStartMarker::Paint( const Rectangle& rRect )
 {
-    Window::Paint( rRect );
+    (void)rRect;
     Size aSize = GetOutputSizePixel();
     long nSize = aSize.Width();
     const long nCornerWidth = long(CORNER_SPACE * (double)GetMapMode().GetScaleX());
 
-    if ( !isCollapsed() )
+    if ( isCollapsed() )
+    {
+        SetClipRegion();
+    }
+    else
     {
         const long nVRulerWidth = m_aVRuler.GetSizePixel().Width();
         nSize = aSize.Width() - nVRulerWidth;
-        SetClipRegion(Region(PixelToLogic(Rectangle(Point(),Size( nSize,aSize.Height())))));
         aSize.Width() += nCornerWidth;
+        SetClipRegion(Region(PixelToLogic(Rectangle(Point(),Size(nSize,aSize.Height())))));
     }
-    else
-        SetClipRegion();
 
     const Point aGcc3WorkaroundTemporary;
     Rectangle aWholeRect(aGcc3WorkaroundTemporary,aSize);
@@ -234,7 +239,7 @@ void OStartMarker::Resize()
     Point aPos(aImageSize.Width() + (long)(aExtraWidth + aExtraWidth), aExtraWidth);
     const long nHeight = ::std::max<sal_Int32>(nOutputHeight - 2*aPos.Y(),LogicToPixel(Size(0,m_aText.GetTextHeight())).Height());
     m_aText.SetPosSizePixel(aPos,Size(aRulerPos.X() - aPos.X(),nHeight));
-
+    
     aPos.X() = aExtraWidth;
     aPos.Y() += static_cast<sal_Int32>((LogicToPixel(Size(0,m_aText.GetTextHeight())).Height() - aImageSize.Height()) * 0.5) ;
     m_aImage.SetPosSizePixel(aPos,aImageSize);
