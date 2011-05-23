@@ -525,7 +525,7 @@ void SbaTableQueryBrowser::impl_sanitizeRowSetClauses_nothrow()
         // as column name, "NOT_EQUAL" as operator, and "!= <value>" as value, effectively duplicating the
         // information about the operator, and beding all clients to manually remove the "!=" from the value
         // string.
-        // So, what really would be handy, is some 
+        // So, what really would be handy, is some
         //   XNormalizedFilter getNormalizedFilter();
         // with
         //   interface XDisjunctiveFilterExpression
@@ -3866,13 +3866,12 @@ void SbaTableQueryBrowser::impl_cleanupDataSourceEntry( const String& _rDataSour
     SvTreeEntryList* pList = m_pTreeModel->GetChildList( pDataSourceEntry );
     if ( pList )
     {
-        SvLBoxEntry* pEntryLoop = static_cast<SvLBoxEntry*>( pList->First() );
-        while ( pEntryLoop )
+        for ( size_t i = 0, n = pList->size(); i < n; ++i )
         {
+            SvLBoxEntry* pEntryLoop = static_cast<SvLBoxEntry*>((*pList)[ i ]);
             DBTreeListUserData* pData = static_cast< DBTreeListUserData* >( pEntryLoop->GetUserData() );
             pEntryLoop->SetUserData( NULL );
             delete pData;
-            pEntryLoop = static_cast< SvLBoxEntry* >( pList->Next() );
         }
     }
 
