@@ -66,7 +66,7 @@ using namespace ::com::sun::star::ui;
 using namespace ::com::sun::star::view;
 
 DBG_NAME(DBTreeListBox)
-#define SPACEBETWEENENTRIES		4
+#define SPACEBETWEENENTRIES     4
 //========================================================================
 // class DBTreeListBox
 //========================================================================
@@ -121,15 +121,15 @@ DBTreeListBox::~DBTreeListBox()
 //------------------------------------------------------------------------
 SvLBoxEntry* DBTreeListBox::GetEntryPosByName( const String& aName, SvLBoxEntry* pStart, const IEntryFilter* _pFilter ) const
 {
-    SvLBoxTreeList*	myModel = GetModel();
+    SvLBoxTreeList* myModel = GetModel();
     SvTreeEntryList* pChilds = myModel->GetChildList(pStart);
     SvLBoxEntry* pEntry = NULL;
     if ( pChilds )
     {
-        size_t nCount = pChilds->Count();
+        size_t nCount = pChilds->size();
         for (size_t i = 0; i < nCount; ++i)
         {
-            pEntry = static_cast<SvLBoxEntry*>(pChilds->GetObject( i ));
+            pEntry = static_cast<SvLBoxEntry*>((*pChilds)[ i ]);
             SvLBoxString* pItem = (SvLBoxString*)(pEntry->GetFirstItem(SV_ITEM_ID_LBOXSTRING));
             if ( pItem->GetText().Equals(aName) )
             {
@@ -351,7 +351,7 @@ void DBTreeListBox::RequestHelp( const HelpEvent& rHEvt )
 void DBTreeListBox::KeyInput( const KeyEvent& rKEvt )
 {
     KeyFuncType eFunc = rKEvt.GetKeyCode().GetFunction();
-    sal_uInt16		nCode = rKEvt.GetKeyCode().GetCode();
+    sal_uInt16      nCode = rKEvt.GetKeyCode().GetCode();
     sal_Bool bHandled = sal_False;
 
     if(eFunc != KEYFUNC_DONTKNOW)
@@ -719,7 +719,7 @@ void DBTreeListBox::StateChanged( StateChangedType nStateChange )
         implStopSelectionTimer();
 }
 // .........................................................................
-}	// namespace dbaui
+}   // namespace dbaui
 // .........................................................................
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -382,7 +382,7 @@ sal_Bool SbaTableQueryBrowser::Construct(Window* pParent)
     {
 
         // create controls and set sizes
-        const long	nFrameWidth = getBrowserView()->LogicToPixel( ::Size( 3, 0 ), MAP_APPFONT ).Width();
+        const long  nFrameWidth = getBrowserView()->LogicToPixel( ::Size( 3, 0 ), MAP_APPFONT ).Width();
 
         m_pSplitter = new Splitter(getBrowserView(),WB_HSCROLL);
         m_pSplitter->SetPosSizePixel( ::Point(0,0), ::Size(nFrameWidth,0) );
@@ -659,38 +659,38 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
                 Any* pValueIter = aValues.getArray();
                 if ( m_bPreview )
                 {
-                    *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("AlwaysShowCursor"));
-                    *pValueIter++	<<= sal_False;
-                    *pStringIter++	= PROPERTY_BORDER;
-                    *pValueIter++	<<= sal_Int16(0);
+                    *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("AlwaysShowCursor"));
+                    *pValueIter++   <<= sal_False;
+                    *pStringIter++  = PROPERTY_BORDER;
+                    *pValueIter++   <<= sal_Int16(0);
                 }
 
-                *pStringIter++	= PROPERTY_FONT;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_FONT);
-                *pStringIter++	= PROPERTY_TEXTEMPHASIS;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTEMPHASIS);
-                *pStringIter++	= PROPERTY_TEXTRELIEF;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTRELIEF);
+                *pStringIter++  = PROPERTY_FONT;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_FONT);
+                *pStringIter++  = PROPERTY_TEXTEMPHASIS;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTEMPHASIS);
+                *pStringIter++  = PROPERTY_TEXTRELIEF;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTRELIEF);
                 if ( m_bPreview )
                 {
-                    *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasNavigationBar"));
-                    *pValueIter++		<<= sal_False;
-                    *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasRecordMarker"));
-                    *pValueIter++		<<= sal_False;
+                    *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasNavigationBar"));
+                    *pValueIter++       <<= sal_False;
+                    *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasRecordMarker"));
+                    *pValueIter++       <<= sal_False;
                 }
-                *pStringIter++	= PROPERTY_ROW_HEIGHT;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_ROW_HEIGHT);
+                *pStringIter++  = PROPERTY_ROW_HEIGHT;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_ROW_HEIGHT);
                 if ( m_bPreview )
                 {
-                    *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Tabstop"));
-                    *pValueIter++		<<= sal_False;
+                    *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Tabstop"));
+                    *pValueIter++       <<= sal_False;
                 }
-                *pStringIter++	= PROPERTY_TEXTCOLOR;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTCOLOR);
-                *pStringIter++	= PROPERTY_TEXTLINECOLOR;
-                *pValueIter++	= pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTLINECOLOR);
+                *pStringIter++  = PROPERTY_TEXTCOLOR;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTCOLOR);
+                *pStringIter++  = PROPERTY_TEXTLINECOLOR;
+                *pValueIter++   = pData->xObjectProperties->getPropertyValue(PROPERTY_TEXTLINECOLOR);
 
-                Reference< XMultiPropertySet >	xFormMultiSet(xGrid, UNO_QUERY);
+                Reference< XMultiPropertySet >  xFormMultiSet(xGrid, UNO_QUERY);
                 xFormMultiSet->setPropertyValues(aProperties, aValues);
             }
 
@@ -711,10 +711,10 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
             // insert the column into the gridcontrol so that we see something :-)
             ::rtl::OUString aCurrentModelType;
             Reference<XColumnsSupplier> xSupCols(getRowSet(),UNO_QUERY);
-            Reference<XNameAccess> xColumns 	= xSupCols->getColumns();
-            Sequence< ::rtl::OUString> aNames	= xColumns->getElementNames();
-            const ::rtl::OUString* pIter		= aNames.getConstArray();
-            const ::rtl::OUString* pEnd 		= pIter + aNames.getLength();
+            Reference<XNameAccess> xColumns     = xSupCols->getColumns();
+            Sequence< ::rtl::OUString> aNames   = xColumns->getElementNames();
+            const ::rtl::OUString* pIter        = aNames.getConstArray();
+            const ::rtl::OUString* pEnd         = pIter + aNames.getLength();
 
             ::rtl::OUString sDefaultProperty;
             Reference< XPropertySet > xColumn;
@@ -732,7 +732,7 @@ sal_Bool SbaTableQueryBrowser::InitializeGridModel(const Reference< ::com::sun::
                     continue;
 
                 // use the result set column's type to determine the type of grid column to create
-                sal_Bool bFormattedIsNumeric	= sal_True;
+                sal_Bool bFormattedIsNumeric    = sal_True;
                 sal_Int32 nType = ::comphelper::getINT32( xColumn->getPropertyValue( PROPERTY_TYPE ) );
 
                 ::std::vector< NamedValue > aInitialValues;
@@ -910,7 +910,7 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
         // one of the many properties which require us to update the definition ?
         // a column's width ?
         else if (evt.PropertyName.equals(PROPERTY_WIDTH))
-        {	// a column width has changed -> update the model
+        {   // a column width has changed -> update the model
             // (the update of the view is done elsewhere)
             Reference<XPropertySet> xProp = getColumnHelper(m_pCurrentlyDisplayed,xSource);
             if(xProp.is())
@@ -957,8 +957,8 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
         }
 
         // a column's format ?
-        else if (	(evt.PropertyName.equals(PROPERTY_FORMATKEY))
-            &&	(TypeClass_LONG == evt.NewValue.getValueTypeClass())
+        else if (   (evt.PropertyName.equals(PROPERTY_FORMATKEY))
+            &&  (TypeClass_LONG == evt.NewValue.getValueTypeClass())
             )
         {
             // update the model (means the definition object)
@@ -984,15 +984,15 @@ void SbaTableQueryBrowser::propertyChange(const PropertyChangeEvent& evt) throw(
             }
         }
 
-        else if (	evt.PropertyName.equals(PROPERTY_FONT)			// the font ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTCOLOR) 	// the text color ?
-                ||	evt.PropertyName.equals(PROPERTY_FILTER)		// the filter ?
-                ||	evt.PropertyName.equals(PROPERTY_HAVING_CLAUSE)	// the having clause ?
-                ||	evt.PropertyName.equals(PROPERTY_ORDER) 		// the sort ?
-                ||	evt.PropertyName.equals(PROPERTY_APPLYFILTER)	// the appliance of the filter ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTLINECOLOR) // the text line color ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTEMPHASIS)	// the text emphasis ?
-                ||	evt.PropertyName.equals(PROPERTY_TEXTRELIEF)	// the text relief ?
+        else if (   evt.PropertyName.equals(PROPERTY_FONT)          // the font ?
+                ||  evt.PropertyName.equals(PROPERTY_TEXTCOLOR)     // the text color ?
+                ||  evt.PropertyName.equals(PROPERTY_FILTER)        // the filter ?
+                ||  evt.PropertyName.equals(PROPERTY_HAVING_CLAUSE) // the having clause ?
+                ||  evt.PropertyName.equals(PROPERTY_ORDER)         // the sort ?
+                ||  evt.PropertyName.equals(PROPERTY_APPLYFILTER)   // the appliance of the filter ?
+                ||  evt.PropertyName.equals(PROPERTY_TEXTLINECOLOR) // the text line color ?
+                ||  evt.PropertyName.equals(PROPERTY_TEXTEMPHASIS)  // the text emphasis ?
+                ||  evt.PropertyName.equals(PROPERTY_TEXTRELIEF)    // the text relief ?
                 )
         {
             transferChangedControlProperty(evt.PropertyName, evt.NewValue);
@@ -1092,14 +1092,14 @@ void SbaTableQueryBrowser::checkDocumentDataSource()
     if (!bKnownDocDataSource)
     {
         if (NULL != pDataSourceEntry)
-        {	// at least the data source is known
+        {   // at least the data source is known
             if (NULL != pContainerEntry)
                 bKnownDocDataSource = sal_True; // assume we know it.
                 // TODO: should we expand the object container? This may be too expensive just for checking ....
             else
             {
                 if ((NULL == pObjectEntry) && m_aDocumentDataSource.has(daCommandType) && m_aDocumentDataSource.has(daCommand))
-                {	// maybe we have a command to be displayed ?
+                {   // maybe we have a command to be displayed ?
                     sal_Int32 nCommandType = CommandType::TABLE;
                     m_aDocumentDataSource[daCommandType] >>= nCommandType;
 
@@ -1311,7 +1311,7 @@ SvLBoxEntry* SbaTableQueryBrowser::getObjectEntry(const ::svx::ODataAccessDescri
 // -------------------------------------------------------------------------
 void SbaTableQueryBrowser::connectExternalDispatches()
 {
-    Reference< XDispatchProvider >	xProvider( getFrame(), UNO_QUERY );
+    Reference< XDispatchProvider >  xProvider( getFrame(), UNO_QUERY );
     OSL_ENSURE(xProvider.is(), "SbaTableQueryBrowser::connectExternalDispatches: no DispatchProvider !");
     if (xProvider.is())
     {
@@ -1434,7 +1434,7 @@ void SAL_CALL SbaTableQueryBrowser::disposing( const EventObject& _rSource ) thr
         {
             Reference<XConnection> xCon(_rSource.Source, UNO_QUERY);
             if ( xCon.is() && m_pTreeView )
-            {	// our connection is in dispose so we have to find the entry equal with this connection
+            {   // our connection is in dispose so we have to find the entry equal with this connection
                 // and close it what means to collapse the entry
                 // get the top-level representing the removed data source
                 SvLBoxEntry* pDSLoop = m_pTreeView->getListBox().FirstChild(NULL);
@@ -1687,7 +1687,7 @@ void SbaTableQueryBrowser::LoadFinished(sal_Bool _bWasSynch)
     if (isValid() && !loadingCancelled())
     {
         // did we load a query?
-        sal_Bool bTemporary;	// needed because we m_bQueryEscapeProcessing is only one bit wide (and we want to pass it by reference)
+        sal_Bool bTemporary;    // needed because we m_bQueryEscapeProcessing is only one bit wide (and we want to pass it by reference)
         if ( implGetQuerySignature( m_sQueryCommand, bTemporary ) )
             m_bQueryEscapeProcessing = bTemporary;
     }
@@ -1753,8 +1753,8 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
             SvLBoxEntry* pDataSourceEntry = m_pTreeView->getListBox().GetRootLevelParent( pCurrentEntry );
             DBTreeListUserData* pDSData
                 =   pDataSourceEntry
-                ?	static_cast< DBTreeListUserData* >( pDataSourceEntry->GetUserData() )
-                :	NULL;
+                ?   static_cast< DBTreeListUserData* >( pDataSourceEntry->GetUserData() )
+                :   NULL;
 
             if ( nId == ID_TREE_CLOSE_CONN )
             {
@@ -1872,7 +1872,7 @@ FeatureState SbaTableQueryBrowser::GetState(sal_uInt16 nId) const
             case ID_BROWSER_COLATTRSET:
             case ID_BROWSER_COLWIDTH:
                 aReturn.bEnabled = getBrowserView() && getBrowserView()->getVclControl() && isValid() && isValidCursor();
-                //	aReturn.bEnabled &= getDefinition() && !getDefinition()->GetDatabase()->IsReadOnly();
+                //  aReturn.bEnabled &= getDefinition() && !getDefinition()->GetDatabase()->IsReadOnly();
                 break;
 
             case ID_BROWSER_COPY:
@@ -2007,7 +2007,7 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId, const Sequence< PropertyValue
                     MultiSelection* pSelection = (MultiSelection*)pGrid->GetSelection();
                     Sequence< Any > aSelection;
                     if ( !pGrid->IsAllSelected() )
-                    {	// transfer the selected rows only if not all rows are selected
+                    {   // transfer the selected rows only if not all rows are selected
                         // (all rows means the whole table)
                         // #i3832#
                         if (pSelection != NULL)
@@ -2048,14 +2048,14 @@ void SbaTableQueryBrowser::Execute(sal_uInt16 nId, const Sequence< PropertyValue
                         xProp->getPropertyValue(PROPERTY_DATASOURCENAME) >>= sDataSourceName;
 
                         aDescriptor.setDataSource(sDataSourceName);
-                        aDescriptor[daCommand]		=	xProp->getPropertyValue(PROPERTY_COMMAND);
-                        aDescriptor[daCommandType]	=	xProp->getPropertyValue(PROPERTY_COMMAND_TYPE);
-                        aDescriptor[daConnection]	=	xProp->getPropertyValue(PROPERTY_ACTIVE_CONNECTION);
-                        aDescriptor[daCursor]		<<= xCursorClone;
+                        aDescriptor[daCommand]      =   xProp->getPropertyValue(PROPERTY_COMMAND);
+                        aDescriptor[daCommandType]  =   xProp->getPropertyValue(PROPERTY_COMMAND_TYPE);
+                        aDescriptor[daConnection]   =   xProp->getPropertyValue(PROPERTY_ACTIVE_CONNECTION);
+                        aDescriptor[daCursor]       <<= xCursorClone;
                         if ( aSelection.getLength() )
                         {
-                            aDescriptor[daSelection]			<<= aSelection;
-                            aDescriptor[daBookmarkSelection]	<<= sal_False;
+                            aDescriptor[daSelection]            <<= aSelection;
+                            aDescriptor[daBookmarkSelection]    <<= sal_False;
                                 // these are selection indicies
                                 // before we change this, all clients have to be adjusted
                                 // so that they recognize the new BookmarkSelection property!
@@ -2165,8 +2165,8 @@ void SbaTableQueryBrowser::initializeTreeModel()
 
         // fill the model with the names of the registered datasources
         Sequence< ::rtl::OUString > aDatasources = m_xDatabaseContext->getElementNames();
-        const ::rtl::OUString* pIter	= aDatasources.getConstArray();
-        const ::rtl::OUString* pEnd 	= pIter + aDatasources.getLength();
+        const ::rtl::OUString* pIter    = aDatasources.getConstArray();
+        const ::rtl::OUString* pEnd     = pIter + aDatasources.getLength();
         for (; pIter != pEnd; ++pIter)
             implAddDatasource( *pIter, aDBImage, sQueriesName, aQueriesImage, sTablesName, aTablesImage, SharedConnection() );
     }
@@ -2183,8 +2183,8 @@ void SbaTableQueryBrowser::populateTree(const Reference<XNameAccess>& _xNameAcce
     try
     {
         Sequence< ::rtl::OUString > aNames = _xNameAccess->getElementNames();
-        const ::rtl::OUString* pIter	= aNames.getConstArray();
-        const ::rtl::OUString* pEnd 	= pIter + aNames.getLength();
+        const ::rtl::OUString* pIter    = aNames.getConstArray();
+        const ::rtl::OUString* pEnd     = pIter + aNames.getLength();
         for (; pIter != pEnd; ++pIter)
         {
             if( !m_pTreeView->getListBox().GetEntryPosByName(*pIter,_pParent))
@@ -2313,7 +2313,7 @@ IMPL_LINK(SbaTableQueryBrowser, OnExpandEntry, SvLBoxEntry*, _pParent)
                 // 0 indicates that an error occurred
     }
     else
-    {	// we have to expand the queries or bookmarks
+    {   // we have to expand the queries or bookmarks
         if (ensureEntryObject(_pParent))
         {
             DBTreeListUserData* pParentData = static_cast< DBTreeListUserData* >( _pParent->GetUserData() );
@@ -2429,7 +2429,7 @@ sal_Bool SbaTableQueryBrowser::implLoadAnything(const ::rtl::OUString& _rDataSou
     try
     {
         Reference<XPropertySet> xProp( getRowSet(), UNO_QUERY_THROW );
-        Reference< XLoadable >	xLoadable( xProp, UNO_QUERY_THROW );
+        Reference< XLoadable >  xLoadable( xProp, UNO_QUERY_THROW );
         // the values allowing the RowSet to re-execute
         xProp->setPropertyValue(PROPERTY_DATASOURCENAME, makeAny(_rDataSourceName));
         if(_rxConnection.is())
@@ -2540,7 +2540,7 @@ sal_Bool SbaTableQueryBrowser::implSelect(const ::rtl::OUString& _rDataSourceNam
         else if (!pCommandType)
         {
             if ( m_pCurrentlyDisplayed )
-            {	// tell the old entry (if any) it has been deselected
+            {   // tell the old entry (if any) it has been deselected
                 selectPath(m_pCurrentlyDisplayed, sal_False);
                 m_pCurrentlyDisplayed = NULL;
             }
@@ -2626,16 +2626,16 @@ bool SbaTableQueryBrowser::implSelect( SvLBoxEntry* _pEntry )
     }
     ::rtl::OUString aName = sNameBuffer.makeStringAndClear();
 
-    sal_Int32 nCommandType =	( etTableContainer == pContainerData->eType)
-                            ?	CommandType::TABLE
-                            :	CommandType::QUERY;
+    sal_Int32 nCommandType =    ( etTableContainer == pContainerData->eType)
+                            ?   CommandType::TABLE
+                            :   CommandType::QUERY;
 
     // check if need to rebuild the rowset
     sal_Bool bRebuild = ( xOldConnection != pConData->xConnection )
                      || ( nOldType != nCommandType )
                      || ( aName != aOldName );
 
-    Reference< ::com::sun::star::form::XLoadable >	xLoadable = getLoadable();
+    Reference< ::com::sun::star::form::XLoadable >  xLoadable = getLoadable();
     bRebuild |= !xLoadable->isLoaded();
     bool bSuccess = true;
     if ( bRebuild )
@@ -2755,7 +2755,7 @@ bool SbaTableQueryBrowser::implSelect( SvLBoxEntry* _pEntry )
             String sDataSourceName( getDataSourceAcessor( pConnection ) );
             bSuccess = implLoadAnything( sDataSourceName, aName, nCommandType, bEscapeProcessing, pConData->xConnection );
             if ( !bSuccess )
-            {	// clean up
+            {   // clean up
                 criticalFail();
             }
         }
@@ -2795,18 +2795,18 @@ SvLBoxEntry* SbaTableQueryBrowser::getEntryFromContainer(const Reference<XNameAc
     SvLBoxEntry* pDSLoop = rListBox.FirstChild(NULL);
     while (pDSLoop)
     {
-        pContainer	= rListBox.GetEntry(pDSLoop, CONTAINER_QUERIES);
+        pContainer  = rListBox.GetEntry(pDSLoop, CONTAINER_QUERIES);
         DBTreeListUserData* pQueriesData = static_cast<DBTreeListUserData*>(pContainer->GetUserData());
         if ( pQueriesData && pQueriesData->xContainer == _rxNameAccess )
             break;
 
-        pContainer	= rListBox.GetEntry(pDSLoop, CONTAINER_TABLES);
+        pContainer  = rListBox.GetEntry(pDSLoop, CONTAINER_TABLES);
         DBTreeListUserData* pTablesData = static_cast<DBTreeListUserData*>(pContainer->GetUserData());
         if ( pTablesData && pTablesData->xContainer == _rxNameAccess )
             break;
 
-        pDSLoop 	= rListBox.NextSibling(pDSLoop);
-        pContainer	= NULL;
+        pDSLoop     = rListBox.NextSibling(pDSLoop);
+        pContainer  = NULL;
     }
     return pContainer;
 }
@@ -2820,7 +2820,7 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
     // first search for a definition container where we can insert this element
 
     SvLBoxEntry* pEntry = getEntryFromContainer(xNames);
-    if(pEntry)	// found one
+    if(pEntry)  // found one
     {
         // insert the new entry into the tree
         DBTreeListUserData* pContainerData = static_cast<DBTreeListUserData*>(pEntry->GetUserData());
@@ -2852,9 +2852,9 @@ void SAL_CALL SbaTableQueryBrowser::elementInserted( const ContainerEvent& _rEve
 sal_Bool SbaTableQueryBrowser::isCurrentlyDisplayedChanged(const String& _sName,SvLBoxEntry* _pContainer)
 {
     return m_pCurrentlyDisplayed
-            &&	getEntryType(m_pCurrentlyDisplayed) == getChildType(_pContainer)
-            &&	m_pTreeView->getListBox().GetParent(m_pCurrentlyDisplayed) == _pContainer
-            &&	m_pTreeView->getListBox().GetEntryText(m_pCurrentlyDisplayed) == _sName;
+            &&  getEntryType(m_pCurrentlyDisplayed) == getChildType(_pContainer)
+            &&  m_pTreeView->getListBox().GetParent(m_pCurrentlyDisplayed) == _pContainer
+            &&  m_pTreeView->getListBox().GetEntryText(m_pCurrentlyDisplayed) == _sName;
 }
 // -------------------------------------------------------------------------
 void SAL_CALL SbaTableQueryBrowser::elementRemoved( const ContainerEvent& _rEvent ) throw(RuntimeException)
@@ -2870,7 +2870,7 @@ void SAL_CALL SbaTableQueryBrowser::elementRemoved( const ContainerEvent& _rEven
         String aName = ::comphelper::getString(_rEvent.Accessor).getStr();
 
         if ( isCurrentlyDisplayedChanged( aName, pContainer) )
-        {	// the element displayed currently has been replaced
+        {   // the element displayed currently has been replaced
 
             // we need to remember the old value
             SvLBoxEntry* pTemp = m_pCurrentlyDisplayed;
@@ -2917,11 +2917,11 @@ void SAL_CALL SbaTableQueryBrowser::elementReplaced( const ContainerEvent& _rEve
     Reference< XNameAccess > xNames(_rEvent.Source, UNO_QUERY);
     SvLBoxEntry* pContainer = getEntryFromContainer(xNames);
     if ( pContainer )
-    {	 // a table or query as been replaced
+    {    // a table or query as been replaced
         String aName = ::comphelper::getString(_rEvent.Accessor).getStr();
 
         if ( isCurrentlyDisplayedChanged( aName, pContainer) )
-        {	// the element displayed currently has been replaced
+        {   // the element displayed currently has been replaced
 
             // we need to remember the old value
             SvLBoxEntry* pTemp = m_pCurrentlyDisplayed;
@@ -2972,7 +2972,7 @@ void SAL_CALL SbaTableQueryBrowser::elementReplaced( const ContainerEvent& _rEve
         checkDocumentDataSource();
     }
     else if (xNames.get() == m_xDatabaseContext.get())
-    {	// a datasource has been replaced in the context
+    {   // a datasource has been replaced in the context
         OSL_FAIL("SbaTableQueryBrowser::elementReplaced: no support for replaced data sources!");
             // very suspicious: the database context should not allow to replace data source, only to register
             // and revoke them
@@ -3207,20 +3207,20 @@ void SbaTableQueryBrowser::impl_initialize()
 
             ::rtl::OUString* pStringIter = aProperties.getArray();
             Any* pValueIter = aValues.getArray();
-            *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("AlwaysShowCursor"));
-            *pValueIter++	<<= sal_False;
-            *pStringIter++	= PROPERTY_BORDER;
-            *pValueIter++	<<= sal_Int16(0);
+            *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("AlwaysShowCursor"));
+            *pValueIter++   <<= sal_False;
+            *pStringIter++  = PROPERTY_BORDER;
+            *pValueIter++   <<= sal_Int16(0);
 
-            *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasNavigationBar"));
-            *pValueIter++		<<= sal_False;
-            *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasRecordMarker"));
-            *pValueIter++		<<= sal_False;
+            *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasNavigationBar"));
+            *pValueIter++       <<= sal_False;
+            *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("HasRecordMarker"));
+            *pValueIter++       <<= sal_False;
 
-            *pStringIter++	= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Tabstop"));
-            *pValueIter++		<<= sal_False;
+            *pStringIter++  = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Tabstop"));
+            *pValueIter++       <<= sal_False;
 
-            Reference< XMultiPropertySet >	xFormMultiSet(getFormComponent(), UNO_QUERY);
+            Reference< XMultiPropertySet >  xFormMultiSet(getFormComponent(), UNO_QUERY);
             if ( xFormMultiSet.is() )
                 xFormMultiSet->setPropertyValues(aProperties, aValues);
         }
@@ -3363,8 +3363,8 @@ sal_Bool SbaTableQueryBrowser::ensureConnection(SvLBoxEntry* _pAnyEntry, SharedC
     SvLBoxEntry* pDSEntry = m_pTreeView->getListBox().GetRootLevelParent(_pAnyEntry);
     DBTreeListUserData* pDSData =
                 pDSEntry
-            ?	static_cast<DBTreeListUserData*>(pDSEntry->GetUserData())
-            :	NULL;
+            ?   static_cast<DBTreeListUserData*>(pDSEntry->GetUserData())
+            :   NULL;
 
     return ensureConnection( pDSEntry, pDSData, _rConnection );
 }
@@ -3385,8 +3385,8 @@ sal_Bool SbaTableQueryBrowser::getExistentConnectionFor( SvLBoxEntry* _pAnyEntry
     SvLBoxEntry* pDSEntry = m_pTreeView->getListBox().GetRootLevelParent( _pAnyEntry );
     DBTreeListUserData* pDSData =
                 pDSEntry
-            ?	static_cast< DBTreeListUserData* >( pDSEntry->GetUserData() )
-            :	NULL;
+            ?   static_cast< DBTreeListUserData* >( pDSEntry->GetUserData() )
+            :   NULL;
     if ( pDSData )
         _rConnection = pDSData->xConnection;
     return _rConnection.is();
@@ -3483,7 +3483,7 @@ IMPL_LINK( SbaTableQueryBrowser, OnTreeEntryCompare, const SvSortData*, _pSortDa
     String sLeftText = pLeftTextItem->GetText();
     String sRightText = pRightTextItem->GetText();
 
-    sal_Int32 nCompareResult = 0;	// equal by default
+    sal_Int32 nCompareResult = 0;   // equal by default
 
     if (m_xCollator.is())
     {
@@ -3646,12 +3646,12 @@ sal_Bool SbaTableQueryBrowser::implGetQuerySignature( ::rtl::OUString& _rCommand
         // contain the dss (data source signature) of the form
         ::rtl::OUString sDataSourceName;
         ::rtl::OUString sCommand;
-        sal_Int32		nCommandType = CommandType::COMMAND;
+        sal_Int32       nCommandType = CommandType::COMMAND;
         Reference< XPropertySet > xRowsetProps( getRowSet(), UNO_QUERY );
         ODataAccessDescriptor aDesc( xRowsetProps );
         sDataSourceName = aDesc.getDataSource();
-        aDesc[ daCommand ]		>>= sCommand;
-        aDesc[ daCommandType ]	>>= nCommandType;
+        aDesc[ daCommand ]      >>= sCommand;
+        aDesc[ daCommandType ]  >>= nCommandType;
 
         // do we need to do anything?
         if ( CommandType::QUERY != nCommandType )
@@ -3702,8 +3702,8 @@ void SbaTableQueryBrowser::clearGridColumns(const Reference< XNameContainer >& _
 {
     // first we have to clear the grid
     Sequence< ::rtl::OUString > aNames = _xColContainer->getElementNames();
-    const ::rtl::OUString* pIter	= aNames.getConstArray();
-    const ::rtl::OUString* pEnd		= pIter + aNames.getLength();
+    const ::rtl::OUString* pIter    = aNames.getConstArray();
+    const ::rtl::OUString* pEnd     = pIter + aNames.getLength();
     Reference< XInterface > xColumn;
     for (; pIter != pEnd;++pIter)
     {
@@ -3857,7 +3857,7 @@ void SbaTableQueryBrowser::impl_cleanupDataSourceEntry( const String& _rDataSour
         return;
 
     if ( isSelected( pDataSourceEntry ) )
-    {	// a table or query belonging to the deleted data source is currently beeing displayed.
+    {   // a table or query belonging to the deleted data source is currently beeing displayed.
         OSL_ENSURE( m_pTreeView->getListBox().GetRootLevelParent( m_pCurrentlyDisplayed ) == pDataSourceEntry,
             "SbaTableQueryBrowser::impl_cleanupDataSourceEntry: inconsistence (1)!" );
         unloadAndCleanup( sal_True );
@@ -3865,16 +3865,16 @@ void SbaTableQueryBrowser::impl_cleanupDataSourceEntry( const String& _rDataSour
     else
         OSL_ENSURE(
                 ( NULL == m_pCurrentlyDisplayed )
-            ||	( m_pTreeView->getListBox().GetRootLevelParent( m_pCurrentlyDisplayed ) != pDataSourceEntry ),
+            ||  ( m_pTreeView->getListBox().GetRootLevelParent( m_pCurrentlyDisplayed ) != pDataSourceEntry ),
             "SbaTableQueryBrowser::impl_cleanupDataSourceEntry: inconsistence (2)!");
 
     // delete any user data of the child entries of the to-be-removed entry
     SvTreeEntryList* pList = m_pTreeModel->GetChildList( pDataSourceEntry );
     if ( pList )
     {
-        for ( size_t i = 0, n = pList->Count(); i < n; ++i )
+        for ( size_t i = 0, n = pList->size(); i < n; ++i )
         {
-            SvLBoxEntry* pEntryLoop = static_cast<SvLBoxEntry*>(pList->GetObject( i ));
+            SvLBoxEntry* pEntryLoop = static_cast<SvLBoxEntry*>((*pList)[ i ]);
             DBTreeListUserData* pData = static_cast< DBTreeListUserData* >( pEntryLoop->GetUserData() );
             pEntryLoop->SetUserData( NULL );
             delete pData;
@@ -3912,7 +3912,7 @@ void SAL_CALL SbaTableQueryBrowser::changedDatabaseLocation( const DatabaseRegis
 
 
 // .........................................................................
-}	// namespace dbaui
+}   // namespace dbaui
 // .........................................................................
 
 
