@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -77,7 +78,7 @@ namespace dbaccess
                             ,sal_Int32 _nScale
                             ) const;
         void fillParameters( const ORowSetRow& _rRow
-                            ,const connectivity::OSQLTable& _xTable 
+                            ,const connectivity::OSQLTable& _xTable
                             ,::rtl::OUStringBuffer& _sCondition
                             ,::rtl::OUStringBuffer& _sParameter
                             ,::std::list< sal_Int32>& _rOrgValues);
@@ -85,7 +86,7 @@ namespace dbaccess
 
         ::rtl::OUString getIdentifierQuoteString() const;
     public:
-        
+
         // late constructor
         virtual void construct(const ::com::sun::star::uno::Reference< ::com::sun::star::sdbc::XResultSet>& _xDriverSet,const ::rtl::OUString& i_sRowSetFilter);
         virtual void fillValueRow(ORowSetRow& _rRow,sal_Int32 _nPosition);
@@ -160,3 +161,4 @@ namespace dbaccess
 }
 #endif //DBACCESS_CORE_API_CACHESET_HXX
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

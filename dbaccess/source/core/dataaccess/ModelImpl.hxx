@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -80,7 +81,8 @@
 #include <sfx2/docstoragemodifylistener.hxx>
 #include <tools/string.hxx>
 #include <unotools/sharedunocomponent.hxx>
-#include <vos/mutex.hxx>
+#include <osl/mutex.hxx>
+#include <rtl/ref.hxx>
 
 #include <memory>
 
@@ -139,7 +141,7 @@ class OSharedConnectionManager;
 //============================================================
 /** a class which provides an IMutex interface to an OSL-based mutex
 */
-class VosMutexFacade : public ::vos::IMutex
+class VosMutexFacade : public ::osl::SolarMutex
 {
 public:
     /** beware of life time: the mutex you pass here must live as least as long
@@ -148,7 +150,7 @@ public:
     VosMutexFacade( ::osl::Mutex& _rMutex );
 
     // IMutex
-    virtual void SAL_CALL acquire();	
+    virtual void SAL_CALL acquire();
     virtual sal_Bool SAL_CALL tryToAcquire();
     virtual void SAL_CALL release();
 
@@ -479,7 +481,7 @@ public:
             if any of the invoked operations does so
     */
     ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStorage >
-            switchToStorage( 
+            switchToStorage(
                 const ::com::sun::star::uno::Reference< ::com::sun::star::embed::XStorage >& _rxNewRootStorage
             );
 
@@ -562,7 +564,7 @@ public:
     {
         return getMutex();
     }
-    inline ::rtl::Reference< ODatabaseModelImpl > getImpl( GuardAccess )
+    inline ::rtl::Reference< ODatabaseModelImpl > getImpl( GuardAccess ) const
     {
         return m_pImpl;
     }
@@ -571,7 +573,7 @@ public:
     inline void checkDisposed() const
     {
         if ( !m_pImpl.is() )
-            throw ::com::sun::star::lang::DisposedException( ::rtl::OUString::createFromAscii( "Component is already disposed." ), getThis() );
+            throw ::com::sun::star::lang::DisposedException( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Component is already disposed.")), getThis() );
     }
 
     inline void lockModify()
@@ -639,3 +641,4 @@ public:
 
 #endif // _DBA_COREDATAACCESS_DATALINK_HXX_
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -153,7 +154,6 @@ class NavigatorTree :   public ::cppu::BaseMutex
     AutoTimer                                                                   m_aDropActionTimer;
     Timer                                                                       m_aSynchronizeTimer;
     ImageList                                                                   m_aNavigatorImages;
-    ImageList                                                                   m_aNavigatorImagesHC;
     Point                                                                       m_aTimerTriggered;      // die Position, an der der DropTimer angeschaltet wurde
     DROP_ACTION                                                                 m_aDropActionType;
     OReportController&                                                          m_rController;
@@ -204,7 +204,7 @@ public:
     virtual void traverseReportFooter(const uno::Reference< report::XSection>& _xSection);
     virtual void traversePageHeader(const uno::Reference< report::XSection>& _xSection);
     virtual void traversePageFooter(const uno::Reference< report::XSection>& _xSection);
-    
+
     virtual void traverseGroups(const uno::Reference< report::XGroups>& _xGroups);
     virtual void traverseGroup(const uno::Reference< report::XGroup>& _xGroup);
     virtual void traverseGroupFunctions(const uno::Reference< report::XFunctions>& _xFunctions);
@@ -231,7 +231,7 @@ NavigatorTree::NavigatorTree( Window* pParent,OReportController& _rController )
         ,m_pDragedEntry(NULL)
         ,m_nTimerCounter( DROP_ACTION_TIMER_INITIAL_TICKS )
 {
-    DBG_CTOR(rpt_NavigatorTree,NULL);    
+    DBG_CTOR(rpt_NavigatorTree,NULL);
     m_pReportListener = new OPropertyChangeMultiplexer(this,m_rController.getReportDefinition().get());
     m_pReportListener->addProperty(PROPERTY_PAGEHEADERON);
     m_pReportListener->addProperty(PROPERTY_PAGEFOOTERON);
@@ -243,17 +243,10 @@ NavigatorTree::NavigatorTree( Window* pParent,OReportController& _rController )
     SetHelpId( HID_REPORT_NAVIGATOR_TREE );
 
     m_aNavigatorImages = ImageList( ModuleRes( RID_SVXIMGLIST_RPTEXPL ) );
-    m_aNavigatorImagesHC = ImageList( ModuleRes( RID_SVXIMGLIST_RPTEXPL_HC ) );
 
     SetNodeBitmaps(
         m_aNavigatorImages.GetImage( RID_SVXIMG_COLLAPSEDNODE ),
-        m_aNavigatorImages.GetImage( RID_SVXIMG_EXPANDEDNODE ),
-        BMP_COLOR_NORMAL
-    );
-    SetNodeBitmaps(
-        m_aNavigatorImagesHC.GetImage( RID_SVXIMG_COLLAPSEDNODE ),
-        m_aNavigatorImagesHC.GetImage( RID_SVXIMG_EXPANDEDNODE ),
-        BMP_COLOR_HIGHCONTRAST
+        m_aNavigatorImages.GetImage( RID_SVXIMG_EXPANDEDNODE )
     );
 
     SetDragDropMode(0xFFFF);
@@ -276,7 +269,7 @@ NavigatorTree::~NavigatorTree()
     }
     m_pReportListener->dispose();
     m_pSelectionListener->dispose();
-    DBG_DTOR(rpt_NavigatorTree,NULL);    
+    DBG_DTOR(rpt_NavigatorTree,NULL);
 }
 //------------------------------------------------------------------------------
 void NavigatorTree::Command( const CommandEvent& rEvt )
@@ -316,14 +309,14 @@ void NavigatorTree::Command( const CommandEvent& rEvt )
             sal_Bool bDeleteAllowed = m_rController.isEditable() && (xGroup.is() ||
                                       uno::Reference< report::XFunction>(pData->getContent(),uno::UNO_QUERY).is());
             PopupMenu aContextMenu( ModuleRes( RID_MENU_NAVIGATOR ) );
-            
+
             sal_uInt16 nCount = aContextMenu.GetItemCount();
             for (sal_uInt16 i = 0; i < nCount; ++i)
             {
                 if ( MENUITEM_SEPARATOR != aContextMenu.GetItemType(i))
                 {
                     sal_uInt16 nId = aContextMenu.GetItemId(i);
-                    
+
                     aContextMenu.CheckItem(nId,m_rController.isCommandChecked(nId));
                     sal_Bool bEnabled = m_rController.isCommandEnabled(nId);
                     if ( nId == SID_RPT_NEW_FUNCTION )
@@ -334,7 +327,7 @@ void NavigatorTree::Command( const CommandEvent& rEvt )
                     else
                         aContextMenu.EnableItem(nId,bEnabled);
                 }
-            } // for (sal_uInt16 i = 0; i < nCount; ++i)
+            }
             sal_uInt16 nId = aContextMenu.Execute(this, aWhere);
             if ( nId )
             {
@@ -371,7 +364,7 @@ sal_Int8 NavigatorTree::AcceptDrop( const AcceptDropEvent& _rEvt )
     {
         if (m_aDropActionTimer.IsActive())
             m_aDropActionTimer.Stop();
-    } 
+    }
     else
     {
         bool bNeedTrigger = false;
@@ -380,14 +373,14 @@ sal_Int8 NavigatorTree::AcceptDrop( const AcceptDropEvent& _rEvt )
         {
             m_aDropActionType = DA_SCROLLUP;
             bNeedTrigger = true;
-        } 
+        }
         else if ((aDropPos.Y() < GetSizePixel().Height()) && (aDropPos.Y() >= GetSizePixel().Height() - GetEntryHeight()))
         {
             m_aDropActionType = DA_SCROLLDOWN;
             bNeedTrigger = true;
-        } 
+        }
         else
-        { 
+        {
             SvLBoxEntry* pDropppedOn = GetEntry(aDropPos);
             if (pDropppedOn && (GetChildCount(pDropppedOn) > 0) && !IsExpanded(pDropppedOn))
             {
@@ -408,7 +401,7 @@ sal_Int8 NavigatorTree::AcceptDrop( const AcceptDropEvent& _rEvt )
                 m_aDropActionTimer.SetTimeout(DROP_ACTION_TIMER_TICK_BASE);
                 m_aDropActionTimer.Start();
             }
-        } 
+        }
         else if (!bNeedTrigger)
             m_aDropActionTimer.Stop();
     }
@@ -418,7 +411,6 @@ sal_Int8 NavigatorTree::AcceptDrop( const AcceptDropEvent& _rEvt )
 // -------------------------------------------------------------------------
 sal_Int8 NavigatorTree::ExecuteDrop( const ExecuteDropEvent& /*_rEvt*/ )
 {
-    // _rEvt.mnAction;
     return DND_ACTION_NONE;
 }
 // -------------------------------------------------------------------------
@@ -479,8 +471,8 @@ IMPL_LINK(NavigatorTree, OnEntrySelDesel, NavigatorTree*, /*pThis*/)
             aSelection <<= static_cast<UserData*>(pEntry->GetUserData())->getContent();
         m_rController.select(aSelection);
         m_pSelectionListener->unlock();
-    }    
-    
+    }
+
     return 0L;
 }
 // -----------------------------------------------------------------------------
@@ -527,12 +519,6 @@ SvLBoxEntry* NavigatorTree::insertEntry(const ::rtl::OUString& _sName,SvLBoxEntr
     {
         const Image aImage( m_aNavigatorImages.GetImage( _nImageId ) );
         pEntry = InsertEntry(_sName,aImage,aImage,_pParent,sal_False,_nPosition,_pData);
-        if ( pEntry )
-        {
-            const Image aImageHC( m_aNavigatorImagesHC.GetImage( _nImageId ) );
-            SetExpandedEntryBmp( pEntry, aImageHC, BMP_COLOR_HIGHCONTRAST );
-            SetCollapsedEntryBmp( pEntry, aImageHC, BMP_COLOR_HIGHCONTRAST );
-        }
     }
     else
         pEntry = InsertEntry(_sName,_pParent,sal_False,_nPosition,_pData);
@@ -698,7 +684,7 @@ void NavigatorTree::_propertyChanged(const beans::PropertyChangeEvent& _rEvent) 
     }
 }
 // -----------------------------------------------------------------------------
-void NavigatorTree::_elementInserted( const container::ContainerEvent& _rEvent ) 
+void NavigatorTree::_elementInserted( const container::ContainerEvent& _rEvent )
 {
     SvLBoxEntry* pEntry = find(_rEvent.Source);
     uno::Reference<beans::XPropertySet> xProp(_rEvent.Element,uno::UNO_QUERY_THROW);
@@ -779,13 +765,13 @@ void NavigatorTree::removeEntry(SvLBoxEntry* _pEntry,bool _bRemove)
 }
 DBG_NAME(rpt_NavigatorTree_UserData)
 // -----------------------------------------------------------------------------
-NavigatorTree::UserData::UserData(NavigatorTree* _pTree,const uno::Reference<uno::XInterface>& _xContent) 
+NavigatorTree::UserData::UserData(NavigatorTree* _pTree,const uno::Reference<uno::XInterface>& _xContent)
     : OPropertyChangeListener(m_aMutex)
     , OContainerListener(m_aMutex)
     , m_xContent(_xContent)
     , m_pTree(_pTree)
 {
-    DBG_CTOR(rpt_NavigatorTree_UserData,NULL);    
+    DBG_CTOR(rpt_NavigatorTree_UserData,NULL);
     uno::Reference<beans::XPropertySet> xProp(m_xContent,uno::UNO_QUERY);
     if ( xProp.is() )
     {
@@ -816,7 +802,7 @@ NavigatorTree::UserData::UserData(NavigatorTree* _pTree,const uno::Reference<uno
 // -----------------------------------------------------------------------------
 NavigatorTree::UserData::~UserData()
 {
-    DBG_DTOR(rpt_NavigatorTree_UserData,NULL);    
+    DBG_DTOR(rpt_NavigatorTree_UserData,NULL);
     if ( m_pContainerListener.is() )
         m_pContainerListener->dispose();
     if ( m_pListener.is() )
@@ -843,7 +829,7 @@ void NavigatorTree::UserData::_propertyChanged(const beans::PropertyChangeEvent&
                 pMemFunSection = ::std::mem_fun(&OGroupHelper::getFooter);
                 nPos = m_pTree->GetChildCount(pEntry) - 1;
             }
-            
+
             OGroupHelper aGroupHelper(xGroup);
             if ( pIsOn(&aGroupHelper) )
             {
@@ -851,8 +837,6 @@ void NavigatorTree::UserData::_propertyChanged(const beans::PropertyChangeEvent&
                     ++nPos;
                 m_pTree->traverseSection(pMemFunSection(&aGroupHelper),pEntry,bFooterOn ? SID_GROUPFOOTER : SID_GROUPHEADER,nPos);
             }
-            //else
-            //    m_pTree->removeEntry(m_pTree->GetEntry(pEntry,nPos));
         }
         else if ( PROPERTY_EXPRESSION == _rEvent.PropertyName)
         {
@@ -905,7 +889,7 @@ public:
     ::std::auto_ptr<NavigatorTree>              m_pNavigatorTree;
 };
 
-ONavigatorImpl::ONavigatorImpl(OReportController& _rController,ONavigator* _pParent) 
+ONavigatorImpl::ONavigatorImpl(OReportController& _rController,ONavigator* _pParent)
     :m_xReport(_rController.getReportDefinition())
     ,m_rController(_rController)
     ,m_pNavigatorTree(new NavigatorTree(_pParent,_rController))
@@ -936,23 +920,19 @@ ONavigator::ONavigator( Window* _pParent
 
     m_pImpl.reset(new ONavigatorImpl(_rController,this));
     
-    //Size aSpace = LogicToPixel( Size( 7, 120), MAP_APPFONT );
-    //Size aOutSize(nMaxTextWidth + m_aHeader.GetSizePixel().Width() + 3*aSpace.Width(),aSpace.Height());
-    //SetMinOutputSizePixel(aOutSize);
-    //SetOutputSizePixel(aOutSize);
     FreeResource();
     m_pImpl->m_pNavigatorTree->Show();
     m_pImpl->m_pNavigatorTree->GrabFocus();
     SetSizePixel(Size(STD_WIN_SIZE_X,STD_WIN_SIZE_Y));
     Show();
-    
+
 }
 // -----------------------------------------------------------------------------
 
 //------------------------------------------------------------------------
 ONavigator::~ONavigator()
 {
-    DBG_DTOR( rpt_ONavigator,NULL);	
+    DBG_DTOR( rpt_ONavigator,NULL);
 }
 //------------------------------------------------------------------------------
 void ONavigator::Resize()
@@ -984,3 +964,4 @@ void ONavigator::GetFocus()
 } // rptui
 // =============================================================================
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

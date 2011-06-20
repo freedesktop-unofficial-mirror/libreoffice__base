@@ -100,7 +100,7 @@ namespace dbaui
 
         throw CloseVetoException();
     }
-    
+
     //------------------------------------------------------------------------------------------------------------------
     void SAL_CALL CloseListener_Impl::notifyClosing( const EventObject& i_source ) throw (RuntimeException)
     {

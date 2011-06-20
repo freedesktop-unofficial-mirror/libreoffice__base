@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -228,7 +228,7 @@ TabPage TP_MIGRATE
     };
 
     FixedText FT_CURRENT_OBJECT
-    {                          
+    {
         Pos = MAP_APPFONT(  TAB_PAGE_CONTENT_MARGIN + 60,
                             CONTENT_POS_X + 2 * FIXED_TEXT_HEIGHT + SPACING_UNRELATED );
         Size = MAP_APPFONT( TAB_PAGE_WIDTH - ( TAB_PAGE_CONTENT_MARGIN + 60 ), FIXED_TEXT_HEIGHT );
@@ -244,7 +244,7 @@ TabPage TP_MIGRATE
     };
 
     FixedText FT_CURRENT_PROGRESS
-    {                          
+    {
         Pos = MAP_APPFONT(  TAB_PAGE_CONTENT_MARGIN + 60,
                             CONTENT_POS_X + 2 * FIXED_TEXT_HEIGHT + SPACING_UNRELATED + FIXED_TEXT_HEIGHT + SPACING_UNRELATED );
         Size = MAP_APPFONT( TAB_PAGE_WIDTH - ( TAB_PAGE_CONTENT_MARGIN + 60 ), FIXED_TEXT_HEIGHT );
@@ -347,6 +347,7 @@ TabPage TP_SUMMARY
     {
         Text [ en-US ] = "The migration was successful. Below is a log of the actions which have been taken to your document.";
     };
+
     String STR_UNSUCCESSFUL
     {
         Text [ en-US ] = "The migration was not successful. Examine the migration log below for details.";
@@ -451,10 +452,12 @@ String STR_INVALID_NUMBER_ARGS
 {
     Text [ en-US ] = "Invalid number of initialization arguments. Expected 1.";
 };
+
 String STR_NO_DATABASE
 {
     Text [ en-US ] = "No database document found in the initialization arguments.";
 };
+
 String STR_NOT_READONLY
 {
     Text [ en-US ] = "Not applicable to read-only documents.";

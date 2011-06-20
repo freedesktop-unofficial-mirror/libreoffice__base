@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -50,7 +51,7 @@ namespace dbaccess
         ::dbtools::IWarningsContainer*  m_pWarningsContainer;
         IRefreshListener*		        m_pRefreshListener;
         oslInterlockedCount&            m_nInAppend;
-        
+
         // holds the original container which where set in construct but they can be null
         ::com::sun::star::uno::Reference< ::com::sun::star::container::XNameAccess >	m_xMasterContainer;
         ::com::sun::star::uno::WeakReference< ::com::sun::star::sdbc::XConnection >		m_xConnection;
@@ -142,3 +143,5 @@ namespace dbaccess
 // ..............................................................................
 
 #endif // DBACCESS_CORE_FILTERED_CONTAINER_HXX
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

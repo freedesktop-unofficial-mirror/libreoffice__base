@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -29,15 +29,6 @@
 #include "queryfilter.hrc"
 #endif
 #include "dbaccess_helpid.hrc"
-
-/*
-#define STRLST_AND_OR \
-    StringList [ en-US ] = \
-    {\
-        < "AND" ; Default ; > ; \
-        < "OR" ; Default ; > ; \
-    };\
-*/
 
 ModalDialog DLG_FILTERCRIT
 {
@@ -88,11 +79,10 @@ ModalDialog DLG_FILTERCRIT
         TabStop = TRUE ;
         DropDown = TRUE ;
         CurPos = 0 ;
-//		STRLST_AND_OR
         StringList [ en-US ] =
         {
-            < "AND" ; Default ; > ; 
-            < "OR" ; Default ; > ; 
+            < "AND" ; Default ; > ;
+            < "OR" ; Default ; > ;
         };
     };
     ListBox LB_WHEREFIELD2
@@ -132,11 +122,10 @@ ModalDialog DLG_FILTERCRIT
         TabStop = TRUE ;
         DropDown = TRUE ;
         CurPos = 0 ;
-//		STRLST_AND_OR
         StringList [ en-US ] =
         {
-            < "AND" ; Default ; > ; 
-            < "OR" ; Default ; > ; 
+            < "AND" ; Default ; > ;
+            < "OR" ; Default ; > ;
         };
     };
     ListBox LB_WHEREFIELD3
@@ -192,7 +181,6 @@ ModalDialog DLG_FILTERCRIT
     {
         Pos = MAP_APPFONT ( 15 , 14 ) ;
         Size = MAP_APPFONT ( 40 , 8 ) ;
-        /* ### ACHTUNG: Neuer Text in Resource? Verknüpfung : Verkn³pfung */
         Center = TRUE ;
         Text [ en-US ] = "Operator" ;
     };
@@ -230,4 +218,3 @@ ModalDialog DLG_FILTERCRIT
         Text [ en-US ] = "=;<>;<;<=;>;>=;like;not like;null;not null";
     };
 };
-

@@ -1,13 +1,11 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: View.cxx,v $
- * $Revision: 1.3 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -47,10 +45,8 @@
 #include <tools/diagnose_ex.h>
 #include <unotools/sharedunocomponent.hxx>
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     /** === begin UNO using === **/
     using namespace ::com::sun::star::uno;
@@ -78,7 +74,6 @@ namespace dbaccess
     //====================================================================
     //= View
     //====================================================================
-    //--------------------------------------------------------------------
     View::View( const Reference< XConnection >& _rxConnection, sal_Bool _bCaseSensitive,
         const ::rtl::OUString& _rCatalogName,const ::rtl::OUString& _rSchemaName, const ::rtl::OUString& _rName )
         :View_Base( _bCaseSensitive, _rName, _rxConnection->getMetaData(), 0, ::rtl::OUString(), _rSchemaName, _rCatalogName )
@@ -96,15 +91,13 @@ namespace dbaccess
         }
     }
 
-    //--------------------------------------------------------------------
     View::~View()
     {
     }
 
-    //--------------------------------------------------------------------
     IMPLEMENT_FORWARD_REFCOUNT( View, View_Base )
     IMPLEMENT_GET_IMPLEMENTATION_ID( View )
-    // -------------------------------------------------------------------------
+
     Any SAL_CALL View::queryInterface( const Type & _rType ) throw(RuntimeException)
     {
         if(_rType == getCppuType( (Reference<XAlterView>*)0) && !m_xViewAccess.is() )
@@ -114,14 +107,14 @@ namespace dbaccess
             aReturn = View_IBASE::queryInterface( _rType );
         return aReturn;
     }
-    // -------------------------------------------------------------------------
+
     Sequence< Type > SAL_CALL View::getTypes(  ) throw(RuntimeException)
     {
         Type aAlterType = getCppuType( (Reference<XAlterView>*)0);
 
         Sequence< Type > aTypes( ::comphelper::concatSequences(View_Base::getTypes(),View_IBASE::getTypes()) );
         ::std::vector<Type> aOwnTypes;
-        aOwnTypes.reserve(aTypes.getLength());	
+        aOwnTypes.reserve(aTypes.getLength());
 
         const Type* pIter = aTypes.getConstArray();
         const Type* pEnd = pIter + aTypes.getLength();
@@ -130,19 +123,17 @@ namespace dbaccess
             if( (*pIter != aAlterType || m_xViewAccess.is()) )
                 aOwnTypes.push_back(*pIter);
         }
-        
+
         Type* pTypes = aOwnTypes.empty() ? 0 : &aOwnTypes[0];
         return Sequence< Type >(pTypes, aOwnTypes.size());
     }
 
-    //--------------------------------------------------------------------
     void SAL_CALL View::alterCommand( const ::rtl::OUString& _rNewCommand ) throw (SQLException, RuntimeException)
     {
         OSL_ENSURE(m_xViewAccess.is(),"Illegal call to AlterView!");
         m_xViewAccess->alterCommand(this,_rNewCommand);
     }
 
-    //--------------------------------------------------------------------
     void SAL_CALL View::getFastPropertyValue( Any& _rValue, sal_Int32 _nHandle ) const
     {
         if ( _nHandle == m_nCommandHandle && m_xViewAccess.is() )
@@ -155,7 +146,6 @@ namespace dbaccess
 
         View_Base::getFastPropertyValue( _rValue, _nHandle );
     }
-    // -----------------------------------------------------------------------------
-//........................................................................
+
 } // namespace dbaccess
-//........................................................................
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

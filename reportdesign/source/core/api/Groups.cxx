@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -29,9 +30,7 @@
 #include "Group.hxx"
 #include <tools/debug.hxx>
 #include "core_resource.hxx"
-#ifndef REPORTDESIGN_CORE_RESOURCE_HRC_
 #include "core_resource.hrc"
-#endif
 #include <boost/bind.hpp>
 #include <algorithm>
 // =============================================================================
@@ -61,12 +60,12 @@ void OGroups::copyGroups(const uno::Reference< report::XGroups >& _xSource)
 {
     sal_Int32 nCount = _xSource->getCount();
     for (sal_Int32 i = 0; i != nCount; ++i)
-    {		
+    {
         OGroup* pGroup = new OGroup(this,m_xContext);
         m_aGroups.push_back(pGroup);
         uno::Reference<report::XGroup> xGroup(_xSource->getByIndex(i),uno::UNO_QUERY);
         pGroup->copyGroup(xGroup);
-    }	
+    }
 }
 // -----------------------------------------------------------------------------
 void SAL_CALL OGroups::dispose() throw(uno::RuntimeException) 
@@ -216,3 +215,5 @@ void OGroups::checkIndex(sal_Int32 _nIndex)
 // =============================================================================
 }
 // =============================================================================
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -28,13 +29,12 @@
 #ifndef _DBA_CORE_RESOURCE_HXX_
 #define _DBA_CORE_RESOURCE_HXX_
 
-#ifndef _RTL_USTRING_HXX_
 #include <rtl/ustring.hxx>
-#endif
 #include <osl/mutex.hxx>
+#include <sal/macros.h>
 
 class ResMgr;
-//.........................................................................
+
 namespace dbaccess
 {
 
@@ -53,7 +53,7 @@ namespace dbaccess
         friend class OModuleClient;
         static ::osl::Mutex	s_aMutex;		/// access safety
         static sal_Int32	s_nClients;		/// number of registered clients
-        static ResMgr*	m_pImpl;        
+        static ResMgr*	m_pImpl;
 
     private:
         // no instantiation allowed
@@ -112,7 +112,7 @@ namespace dbaccess
     //=========================================================================
     //= OModuleClient
     //=========================================================================
-    /** base class for objects which uses any global module-specific ressources 
+    /** base class for objects which uses any global module-specific ressources
     */
     class OModuleClient
     {
@@ -120,11 +120,8 @@ namespace dbaccess
         OModuleClient()		{ ResourceManager::registerClient(); }
         ~OModuleClient()	{ ResourceManager::revokeClient(); }
     };
-
-
-//.........................................................................
 }
-//.........................................................................
 
 #endif // _DBA_CORE_RESOURCE_HXX_
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

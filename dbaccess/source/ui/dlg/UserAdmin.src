@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -70,7 +70,6 @@ TabPage TAB_PAGE_USERADMIN
         DropDown			= TRUE ;
         HelpId				= HID_TAB_PAGE_LBUSER ;
     };
-
 
     PushButton PB_NEWUSER
     {
@@ -150,7 +149,6 @@ ModalDialog DLG_PASSWORD
         Size = MAP_APPFONT ( WIN_X - 3 - 6 - 6 - 50 , 8 ) ;
         Text [ en-US ] = "User \"$name$:  $\"";
     };
-
     FixedText FT_OLDPASSWORD
     {
         Pos = MAP_APPFONT ( 6 , 17 ) ;
@@ -184,7 +182,7 @@ ModalDialog DLG_PASSWORD
     {
         Pos = MAP_APPFONT ( 6 , 52 ) ;
         Size = MAP_APPFONT ( FT_SIZE_X , 10 ) ;
-        Text [ en-US ] = "~Confirm  password";
+        Text [ en-US ] = "~Confirm password";
     };
     Edit ED_PASSWORD_REPEAT
     {
@@ -194,7 +192,7 @@ ModalDialog DLG_PASSWORD
         Size = MAP_APPFONT ( EDIT_SIZE_X , 12 ) ;
         PassWord = TRUE ;
     };
-    
+
     OKButton BTN_PASSWORD_OK
     {
         Pos = MAP_APPFONT ( WIN_X - 56 , 6 ) ;
@@ -210,7 +208,7 @@ ModalDialog DLG_PASSWORD
     {
         Pos = MAP_APPFONT ( WIN_X - 56 , 43 ) ;
         Size = MAP_APPFONT ( 50 , 14 ) ;
-    };	
+    };
     Text [ en-US ] = "Change Password";
 };
 
@@ -218,28 +216,3 @@ String STR_ERROR_PASSWORDS_NOT_IDENTICAL
 {
     Text [ en-US ] = "The passwords do not match. Please enter the password again.";
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

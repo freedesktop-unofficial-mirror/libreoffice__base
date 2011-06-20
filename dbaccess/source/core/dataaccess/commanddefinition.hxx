@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -28,39 +29,17 @@
 #ifndef _DBA_COREDATAACESS_COMMANDDEFINITION_HXX_
 #define _DBA_COREDATAACESS_COMMANDDEFINITION_HXX_
 
-#ifndef _DBA_CORE_COMMANDBASE_HXX_
 #include "commandbase.hxx"
-#endif
-#ifndef _COMPHELPER_PROPERTYCONTAINER_HXX_
 #include <comphelper/propertycontainer.hxx>
-#endif
-#ifndef _DBASHARED_APITOOLS_HXX_
 #include "apitools.hxx"
-#endif
-#ifndef _COMPHELPER_UNO3_HXX_
 #include <comphelper/uno3.hxx>
-#endif
-#ifndef _COM_SUN_STAR_SDBCX_XRENAME_HPP_
 #include <com/sun/star/sdbcx/XRename.hpp>
-#endif
-#ifndef _CPPUHELPER_IMPLBASE1_HXX_
 #include <cppuhelper/implbase1.hxx>
-#endif
-#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
 #include <comphelper/proparrhlp.hxx>
-#endif
-#ifndef _DBA_CORE_DATASETTINGS_HXX_
 #include "datasettings.hxx"
-#endif
-#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_
 #include <com/sun/star/container/XNameAccess.hpp>
-#endif
-#ifndef DBA_CONTENTHELPER_HXX
 #include "ContentHelper.hxx"
-#endif
-#ifndef DBA_COREDATAACESS_COMPONENTDEFINITION_HXX
 #include "ComponentDefinition.hxx"
-#endif
 
 
 //........................................................................
@@ -81,8 +60,7 @@ typedef ::cppu::ImplHelper1	<	::com::sun::star::sdbcx::XRename
                                 >	OCommandDefinition_Base;
 class OCommandDefinition;
 typedef ::comphelper::OPropertyArrayUsageHelper< OCommandDefinition >
-                        OCommandDefinition_PROP;			
-                                    
+                        OCommandDefinition_PROP;
 
 class OCommandDefinition	:public OComponentDefinition
                             ,public OCommandDefinition_Base
@@ -142,3 +120,4 @@ private:
 #endif // _DBA_COREDATAACESS_COMMANDDEFINITION_HXX_
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -145,7 +146,7 @@ private:
 //============================================================
 //= ODatabaseDocument
 //============================================================
-typedef ::comphelper::WeakComponentImplHelper17 <   ::com::sun::star::frame::XModel2
+typedef ::comphelper::PartialWeakComponentImplHelper17 <   ::com::sun::star::frame::XModel2
                                                 ,   ::com::sun::star::util::XModifiable
                                                 ,   ::com::sun::star::frame::XStorable
                                                 ,   ::com::sun::star::document::XEventBroadcaster
@@ -291,7 +292,7 @@ private:
     // Do NOT create those documents directly, always use ODatabaseModelImpl::getModel. Reason is that
     // ODatabaseDocument requires clear ownership, and in turn lifetime synchronisation with the ModelImpl.
     // If you create a ODatabaseDocument directly, you might easily create a leak.
-    // #i50905# / 2005-06-20 / frank.schonheit@sun.com
+    // #i50905#
 
 protected:
     virtual void SAL_CALL disposing();
@@ -371,12 +372,12 @@ public:
     // XEventBroadcaster
     virtual void SAL_CALL addEventListener( const ::com::sun::star::uno::Reference< ::com::sun::star::document::XEventListener >& aListener ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL removeEventListener( const ::com::sun::star::uno::Reference< ::com::sun::star::document::XEventListener >& aListener ) throw (::com::sun::star::uno::RuntimeException);
-    
+
     // XDocumentEventBroadcaster
     virtual void SAL_CALL addDocumentEventListener( const ::com::sun::star::uno::Reference< ::com::sun::star::document::XDocumentEventListener >& _Listener ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL removeDocumentEventListener( const ::com::sun::star::uno::Reference< ::com::sun::star::document::XDocumentEventListener >& _Listener ) throw (::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL notifyDocumentEvent( const ::rtl::OUString& _EventName, const ::com::sun::star::uno::Reference< ::com::sun::star::frame::XController2 >& _ViewController, const ::com::sun::star::uno::Any& _Supplement ) throw (::com::sun::star::lang::IllegalArgumentException, ::com::sun::star::lang::NoSupportException, ::com::sun::star::uno::RuntimeException);
-    
+
     // XPrintable
     virtual ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue > SAL_CALL getPrinter(  ) throw (::com::sun::star::uno::RuntimeException) ;
     virtual void SAL_CALL setPrinter( const ::com::sun::star::uno::Sequence< ::com::sun::star::beans::PropertyValue >& aPrinter ) throw (::com::sun::star::lang::IllegalArgumentException, ::com::sun::star::uno::RuntimeException) ;
@@ -620,7 +621,6 @@ private:
             denotes additional document parameters
         @param  _rDocGuard
             is the guard which currently protects the document instance
-        
     */
     sal_Bool    impl_attachResource(
                     const ::rtl::OUString& i_rLogicalDocumentURL,
@@ -703,7 +703,7 @@ private:
     const ODatabaseDocument& m_document;
 };
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
 #endif // _DBA_COREDATAACCESS_DATABASEDOCUMENT_HXX_
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

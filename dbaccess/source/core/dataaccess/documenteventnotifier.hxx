@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*************************************************************************
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,10 +41,8 @@ namespace cppu
     class OWeakObject;
 }
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     class DocumentEventNotifier_Impl;
     //====================================================================
@@ -137,8 +136,8 @@ namespace dbaccess
         ::rtl::Reference< DocumentEventNotifier_Impl >   m_pImpl;
     };
 
-//........................................................................
 } // namespace dbaccess
-//........................................................................
 
 #endif // DBACCESS_DOCUMENTEVENTNOTIFIER_HXX
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

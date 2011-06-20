@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -27,76 +28,34 @@
 #ifndef DBACCESS_CORE_API_ROWSETBASE_HXX
 #define DBACCESS_CORE_API_ROWSETBASE_HXX
 
-#ifndef _CPPUHELPER_IMPLBASE10_HXX_
 #include <cppuhelper/implbase10.hxx>
-#endif
-#ifndef _COM_SUN_STAR_SDBCX_XCOLUMNSSUPPLIER_HPP_
 #include <com/sun/star/sdbcx/XColumnsSupplier.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XROW_HPP_
 #include <com/sun/star/sdbc/XRow.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XCOLUMNLOCATE_HPP_
 #include <com/sun/star/sdbc/XColumnLocate.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XCLOSEABLE_HPP_
 #include <com/sun/star/sdbc/XCloseable.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBCX_XROWLOCATE_HPP_
 #include <com/sun/star/sdbcx/XRowLocate.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XRESULTSETMETADATASUPPLIER_HPP_
 #include <com/sun/star/sdbc/XResultSetMetaDataSupplier.hpp>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XWARNINGSSUPPLIER_HPP_
 #include <com/sun/star/sdbc/XWarningsSupplier.hpp>
-#endif
-#ifndef _COM_SUN_STAR_LANG_XSERVICEINFO_HPP_
 #include <com/sun/star/lang/XServiceInfo.hpp>
-#endif
-#ifndef _COM_SUN_STAR_LANG_XUNOTUNNEL_HPP_
 #include <com/sun/star/lang/XUnoTunnel.hpp>
-#endif
-#ifndef _CPPUHELPER_INTERFACECONTAINER_H_
 #include <cppuhelper/interfacecontainer.h>
-#endif
-#ifndef CONNECTIVITY_SQLERROR_HXX
 #include <connectivity/sqlerror.hxx>
-#endif
-#ifndef _CONNECTIVITY_COMMONTOOLS_HXX_
 #include <connectivity/CommonTools.hxx>
-#endif
-#ifndef COMPHELPER_PROPERTYSTATECONTAINER_HXX
 #include <comphelper/propertystatecontainer.hxx>
-#endif
-#ifndef _COMPHELPER_PROPERTY_ARRAY_HELPER_HXX_
 #include <comphelper/proparrhlp.hxx>
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XROWSET_HPP_
 #include <com/sun/star/sdbc/XRowSet.hpp>
-#endif
-#ifndef _COM_SUN_STAR_UTIL_XNUMBERFORMATTYPES_HPP_
 #include <com/sun/star/util/XNumberFormatTypes.hpp>
-#endif
-#ifndef _COM_SUN_STAR_CONTAINER_XNAMEACCESS_HPP_
 #include <com/sun/star/container/XNameAccess.hpp>
-#endif
-#ifndef DBACCESS_CORE_API_ROWSETROW_HXX
 #include "RowSetRow.hxx"
-#endif
-#ifndef _COMPHELPER_BROADCASTHELPER_HXX_
 #include <comphelper/broadcasthelper.hxx>
-#endif
-#ifndef DBACCESS_ROWSETCACHEITERATOR_HXX
 #include "RowSetCacheIterator.hxx"
-#endif
 #include "core_resource.hxx"
 #include <comphelper/componentcontext.hxx>
 
 #include <functional>
 
 
-namespace com { namespace sun { namespace star { 
+namespace com { namespace sun { namespace star {
     namespace sdb { struct RowChangeEvent; }
     namespace lang { struct Locale; }
 } } }
@@ -191,6 +150,9 @@ namespace dbaccess
         virtual sal_Bool	isModified( ) = 0;
         // return <TRUE/> if and only if the current row is the insert row
         virtual sal_Bool	isNew( ) = 0;
+        // return <TRUE/> if the property change notification should be fired
+        // upon property change.
+        virtual sal_Bool    isPropertyChangeNotificationEnabled() const;
         // notify the change of a boolean property
         void fireProperty( sal_Int32 _nProperty, sal_Bool _bNew, sal_Bool _bOld );
 
@@ -229,7 +191,7 @@ namespace dbaccess
         const connectivity::ORowSetValue& getValue(sal_Int32 columnIndex);
         // the cache has to be checked before calling this method
         const connectivity::ORowSetValue& impl_getValue(sal_Int32 columnIndex);
-        // sets the current and the bookmark 
+        // sets the current and the bookmark
         void setCurrentRow( sal_Bool _bMoved, sal_Bool _bDoNotify, const ORowSetRow& _rOldValues, ::osl::ResettableMutexGuard& _rGuard);
         void checkPositioningAllowed() throw(::com::sun::star::sdbc::SQLException, ::com::sun::star::uno::RuntimeException);
         // checks  if the cache is null
@@ -413,7 +375,7 @@ namespace dbaccess
             // a method of ORowSetBase (or derivees)
         sal_Bool		m_bWasNew;
         sal_Bool		m_bWasModified;
-        
+
 #ifdef DBG_UTIL
         sal_Bool		m_bNotifyCalled;
 #endif
@@ -455,10 +417,11 @@ namespace dbaccess
         */
         ::std::vector<sal_Int32>& getChangedColumns() const;
         ::std::vector<com::sun::star::uno::Any>& getChangedBookmarks() const;
-        
+
     };
 
 } // end of namespace
 
 #endif // DBACCESS_CORE_API_ROWSETBASE_HXX
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

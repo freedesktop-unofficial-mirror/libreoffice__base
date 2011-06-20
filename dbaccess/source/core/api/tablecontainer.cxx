@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -60,12 +61,8 @@
 #include "objectnameapproval.hxx"
 #include <tools/string.hxx>
 #include <rtl/logfile.hxx>
-#ifndef TOOLS_DIAGNOSE_EX_H
 #include <tools/diagnose_ex.h>
-#endif
-#ifndef TOOLS_DIAGNOSE_EX_H
 #include <tools/diagnose_ex.h>
-#endif
 
 using namespace dbaccess;
 using namespace dbtools;
@@ -99,9 +96,9 @@ namespace
                     if ( aState != PropertyState_DEFAULT_VALUE )
                         break;
                 }
-                catch(Exception)
+                catch(const Exception&)
                 {
-                    OSL_ENSURE( 0, "lcl_isPropertySetDefaulted: Exception caught!" );
+                    OSL_FAIL( "lcl_isPropertySetDefaulted: Exception caught!" );
                 }
             }
             return ( pIter == pEnd );
@@ -113,8 +110,8 @@ namespace
 //= OTableContainer
 //==========================================================================
 DBG_NAME(OTableContainer)
-//------------------------------------------------------------------------------
-OTableContainer::OTableContainer(::cppu::OWeakObject& _rParent, 
+
+OTableContainer::OTableContainer(::cppu::OWeakObject& _rParent,
                                  ::osl::Mutex& _rMutex,
                                  const Reference< XConnection >& _xCon,
                                  sal_Bool _bCase,
@@ -126,19 +123,16 @@ OTableContainer::OTableContainer(::cppu::OWeakObject& _rParent,
     ,m_xTableDefinitions(_xTableDefinitions)
     ,m_pTableMediator( NULL )
     ,m_bInDrop(sal_False)
-{					  
+{
     DBG_CTOR(OTableContainer, NULL);
 }
 
-//------------------------------------------------------------------------------
 OTableContainer::~OTableContainer()
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::OTableContainer" );
-    //	dispose();
     DBG_DTOR(OTableContainer, NULL);
 }
 
-// -----------------------------------------------------------------------------
 void OTableContainer::removeMasterContainerListener()
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::removeMasterContainerListener" );
@@ -153,19 +147,15 @@ void OTableContainer::removeMasterContainerListener()
     }
 }
 
-// -----------------------------------------------------------------------------
 ::rtl::OUString OTableContainer::getTableTypeRestriction() const
 {
     // no restriction at all (other than the ones provided externally)
     return ::rtl::OUString();
 }
 
-// -----------------------------------------------------------------------------
 // XServiceInfo
-//------------------------------------------------------------------------------
 IMPLEMENT_SERVICE_INFO2(OTableContainer, "com.sun.star.sdb.dbaccess.OTableContainer", SERVICE_SDBCX_CONTAINER, SERVICE_SDBCX_TABLES)
 
-// -----------------------------------------------------------------------------
 namespace
 {
 void lcl_createDefintionObject(const ::rtl::OUString& _rName
@@ -192,12 +182,12 @@ void lcl_createDefintionObject(const ::rtl::OUString& _rName
         }
         Reference<XColumnsSupplier> xColumnsSupplier(_xTableDefinition,UNO_QUERY);
         if ( xColumnsSupplier.is() )
-            _xColumnDefinitions = xColumnsSupplier->getColumns();		
+            _xColumnDefinitions = xColumnsSupplier->getColumns();
     }
 }
-// -------------------------------------------------------------------------
+
 }
-// -------------------------------------------------------------------------
+
 connectivity::sdbcx::ObjectType OTableContainer::createObject(const ::rtl::OUString& _rName)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::createObject" );
@@ -211,7 +201,7 @@ connectivity::sdbcx::ObjectType OTableContainer::createObject(const ::rtl::OUStr
         Reference<XPropertySet> xTableDefinition;
         Reference<XNameAccess> xColumnDefinitions;
         lcl_createDefintionObject(_rName,m_xTableDefinitions,xTableDefinition,xColumnDefinitions,sal_False);
-        
+
         if ( xSup.is() )
         {
             ODBTableDecorator* pTable = new ODBTableDecorator( m_xConnection, xSup, ::dbtools::getNumberFormats( m_xConnection ) ,xColumnDefinitions);
@@ -223,8 +213,8 @@ connectivity::sdbcx::ObjectType OTableContainer::createObject(const ::rtl::OUStr
             ::rtl::OUString sCatalog,sSchema,sTable;
             ::dbtools::qualifiedNameComponents(m_xMetaData,
                                                 _rName,
-                                                sCatalog, 
-                                                sSchema, 
+                                                sCatalog,
+                                                sSchema,
                                                 sTable,
                                                 ::dbtools::eInDataManipulation);
             Any aCatalog;
@@ -266,17 +256,17 @@ connectivity::sdbcx::ObjectType OTableContainer::createObject(const ::rtl::OUStr
         if ( m_pTableMediator.is() )
             m_pTableMediator->notifyElementCreated(_rName,xDest);
     }
-    
+
     return xRet;
 }
-// -----------------------------------------------------------------------------
+
 Reference< XPropertySet > OTableContainer::createDescriptor()
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::createDescriptor" );
     Reference< XPropertySet > xRet;
 
-    // frist we have to look if the master tables does support this
-    // and if then create a table object as well with the master tables
+    // first we have to look if the master tables support this
+    // and if so then create a table object as well with the master tables
     Reference<XColumnsSupplier > xMasterColumnsSup;
     Reference<XDataDescriptorFactory> xDataFactory(m_xMasterContainer,UNO_QUERY);
     if ( xDataFactory.is() && m_xMetaData.is() )
@@ -294,7 +284,7 @@ Reference< XPropertySet > OTableContainer::createDescriptor()
     }
     return xRet;
 }
-// -----------------------------------------------------------------------------
+
 // XAppend
 ObjectType OTableContainer::appendObject( const ::rtl::OUString& _rForName, const Reference< XPropertySet >& descriptor )
 {
@@ -335,7 +325,7 @@ ObjectType OTableContainer::appendObject( const ::rtl::OUString& _rForName, cons
             }
         }
     }
-    catch(Exception&)
+    catch(const Exception&)
     {
         throw;
     }
@@ -376,13 +366,13 @@ ObjectType OTableContainer::appendObject( const ::rtl::OUString& _rForName, cons
                                                     , ::rtl::OUString(PROPERTY_ROW_HEIGHT), ::rtl::OUString(PROPERTY_TEXTCOLOR)
                                                     , ::rtl::OUString(PROPERTY_TEXTLINECOLOR), ::rtl::OUString(PROPERTY_TEXTEMPHASIS)
                                                     , ::rtl::OUString(PROPERTY_TEXTRELIEF) };
-    Sequence< ::rtl::OUString> aNames(s_pTableProps,sizeof(s_pTableProps)/sizeof(s_pTableProps[0]));
+    Sequence< ::rtl::OUString> aNames(s_pTableProps,SAL_N_ELEMENTS(s_pTableProps));
     if ( bModified || !lcl_isPropertySetDefaulted(aNames,xTableDefinition) )
         ::dbaccess::notifyDataSourceModified(m_xTableDefinitions,sal_True);
 
     return createObject( _rForName );
 }
-// -------------------------------------------------------------------------
+
 // XDrop
 void OTableContainer::dropObject(sal_Int32 _nPos,const ::rtl::OUString _sElementName)
 {
@@ -417,9 +407,8 @@ void OTableContainer::dropObject(sal_Int32 _nPos,const ::rtl::OUString _sElement
             if(!sComposedName.getLength())
                 ::dbtools::throwFunctionSequenceException(static_cast<XTypeProvider*>(static_cast<OFilteredContainer*>(this)));
 
-            ::rtl::OUString aSql = ::rtl::OUString::createFromAscii("DROP ");
-            
-            // #104282# OJ
+            ::rtl::OUString aSql(RTL_CONSTASCII_USTRINGPARAM("DROP "));
+
             if ( bIsView ) // here we have a view
                 aSql += ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("VIEW "));
             else
@@ -441,14 +430,14 @@ void OTableContainer::dropObject(sal_Int32 _nPos,const ::rtl::OUString _sElement
             m_xTableDefinitions->removeByName(_sElementName);
         }
     }
-    catch(Exception&)
+    catch(const Exception&)
     {
         m_bInDrop = sal_False;
         throw;
     }
     m_bInDrop = sal_False;
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OTableContainer::elementInserted( const ContainerEvent& Event ) throw (RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::elementInserted" );
@@ -467,12 +456,12 @@ void SAL_CALL OTableContainer::elementInserted( const ContainerEvent& Event ) th
         }
     }
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OTableContainer::elementRemoved( const ContainerEvent& /*Event*/ ) throw (RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::elementRemoved" );
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OTableContainer::elementReplaced( const ContainerEvent& Event ) throw (RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::elementReplaced" );
@@ -481,26 +470,25 @@ void SAL_CALL OTableContainer::elementReplaced( const ContainerEvent& Event ) th
         ::rtl::OUString sOldComposedName,sNewComposedName;
         Event.ReplacedElement	>>= sOldComposedName;
         Event.Accessor			>>= sNewComposedName;
-        
+
         renameObject(sOldComposedName,sNewComposedName);
     }
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OTableContainer::disposing()
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::disposing" );
     OFilteredContainer::disposing();
-    // say our listeners goobye
+    // say goodbye to our listeners
     m_xTableDefinitions	= NULL;
     m_pTableMediator = NULL;
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OTableContainer::disposing( const ::com::sun::star::lang::EventObject& /*Source*/ ) throw (::com::sun::star::uno::RuntimeException)
 {
     RTL_LOGFILE_CONTEXT_AUTHOR( aLogger, "api", "Ocke.Janssen@sun.com", "OTableContainer::disposing" );
 }
 
-// -----------------------------------------------------------------------------
 void OTableContainer::addMasterContainerListener()
 {
     try
@@ -513,4 +501,4 @@ void OTableContainer::addMasterContainerListener()
         DBG_UNHANDLED_EXCEPTION();
     }
 }
-
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

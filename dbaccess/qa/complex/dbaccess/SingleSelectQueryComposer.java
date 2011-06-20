@@ -163,7 +163,7 @@ public class SingleSelectQueryComposer extends CRMBasedTestCase
         try
         {
             System.out.println("check setElementaryQuery");
-            
+
             final String simpleQuery2 = "SELECT * FROM \"customers\" WHERE \"Name\" = 'oranges'";
             m_composer.setElementaryQuery(simpleQuery2);
             assertTrue("setElementaryQuery/getQuery inconsistent", m_composer.getQuery().equals(simpleQuery2));
@@ -172,20 +172,20 @@ public class SingleSelectQueryComposer extends CRMBasedTestCase
             final String simpleQuery = "SELECT * FROM \"customers\"";
             m_composer.setQuery(simpleQuery);
             assertTrue("set/getQuery inconsistent", m_composer.getQuery().equals(simpleQuery));
-            
+
             checkAttributeAccess("Filter", "\"Name\" = 'oranges'");
             checkAttributeAccess("Group", "\"City\"");
             checkAttributeAccess("Order", "\"Address\"");
             checkAttributeAccess("HavingClause", "\"ID\" <> 4");
-            
+
             final XIndexAccess orderColumns = m_composer.getOrderColumns();
             assertTrue("Order columns doesn't exist: \"Address\"",
             orderColumns != null && orderColumns.getCount() == 1 && orderColumns.getByIndex(0) != null);
-            
+
             final XIndexAccess groupColumns = m_composer.getGroupColumns();
             assertTrue("Group columns doesn't exist: \"City\"",
             groupColumns != null && groupColumns.getCount() == 1 && groupColumns.getByIndex(0) != null);
-            
+
             // XColumnsSupplier
             final XColumnsSupplier xSelectColumns = UnoRuntime.queryInterface(XColumnsSupplier.class, m_composer);
             assertTrue("no select columns, or wrong number of select columns",
@@ -252,7 +252,7 @@ public class SingleSelectQueryComposer extends CRMBasedTestCase
             final XIndexAccess parameters = suppParams.getParameters();
 
             final String expectedParamNames[] =
-            
+
             {
                 "cname",
                 "Product Name"
@@ -285,7 +285,7 @@ public class SingleSelectQueryComposer extends CRMBasedTestCase
             m_composer.setQuery("SELECT * FROM \"customers\"");
 
             final Object initArgs[] =
-            
+
             {
                 new NamedValue("AutomaticAddition", Boolean.valueOf(true))
             };

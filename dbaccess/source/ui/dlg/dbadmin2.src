@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -62,6 +62,11 @@ String STR_COULD_NOT_CREATE_DIRECTORY
     Text [ en-US ] = "The directory $name$ could not be created.";
 };
 
+
+
+
+
+
 #define EDIT_SIZE_X		50
 #define FT_SIZE_X		90
 #define WIN_X			220
@@ -107,7 +112,7 @@ ModalDialog DLG_DOMAINPASSWORD
     {
         Pos = MAP_APPFONT ( WIN_X - 56 , 43 ) ;
         Size = MAP_APPFONT ( 50 , 14 ) ;
-    };	
+    };
 };
 
 #define PAGE_X_T  (PAGE_X -80)
@@ -120,7 +125,7 @@ TabPage PAGE_TABLESUBSCRIPTION
     Pos = MAP_APPFONT ( 0 , 0 ) ;
     Size = MAP_APPFONT ( PAGE_X_T, PAGE_Y_T) ;
     HelpId = HID_DSADMIN_TABLE_SUBSCRIPTION;
-    
+
     Text [ en-US ] = "Tables Filter" ;
 
     FixedLine FL_SEPARATOR1
@@ -147,4 +152,3 @@ TabPage PAGE_TABLESUBSCRIPTION
         Text [ en-US ] = "Mark the tables that should be visible for the applications.";
     };
 };
-

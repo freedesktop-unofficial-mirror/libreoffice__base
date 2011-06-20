@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle andor its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -140,3 +141,4 @@ using namespace ::com::sun::star;
         return Reference< XArray >(m_aRow[m_nPos].makeAny(),UNO_QUERY);
     }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

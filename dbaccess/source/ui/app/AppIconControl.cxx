@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -27,30 +28,14 @@
 
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_dbui.hxx"
-#ifndef DBAUI_APPICONCONTROL_HXX
 #include "AppIconControl.hxx"
-#endif
-#ifndef _TOOLS_DEBUG_HXX
 #include <tools/debug.hxx>
-#endif
-#ifndef _DBA_DBACCESS_HELPID_HRC_
 #include "dbaccess_helpid.hrc"
-#endif				 
-#ifndef _DBAUI_MODULE_DBU_HXX_
 #include "moduledbu.hxx"
-#endif
-#ifndef _DBU_APP_HRC_
 #include "dbu_app.hrc"
-#endif
-#ifndef _IMAGE_HXX //autogen
 #include <vcl/image.hxx>
-#endif
-#ifndef _DBACCESS_UI_CALLBACKS_HXX_
 #include "callbacks.hxx"
-#endif
-#ifndef DBAUI_APPELEMENTTYPE_HXX
 #include "AppElementType.hxx"
-#endif
 #include <memory>
 
 using namespace ::dbaui;
@@ -58,7 +43,7 @@ using namespace ::dbaui;
 // class OApplicationIconControl
 DBG_NAME(OApplicationIconControl)
 //==================================================================
-OApplicationIconControl::OApplicationIconControl(Window* _pParent) 
+OApplicationIconControl::OApplicationIconControl(Window* _pParent)
     : SvtIconChoiceCtrl(_pParent,WB_ICON | WB_NOCOLUMNHEADER | WB_HIGHLIGHTFRAME | /*!WB_NOSELECTION |*/
                                 WB_TABSTOP | WB_CLIPCHILDREN | WB_NOVSCROLL | WB_SMART_ARRANGE | WB_NOHSCROLL | WB_CENTER)
     ,DropTargetHelper(this)
@@ -71,20 +56,18 @@ OApplicationIconControl::OApplicationIconControl(Window* _pParent)
         sal_uInt16      nLabelResId;
         ElementType eType;
         sal_uInt16      nImageResId;
-        sal_uInt16      nImageResIdHC;
     }   aCategories[] = {
-        { RID_STR_TABLES_CONTAINER,     E_TABLE,    IMG_TABLEFOLDER_TREE_L, IMG_TABLEFOLDER_TREE_LHC    },
-        { RID_STR_QUERIES_CONTAINER,    E_QUERY,    IMG_QUERYFOLDER_TREE_L, IMG_QUERYFOLDER_TREE_LHC    },
-        { RID_STR_FORMS_CONTAINER,      E_FORM,     IMG_FORMFOLDER_TREE_L,  IMG_FORMFOLDER_TREE_LHC     },
-        { RID_STR_REPORTS_CONTAINER,    E_REPORT,   IMG_REPORTFOLDER_TREE_L,IMG_REPORTFOLDER_TREE_LHC   }
+        { RID_STR_TABLES_CONTAINER,     E_TABLE,    IMG_TABLEFOLDER_TREE_L  },
+        { RID_STR_QUERIES_CONTAINER,    E_QUERY,    IMG_QUERYFOLDER_TREE_L  },
+        { RID_STR_FORMS_CONTAINER,      E_FORM,     IMG_FORMFOLDER_TREE_L   },
+        { RID_STR_REPORTS_CONTAINER,    E_REPORT,   IMG_REPORTFOLDER_TREE_L }
     };
-    for ( size_t i=0; i < sizeof(aCategories)/sizeof(aCategories[0]); ++i)
+    for ( size_t i=0; i < SAL_N_ELEMENTS(aCategories); ++i)
     {
         SvxIconChoiceCtrlEntry* pEntry = InsertEntry(
-            String( ModuleRes( aCategories[i].nLabelResId ) ),
-            Image( ModuleRes( aCategories[i].nImageResId ) ),
-            Image( ModuleRes( aCategories[i].nImageResIdHC ) ) );
-        if ( pEntry ) 
+            String( ModuleRes( aCategories[i].nLabelResId ) ) ,
+            Image(  ModuleRes( aCategories[i].nImageResId ) ) );
+        if ( pEntry )
             pEntry->SetUserData( new ElementType( aCategories[i].eType ) );
     }
 
@@ -113,7 +96,7 @@ sal_Int8 OApplicationIconControl::AcceptDrop( const AcceptDropEvent& _rEvt )
     sal_Int8 nDropOption = DND_ACTION_NONE;
     if ( m_pActionListener )
     {
-        
+
         SvxIconChoiceCtrlEntry*	pEntry = GetEntry(_rEvt.maPosPixel);
         if ( pEntry )
         {
@@ -133,3 +116,5 @@ sal_Int8 OApplicationIconControl::ExecuteDrop( const ExecuteDropEvent& _rEvt )
 
     return DND_ACTION_NONE;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

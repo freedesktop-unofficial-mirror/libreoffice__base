@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -28,12 +29,8 @@
 #ifndef DBACCESS_CORE_API_BOOKMARKSET_HXX
 #define DBACCESS_CORE_API_BOOKMARKSET_HXX
 
-#ifndef DBACCESS_CORE_API_CACHESET_HXX
 #include "CacheSet.hxx"
-#endif
-#ifndef _COM_SUN_STAR_SDBC_XROWUPDATE_HPP_
 #include <com/sun/star/sdbc/XRowUpdate.hpp>
-#endif
 
 namespace dbaccess
 {
@@ -73,3 +70,4 @@ namespace dbaccess
 }
 #endif // DBACCESS_CORE_API_BOOKMARKSET_HXX
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

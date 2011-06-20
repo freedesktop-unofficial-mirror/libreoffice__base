@@ -1,6 +1,7 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,28 +32,26 @@
 #include <com/sun/star/beans/XPropertySet.hpp>
 /** === end UNO includes === **/
 
-//........................................................................
 namespace dbaccess
 {
-//........................................................................
 
     // TODO: move the following to comphelper/propertycontainerhelper.hxx
     class IPropertyContainer
     {
     public:
         virtual void registerProperty(
-                    const ::rtl::OUString& _rName, 
-                    sal_Int32 _nHandle, 
-                    sal_Int32 _nAttributes, 
-                    void* _pPointerToMember, 
+                    const ::rtl::OUString& _rName,
+                    sal_Int32 _nHandle,
+                    sal_Int32 _nAttributes,
+                    void* _pPointerToMember,
                     const ::com::sun::star::uno::Type& _rMemberType
                 ) = 0;
 
         virtual void registerMayBeVoidProperty(
-                    const ::rtl::OUString& _rName, 
-                    sal_Int32 _nHandle, 
-                    sal_Int32 _nAttributes, 
-                    ::com::sun::star::uno::Any* _pPointerToMember, 
+                    const ::rtl::OUString& _rName,
+                    sal_Int32 _nHandle,
+                    sal_Int32 _nAttributes,
+                    ::com::sun::star::uno::Any* _pPointerToMember,
                     const ::com::sun::star::uno::Type& _rExpectedType
                 ) = 0;
 
@@ -102,8 +101,8 @@ namespace dbaccess
         static bool hasDefaultSettings( const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertySet >& _rxColumn );
     };
 
-//........................................................................
 } // namespace dbaccess
-//........................................................................
 
 #endif // COLUMNSETTINGS_HXX
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

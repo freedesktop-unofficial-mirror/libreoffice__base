@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -159,7 +160,7 @@ void SAL_CALL OInterceptor::dispatch( const URL& _URL,const Sequence<PropertyVal
 
             while( nInd < aNewArgs.getLength() )
             {
-                if ( aNewArgs[nInd].Name.equalsAscii( "SaveTo" ) )
+                if ( aNewArgs[nInd].Name.equalsAsciiL( RTL_CONSTASCII_STRINGPARAM( "SaveTo" ) ) )
                 {
                     aNewArgs[nInd].Value <<= sal_True;
                     break;
@@ -170,19 +171,19 @@ void SAL_CALL OInterceptor::dispatch( const URL& _URL,const Sequence<PropertyVal
             if ( nInd == aNewArgs.getLength() )
             {
                 aNewArgs.realloc( nInd + 1 );
-                aNewArgs[nInd].Name = ::rtl::OUString::createFromAscii( "SaveTo" );
+                aNewArgs[nInd].Name = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("SaveTo"));
                 aNewArgs[nInd].Value <<= sal_True;
             }
 
             Reference< XDispatch > xDispatch = m_xSlaveDispatchProvider->queryDispatch(
-                _URL, ::rtl::OUString::createFromAscii( "_self" ), 0 );
+                _URL, ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("_self")), 0 );
             if ( xDispatch.is() )
                 xDispatch->dispatch( _URL, aNewArgs );
         }
         return;
     }
 
-    if  (   _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEDOC ] 
+    if  (   _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEDOC ]
         ||  _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEWIN ]
         ||  _URL.Complete == m_aInterceptedURL[ DISPATCH_CLOSEFRAME ]
         )
@@ -203,7 +204,7 @@ IMPL_LINK( OInterceptor, OnDispatch, void*, _pDispatcher )
         if ( m_pContentHolder && m_pContentHolder->prepareClose() && m_xSlaveDispatchProvider.is() )
         {
             Reference< XDispatch > xDispatch = m_xSlaveDispatchProvider->queryDispatch(
-                pHelper->aURL, ::rtl::OUString::createFromAscii( "_self" ), 0 );
+                pHelper->aURL, ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("_self")), 0 );
             if ( xDispatch.is() )
             {
                 Reference< ::com::sun::star::document::XEventBroadcaster> xEvtB(m_pContentHolder->getComponent(),UNO_QUERY);
@@ -236,7 +237,7 @@ void SAL_CALL OInterceptor::addStatusListener(
 
     if ( m_pContentHolder && _URL.Complete == m_aInterceptedURL[DISPATCH_SAVEAS] )
     {   // SaveAs
-        
+
         if ( !m_pContentHolder->isNewReport() )
         {
             FeatureStateEvent aStateEvent;
@@ -246,7 +247,7 @@ void SAL_CALL OInterceptor::addStatusListener(
             aStateEvent.Requery = sal_False;
             aStateEvent.State <<= (rtl::OUString( RTL_CONSTASCII_USTRINGPARAM("($3)")));
             Control->statusChanged(aStateEvent);
-        }		
+        }
 
         {
             osl::MutexGuard aGuard(m_aMutex);
@@ -416,7 +417,7 @@ void SAL_CALL OInterceptor::setMasterDispatchProvider(
     osl::MutexGuard aGuard(m_aMutex);
     m_xMasterDispatchProvider = NewSupplier;
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OInterceptor::notifyEvent( const ::com::sun::star::document::EventObject& Event ) throw (::com::sun::star::uno::RuntimeException)
 {
     osl::ResettableMutexGuard _rGuard(m_aMutex);
@@ -436,12 +437,10 @@ void SAL_CALL OInterceptor::notifyEvent( const ::com::sun::star::document::Event
         }
     }
 }
-// -----------------------------------------------------------------------------
+
 void SAL_CALL OInterceptor::disposing( const ::com::sun::star::lang::EventObject& /*Source*/ ) throw (::com::sun::star::uno::RuntimeException)
 {
 }
 
-//........................................................................
 }	// namespace dbaccess
-//........................................................................
-
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */
