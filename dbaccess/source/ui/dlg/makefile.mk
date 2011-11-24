@@ -128,11 +128,7 @@ SLOFILES=					\
         $(EXCEPTIONSFILES)			\
         $(SLO)$/optionalboolitem.obj 
 
-.IF "$(WINDOWS_VISTA_PSDK)"!="" && "$(PROF_EDITION)"==""
-DISABLE_ADO=TRUE
-.ENDIF # "$(WINDOWS_VISTA_PSDK)"!="" && "$(PROF_EDITION)"==""
-
-.IF "$(GUI)"=="WNT" && "$(DISABLE_ADO)"==""
+.IF "$(GUI)"=="WNT"
 SLOFILES+=		$(SLO)$/adodatalinks.obj
 .ENDIF
 
